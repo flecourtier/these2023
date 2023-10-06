@@ -1,0 +1,103 @@
+\documentclass[french]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{color}
+\usepackage[svgnames,dvipsnames]{xcolor} 
+\usepackage{soul}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle #2$}}
+\usepackage{pifont}
+\usepackage{pst-all}
+\usepackage{pstricks}
+\usepackage{delarray}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{nicematrix}
+\usepackage{listings}
+\usepackage{float}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdfpagemode=FullScreen,
+}
+
+\usepackage{amsthm}
+\newtheorem*{Rem}{Remarque}
+
+\newenvironment{conclusion}[1]{%
+	\begin{center}\normalfont\textbf{Conclusion}\end{center}
+	\begin{quotation} #1 \end{quotation}
+}{%
+	\vspace{1cm}
+}
+
+\newcommand\pythonstyle{\lstset{
+	language=Python,
+	basicstyle=\ttm,
+	morekeywords={self},              % Add keywords here
+	keywordstyle=\ttb\color{deepblue},
+	emph={MyClass,__init__},          % Custom highlighting
+	emphstyle=\ttb\color{deepred},    % Custom highlighting style
+	stringstyle=\color{deepgreen},
+	frame=tb,                         % Any extra options here
+	showstringspaces=false
+}}
+
+\lstdefinestyle{Cpp}{
+	language=C++,
+	tabsize=3,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#}
+}
+
+\lstdefinestyle{Python}{
+	language=Python,
+	tabsize=3,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#}
+}
+
+\lstset{style=Cpp}
+
+\setlength\parindent{0pt}
+
+
+\usepackage{fontawesome}
+
+\begin{document}
+	LECOURTIER Frédérique \hfill \today
+	\begin{center}
+		\Large\textbf{{Abstracts}}
+	\end{center}
+\section{Semaine 1 : 02/10/2023 - 06/10/2023}
+	\textbf{Fait durant la semaine :}
+	\begin{enumerate}[label=\textbullet]
+		\item modification du rapport de stage avec les remarques de Michel
+		\item lecture de l'article 2104.08426 : "Exact imposition of boundary conditions with distance functions in physics-informed deep neural networks"; lecture jusquu'à la page 23, il ne reste plus que les résultats numérique
+		\item reproduction de certains résultats de l'article, notamment : cal:cul de la fonction distance sur un segment et un triangle (2 méthodes)
+	\end{enumerate}
+
+	\textbf{A faire :}
+	\begin{enumerate}[label=\textbullet]
+		\item réécouter vocal réunion et prendre des notes clairs de ce qu'on me demande !
+		\item essayer de calculer une distance \textit{signée}
+		\item reproduire certains des résultats avec le PINNs présentés dans l'article
+		\item récupérer repo git ScimBa et regarder les issues !
+	\end{enumerate}
+\end{document}
