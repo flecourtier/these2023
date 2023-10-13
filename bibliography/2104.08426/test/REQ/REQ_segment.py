@@ -56,5 +56,5 @@ plt.plot([x1,x2],[y1,y2],"white",linewidth=3)
 plt.title("phi")
 plt.colorbar()
 
-plt.savefig("R-equivalence/fct_distance_segment.png")
+plt.savefig("REQ/REQ_segment.png")
 plt.show()

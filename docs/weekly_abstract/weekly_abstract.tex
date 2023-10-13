@@ -85,11 +85,16 @@
 	\begin{center}
 		\Large\textbf{{Abstracts}}
 	\end{center}
+
 \section{Semaine 1 : 02/10/2023 - 06/10/2023}
+	\textbf{Réunions :}
+	\begin{enumerate}[label=\textbullet]
+		\item \textit{Lundi matin} -  Présentation de Hugo Talbot sur la méthodes des éléments finis
+	\end{enumerate}
 	\textbf{Fait durant la semaine :}
 	\begin{enumerate}[label=\textbullet]
 		\item modification du rapport de stage avec les remarques de Michel
-		\item lecture de l'article 2104.08426 : "Exact imposition of boundary conditions with distance functions in physics-informed deep neural networks"; lecture jusquu'à la page 23, il ne reste plus que les résultats numérique
+		\item lecture de l'article 2104.08426 : "Exact imposition of boundary conditions with distance functions in physics-informed deep neural networks"; lecture jusqu'à la page 23, il ne reste plus que les résultats numérique
 		\item reproduction de certains résultats de l'article, notamment : cal:cul de la fonction distance sur un segment et un triangle (2 méthodes)
 	\end{enumerate}
 
@@ -99,5 +104,32 @@
 		\item essayer de calculer une distance \textit{signée}
 		\item reproduire certains des résultats avec le PINNs présentés dans l'article
 		\item récupérer repo git ScimBa et regarder les issues !
+	\end{enumerate}
+
+\section{Semaine 2 : 09/10/2023 - 13/10/2023}
+	\textbf{Réunions :}
+	\begin{enumerate}[label=\textbullet]
+		\item \textit{Mardi matin} -  Réunion d'équipe - Preséntation de pablo
+		\item \textit{Vendredi matin} - TP d'Informatique L2S3
+	\end{enumerate}
+	\textbf{Fait durant la semaine :}
+	\begin{enumerate}[label=\textbullet]
+		\item sampling dans Scimba dans un domaine créé par une fonction distance signée (SD) et sampling sur le bord
+		\item entraînement du PINNs à apprendre $u$ et comparaison en apprenant $w$ -> application de la correction par addition avec FEM et $\phi$-FEM sur le cercle
+		\item organisation du code :
+		\begin{itemize}
+			\item création d'un document latex pour expliquer le problème considéré
+			\item homogénéisation du code (pas de copies des paramètres, des fonctions...)
+			\item création d'un script python qui permette de lancer le PINNs avec différentes configurations (paramètres en arguments, sauvegarde du modèle)
+			\item création d'un script python qui permette de créer un tableur qui regroupe toutes les configurations choisies
+		\end{itemize} 
+	\end{enumerate}
+	
+	\textbf{A faire :}
+	\begin{enumerate}[label=\textbullet]
+		\item ajout des images résultats dans le fichier excel (training ?)
+		\item organisation de la partie correction avec sauvegarde des images
+		\item reproduire certains des résultats avec le PINNs présentés dans l'article ?
+		\item continuer lecture article 2104.08426
 	\end{enumerate}
 \end{document}

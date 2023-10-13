@@ -1,17 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# on définit notre ellipse
+def get_coord(theta):
+    return np.array([a*np.cos(theta),b*np.sin(theta)])
+
+def create_poly(nb_pts):
+    tab_theta = np.linspace(0,2*np.pi,nb_pts)
+    partial_S = get_coord(tab_theta).T
+    return partial_S
+
+a,b = (0.5,0.3)
+nb_pts = 50
+partial_S = create_poly(nb_pts)
+partial_S_plus = np.concatenate([partial_S,[partial_S[0]]])
+
 def norm(X):
     x,y = X
     return np.sqrt(x**2 + y**2)
-
-# on définit notre triangle
-nb_pts = 3
-X1 = np.array([-0.5,-0.5])
-X2 = np.array([0.5,-0.5])
-X3 = np.array([0,0.5])
-partial_S = [X1,X2,X3]
-partial_S_plus = np.concatenate([partial_S,[partial_S[0]]])
 
 # on récupère les longueurs des segments et les points milieux
 tab_L = []
@@ -45,12 +51,12 @@ def phi(X,m):
         den += 1./phi_i(X,i)**m
     return 1./den**(1/m)
 
-a,b = (-1,1)
-a2,b2 = (-1,1)
-N = 200
+bord_a,bord_b = (-a-0.5,a+0.5)
+bord_a2,bord_b2 = (-b-0.5,b+0.5)
+N = 201
 
-lin = np.linspace(a,b,N)
-lin2 = np.linspace(a2,b2,N)
+lin = np.linspace(bord_a,bord_b,N)
+lin2 = np.linspace(bord_a2,bord_b2,N)
 
 XX,YY = np.meshgrid(lin,lin2)
 
@@ -66,5 +72,5 @@ for i in range(nb_pts):
 plt.title("phi")
 plt.colorbar()
 
-plt.savefig("R-equivalence/fct_distance_triangle.png")
+plt.savefig("REQ/REQ_ellipse.png")
 plt.show()

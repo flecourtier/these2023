@@ -69,5 +69,5 @@ for i in range(nb_pts):
 plt.title("phi")
 plt.colorbar()
 
-plt.savefig("fct_distance_carré.png")
+plt.savefig("MVP/MVP_carré.png")
 plt.show()
