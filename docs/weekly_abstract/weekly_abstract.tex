@@ -90,6 +90,7 @@
 	\textbf{Réunions :}
 	\begin{enumerate}[label=\textbullet]
 		\item \textit{Lundi matin} -  Présentation de Hugo Talbot sur la méthodes des éléments finis
+		\item \textit{Mardi matin} - Réunion d'équipe (oubliée)
 	\end{enumerate}
 	\textbf{Fait durant la semaine :}
 	\begin{enumerate}[label=\textbullet]
@@ -109,7 +110,7 @@
 \section{Semaine 2 : 09/10/2023 - 13/10/2023}
 	\textbf{Réunions :}
 	\begin{enumerate}[label=\textbullet]
-		\item \textit{Mardi matin} -  Réunion d'équipe - Preséntation de pablo
+		\item \textit{Mardi matin} -  Réunion d'équipe - Présentation de Pablo
 		\item \textit{Vendredi matin} - TP d'Informatique L2S3
 	\end{enumerate}
 	\textbf{Fait durant la semaine :}
@@ -131,5 +132,29 @@
 		\item organisation de la partie correction avec sauvegarde des images
 		\item reproduire certains des résultats avec le PINNs présentés dans l'article ?
 		\item continuer lecture article 2104.08426
+	\end{enumerate}
+
+	\section{Semaine 3 : 16/10/2023 - 20/10/2023}
+	\textbf{Réunions :}
+	\begin{enumerate}[label=\textbullet]
+		\item \textit{Mardi matin} -  Réunion d'équipe - Tour de table
+		\item \textit{Vendredi matin} - TP d'Informatique L2S3
+	\end{enumerate}
+	\textbf{Fait durant la semaine :}
+	\begin{enumerate}[label=\textbullet]
+		\item test MVP sur un polygone "aléatoire" créé à partir des coordonnées polaires d'un cercle centré en $(x_0,y_0)$
+		\item réorganisation/homogénéisation du code pour :
+		\begin{itemize}
+			\item l'ajout de la variation du second membre $f$
+			\item la création de classes avec les problèmes considérés (Circle, Polygon.. avec les fonctions phi,u\_ex... associées)
+			\item la sauvegarde des modèles (réorganisation des dossiers pour networks)
+		\end{itemize}
+		\item Tentative d'entraînement sur un Polygone (au lieu du cercle) -> non fructueux pour le moment (fonctionne avec le même code sur un carré mais pas sur le polygone ?). On utilise la fonction distance signée calculée par MVP à partir des points du polygone (comme présentée dans l'article 2104.08426) \textcolor{red}{-> test inutile : on veut entraîner le réseau à apprendre $\phi w$ sur $\Omega_h$ où on utilise la fonction distance signée calculée par MVP uniquement pour le sampling des points}
+	\end{enumerate}
+	
+	\textbf{A faire :}
+	\begin{enumerate}[label=\textbullet]
+		\item organisation de la partie correction avec sauvegarde des images 
+		\item lecture article 2301.05187 (WIRE)
 	\end{enumerate}
 \end{document}

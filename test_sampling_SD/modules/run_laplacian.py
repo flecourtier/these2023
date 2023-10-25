@@ -1,21 +1,18 @@
-from modules.data import *
 import matplotlib.pyplot as plt
 
-x0,y0,r,domain_O = domain_parameters()
 new_training = False
-save_sampling = False
+
+import torch
+torch.seed()
 
 from pathlib import Path
 
 from scimba.nets import mlp
-from scimba.pinns import domain, pinn_x, training_x
+from scimba.pinns import pinn_x, training_x
 from scimba.sampling import sampling_pde, sampling_parameters, uniform_sampling
 from modules.Poisson2D import *
 
 current = Path(__file__).parent.parent
-
-def levelset(X):
-    return call_phi(torch, X.T)
 
 def plot_sampling(domain,data,name):
     plt.plot(data[:,0],data[:,1],"+")
@@ -24,14 +21,16 @@ def plot_sampling(domain,data,name):
     plt.ylim(bornes[1][0],bornes[1][1])
     plt.title(name)
 
-def test_laplacian_2d(num_config,dict,use_levelset):
-    xdomain = domain.SignedDistanceBasedDomain(2, domain_O, levelset)
-    pde = Poisson2D(xdomain, use_levelset)
+def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,save_sampling = False,save_phi = False):
+    problem = class_problem()
+    pde = class_pde(problem, use_levelset)
     x_sampler = sampling_pde.XSampler(pde=pde)
     mu_sampler = sampling_parameters.MuSampler(
         sampler=uniform_sampling.UniformSampling, model=pde
     )
     sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
+
+    dir_name = current / "networks" / class_problem.__name__ / class_pde.__name__
 
     if save_sampling:
         plt.figure(figsize=(10,5))
@@ -39,20 +38,41 @@ def test_laplacian_2d(num_config,dict,use_levelset):
         plt.subplot(1,2,1)
         data_inside = sampler.sampling(10000)[0].detach().numpy()
         print(data_inside.shape)
-        plot_sampling(xdomain,data_inside,"inside Omega")
+        plot_sampling(pde.space_domain,data_inside,"inside Omega")
 
         plt.subplot(1,2,2)
         data_boundary = sampler.bc_sampling(1000)[0].detach().numpy()
-        plot_sampling(xdomain,data_boundary,"on the border")
+        plot_sampling(pde.space_domain,data_boundary,"on the border")
 
-        plt.savefig(current / "networks" / "results" / ("sampling_"+str(num_config)+".png"))
+        plt.savefig(dir_name / "results" / ("sampling_"+str(num_config)+".png"))
+
+    if save_phi:
+        data_inside = sampler.sampling(10000)[0]
+        phi_inside = problem.levelset(data_inside).detach().cpu().numpy()
+        data_inside = data_inside.detach().numpy()
+
+        plt.figure(figsize=(15,5))
+
+        partial_S_plus = problem.polygon.detach().numpy()
+        nb_pts = problem.nb_pts
+        partial_S_plus = np.concatenate([partial_S_plus,[partial_S_plus[0]]])
+
+        plt.tricontourf(data_inside[:,0],data_inside[:,1],phi_inside,"o",levels=100)#,cmap="hot")
+        for i in range(nb_pts):
+            pt1 = partial_S_plus[i]
+            pt2 = partial_S_plus[i+1]
+            plt.plot([pt1[0],pt2[0]],[pt1[1],pt2[1]],"black",linewidth=3)
+        plt.title("phi")
+        plt.colorbar()
+
+        plt.savefig(dir_name / "results" / ("phi_"+str(num_config)+".png"))
 
     name = "model_"+str(num_config)
     if use_levelset:
         name += "_exact_bc"
 
-    file_path = current / "networks" / "models" / (name+".pth")
-    fig_path = current / "networks" / "results" / (name+".png")
+    file_path = dir_name / "models" / (name+".pth")
+    fig_path = dir_name / "results" / (name+".png")
     if new_training:
         file_path.unlink(missing_ok=True)
     
@@ -61,7 +81,6 @@ def test_laplacian_2d(num_config,dict,use_levelset):
         net=mlp.GenericMLP, pde=pde, layer_sizes=tlayers, activation_type=dict["activation"]
     )
 
-    print(file_path)
     trainer = training_x.TrainerPINNSpace(
         pde=pde,
         network=network,
@@ -81,3 +100,6 @@ def test_laplacian_2d(num_config,dict,use_levelset):
     trainer.plot(50000,filename=fig_path)
 
     assert True
+
+    return trainer
+

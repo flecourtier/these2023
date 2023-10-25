@@ -1,7 +1,9 @@
-from modules.data import *
-from solver import *
 
-x0,y0,r,domain_O = domain_parameters()
+from modules.problems import *
+
+from modules.solver.problem import *
+problem_considered = Problem().pb_considered
+
 homogeneous = True
 cd = "homo"
 
@@ -40,10 +42,15 @@ class FEMSolver():
         return expr
 
     def __create_FEM_domain(self):
-        nb_vert = self.N+1
-        domain = mshr.Circle(Point(x0, y0), r)
+        # check if problem_considered is instance of Circle class
+        assert isinstance(problem_considered, Circle),"not implemented for this domain"
 
-        mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[0,1]), Point(domain_O[1,0], domain_O[1,1]), nb_vert - 1, nb_vert - 1)
+        nb_vert = self.N+1
+            
+        domain = mshr.Circle(Point(problem_considered.x0, problem_considered.y0), problem_considered.r)
+
+        domain_O = np.array(problem_considered.domain_O)
+        mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), nb_vert - 1, nb_vert - 1)
         h_macro = mesh_macro.hmax()
         H = int(nb_vert/3)
         mesh = mshr.generate_mesh(domain,H)
@@ -109,8 +116,8 @@ class FEMSolver():
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh)
         u_ex = UexExpr(params, degree=10, domain=self.mesh)
-        V = FunctionSpace(self.mesh, "CG", 2)
-        phi_hat = project(phi_tild+m, V)
+
+        phi_hat = phi_tild+m
 
         g = Constant("1.0")
         bc = DirichletBC(self.V, g, boundary)
@@ -138,8 +145,8 @@ class FEMSolver():
         f_expr = FExpr(params, degree=10, domain=self.mesh)
         u_ex = UexExpr(params, degree=10, domain=self.mesh)
 
-        V = FunctionSpace(self.mesh, "CG", 2)
-        phi_tild = project(phi_tild, V)
+        # V = FunctionSpace(self.mesh, "CG", 2)
+        # phi_tild = project(phi_tild, V)
 
         f_tild = f_expr + div(grad(phi_tild))
 
@@ -168,10 +175,8 @@ class FEMSolver():
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh)
         u_ex = UexExpr(params, degree=10, domain=self.mesh)
-        V = FunctionSpace(self.mesh, "CG", 2)
-        phi_tild = project(phi_tild, V)
         
-        f_tild = f_expr + div(grad(phi_tild))
+        # f_tild = f_expr + div(grad(phi_tild))
 
         g = Constant(0.0)
         bc = DirichletBC(self.V, g, boundary)
