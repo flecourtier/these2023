@@ -1,0 +1,25 @@
+\documentclass{article}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{enumitem,amssymb}
+\usepackage{pifont}
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\ding{51}}}%
+	\hspace{-2.5pt}}
+\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\ding{55}}}
+
+\newcommand{\sdone}{\rlap{\LARGE $\circ$}{\raisebox{2pt}{\hspace{1pt}\ding{51}}}}
+\newcommand{\swontfix}{\rlap{\LARGE $\circ$}{\hspace{1pt}\ding{55}}}
+
+\usepackage[dvipsnames]{xcolor}
+
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdfpagemode=FullScreen,
+}
+
+\setlength\parindent{0pt}

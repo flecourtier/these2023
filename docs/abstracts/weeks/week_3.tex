@@ -1,0 +1,22 @@
+\textbf{Réunions :}
+\begin{enumerate}[label=\textbullet]
+	\item \textit{Mardi matin} -  Réunion d'équipe - Tour de table
+	\item \textit{Vendredi matin} - TP d'Informatique L2S3
+\end{enumerate}
+\textbf{Fait durant la semaine :}
+\begin{enumerate}[label=\textbullet]
+	\item test MVP sur un polygone "aléatoire" créé à partir des coordonnées polaires d'un cercle centré en $(x_0,y_0)$
+	\item réorganisation/homogénéisation du code pour :
+	\begin{itemize}
+		\item l'ajout de la variation du second membre $f$
+		\item la création de classes avec les problèmes considérés (Circle, Polygon.. avec les fonctions phi,u\_ex... associées)
+		\item la sauvegarde des modèles (réorganisation des dossiers pour networks)
+	\end{itemize}
+	\item Tentative d'entraînement sur un Polygone (au lieu du cercle) -> non fructueux pour le moment (fonctionne avec le même code sur un carré mais pas sur le polygone ?). On utilise la fonction distance signée calculée par MVP à partir des points du polygone (comme présentée dans l'article 2104.08426) \textcolor{red}{-> test inutile : on veut entraîner le réseau à apprendre $\phi w$ sur $\Omega_h$ où on utilise la fonction distance signée calculée par MVP uniquement pour le sampling des points}
+\end{enumerate}
+
+\textbf{A faire :}
+\begin{enumerate}[label=\textbullet]
+	\item organisation de la partie correction avec sauvegarde des images 
+	\item lecture article 2301.05187 (WIRE)
+\end{enumerate}

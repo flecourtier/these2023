@@ -1,11 +1,16 @@
 .ipynb_checkpoints/
 __pycache__/
 
-docs/weekly_abstract/weekly_abstract*
-!docs/weekly_abstract/weekly_abstract.tex
-!docs/weekly_abstract/weekly_abstract.pdf
 
-to_do.*
-!to_do.tex
-!to_do.pdf
 
+docs/to_do_list/to_do_list.*
+!docs/to_do_list/to_do_list.tex
+!docs/to_do_list/to_do_list.pdf
+
+docs/abstracts/abstracts.*
+!docs/abstracts/abstracts.tex
+!docs/abstracts/abstracts.pdf
+
+docs/results/results.*
+!docs/results/results.tex
+!docs/results/results.pdf
