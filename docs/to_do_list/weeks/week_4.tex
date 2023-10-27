@@ -1,4 +1,3 @@
-
 \textbf{Anciennes tâches :}
 
 \begin{itemize}[label=$\square$]
@@ -17,7 +16,7 @@
 	\item[\done] Faire récap semaine 3
 	\item[\done] Push code pour la Semaine 3 sur github
 	\item[\done] Préparer TP3 + cours 3 \textcolor{red}{$\rightarrow$ 27/10/2023}
-	\item Lire article 2301.05187 sur les WIRE
+	\item Lire article 2301.05187 sur les WIRE et 2302.04107
 	\item[\done] Remettre en forme la partie excel ("create\_xlsx\_file.py")
 	\begin{itemize}[label=\LARGE $\circ$]
 		\item[\sdone] ajout des résultats de correction si existe ?
@@ -29,17 +28,20 @@
 		\item sampling de n points sur le bord à une tolérance fixée puis recalage
 		\item sampling de n points dans le carré puis recalage
 	\end{itemize}
-	$\rightarrow$ comparer le nombre d'itération et garder celui qui est le plus rapide \\
-	+ régénération des modèles avec loss au bord
+	$\rightarrow$ comparer le nombre d'itération et garder celui qui est le plus rapide
+	\item régénération des modèles avec recalage de la levelset $\rightarrow$ utile uniquement dans le cas où on impose pas les conditions au bord de manière exacte
 	\item Regarder méthode de Newton (proposé par Emmanuel par mail) et la tester ? - \href{https://www.mathweb.fr/euclide/methode-de-newton/}{Explication}
 	\item[\done] faire un suivi hebdomadaire rapide avec les résultats (demandé par Michel)
 	\item[\wontfix] récupérer les coordonnées des points au bord de $\Omega_h$ à partir de la sélection de cellule PhiFEM \textcolor{Green}{$\rightarrow$ n'était utile que pour le point suivant}
 	\item entraînement du cas test du cercle sur 
 	\begin{itemize}[label=\LARGE $\circ$]
-		\item le carré tout entier
+		\item[\done] le carré tout entier
+		\item un carré plus petit (on dirait que les plus grosses erreurs sont au bord du carré)
 		\item[\swontfix] $\Omega_h$ - utilisation de MVP présenté dans l'article 2104.08426 pour la génération d'une fonction distance à $\Omega_h$ pour le sampling (ATTENTION : cette fonction distance n'est pas utilisé directement dans la loss du PINNs, elle sert juste à générer le domaine sur lequel on veut entraîner le modèle) \textcolor{Green}{$\rightarrow$ $\Omega_h$ varie en fonction du nombre de noeuds choisis, est-ce qu'on va le fixer ou est-ce qu'il varie ?}
 		\item un cercle un peu plus grand (de rayon plus grand) 
 	\end{itemize}
+	\item essayer d'améliorer l'entraînement du cas du cercle sur le carré tout entier
+	\item ajouter excel pour résultats avec recalage levelset
 	\item dans le cas des erreurs PhiFEM calculée avec FEniCS, rajouter la projection sur un maillage conforme (maillage qui fit avec le bord, maillage FEM) afin d'avoir des erreurs sur $\Omega$ et pas $\Omega_h$
 	\item Pour le script "run\_model.py":
 	\begin{itemize}[label=\LARGE $\circ$]
@@ -56,5 +58,6 @@
 		\item faire une page html à la main comme pour le stage sur lorenz (où y avait sphinx-doxygen-antora) pour pouvoir accèder aux "3 sites" (abstract/results/to\_do\_list (+ documentation des codes))
 		\item rajouter la CI au compte Github
 	\end{itemize}
+	\item[\done] faire résumé résultat \textcolor{red}{$\rightarrow$ MEETING 30/10/2023} 
 	\item push tout le code sur github \textbf{vendredi}
 \end{itemize}
