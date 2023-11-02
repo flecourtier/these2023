@@ -6,15 +6,14 @@ from modules.problems import *
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class Poisson2D(AbstractPDEx):
-    def __init__(self, problem, parameter_domain, use_levelset=False):
-        S = 0.5
-
-        space_domain = domain.SignedDistanceBasedDomain(2, problem.domain_O, problem.levelset)
+    def __init__(self, problem, parameter_domain, use_levelset=False, space_domain=None):
+        if space_domain is None:
+            space_domain = domain.SignedDistanceBasedDomain(2, problem.domain_O, problem.levelset)
         super().__init__(
             nb_unknowns=1,
             space_domain=space_domain,
             nb_parameters=1,
-            parameter_domain=[[S, S+0.000001]],
+            parameter_domain=parameter_domain,
         )
 
         self.problem = problem
@@ -68,3 +67,10 @@ class Poisson2D_f(Poisson2D):
     def __init__(self, problem, use_levelset=False):
         parameter_domain = [[0.1, 1.0]]
         super().__init__(problem, parameter_domain, use_levelset)
+
+class Poisson2D_fixed_carre(Poisson2D):
+    def __init__(self, problem, use_levelset=False):
+        S = 0.5
+        parameter_domain = [[S, S+0.000001]]
+        space_domain = domain.SquareDomain(2, problem.domain_O)
+        super().__init__(problem, parameter_domain, use_levelset, space_domain)

@@ -14,3 +14,7 @@ docs/abstracts/abstracts.*
 docs/results/results.*
 !docs/results/results.tex
 !docs/results/results.pdf
+
+meeting.*
+!meeting.tex
+!meeting.pdf

@@ -14,7 +14,7 @@ from modules.Poisson2D import *
 
 
 problem_considered = Circle
-pde_considered = Poisson2D_f
+pde_considered = Poisson2D_fixed
 
 save_sampling = False
 save_phi = False
@@ -98,7 +98,7 @@ def get_args():
     parser.add_argument("--activation", help="Type of the activation function.", type=str, default="sine")
 
     # Trainer arguments
-    parser.add_argument("--lr","--learning_rate", help="Learning rate of the trainer.", type=float, default=1e-2)
+    parser.add_argument("--lr","--learning_rate", help="Learning rate of the trainer.", nargs="+", type=float, default=1e-2)
     parser.add_argument("--decay", help="Multiplicative factor of learning rate decay.", type=float, default=0.99)
 
     parser.add_argument("--w_data", help="Weight of data in the loss.", type=float, default=0.0)
@@ -123,7 +123,7 @@ def get_config_filename(args,parser):
         end = ""
 
     # si l'utilisateur a rentré n_layers et units, on remplace layers par [units, units, ...]
-    if not is_default(args, parser, "n_layers") and not is_default(args, parser, "units"):
+    if not is_default(args, parser, "n_layers") or not is_default(args, parser, "units"):
         args.layers = [args.units]*args.n_layers
     vars(args)["n_layers"] = None
     vars(args)["units"] = None
@@ -133,13 +133,13 @@ def get_config_filename(args,parser):
     ###
 
     # cas par défaut (modèle 0)
-    if len(sys.argv)==1 or (len(sys.argv)==2 and sys.argv[1]=="--bc") or (len(sys.argv)==3 and sys.argv[1]=="--pb") or args.config==0:
+    if len(sys.argv)==1 or (len(sys.argv)==2 and sys.argv[1]=="--bc") or (len(sys.argv)==3 and sys.argv[1]=="--pb"): #or args.config==0:
         print("### Default case")
         config=0
     else:
         print("### Not default case")
         # si il n'y a pas de fichier de configuration fournit ("--config" n'est pas dans les arguments)
-        if not args.config:
+        if args.config==None:
             print("## No config file provided")
             print("# New model created")
             config = get_empty_num_config()

@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 
 new_training = False
+align_levelset = ""
+# align_levelset = "_align_levelset" 
 
 import torch
 torch.seed()
@@ -17,6 +19,7 @@ current = Path(__file__).parent.parent
 def plot_sampling(domain,data,name):
     plt.plot(data[:,0],data[:,1],"+")
     bornes = domain.surrounding_domain.bound
+    # bornes = domain.bound
     plt.xlim(bornes[0][0],bornes[0][1])
     plt.ylim(bornes[1][0],bornes[1][1])
     plt.title(name)
@@ -36,15 +39,15 @@ def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,s
         plt.figure(figsize=(10,5))
 
         plt.subplot(1,2,1)
-        data_inside = sampler.sampling(10000)[0].detach().numpy()
+        data_inside = sampler.sampling(dict["n_collocations"])[0].detach().numpy()
         print(data_inside.shape)
         plot_sampling(pde.space_domain,data_inside,"inside Omega")
 
         plt.subplot(1,2,2)
-        data_boundary = sampler.bc_sampling(1000)[0].detach().numpy()
+        data_boundary = sampler.bc_sampling(dict["n_bc_collocation"])[0].detach().numpy()
         plot_sampling(pde.space_domain,data_boundary,"on the border")
 
-        plt.savefig(dir_name / "results" / ("sampling_"+str(num_config)+".png"))
+        plt.savefig(dir_name / "results" / ("sampling_"+str(num_config)+align_levelset+".png"))
 
     if save_phi:
         data_inside = sampler.sampling(10000)[0]
@@ -65,11 +68,12 @@ def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,s
         plt.title("phi")
         plt.colorbar()
 
-        plt.savefig(dir_name / "results" / ("phi_"+str(num_config)+".png"))
+        plt.savefig(dir_name / "results" / ("phi_"+str(num_config)+align_levelset+".png"))
 
     name = "model_"+str(num_config)
     if use_levelset:
         name += "_exact_bc"
+    name += align_levelset
 
     file_path = dir_name / "models" / (name+".pth")
     fig_path = dir_name / "results" / (name+".png")
@@ -87,7 +91,7 @@ def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,s
         sampler=sampler,
         file_name=file_path,
         bc_loss_bool=not use_levelset,
-        learning_rate=dict["lr"],
+        # learning_rate=dict["lr"],
         decay=dict["decay"],
         batch_size=dict["n_collocations"],
         w_data=dict["w_data"],
@@ -96,7 +100,29 @@ def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,s
     )
 
     if new_training or trainer.to_be_trained:
-        trainer.train(epochs=dict["n_epochs"], n_collocation=dict["n_collocations"], n_bc_collocation=dict["n_bc_collocation"], n_data=dict["n_data"])
+        # si lr est une liste on entrainer n_epoch/len(lr) fois avec chaque lr
+        if isinstance(dict["lr"],list):
+            # on récupère le nombre d'époques (pas forcément divisible par len(lr))
+            n_epochs = dict["n_epochs"]//len(dict["lr"])
+            tab_n_epochs = [n_epochs]*len(dict["lr"])
+            tab_n_epochs[-1] += dict["n_epochs"]%len(dict["lr"])
+            for (i,lr) in enumerate(dict["lr"]): 
+                print("## Train ", tab_n_epochs[i], " epochs with lr = ", lr)
+                trainer.learning_rate = lr
+                trainer.train(epochs=tab_n_epochs[i], n_collocation=dict["n_collocations"], n_bc_collocation=dict["n_bc_collocation"], n_data=dict["n_data"])
+        else:
+            trainer.learning_rate = dict["lr"]
+            trainer.train(epochs=dict["n_epochs"], n_collocation=dict["n_collocations"], n_bc_collocation=dict["n_bc_collocation"], n_data=dict["n_data"])
+    
+    
+    # pde = Poisson2D_fixed(problem, use_levelset)
+    # x_sampler = sampling_pde.XSampler(pde=pde)
+    # mu_sampler = sampling_parameters.MuSampler(
+    #     sampler=uniform_sampling.UniformSampling, model=pde
+    # )
+    # sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
+    # trainer.plot_with_mask(sampler,50000,filename=fig_path)
+
     trainer.plot(50000,filename=fig_path)
 
     assert True

@@ -7,6 +7,7 @@ from modules.Poisson2D import *
 
 from modules.solver.solver_phifem import *
 from modules.solver.solver_fem import *
+from create_xlsx_file import *
 
 classe_ = Problem()
 
@@ -253,3 +254,5 @@ if args.fem != 0:
     plt.colorbar(c)
 
     plt.savefig(result_dir+"corr_phifem_"+str(config)+end+".png")
+
+create_xlsx_file(problem_considered,pde_considered)
