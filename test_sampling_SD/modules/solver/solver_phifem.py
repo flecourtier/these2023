@@ -122,6 +122,32 @@ class PhiFemSolver:
         self.u = TrialFunction(self.V)
         self.v = TestFunction(self.V)
 
+        self.mesh_ex,self.V_ex,self.dx_ex = self.__create_FEM_domain()
+
+    def __create_FEM_domain(self):
+        # check if problem_considered is instance of Circle class
+        assert isinstance(problem_considered, Circle),"not implemented for this domain"
+
+        nb_vert = self.N+1
+            
+        domain = mshr.Circle(Point(problem_considered.x0, problem_considered.y0), problem_considered.r)
+
+        domain_O = np.array(problem_considered.domain_O)
+        mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), nb_vert - 1, nb_vert - 1)
+        h_macro = mesh_macro.hmax()
+        H = int(nb_vert/3)
+        mesh = mshr.generate_mesh(domain,H)
+        h = mesh.hmax()
+        while h > h_macro:
+            H += 1
+            mesh = mshr.generate_mesh(domain,H)
+            h = mesh.hmax()
+
+        V = FunctionSpace(mesh, "CG", 1)
+        dx = Measure("dx", domain=mesh)
+
+        return mesh, V, dx
+    
     def make_matrix(self, expr):
         """To convert a FEniCS Expression into a Numpy matrix.
 
@@ -135,7 +161,7 @@ class PhiFemSolver:
         return expr
 
     # method direct in the non-homogeneous case
-    def fem(self, i):
+    def fem(self, i, on_Omega=False):
         # parameter of the ghost penalty
         sigma_stab = 1.
 
@@ -183,6 +209,18 @@ class PhiFemSolver:
         sol = phi * w
         
         norm_L2 = (assemble((((y_true - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((y_true)) ** 2) * self.dx) ** (0.5))
+
+        if on_Omega:
+            sol_ = project(sol, self.V)
+            sol_Omega = project(sol_, self.V_ex)
+
+            u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
+            u_ex_Omega = project(u_ex_Omega, self.V)
+            u_ex_Omega = project(u_ex_Omega, self.V_ex)
+            
+            norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
+            
+            return sol_Omega, norm_L2_Omega
 
         return sol,norm_L2
     
@@ -250,7 +288,7 @@ class PhiFemSolver:
 
         return sol, C_h, norm_L2
     
-    def corr_add(self, i, phi_tild):
+    def corr_add(self, i, phi_tild, on_Omega=False):
         """To solve the Laplace Problem for one parameters with the correction by addition.
             We consider the problem : phi_tild+C
 
@@ -303,9 +341,21 @@ class PhiFemSolver:
         sol = C_tild + phi_tild
 
         norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
-        
-        return sol, C_tild, norm_L2
+
+        if on_Omega:
+            sol_ = project(sol, self.V)
+            sol_Omega = project(sol_, self.V_ex)
+
+            u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
+            u_ex_Omega = project(u_ex_Omega, self.V)
+            u_ex_Omega = project(u_ex_Omega, self.V_ex)
+            
+            norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
+            
+            return sol_Omega, C_tild, norm_L2_Omega
     
+        return sol, C_tild, norm_L2
+
     def corr_add_IPP(self, i, phi_tild):
         """To solve the Laplace Problem for one parameters with the correction by addition.
             We consider the problem : phi_tild+C

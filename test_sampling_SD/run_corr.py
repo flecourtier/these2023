@@ -71,188 +71,262 @@ params = [[S,f,p]]
 
 deg_corr = 10
 
-# si FEM ou Both
-if args.fem != 1:
-    print("### Correction par addition avec FEM Standard")
+# # si FEM ou Both
+# if args.fem != 1:
+#     print("### Correction par addition avec FEM Standard")
 
-    #####
-    # Compute !
-    #####
+#     #####
+#     # Compute !
+#     #####
 
-    solver = FEMSolver(nb_cell=nb_vert-1, params=params)
+#     solver = FEMSolver(nb_cell=nb_vert-1, params=params)
 
-    u_ex = UexExpr(params[0], degree=deg_corr, domain=solver.mesh)
+#     u_ex = UexExpr(params[0], degree=deg_corr, domain=solver.mesh)
     
-    # get coordinates of the dof
-    V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
-    XXYY = V_phi.tabulate_dof_coordinates()
-    X_test = torch.tensor(XXYY)
-    mu = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)*S
+#     # get coordinates of the dof
+#     V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
+#     XXYY = V_phi.tabulate_dof_coordinates()
+#     X_test = torch.tensor(XXYY)
+#     mu = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)*S
 
-    # get u_PINNs
-    pred = trainer.network.setup_w_dict(X_test, mu)
-    phi_tild = pred["w"][:,0].cpu().detach().numpy()
-    u_PINNs = Function(V_phi)
-    u_PINNs.vector()[np.arange(0,phi_tild.shape[0],1)] = phi_tild
-    norm_L2_PINNs = (assemble((((u_ex - u_PINNs)) ** 2) * solver.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * solver.dx) ** (0.5))
+#     # get u_PINNs
+#     pred = trainer.network.setup_w_dict(X_test, mu)
+#     phi_tild = pred["w"][:,0].cpu().detach().numpy()
+#     u_PINNs = Function(V_phi)
+#     u_PINNs.vector()[np.arange(0,phi_tild.shape[0],1)] = phi_tild
+#     norm_L2_PINNs = (assemble((((u_ex - u_PINNs)) ** 2) * solver.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * solver.dx) ** (0.5))
 
-    # get u_corr
-    u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs)
-    print("# Error L2 - Corr ",norm_L2_Corr)
+#     # get u_corr
+#     u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs)
+#     print("# Error L2 - Corr ",norm_L2_Corr)
 
-    # get u_FEM
-    u_FEM,norm_L2_FEM = solver.fem(0)
-    print("# Error L2 - FEM : ",norm_L2_FEM)
-    print("# Facteur : ", norm_L2_FEM/norm_L2_Corr)
+#     # get u_FEM
+#     u_FEM,norm_L2_FEM = solver.fem(0)
+#     print("# Error L2 - FEM : ",norm_L2_FEM)
+#     print("# Facteur : ", norm_L2_FEM/norm_L2_Corr)
 
     
-    #####
-    # Plot !
-    #####
+#     #####
+#     # Plot !
+#     #####
     
-    u_ex = project(u_ex, solver.V)
+#     u_ex = project(u_ex, solver.V)
 
-    plt.figure(figsize=(20,15))
+#     plt.figure(figsize=(20,15))
     
-    plt.subplot(3,3,1)
-    plt.text(0.2,0.75,"FEM/PINNs = {:.2f}".format(norm_L2_FEM/norm_L2_PINNs),fontsize=15)
-    plt.text(0.2,0.5,"FEM/Corr = {:.2f}".format(norm_L2_FEM/norm_L2_Corr),fontsize=15)
-    plt.text(0.2,0.25,"PINNs/Corr = {:.2f}".format(norm_L2_PINNs/norm_L2_Corr),fontsize=15)
-    plt.axis('off')
+#     plt.subplot(3,3,1)
+#     plt.text(0.2,0.75,"FEM/PINNs = {:.2f}".format(norm_L2_FEM/norm_L2_PINNs),fontsize=15)
+#     plt.text(0.2,0.5,"FEM/Corr = {:.2f}".format(norm_L2_FEM/norm_L2_Corr),fontsize=15)
+#     plt.text(0.2,0.25,"PINNs/Corr = {:.2f}".format(norm_L2_PINNs/norm_L2_Corr),fontsize=15)
+#     plt.axis('off')
 
-    # FEM
-    plt.subplot(3,3,2)
-    c = plot(u_FEM, title="u_FEM")
-    plt.ylabel("FEM", fontsize=20)
-    plt.colorbar(c)
+#     # FEM
+#     plt.subplot(3,3,2)
+#     c = plot(u_FEM, title="u_FEM")
+#     plt.ylabel("FEM", fontsize=20)
+#     plt.colorbar(c)
 
-    plt.subplot(3,3,3)
-    error = abs(u_ex-project(u_FEM,solver.V))
-    c = plot(error, title="||u_ex-u_FEM||_L2 = {:.2e}".format(norm_L2_FEM))
-    plt.colorbar(c)
+#     plt.subplot(3,3,3)
+#     error = abs(u_ex-project(u_FEM,solver.V))
+#     c = plot(error, title="||u_ex-u_FEM||_L2 = {:.2e}".format(norm_L2_FEM))
+#     plt.colorbar(c)
 
-    # PINNs
-    plt.subplot(3,3,4)
-    c = plot(u_ex, title="u_ex")
-    plt.colorbar(c)
+#     # PINNs
+#     plt.subplot(3,3,4)
+#     c = plot(u_ex, title="u_ex")
+#     plt.colorbar(c)
 
-    plt.subplot(3,3,5)
-    c = plot(u_PINNs, title="u_PINNs")
-    plt.ylabel("PINNs", fontsize=20)
-    plt.colorbar(c)
+#     plt.subplot(3,3,5)
+#     c = plot(u_PINNs, title="u_PINNs")
+#     plt.ylabel("PINNs", fontsize=20)
+#     plt.colorbar(c)
 
-    plt.subplot(3,3,6)
-    error = abs(u_ex-project(u_PINNs,solver.V))
-    c = plot(error, title="||u_ex-u_PINNs||_L2 : {:.2e}".format(norm_L2_PINNs))
-    plt.colorbar(c)
+#     plt.subplot(3,3,6)
+#     error = abs(u_ex-project(u_PINNs,solver.V))
+#     c = plot(error, title="||u_ex-u_PINNs||_L2 : {:.2e}".format(norm_L2_PINNs))
+#     plt.colorbar(c)
 
-    # Corr
-    plt.subplot(3,3,7)
-    c = plot(C, title="C_tild")
-    plt.ylabel("Corr", fontsize=20)
-    plt.colorbar(c) 
+#     # Corr
+#     plt.subplot(3,3,7)
+#     c = plot(C, title="C_tild")
+#     plt.ylabel("Corr", fontsize=20)
+#     plt.colorbar(c) 
 
-    plt.subplot(3,3,8)
-    c = plot(u_Corr, title="u_Corr")
-    plt.colorbar(c)
+#     plt.subplot(3,3,8)
+#     c = plot(u_Corr, title="u_Corr")
+#     plt.colorbar(c)
 
-    plt.subplot(3,3,9)
-    error = abs(u_ex-project(u_Corr,solver.V))
-    c = plot(error, title="||u_ex-u_Corr||_L2 : {:.2e}".format(norm_L2_Corr))
-    plt.colorbar(c)
+#     plt.subplot(3,3,9)
+#     error = abs(u_ex-project(u_Corr,solver.V))
+#     c = plot(error, title="||u_ex-u_Corr||_L2 : {:.2e}".format(norm_L2_Corr))
+#     plt.colorbar(c)
 
-    plt.savefig(result_dir+"corr_fem_"+str(config)+end+".png")
+#     plt.savefig(result_dir+"corr_fem_"+str(config)+end+".png")
 
 # si PhiFEM ou Both
+on_Omega = True
 if args.fem != 0:
-    print("### Correction par addition avec PhiFEM")
+    if not on_Omega:
+        print("### Correction par addition avec PhiFEM")
 
-    #####
-    # Compute !
-    #####
+        # #####
+        # # Compute !
+        # #####
 
-    solver = PhiFemSolver(nb_cell=nb_vert-1, params=params)
+        # solver = PhiFemSolver(nb_cell=nb_vert-1, params=params)
 
-    u_ex = UexExpr(params[0], degree=deg_corr, domain=solver.mesh)
+        # u_ex = UexExpr(params[0], degree=deg_corr, domain=solver.mesh)
 
-    # get coordinates of the dof
-    V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
-    XXYY = V_phi.tabulate_dof_coordinates()
-    X_test = torch.tensor(XXYY)
-    mu = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)*S
+        # # get coordinates of the dof
+        # V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
+        # XXYY = V_phi.tabulate_dof_coordinates()
+        # X_test = torch.tensor(XXYY)
+        # mu = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)*S
 
-    # get u_PINNs
-    pred = trainer.network.setup_w_dict(X_test, mu)
-    phi_tild = pred["w"][:,0].cpu().detach().numpy()
-    u_PINNs = Function(V_phi)
-    u_PINNs.vector()[np.arange(0,phi_tild.shape[0],1)] = phi_tild
-    norm_L2_PINNs = (assemble((((u_ex - u_PINNs)) ** 2) * solver.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * solver.dx) ** (0.5))
+        # # get u_PINNs
+        # pred = trainer.network.setup_w_dict(X_test, mu)
+        # phi_tild = pred["w"][:,0].cpu().detach().numpy()
+        # u_PINNs = Function(V_phi)
+        # u_PINNs.vector()[np.arange(0,phi_tild.shape[0],1)] = phi_tild
+        # norm_L2_PINNs = (assemble((((u_ex - u_PINNs)) ** 2) * solver.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * solver.dx) ** (0.5))
 
-    # get u_corr
-    u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs)
-    print("# Error L2 - Corr ",norm_L2_Corr)
+        # # get u_corr
+        # u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs)
+        # print("# Error L2 - Corr ",norm_L2_Corr)
 
-    # get u_PhiFEM
-    u_PhiFEM,norm_L2_PhiFEM = solver.fem(0)
-    print("# Error L2 - PhiFEM : ",norm_L2_PhiFEM)
-    print("# Facteur : ", norm_L2_PhiFEM/norm_L2_Corr)
+        # # get u_PhiFEM
+        # u_PhiFEM,norm_L2_PhiFEM = solver.fem(0)
+        # print("# Error L2 - PhiFEM : ",norm_L2_PhiFEM)
+        # print("# Facteur : ", norm_L2_PhiFEM/norm_L2_Corr)
 
-    
-    #####
-    # Plot !
-    #####
-    
-    u_ex = project(u_ex, solver.V)
+        
+        # #####
+        # # Plot !
+        # #####
+        
+        # u_ex = project(u_ex, solver.V)
 
-    plt.figure(figsize=(20,15))
-    
-    plt.subplot(3,3,1)
-    plt.text(0.2,0.75,"PhiFEM/PINNs = {:.2f}".format(norm_L2_PhiFEM/norm_L2_PINNs),fontsize=15)
-    plt.text(0.2,0.5,"PhiFEM/Corr = {:.2f}".format(norm_L2_PhiFEM/norm_L2_Corr),fontsize=15)
-    plt.text(0.2,0.25,"PINNs/Corr = {:.2f}".format(norm_L2_PINNs/norm_L2_Corr),fontsize=15)
-    plt.axis('off')
+        # plt.figure(figsize=(20,15))
+        
+        # plt.subplot(3,3,1)
+        # plt.text(0.2,0.75,"PhiFEM/PINNs = {:.2f}".format(norm_L2_PhiFEM/norm_L2_PINNs),fontsize=15)
+        # plt.text(0.2,0.5,"PhiFEM/Corr = {:.2f}".format(norm_L2_PhiFEM/norm_L2_Corr),fontsize=15)
+        # plt.text(0.2,0.25,"PINNs/Corr = {:.2f}".format(norm_L2_PINNs/norm_L2_Corr),fontsize=15)
+        # plt.axis('off')
 
-    # FEM
-    plt.subplot(3,3,2)
-    c = plot(u_PhiFEM, title="u_PhiFEM")
-    plt.ylabel("PhiFEM", fontsize=20)
-    plt.colorbar(c)
+        # # FEM
+        # plt.subplot(3,3,2)
+        # c = plot(u_PhiFEM, title="u_PhiFEM")
+        # plt.ylabel("PhiFEM", fontsize=20)
+        # plt.colorbar(c)
 
-    plt.subplot(3,3,3)
-    error = abs(u_ex-project(u_PhiFEM,solver.V))
-    c = plot(error, title="||u_ex-u_PhiFEM||_L2 = {:.2e}".format(norm_L2_PhiFEM))
-    plt.colorbar(c)
+        # plt.subplot(3,3,3)
+        # error = abs(u_ex-project(u_PhiFEM,solver.V))
+        # c = plot(error, title="||u_ex-u_PhiFEM||_L2 = {:.2e}".format(norm_L2_PhiFEM))
+        # plt.colorbar(c)
 
-    # PINNs
-    plt.subplot(3,3,4)
-    c = plot(u_ex, title="u_ex")
-    plt.colorbar(c)
+        # # PINNs
+        # plt.subplot(3,3,4)
+        # c = plot(u_ex, title="u_ex")
+        # plt.colorbar(c)
 
-    plt.subplot(3,3,5)
-    c = plot(u_PINNs, title="u_PINNs")
-    plt.ylabel("PINNs", fontsize=20)
-    plt.colorbar(c)
+        # plt.subplot(3,3,5)
+        # c = plot(u_PINNs, title="u_PINNs")
+        # plt.ylabel("PINNs", fontsize=20)
+        # plt.colorbar(c)
 
-    plt.subplot(3,3,6)
-    error = abs(u_ex-project(u_PINNs,solver.V))
-    c = plot(error, title="||u_ex-u_PINNs||_L2 : {:.2e}".format(norm_L2_PINNs))
-    plt.colorbar(c)
+        # plt.subplot(3,3,6)
+        # error = abs(u_ex-project(u_PINNs,solver.V))
+        # c = plot(error, title="||u_ex-u_PINNs||_L2 : {:.2e}".format(norm_L2_PINNs))
+        # plt.colorbar(c)
 
-    # Corr
-    plt.subplot(3,3,7)
-    c = plot(C, title="C_tild")
-    plt.ylabel("Corr", fontsize=20)
-    plt.colorbar(c) 
+        # # Corr
+        # plt.subplot(3,3,7)
+        # c = plot(C, title="C_tild")
+        # plt.ylabel("Corr", fontsize=20)
+        # plt.colorbar(c) 
 
-    plt.subplot(3,3,8)
-    c = plot(u_Corr, title="u_Corr")
-    plt.colorbar(c)
+        # plt.subplot(3,3,8)
+        # c = plot(u_Corr, title="u_Corr")
+        # plt.colorbar(c)
 
-    plt.subplot(3,3,9)
-    error = abs(u_ex-project(u_Corr,solver.V))
-    c = plot(error, title="||u_ex-u_Corr||_L2 : {:.2e}".format(norm_L2_Corr))
-    plt.colorbar(c)
+        # plt.subplot(3,3,9)
+        # error = abs(u_ex-project(u_Corr,solver.V))
+        # c = plot(error, title="||u_ex-u_Corr||_L2 : {:.2e}".format(norm_L2_Corr))
+        # plt.colorbar(c)
 
-    plt.savefig(result_dir+"corr_phifem_"+str(config)+end+".png")
+        # plt.savefig(result_dir+"corr_phifem_"+str(config)+end+".png")
+    else:
+        print("### Correction par addition avec PhiFEM - projection sur Omega")
+
+        #####
+        # Compute !
+        #####
+
+        solver = PhiFemSolver(nb_cell=nb_vert-1, params=params)
+
+        # get coordinates of the dof
+        V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
+        XXYY = V_phi.tabulate_dof_coordinates()
+        X_test = torch.tensor(XXYY)
+        mu = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)*S
+
+        # get u_PINNs
+        pred = trainer.network.setup_w_dict(X_test, mu)
+        phi_tild = pred["w"][:,0].cpu().detach().numpy()
+        u_PINNs = Function(V_phi)
+        u_PINNs.vector()[np.arange(0,phi_tild.shape[0],1)] = phi_tild
+
+        # get u_corr
+        u_Corr_Omega,C,norm_L2_Corr_Omega = solver.corr_add(0,u_PINNs,on_Omega)
+        print("# Error L2 Omega - Corr ",norm_L2_Corr_Omega)
+
+        # get u_PhiFEM
+        u_PhiFEM_Omega,norm_L2_PhiFEM_Omega = solver.fem(0,on_Omega)
+        print("# Error L2 Omega - PhiFEM : ",norm_L2_PhiFEM_Omega)
+        print("# Facteur : ", norm_L2_PhiFEM_Omega/norm_L2_Corr_Omega)
+
+        
+        #####
+        # Plot !
+        #####
+        
+        u_ex = UexExpr(params[0], degree=deg_corr, domain=solver.mesh_ex)
+        u_ex = project(u_ex, solver.V)
+        u_ex = project(u_ex, solver.V_ex)
+
+        plt.figure(figsize=(20,15))
+        
+        plt.subplot(3,3,1)
+        plt.text(0.2,0.5,"PhiFEM/Corr = {:.2f}".format(norm_L2_PhiFEM_Omega/norm_L2_Corr_Omega),fontsize=15)
+        plt.axis('off')
+
+        # FEM
+        plt.subplot(2,3,2)
+        c = plot(u_PhiFEM_Omega, title="u_PhiFEM")
+        plt.ylabel("PhiFEM", fontsize=20)
+        plt.colorbar(c)
+
+        plt.subplot(2,3,3)
+        error = abs(u_ex-project(u_PhiFEM_Omega,solver.V_ex))
+        c = plot(error, title="||u_ex-u_PhiFEM||_L2 = {:.2e}".format(norm_L2_PhiFEM_Omega))
+        plt.colorbar(c)
+
+        # Corr
+        plt.subplot(2,3,4)
+        c = plot(u_ex, title="u_ex")
+        plt.colorbar(c)
+        
+        plt.subplot(2,3,5)
+        c = plot(u_Corr_Omega, title="u_Corr")
+        plt.ylabel("Corr", fontsize=20)
+        plt.colorbar(c)
+
+        plt.subplot(2,3,6)
+        error = abs(u_ex-project(u_Corr_Omega,solver.V_ex))
+        c = plot(error, title="||u_ex-u_Corr||_L2 : {:.2e}".format(norm_L2_Corr_Omega))
+        plt.colorbar(c)
+
+        plt.savefig(result_dir+"corr_phifem_"+str(config)+"_Omega"+end+".png")
 
 create_xlsx_file(problem_considered,pde_considered)

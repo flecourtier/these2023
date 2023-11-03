@@ -15,7 +15,7 @@ class Problem:
     def __init__(self):
         self.class_pb_considered = Circle
         self.pb_considered = self.class_pb_considered()
-        self.pde_considered = Poisson2D_f
+        self.pde_considered = Poisson2D_fixed
         self.name_problem_considered = self.class_pb_considered.__name__+"/"
         self.name_pde_considered = self.pde_considered.__name__+"/"
         self.dir_name = "networks/"+self.name_problem_considered+self.name_pde_considered
