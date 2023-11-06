@@ -1,7 +1,7 @@
 site:
   title: PhiFEM Project - Docs
-  url:  http://127.0.0.1:8080/phifem_project/1.0.3/main_page.html
-  start_page: phifem_project:ROOT:main_page.adoc
+  url:  http://127.0.0.1:8080/these2023/1.0.3/main_page.html
+  start_page: these2023:ROOT:main_page.adoc
 content:
   sources:
   - url: ../..
