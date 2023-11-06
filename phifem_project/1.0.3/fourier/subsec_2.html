@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Some details on the convolution sub-layer :: PhiFEM Project - Docs</title>
+    <link rel="canonical" href="https://flecourtier.github.io/phifem_stage/phifem_project/1.0.3/fourier/subsec_2.html">
+    <meta name="generator" content="Antora 3.1.2">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="icon" href="../../../_/img/favicon.ico" type="image/x-icon">
+    <script>!function(l,p){if(l.protocol!==p&&l.host=="docs.antora.org"){l.protocol=p}else if(/\.gitlab\.io$/.test(l.host)){l.replace(p+"//docs.antora.org"+l.pathname.substr(l.pathname.indexOf("/",1))+l.search+l.hash)}}(location,"https:")</script>
+
+    <link rel="stylesheet" type="text/css" href="/_/css/style.css">
+
+
+
+
+<script>var uiRootPath = '../../../_'</script>
+
+  </head>
+  <body class="article">
+<header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <a href="https://flecourtier.github.io/phifem_stage">PhiFEM Project - Docs</a>
+      </div>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <div class="navbar-link">Project</div>
+          <div class="navbar-dropdown">
+            <div class="navbar-item"><strong>GitHub</strong></div>
+            <a class="navbar-item" href="https://github.com/master-csmi/2022-m2-phifem">GitHub Repository</a>
+            <a class="navbar-item" href="https://github.com/orgs/master-csmi/projects/9/views/8">GitHub Issue Tracker</a>
+            <a class="navbar-item" href="https://master-csmi.github.io/2022-m2-phifem/phifem_project/1.0.3/">Project Report</a>
+            <hr class="navbar-divider">
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <div class="navbar-link">Internship</div>
+          <div class="navbar-dropdown">
+            <div class="navbar-item"><strong>GitHub</strong></div>
+            <a class="navbar-item" href="https://github.com/flecourtier/phifem_stage">GitHub Repository</a>
+            <a class="navbar-item" href="https://flecourtier.github.io/phifem_stage/phifem_project/1.0.3/main_page.html">Internship report (PDF)</a>
+            <hr class="navbar-divider">
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <div class="navbar-link">PhD</div>
+          <div class="navbar-dropdown">
+            <div class="navbar-item"><strong>GitHub</strong></div>
+            <a class="navbar-item" href="https://github.com/flecourtier/these2023">GitHub Repository</a>
+            <a class="navbar-item" href="https://github.com/flecourtier/these2023/blob/main/docs/abstracts/abstracts.pdf">Weekly abstracts (PDF)</a>
+            <a class="navbar-item" href="https://github.com/flecourtier/these2023/tree/main/docs/meetings/meeting.pdf">Meetings (PDF)</a>
+            <a class="navbar-item" href="https://github.com/flecourtier/these2023/tree/main/docs/to_do_list/to_do_list.pdf">ToDo List (PDF)</a>
+            <hr class="navbar-divider">
+          </div>
+        </div>
+        <div class="navbar-item">
+          <a class="navbar-brand" href="https://mimesis.inria.fr/">
+            <img src="../../../_/img/mimesis2.png" alt="mimesis" style="width:90px;"></a>
+        </div>
+        <div class="navbar-item">
+          <a class="navbar-brand" href="https://www.inria.fr/fr">
+            <img src="../../../_/img/inria.png" alt="inria" style="width:90px;"></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="phifem_project" data-version="1.0.3">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Phi-FEM Project</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../main_page.html">PhiFEM project</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../index/subsec_0.html">Scientific Context</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../index/subsec_1.html">Presentation of the team</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../index/subsec_2.html">Objectives</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../index/subsec_3.html">Deliverables</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../FEM.html">Finite Element Methods (FEMs)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../FEM/subsec_0.html">Standard FEM</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_0_subsubsec_0.html">Some notions of functional analysis.</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_0_subsubsec_1.html">General principle of the method</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_0_subsubsec_2.html">Some details on FEM</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_0_subsubsec_3.html">Application to the Poisson problem</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../FEM/subsec_1.html">\(\phi\)-FEM</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_1_subsubsec_0.html">Fictitious domain methods</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_1_subsubsec_1.html">General presentation of the \(\phi\)-FEM method</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_1_subsubsec_2.html">Description of the \(\phi\)-FEM direct method</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_1_subsubsec_3.html">Description of the \(\phi\)-FEM dual method</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../FEM/subsec_1_subsubsec_4.html">Some details on the stabilization terms</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../fourier.html">Fourier Neural Operator (FNO)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="subsec_0.html">Architecture of the FNO</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="subsec_1.html">Fourier Layer structure</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="subsec_2.html">Some details on the convolution sub-layer</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="subsec_3.html">Application</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../corr.html">Correction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../corr/subsec_0.html">Presentation of different problems considered</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_0_subsubsec_0.html">First domain : the Circle.</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_0_subsubsec_1.html">Second domain : the Square.</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../corr/subsec_1.html">Presentation of the different correction methods considered</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_1_subsubsec_0.html">Correction by adding</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_1_subsubsec_1.html">Correction by multiplying</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_1_subsubsec_2.html">Correction by multiplying on an elevated problem</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../corr/subsec_2.html">Theoretical results</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_2_subsubsec_0.html">Error estimation of the correction on the elevated problem</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_2_subsubsec_1.html">Interest of elevating the problem</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_2_subsubsec_2.html">Comparison of correction methods</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../corr/subsec_3.html">Numerical results</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_3_subsubsec_0.html">Correction on exact solution</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_3_subsubsec_1.html">Correction on disturbed solution</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_3_subsubsec_2.html">Correction on \(\phi\)-FEM solution</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_3_subsubsec_3.html">Correction on a FNO prediction</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../corr/subsec_3_subsubsec_4.html">Correction with other networks</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../conclu.html">Conclusion</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Phi-FEM Project</span>
+    <span class="version">1.0.3</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Phi-FEM Project</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.3</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../main_page.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Phi-FEM Project</a></li>
+    <li><a href="../main_page.html">PhiFEM project</a></li>
+    <li><a href="../fourier.html">Fourier Neural Operator (FNO)</a></li>
+    <li><a href="subsec_2.html">Some details on the convolution sub-layer</a></li>
+  </ul>
+</nav>
+
+  
+<div class="dropdown">
+  <button class="dropbtn" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <div class="dropdown-content">
+
+
+          <a onclick="print(this)"  class="headerbtn"  data-toggle="tooltip" data-placement="left" title="Print to PDF">
+              .pdf <i class="fas fa-file-pdf"></i>
+          </a>
+
+  </div>
+</div>
+  
+<div class="dropdown">
+  <button class="dropbtn" aria-label="Github">
+    <i class="fab fa-github"></i>
+  </button>
+  <div class="dropdown-content">
+
+    <a href="https://github.com/flecourtier/phifem_stage">Open repository <i class="fab fa-github"></i></a>
+    
+  <a href="https://github.com/flecourtier/phifem_stage/edit/main/docs/antora/modules/ROOT/pages/fourier/subsec_2.adoc">Edit this Page <i class="fas fa-edit"></i></a>
+
+    <a href="https://github.com/feelpp/book.feelpp.org/issues/new">Open issue <i class="fas fa-lightbulb"></i></a>
+
+
+  </div>
+</div>
+
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+</div>
+
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+
+<article class="doc">
+<h1 class="page">Some details on the convolution sub-layer</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this section, we will specify some details for the convolution layer.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_border_issues"><a class="anchor" href="#_border_issues"></a>1. Border issues</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let \(W=\mathcal{F}^{-1}(\hat{W})\), we have :</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[\mathcal{C}_\theta^l(\tilde{X})=\mathcal{F}^{-1}\left(\mathcal{F}(X)\cdot\hat{W}\right)=\tilde{X}\star W\]
+</div>
+</div>
+<div class="paragraph">
+<p>with</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[(\tilde{X}\star W)_{ij}=\sum_{i'j'}\tilde{X}_{i-i'[ni],j-j'[nj]}W_{i'j'}\]
+</div>
+</div>
+<div class="paragraph">
+<p>In other words, multiplying in Fourier space is equivalent to performing a \(\star\) circular convolution in real space.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>These modulo operations are only natural for periodic images, which is not our case. The
+discontinuity that appears when we periodize the image causes oscillations on the edges of the filtered	images. To limit this problem, we will apply a padding on the image which is the fact to extend the images by adding pixels all around, before performing the convolution. After the convolution, we restrict the image to partially erase the oscillations.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fft"><a class="anchor" href="#_fft"></a>2. FFT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To speed up computations, we will use the FFT (Fast Fourier Transform). The FFT is a fast algorithm to compute the DFT. It is recursive : The transformation of a signal of size \(N\) is make from the decomposition of two sub-signals of size \(N/2\). The complexity of the FFT is \(N\log(N)\) whereas the natural algorithm, which is a matrix multiplication, has a complexity of \(N^2\).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_real_dft"><a class="anchor" href="#_real_dft"></a>3. Real DFT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In reality, we&#8217;ll be using a specific implementation of FFT, called RFFT (Real Fast Fourier Transform). In fact, for \(\mathcal{F}^{-1}(A)\) to be real if \(A\) is a complex-valued matrix, it is necessary that A respects the Hermitian symmetry:</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[A_{i,nj-(j+1)} = \bar{A}_{i,j}\]
+</div>
+</div>
+<div class="paragraph">
+<p>In our case, we want \(\mathcal{C}_\theta^l(X)\) to be a real image, so \(\mathcal{F}(X)\cdot\hat{W}\) must verify Hermitian-symmetry.</p>
+</div>
+<div class="paragraph">
+<p>To do this, we only need to collect half of the Discrete Fourier Coefficients (DFC) and the other half will be deduced by Hermitian symmetry. More precisely, using the specific RFFT implementation, the DFCs are stored in a matrix of size \((ni,nj//2+1)\). Multiplication can then be performed by the \(\hat{W}\) kernel, and when the inverse RFFT is performed, the DFCs will be automatically symmetrized. So the Hermitian symmetry of \(\mathcal{F}(X)\cdot\hat{W}\) is verified and \(\mathcal{C}_\theta^l(X)\) is indeed a real image.</p>
+</div>
+<div class="paragraph">
+<p>To simplify, let&#8217;s assume nk=1. Here is a diagram describing this idea:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/fourier/symetry_schema.png" alt="symetry schema" width="600.0" height="480.0">
+</div>
+<div class="title">Figure 1. figure</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In fact, we can check that \(\mathcal{F}(X)\) satisfies Hermitian symmetry immediately.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_low_pass_filter"><a class="anchor" href="#_low_pass_filter"></a>4. Low pass filter</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When we perform a DFT on an image, the DFCs related to high frequencies are in practice very low. This is why we can easily filter an image by ignoring these high frequencies, i.e. by truncating the high Fourier modes. In fact, eliminating the higher Fourier modes enables a kind of regularization that helps the generalization. So, in practice, it&#8217;s sufficient to keep only the DFCs corresponding to low frequencies. Typically, for images of resolution \(32\times 32\) to \(128\times 128\), we can keep only the \(20\times 20\) DFCs associated to low frequencies.</p>
+</div>
+<div class="paragraph">
+<p>Here is a representation of this idea in 1D :</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/fourier/fourier_low_pass_filter.png" alt="fourier low pass filter" width="300.0" height="240.0">
+</div>
+<div class="title">Figure 2. figure</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_global_aspect_of_the_fno"><a class="anchor" href="#_global_aspect_of_the_fno"></a>5. Global aspect of the FNO</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Classical Convolutional Neural Networks (CNN) use very small kernels (typically \(3\times 3\)). This operation only has a local effect, and it&#8217;s the sequence of many convolutions that produces more global effects.</p>
+</div>
+<div class="paragraph">
+<p>In addition, CNNs often use max or mean-pooling layers, which process the image on several scales. Max-pooling (respectively mean-pooling) consists in slicing the image into small pieces of size \(n\times n\), then choosing the pixel with the highest value (respectively the average of the pixels) in each of the small pieces. In most cases, \(n=2\) is used, which divides the number of pixels by 4.</p>
+</div>
+<div class="paragraph">
+<p>The FNO, on the other hand, uses a \(\hat{W}\) frequency kernel and \(W=\mathcal{F}^{-1}(\hat{W})\) has full support. For this reason, the effect is immediately non-local. As a result, we can use less layers and we don&#8217;t need to use a pooling layer.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<script src="../../../_/js/site.js"></script>
+<script src="../../../_/js/vendor/highlight.js"></script>
+<script>hljs.initHighlighting()</script>
+<script src="/_/js/clipboard.min.js"></script>
+<script>new ClipboardJS('.btn');</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  messageStyle: "none",
+  tex2jax: {
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
+    ignoreClass: "nostem|nolatexmath"
+  },
+  asciimath2jax: {
+    delimiters: [["\\$", "\\$"]],
+    ignoreClass: "nostem|noasciimath"
+  },
+
+  TeX: {
+      Macros: {
+      RR: "{\\mathbb R}",
+      NN: "{\\mathbb N}",
+      Nso: "{N_{\\mathrm{so}}}",
+      Nma: "{N_{\\mathrm{ma}}}",
+      Nno: "{N_{\\mathrm{no}}}",
+      Ne: "{N_{\\mathrm{e}}}",
+      Ilag: ["{\\mathcal{I}^{\\mathrm{lag}}_{#1}}",1],
+      calTh: "{\\mathcal{T}_h}",
+      Ck: ["{\\mathcal{C}^{#1}}",1],
+      Pk: ["{\\mathcal{P}^{#1}}",1],
+      Qk: ["{\\mathcal{Q}^{#1}}",1],
+      Pch: ["{P^{#1}_{c,h}}",1],
+      Pcho: ["{P^{#1}_{c,h,0}}",1],
+      Qch: ["{Q^{#1}_{c,h}}",1],
+      Ich: ["{\\mathcal{I}^{#1}_{c,h}#2}",2],
+      poly: ["{\\mathbb{#1}}",1],
+      nf: "{n_f}",
+      normal: "{\\mathbf{n}}",
+      ngeo: "{n_{\\mathrm{geo}}}",
+      geo: "{\\mathrm{geo}}",
+      card: ["{\\operatorname{card}(#1)}",1],
+      dim: ["{\\operatorname{dim}(#1)}",1],
+      opdim: "{\\operatorname{dim}}",
+      card: ["{\\operatorname{card}(#1)}",1],
+      poly: ["{\\mathbb{#1}}",1],
+      R: ["{\\mathbb{R}^{#1}}",1],
+      set: ["{\\left\\{#1\\right\\}}",1],
+      diam: "{\\operatorname{diam}}",
+      jump: ["{[\\![ #1 ]\\!]}",1],
+      Next: "{\\mathrm{n}}",
+      essinf: "{\\operatorname{ess}\\, \\operatorname{inf}}",
+      tr: "{\\operatorname{tr}}",
+      Id: "{\\mathcal{I}}",
+      disp: ["{\\mathbf{#1}}",1],
+      stresst: ["{\\mathbf{\\sigma(#1)}}",1],
+      deformt: ["{\\mathbf{\\varepsilon(#1)}}",1],
+      domain: "{\\Omega}",
+      prect: ["{\\left\\(#1\\right\\)}",1],
+      ds: "",
+      bold: ["{\\bf #1}",1]
+  },
+  extensions: ["mhchem.js"] }
+});
+</script>
+<!--<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>-->
+
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>-->
+  </body>
+</html>
