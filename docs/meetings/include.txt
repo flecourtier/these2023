@@ -33,6 +33,7 @@
 
 \usepackage{amsthm}
 \newtheorem*{Rem}{Remarque}
+\newtheorem*{Obs}{Observation}
 
 \newenvironment{conclusion}[1]{%
 	\begin{center}\normalfont\textbf{Conclusion}\end{center}
@@ -81,3 +82,5 @@
 \usepackage{fontawesome}
 
 \usepackage{lipsum}
+
+\usepackage[skip=2pt]{caption}
