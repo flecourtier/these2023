@@ -3,8 +3,6 @@
 = Week 4 : 23/10/2023 - 27/10/2023
 :imagesdir: \{moduledir\}/assets/weeks/images/week_4/
 
-Test CI
-
 \textcolor{red}{ATTENTION : problème de projection - carte d'erreur FEM}
 
 
