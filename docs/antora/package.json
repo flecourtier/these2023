@@ -1,0 +1,47 @@
+{
+  "private": true,
+  "name": "these2023",
+  "description": "The master-csmi documentation",
+  "version": "0.1.0",
+  "license": "AGPL-3.0",
+  "author": "The Feelpp Team",
+  "homepage": "https://github.com/master-csmi/2022-m2-phifem#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/master-csmi/2022-m2-phifem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/master-csmi/2022-m2-phifem/issues"
+  },
+  "contributors": [
+    {
+      "name": "Christophe Prud'homme",
+      "email": "christophe.prudhomme@cemosis.fr"
+    }
+  ],
+  "scripts": {
+    "prose": "write-good --parse **/*.adoc",
+    "serve": "http-server public/ -d -i",
+    "dev": "antora --stacktrace generate --cache-dir cache --redirect-facility disabled --clean site-dev.yml",
+    "antora": "antora --stacktrace generate --cache-dir cache --redirect-facility disabled --clean site.yml",
+    "validate": "antora --stacktrace generate --cache-dir cache --redirect-facility disabled --generator ./generator/xref-validator.js --clean site.yml",
+    "linkcheck": "broken-link-checker --filter-level 3 --recursive --verbose"
+  },
+  "dependencies": {
+    "@antora/cli": "^3.1.1",
+    "@antora/site-generator": "^3.1.2",
+    "@antora/site-generator-default": "^2.3.4",
+    "handlebars-utils": "^1.0.6",
+    "yargs": "^17.6.0"
+  },
+  "devDependencies": {
+    "broken-link-checker": "^0.7.8",
+    "http-server": "^14.1.1",
+    "write-good": "^0.13.1"
+  },
+  "keywords": [
+    "antora",
+    "asciidoc",
+    "documentation"
+  ]
+}

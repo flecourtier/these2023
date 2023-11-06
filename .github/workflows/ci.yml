@@ -1,0 +1,62 @@
+name: CI
+
+on: [push]
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    if: |
+      github.repository == 'flecourtier/these2023' &&
+      !startsWith(github.event.head_commit.message, 'Release ') &&
+      !contains(github.event.head_commit.message, 'ci skip')
+    steps:
+    - run: echo ok go
+    
+  convert_latex:
+    needs: activate
+    runs-on: ubuntu-latest
+    name: Convert latex to antora
+    if: "!contains(github.event.head_commit.message, 'docs skip')"
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install credentials
+      run: echo https://$GITHUB_OAUTH:@github.com > $HOME/.git-credentials
+      env:
+        GITHUB_OAUTH: ${{ secrets.DOCS_GITHUB_KEY }}
+    - name: Run convert
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python3 convert_latex_to_antora.py
+      working-directory: docs/antora
+    - name: Commit
+      run: |
+        git config --global user.email "lecourtier.frederique@gmail.com"
+        git config --global user.name "flecourtier"
+        git add .
+        git commit -m "Update latex" || echo "No changes to commit"
+        git push
+
+  build_docs:
+    needs: [activate, convert_latex]
+    runs-on: ubuntu-latest
+    name: Build, Install, Package documentation
+    if: "!contains(github.event.head_commit.message, 'docs skip')"
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install credentials
+      run: echo https://$GITHUB_OAUTH:@github.com > $HOME/.git-credentials
+      env:
+        GITHUB_OAUTH: ${{ secrets.DOCS_GITHUB_KEY }}
+    - name: Build
+      run: |
+        python3 -m pip install --upgrade pip
+        npm install
+        npm run antora
+      working-directory: docs/antora
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@v4.4.1
+      with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: docs/antora/public # The folder the action should deploy.

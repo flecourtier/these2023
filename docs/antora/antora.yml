@@ -1,0 +1,6 @@
+name: phifem_project
+title: Phi-FEM Project
+version: '1.0.3'
+start_page: ROOT:main_page.adoc
+nav:
+- modules/ROOT/nav.adoc

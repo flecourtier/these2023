@@ -72,12 +72,12 @@ def run_results():
 
     results_repo = "weeks/"
     for i in range(1,current_week_num+1):
-        results_filename = results_repo+"week_"+str(i)+".tex"
+        results_filename = results_repo+"week_"+str(i)
 
         monday_str = monday.strftime("%d/%m/%Y")
         friday_str = friday.strftime("%d/%m/%Y")
 
-        if os.path.exists(current_dir+results_filename):
+        if os.path.exists(current_dir+results_filename+".tex"):
             file_write.write('\t\\newpage\n')
             week_title = "Week "+str(i)+" : "+monday_str+" - "+friday_str
             file_write.write('\n\t\\section{'+week_title+'}\n')

@@ -1,0 +1,32 @@
+site:
+  title: PhiFEM Project - Docs
+  url: https://flecourtier.github.io/phifem_stage/
+  start_page: phifem_project:ROOT:main_page.adoc
+content:
+  sources:
+  - url: https://github.com/flecourtier/phifem_stage
+    branches: main
+    start_path: docs/antora
+ui:
+  bundle:
+    url: https://gitlab.com/feelpp/antora-ui-default/-/jobs/artifacts/feelpp/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files: ./supplemental-ui
+output:
+  clean: true
+  dir: public
+  
+asciidoc:
+  attributes:
+    project_version: 0.109
+    deploymentRoot: ""
+    numbered: true
+    allow-uri-read: true
+    hide-uri-scheme: true
+    feelpp: Feel++
+    angiotk: AngioTK
+    4fastsim: 4FastSim
+    stem: latexmath
+    hemotumpp: Hemotum++
+    eye2brain: Eye2Brain
+    swimmer: Swimmer

@@ -1,0 +1,17 @@
+:stem: latexmath
+:xrefstyle: short
+= Reproduction résultats - Article 2104.08426
+
+Dans un premier temps, j'ai cherché à implémenter en Python les deux méthodes présentées dans l'article 2104.08426, permettant de calculer une ADF ("Approach Distance Function"). On retrouve le calcul d'une ADF sur un polygone qui représente le bord d'une ellipse par les deux méthodes suivantes :  la méthode REQ (R-equivalence) dans la <<REQ>> et la méthode MVP ("Mean Value Potential") dans la <<MVP>>.
+
+[cols="a,a"]
+|===
+|[[REQ]]
+.ADF par REQ sur une ellipse.
+image::week_4/article/REQ_ellipse.png[width=210.0,height=168.0]
+|[[MVP]]
+.ADF par MVP sur une ellipse.
+image::week_4/article/MVP_ellipse.png[width=300.0,height=240.0]
+
+|===
+
