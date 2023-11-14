@@ -47,7 +47,7 @@ jobs:
         git push
 
   build_antora:
-    needs: [activate, convert_latex]
+    needs: [activate, latex]
     runs-on: ubuntu-latest
     name: Build, Install, Package documentation
     if: "!contains(github.event.head_commit.message, 'docs skip')"
