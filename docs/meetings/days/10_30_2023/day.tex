@@ -1,10 +1,10 @@
-\subsection{Variation du terme source $f$}
+\section{Variation du terme source $f$}
 
 On veut faire varier le second membre en prenant $S\in[0.1,1]$. On considère la configuration suivante du modèle (CONFIG 0) où on apprend $u=\phi w$.
 	
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{"varier_f/config_0.png"}
+	\includegraphics[width=0.8\linewidth]{"varier_f/config_0.png"}
 	\caption{Paramètres du PINNs.}
 	\label{config_0}
 \end{figure}
@@ -14,7 +14,7 @@ On obtient les résultats d'entrainement suivant pour $S=0.55$ (car moyenne des 
 \begin{minipage}{0.48\linewidth}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\linewidth]{"varier_f/Poisson2D_fixed_model_0_exact_bc.png"}
+		\includegraphics[width=0.9\linewidth]{"varier_f/Poisson2D_fixed_model_0_exact_bc.png"}
 		\caption{Training $f$ fixé.}
 		\label{Poisson2D_fixed_model_0_exact_bc}
 	\end{figure}
@@ -22,7 +22,7 @@ On obtient les résultats d'entrainement suivant pour $S=0.55$ (car moyenne des 
 \begin{minipage}{0.48\linewidth}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\linewidth]{"varier_f/Poisson2D_f_model_0_exact_bc.png"}
+		\includegraphics[width=0.9\linewidth]{"varier_f/Poisson2D_f_model_0_exact_bc.png"}
 		\caption{Training $f$ qui varie.}
 		\label{Poisson2D_f_model_0_exact_bc}
 	\end{figure}
@@ -33,7 +33,7 @@ Pour $S=0.5$, on obtient les résultats suivants pour la correction par addition
 \begin{minipage}{0.48\linewidth}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\linewidth]{"varier_f/Poisson2D_fixed_corr_fem_0_exact_bc.png"}
+		\includegraphics[width=0.88\linewidth]{"varier_f/Poisson2D_fixed_corr_fem_0_exact_bc.png"}
 		\caption{Correction avec FEM - $f$ fixé.}
 		\label{Poisson2D_fixed_corr_fem_0_exact_bc}
 	\end{figure}
@@ -41,7 +41,7 @@ Pour $S=0.5$, on obtient les résultats suivants pour la correction par addition
 \begin{minipage}{0.48\linewidth}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\linewidth]{"varier_f/Poisson2D_f_corr_fem_0_exact_bc.png"}
+		\includegraphics[width=0.88\linewidth]{"varier_f/Poisson2D_f_corr_fem_0_exact_bc.png"}
 		\caption{Correction avec FEM - $f$ qui varie.}
 		\label{Poisson2D_f_corr_fem_0_exact_bc}
 	\end{figure}
@@ -52,7 +52,7 @@ Pour $S=0.5$, on obtient les résultats suivants pour la correction par addition
 \begin{minipage}{0.48\linewidth}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\linewidth]{"varier_f/Poisson2D_fixed_corr_phifem_0_exact_bc.png"}
+		\includegraphics[width=0.88\linewidth]{"varier_f/Poisson2D_fixed_corr_phifem_0_exact_bc.png"}
 		\caption{Correction avec $\phi$-FEM - $f$ fixé.}
 		\label{Poisson2D_fixed_corr_phifem_0_exact_bc}
 	\end{figure}
@@ -60,14 +60,15 @@ Pour $S=0.5$, on obtient les résultats suivants pour la correction par addition
 \begin{minipage}{0.48\linewidth}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\linewidth]{"varier_f/Poisson2D_f_corr_phifem_0_exact_bc.png"}
+		\includegraphics[width=0.88\linewidth]{"varier_f/Poisson2D_f_corr_phifem_0_exact_bc.png"}
 		\caption{Correction avec $\phi$-FEM - $f$ qui varie.}
 		\label{Poisson2D_f_corr_phifem_0_exact_bc}
 	\end{figure}
 \end{minipage}
 
+\newpage
 
-\subsection{Correction avec $\phi$-FEM sur la prédiction du modèle sur $w$ entraîné sur le carré}
+\section{Correction avec $\phi$-FEM sur la prédiction du modèle sur $w$ entraîné sur le carré}
 
 On cherche ici à apprendre la même solution que précédemment mais on va entraîner le PINNs sur le carré tout entier (et pas seulement sur le cercle) dans le but de voir si la correction avec $\phi$-FEM est meilleure. On considère les même paramètres que dans le cas précédent mais avec plus de points (car sur le carré 500 n'tait pas suffisant) et entraîne le PINNs à déterminer $u=\phi w$ :
 
@@ -112,9 +113,9 @@ On cherche ici à apprendre la même solution que précédemment mais on va entr
 	\end{figure}
 \end{minipage}
 
+\newpage
 
-
-\subsection{Correction sur la prédiction du modèle sur $u$ avec recalage de la fonction levelset}
+\section{Correction sur la prédiction du modèle sur $u$ avec recalage de la fonction levelset}
 
 On fait une descente de gradient sur un certains nombres d'itérations dans le but de recaler la levelset sur le bord. A la fin la valeur de $\phi$ en les points choisis (en valeur absolu) est au maximum de 1e-17.
 

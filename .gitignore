@@ -15,6 +15,16 @@ docs/results/results.*
 !docs/results/results.tex
 !docs/results/results.pdf
 
+docs/meetings/meetings.*
+!docs/meetings/meetings.tex
+!docs/meetings/meetings.pdf
+
 meeting.*
 !meeting.tex
 !meeting.pdf
+
+texput.log
+
+docs/antora/cache
+docs/antora/public
+docs/antora/node_modules

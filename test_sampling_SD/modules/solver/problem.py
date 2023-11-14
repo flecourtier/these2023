@@ -12,10 +12,10 @@ from modules.problems import *
 from modules.Poisson2D import *
 
 class Problem:
-    def __init__(self):
-        self.class_pb_considered = Circle
+    def __init__(self,class_pb_considered=Circle,pde_considered=Poisson2D_fixed):
+        self.class_pb_considered = class_pb_considered
         self.pb_considered = self.class_pb_considered()
-        self.pde_considered = Poisson2D_fixed
+        self.pde_considered = pde_considered
         self.name_problem_considered = self.class_pb_considered.__name__+"/"
         self.name_pde_considered = self.pde_considered.__name__+"/"
         self.dir_name = "networks/"+self.name_problem_considered+self.name_pde_considered

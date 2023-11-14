@@ -1,0 +1,118 @@
+\documentclass[french]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{color}
+\usepackage[svgnames,dvipsnames]{xcolor} 
+\usepackage{soul}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle #2$}}
+\usepackage{pifont}
+\usepackage{pst-all}
+\usepackage{pstricks}
+\usepackage{delarray}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{nicematrix}
+\usepackage{listings}
+\usepackage{float}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdfpagemode=FullScreen,
+}
+
+\usepackage{amsthm}
+\newtheorem*{Rem}{Remarque}
+\newtheorem*{Obs}{Observation}
+
+\newenvironment{conclusion}[1]{%
+	\begin{center}\normalfont\textbf{Conclusion}\end{center}
+	\begin{quotation} #1 \end{quotation}
+}{%
+	\vspace{1cm}
+}
+
+\newcommand\pythonstyle{\lstset{
+	language=Python,
+	basicstyle=\ttm,
+	morekeywords={self},              % Add keywords here
+	keywordstyle=\ttb\color{deepblue},
+	emph={MyClass,__init__},          % Custom highlighting
+	emphstyle=\ttb\color{deepred},    % Custom highlighting style
+	stringstyle=\color{deepgreen},
+	frame=tb,                         % Any extra options here
+	showstringspaces=false
+}}
+
+\lstdefinestyle{Cpp}{
+	language=C++,
+	tabsize=3,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#}
+}
+
+\lstdefinestyle{Python}{
+	language=Python,
+	tabsize=3,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#}
+}
+
+\lstset{style=Cpp}
+
+\setlength\parindent{0pt}
+
+
+\usepackage{fontawesome}
+
+\usepackage{lipsum}
+
+
+\usepackage[skip=2pt]{caption}
+
+\title{Meeting's results}
+
+\author{LECOURTIER Frédérique}
+
+\date{	oday}
+
+\begin{document}
+
+	\maketitle
+
+	\tableofcontents
+	\newpage
+
+	\chapter{Meeting - Monday 30 October 2023}
+	\graphicspath{{days/10_30_2023/images/}}
+	\newpage
+	\input{days/10_30_2023/day.tex}
+	\newpage
+
+	\chapter{Meeting - Monday 06 November 2023}
+	\graphicspath{{days/11_06_2023/images/}}
+	\newpage
+	\input{days/11_06_2023/day.tex}
+	\newpage
+
+	\chapter{Meeting - Monday 13 November 2023}
+	\graphicspath{{days/11_13_2023/images/}}
+	\newpage
+	\input{days/11_13_2023/day.tex}
+\end{document}

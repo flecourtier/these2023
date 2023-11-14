@@ -1,4 +1,4 @@
-\subsection{Correction sur la prédiction du modèle sur $w$ entraîné sur le carré}
+\section{Correction sur la prédiction du modèle sur $w$ entraîné sur le carré}
 
 Dans le but d'améliorer les résultats de Correction obtenus avec $\phi$-FEM, on cherche ici à apprendre la même solution que précédemment mais en entraînant le PINNs sur le carré tout entier (et pas seulement sur $\Omega$ défini par un cercle). 
 
@@ -6,7 +6,7 @@ Dans le cas de l'entraînement sur le cercle, on considère les paramètres par 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{"train_sur_carre/Cercle_config_0.png"}
+	\includegraphics[width=\linewidth]{"train_sur_carre/Cercle_config_0.png"}
 	\caption{Paramètres du PINNs (entraînement sur le Cercle).}
 \end{figure}
 
@@ -14,7 +14,7 @@ Dans le cas de l'entraînement sur le Carré, on considère les paramètres par 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{"train_sur_carre/Carre_config_1.png"}
+	\includegraphics[width=\linewidth]{"train_sur_carre/Carre_config_1.png"}
 	\caption{Paramètres du PINNs (entraînement sur le Carré).}
 \end{figure}
 
@@ -57,6 +57,8 @@ Pour $S=0.5$, on obtient les résultats suivants pour la correction par addition
 		\end{figure}
 	\end{minipage}
 \end{center}
+
+\newpage
 
 \begin{Obs}
 	Cas entraînement sur le carré (VS entraînement sur le cercle):
@@ -108,7 +110,7 @@ Pour $\phi$-FEM on s'intéresse en fait à l'erreur sur $\Omega$ (et non $\Omega
 
 \newpage
 
-\subsection{Correction sur la prédiction du modèle sur $u$ avec recalage de la fonction levelset}
+\section{Correction sur la prédiction du modèle sur $u$ avec recalage de la fonction levelset}
 
 \begin{minipage}{0.58\linewidth}
 	On sélectionne des points assez proche du bord puis on fait une descente de gradient (en quelque sorte à pas optimale) sur 50 itérations dans le but de recaler la levelset sur le bord :
@@ -125,7 +127,7 @@ Pour $\phi$-FEM on s'intéresse en fait à l'erreur sur $\Omega$ (et non $\Omega
 \begin{minipage}{0.38\linewidth}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.8\linewidth]{"recalage_levelset/erreur_iterations.png"}
+		\includegraphics[width=0.6\linewidth]{"recalage_levelset/erreur_iterations.png"}
 		\caption{Valeur maximale de la levelset en fonction des itérations.}
 	\end{figure}
 \end{minipage}
@@ -161,7 +163,7 @@ On essaye de ré-entraîner le modèle en modifiant les paramètres de la maniè
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{"recalage_levelset/config_align_levelset.png"}
+	\includegraphics[width=\linewidth]{"recalage_levelset/config_align_levelset.png"}
 	\caption{Paramètres du PINNs.}
 \end{figure}
 
@@ -169,7 +171,7 @@ On obtient les résultats d'entraînement suivant :
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.45\linewidth]{"recalage_levelset/model_2_align_levelset.png"}
+	\includegraphics[width=0.5\linewidth]{"recalage_levelset/model_2_align_levelset.png"}
 	\caption{Entraînement avec recalage de la levelset.}
 \end{figure}
 
@@ -203,7 +205,7 @@ Pour $S=0.5$, on obtient les résultats suivants pour la correction par addition
 	ATTENTION : On ne compare pas les mêmes modèles ici (pas les mêmes configs).
 \end{Obs}
 
-\subsection{Variation du terme source $f$}
+\section{Variation du terme source $f$}
 
 On veut faire varier le second membre en prenant $S\in[0.1,1]$. On considère la configuration par défaut et on apprend $u=\phi w$.
 

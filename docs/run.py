@@ -3,6 +3,8 @@ import numpy as np
 import os
 import shutil
 
+import subprocess
+
 def write_entete(file_write, title, tableofcontents):
     file_write.write('\n\\begin{document}\n')
     name = "LECOURTIER Frédérique \hfill \\today\n"
@@ -38,6 +40,7 @@ def run_abstracts():
     write_entete(file_write, title, False)
 
     abstracts_repo = "weeks/"
+    liste = []
     for i in range(1,current_week_num+1):
         asbtract_filename = abstracts_repo+"week_"+str(i)+".tex"
 
@@ -48,10 +51,12 @@ def run_abstracts():
         file_write.write('\n\t\\section{'+week_title+'}\n')
 
         if os.path.exists(current_dir+asbtract_filename):
+            liste.append(i)
             file_write.write('\t\input{'+asbtract_filename+'}\n')
             
         monday+=week
         friday+=week
+    print(liste)
 
     file_write.write('\end{document}')
 
@@ -71,6 +76,7 @@ def run_results():
     write_entete(file_write, title, True)
 
     results_repo = "weeks/"
+    liste = []
     for i in range(1,current_week_num+1):
         results_filename = results_repo+"week_"+str(i)
 
@@ -78,6 +84,7 @@ def run_results():
         friday_str = friday.strftime("%d/%m/%Y")
 
         if os.path.exists(current_dir+results_filename+".tex"):
+            liste.append(i)
             file_write.write('\t\\newpage\n')
             week_title = "Week "+str(i)+" : "+monday_str+" - "+friday_str
             file_write.write('\n\t\\section{'+week_title+'}\n')
@@ -85,6 +92,7 @@ def run_results():
 
         monday+=week
         friday+=week
+    print(liste)
 
     file_write.write('\end{document}')
 
@@ -104,6 +112,7 @@ def run_todolist():
     write_entete(file_write, title, True)
 
     todo_repo = "weeks/"
+    liste = []
     for i in range(1,current_week_num+1):
         todo_filename = todo_repo+"week_"+str(i)+".tex"
 
@@ -112,6 +121,7 @@ def run_todolist():
 
         # si to_do_list existe 
         if os.path.exists(current_dir+todo_filename):
+            liste.append(i)
             file_write.write('\n\t\\newpage\n')
             week_title = "Week "+str(i)+" : "+monday_str+" - "+friday_str
             file_write.write('\n\t\\section*{'+week_title+'}\n')
@@ -120,7 +130,8 @@ def run_todolist():
             
         monday+=week
         friday+=week
-
+    print(liste)
+    
     file_write.write('\end{document}')
 
 def run_meetings():
@@ -132,24 +143,25 @@ def run_meetings():
 
     print("### Meetings ###")
     current_dir = "meetings/"
-    results_file = current_dir+"meeting.tex"
-    if os.path.exists(results_file):
-        os.remove(results_file)
-
-    to_include = current_dir+"include.txt"
 
     ######################
     # create one file for all meetings
     ######################
 
-    meeting_file = current_dir+"meeting.tex"
+    to_include = current_dir+"include.txt"
+
+    meeting_file = current_dir+"meetings.tex"
     if os.path.exists(meeting_file):
         os.remove(meeting_file)
 
     shutil.copyfile(to_include, meeting_file)
     file_write = open(meeting_file,"a")
-    title = "Meeting's results"
-    write_entete(file_write, title, True)
+    file_write.write('\n\\title{Meeting\'s results}\n')
+    file_write.write('\n\\author{LECOURTIER Frédérique}\n')
+    file_write.write('\n\\date{\today}\n')
+    file_write.write('\n\\begin{document}\n')
+    file_write.write('\n\t\\maketitle\n')
+    file_write.write('\n\t\\tableofcontents\n')
 
     results_repo = "days/"
     current_day = monday
@@ -163,8 +175,9 @@ def run_meetings():
         
             file_write.write('\t\\newpage\n')
             week_title = "Meeting - "+current_day_str
-            file_write.write('\n\t\\section{'+week_title+'}\n')
+            file_write.write('\n\t\\chapter{'+week_title+'}\n')
             file_write.write('\t\\graphicspath{{'+meeting_filedir+'images/}}\n')
+            file_write.write('\t\\newpage\n')
             file_write.write('\t\input{'+meeting_filename+'}\n')
 
         current_day+=day
@@ -176,6 +189,9 @@ def run_meetings():
     ######################
 
     results_repo = "days/"
+    
+    to_include = current_dir+results_repo+"include.txt"
+
     current_day = monday
     for i in range(delta):
         meeting_filedir = results_repo+current_day.strftime("%m_%d_%Y")+"/"
@@ -186,12 +202,22 @@ def run_meetings():
         if os.path.exists(current_dir+meeting_filename):
             shutil.copyfile(to_include, current_dir+meeting_file)
             file_write = open(current_dir+meeting_file,"a")
-            title = "Meeting's results - "+current_day_str
-            write_entete(file_write, title, False)
+            # title = "Meeting's results - "+current_day_str
+            # write_entete(file_write, title, False)
+
+            file_write.write('\n\\begin{document}\n')
+            file_write.write('\n\t\\begin{titlepage}\n')
+            file_write.write('\n\t\t\\vspace*{\\stretch{1}}\n')
+            file_write.write('\n\t\t\\begin{center}\n')
+            file_write.write('\n\t\t\t{\\Huge\\bfseries Meeting\'s results} \\\\[1ex]\n')
+            file_write.write('\n\t\t\t{\\Large\\bfseries '+current_day_str+'} \\\\[1ex]\n')
+            file_write.write('\n\t\t\tLECOURTIER Frédérique\n')
+            file_write.write('\n\t\t\\end{center}\n')
+            file_write.write('\n\t\t\\vspace{\\stretch{2}}\n')
+            file_write.write('\n\t\\end{titlepage}\n')
 
             file_write.write('\t\\graphicspath{{images/}}\n')
             file_write.write('\t\input{day.tex}\n')
-
             file_write.write('\end{document}')
 
         current_day+=day

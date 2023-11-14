@@ -1,4 +1,4 @@
-\documentclass[french]{article}
+\documentclass[french]{report}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
@@ -82,5 +82,6 @@
 \usepackage{fontawesome}
 
 \usepackage{lipsum}
+
 
 \usepackage[skip=2pt]{caption}

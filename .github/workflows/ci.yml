@@ -11,11 +11,11 @@ jobs:
       !contains(github.event.head_commit.message, 'ci skip')
     steps:
     - run: echo ok go
-    
-  convert_latex:
+
+  latex:
     needs: activate
     runs-on: ubuntu-latest
-    name: Convert latex to antora
+    name: Create LateX Files and PDF
     if: "!contains(github.event.head_commit.message, 'docs skip')"
     steps:
     - uses: actions/checkout@v3
@@ -23,6 +23,15 @@ jobs:
       run: echo https://$GITHUB_OAUTH:@github.com > $HOME/.git-credentials
       env:
         GITHUB_OAUTH: ${{ secrets.DOCS_GITHUB_KEY }}
+    - name: Create latex
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python3 run.py
+      working-directory: docs
+    - name: Exec pdflatex
+      run:
+        bash pdflatex.sh ALL
     - name: Run convert
       run: |
         python3 -m pip install --upgrade pip
@@ -37,7 +46,7 @@ jobs:
         git commit -m "Update latex" || echo "No changes to commit"
         git push
 
-  build_docs:
+  build_antora:
     needs: [activate, convert_latex]
     runs-on: ubuntu-latest
     name: Build, Install, Package documentation
