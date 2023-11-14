@@ -206,7 +206,7 @@ def cp_assets(section_files):
             shutil.rmtree(attachments_dir)
         os.mkdir(attachments_dir)
         shutil.copyfile(root_dir + "abstracts/abstracts.pdf",attachments_dir + "abstracts.pdf")
-        shutil.copyfile(root_dir + "meetings/meeting.pdf",attachments_dir + "meetings.pdf")
+        shutil.copyfile(root_dir + "meetings/meetings.pdf",attachments_dir + "meetings.pdf")
         shutil.copyfile(root_dir + "to_do_list/to_do_list.pdf",attachments_dir + "to_do_list.pdf")
         shutil.copyfile(rapport_dir + "results.pdf",attachments_dir + "results.pdf")
 
