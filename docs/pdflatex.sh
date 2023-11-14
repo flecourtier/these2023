@@ -6,7 +6,7 @@ function run_pdflatex {
         echo "pdflatex a été exécuté avec succès"
     else
         echo "Erreur lors de l'exécution de pdflatex"        
-        pdflatex -synctex=1 -interaction=nonstopmode -output-directory=$1 $2 >/dev/null
+        pdflatex -synctex=1 -interaction=nonstopmode -output-directory=$1 $2 #>/dev/null
         pwd_dir=$(pwd)
         filename="${2%.*}"
         echo "Voir $pwd_dir/$filename.log pour plus d'informations"
