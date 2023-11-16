@@ -13,11 +13,11 @@ from modules.Poisson2D import *
 # Pas de garantit non plus que le fichier de config associé au modèle 1 soit le bon (si on suuprime 1 et pas l'autre par exemple)
 
 
-problem_considered = Circle
-pde_considered = Poisson2D_fixed
+problem_considered = Square
+pde_considered = Poisson2D_fixed2_carre
 
-save_sampling = False
-save_phi = False
+save_sampling = True
+save_phi = True
 
 
 # create directories if they don't exist

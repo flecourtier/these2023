@@ -18,8 +18,8 @@ current = Path(__file__).parent.parent
 
 def plot_sampling(domain,data,name):
     plt.plot(data[:,0],data[:,1],"+")
-    bornes = domain.surrounding_domain.bound
-    # bornes = domain.bound
+    # bornes = domain.surrounding_domain.bound
+    bornes = domain.bound
     plt.xlim(bornes[0][0],bornes[0][1])
     plt.ylim(bornes[1][0],bornes[1][1])
     plt.title(name)
@@ -49,26 +49,26 @@ def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,s
 
         plt.savefig(dir_name / "results" / ("sampling_"+str(num_config)+align_levelset+".png"))
 
-    if save_phi:
-        data_inside = sampler.sampling(10000)[0]
-        phi_inside = problem.levelset(data_inside).detach().cpu().numpy()
-        data_inside = data_inside.detach().numpy()
+    # if save_phi:
+    #     data_inside = sampler.sampling(10000)[0]
+    #     phi_inside = problem.levelset(data_inside).detach().cpu().numpy()
+    #     data_inside = data_inside.detach().numpy()
 
-        plt.figure(figsize=(15,5))
+    #     plt.figure(figsize=(15,5))
 
-        partial_S_plus = problem.polygon.detach().numpy()
-        nb_pts = problem.nb_pts
-        partial_S_plus = np.concatenate([partial_S_plus,[partial_S_plus[0]]])
+    #     partial_S_plus = problem.polygon.detach().numpy()
+    #     nb_pts = problem.nb_pts
+    #     partial_S_plus = np.concatenate([partial_S_plus,[partial_S_plus[0]]])
 
-        plt.tricontourf(data_inside[:,0],data_inside[:,1],phi_inside,"o",levels=100)#,cmap="hot")
-        for i in range(nb_pts):
-            pt1 = partial_S_plus[i]
-            pt2 = partial_S_plus[i+1]
-            plt.plot([pt1[0],pt2[0]],[pt1[1],pt2[1]],"black",linewidth=3)
-        plt.title("phi")
-        plt.colorbar()
+    #     plt.tricontourf(data_inside[:,0],data_inside[:,1],phi_inside,"o",levels=100)#,cmap="hot")
+    #     for i in range(nb_pts):
+    #         pt1 = partial_S_plus[i]
+    #         pt2 = partial_S_plus[i+1]
+    #         plt.plot([pt1[0],pt2[0]],[pt1[1],pt2[1]],"black",linewidth=3)
+    #     plt.title("phi")
+    #     plt.colorbar()
 
-        plt.savefig(dir_name / "results" / ("phi_"+str(num_config)+align_levelset+".png"))
+    #     plt.savefig(dir_name / "results" / ("phi_"+str(num_config)+align_levelset+".png"))
 
     name = "model_"+str(num_config)
     if use_levelset:
@@ -113,19 +113,18 @@ def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,s
         else:
             trainer.learning_rate = dict["lr"]
             trainer.train(epochs=dict["n_epochs"], n_collocation=dict["n_collocations"], n_bc_collocation=dict["n_bc_collocation"], n_data=dict["n_data"])
-    
-    
-    # pde = Poisson2D_fixed(problem, use_levelset)
-    # x_sampler = sampling_pde.XSampler(pde=pde)
-    # mu_sampler = sampling_parameters.MuSampler(
-    #     sampler=uniform_sampling.UniformSampling, model=pde
-    # )
-    # sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
-    # trainer.plot_with_mask(sampler,50000,filename=fig_path)
 
+    # plot sans mask
     trainer.plot(50000,filename=fig_path)
-
-    assert True
+    
+    # plot with mask
+    pde = Poisson2D_fixed2(problem, use_levelset)
+    x_sampler = sampling_pde.XSampler(pde=pde)
+    mu_sampler = sampling_parameters.MuSampler(
+        sampler=uniform_sampling.UniformSampling, model=pde
+    )
+    sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
+    trainer.plot_with_mask(sampler,50000,filename=fig_path)
 
     return trainer
 

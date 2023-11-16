@@ -1,0 +1,13 @@
+{
+	"layers":[20, 20, 20, 20],
+	"activation":"sine",
+	"lr":0.01,
+	"decay":0.99,
+	"w_data":0.0,
+	"w_res":0.01,
+	"w_bc":10.0,
+	"n_epochs":1000,
+	"n_collocations":500,
+	"n_bc_collocation":500,
+	"n_data":0
+}
