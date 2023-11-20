@@ -126,11 +126,14 @@ class PhiFemSolver:
 
     def __create_FEM_domain(self):
         # check if problem_considered is instance of Circle class
-        assert isinstance(problem_considered, Circle),"not implemented for this domain"
+        if isinstance(problem_considered, Circle):
+            domain = mshr.Circle(Point(problem_considered.x0, problem_considered.y0), problem_considered.r)
+        elif isinstance(problem_considered, Square):
+            domain = mshr.Rectangle(Point(0, 0), Point(1, 1))
+        else:
+            raise Exception("Problem not implemented")
 
         nb_vert = self.N+1
-            
-        domain = mshr.Circle(Point(problem_considered.x0, problem_considered.y0), problem_considered.r)
 
         domain_O = np.array(problem_considered.domain_O)
         mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), nb_vert - 1, nb_vert - 1)

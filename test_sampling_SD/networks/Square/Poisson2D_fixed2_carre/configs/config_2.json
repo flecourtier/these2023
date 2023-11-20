@@ -7,7 +7,7 @@
 	"w_res":0.01,
 	"w_bc":10.0,
 	"n_epochs":20000,
-	"n_collocations":2000,
+	"n_collocations":10000,
 	"n_bc_collocation":2000,
 	"n_data":0
 }

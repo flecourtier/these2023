@@ -17,6 +17,9 @@ class Circle():
         return self.phi(pre, xy)
     
     def levelset(self,X):
+        return self.phi(torch, X.T)
+    
+    def levelset_construct(self,X):
         return self.phi_construct(torch, X.T)
     
     def call_Omega(self, pre, xy):
@@ -64,10 +67,13 @@ class Square():
         return x*(1-x)*y*(1-y)
     
     def phi_construct(self, pre, xy):
-        # return np.linalg.norm(np.array(xy)-0.5,np.inf,axis=0)-0.5
-        return torch.linalg.norm(xy-0.5,float('inf'),axis=0)-0.5
-
+        return np.linalg.norm(np.array(xy)-0.5,np.inf,axis=0)-0.5
+        # return torch.linalg.norm(xy-0.5,float('inf'),axis=0)-0.5
+        
     def levelset(self,X):
+        return self.phi(torch, X.T)
+
+    def levelset_construct(self,X):
         return self.phi_construct(torch, X.T)
     
     def call_Omega(self, pre, xy):

@@ -12,7 +12,7 @@ from modules.problems import *
 from modules.Poisson2D import *
 
 class Problem:
-    def __init__(self,class_pb_considered=Circle,pde_considered=Poisson2D_fixed):
+    def __init__(self,class_pb_considered=Square,pde_considered=Poisson2D_fixed2_carre):
         self.class_pb_considered = class_pb_considered
         self.pb_considered = self.class_pb_considered()
         self.pde_considered = pde_considered
@@ -67,9 +67,10 @@ class UexExpr(MyUserExpression):
         self.S = params[0]
         self.f = params[1]
         self.p = params[2]
+        self.mu = params
     
     def eval(self, value, x):
-        value[0] = pb_considered.u_ex(dol, x, self.S, self.f, self.p)
+        value[0] = pb_considered.u_ex(dol, x, self.mu)
                                
 class FExpr(MyUserExpression):
     def __init__(self, params, degree, domain):
@@ -77,6 +78,7 @@ class FExpr(MyUserExpression):
         self.S = params[0]
         self.f = params[1]
         self.p = params[2]
+        self.mu = params
 
     def eval(self, value, x):
-        value[0] = pb_considered.f(dol, x, self.S, self.f, self.p)
+        value[0] = pb_considered.f(dol, x, self.mu)

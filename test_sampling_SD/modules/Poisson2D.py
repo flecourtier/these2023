@@ -8,7 +8,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class Poisson2D(AbstractPDEx):
     def __init__(self, problem, parameter_domain, nb_parameters=1, use_levelset=False, space_domain=None):
         if space_domain is None:
-            space_domain = domain.SignedDistanceBasedDomain(2, problem.domain_O, problem.levelset)
+            space_domain = domain.SignedDistanceBasedDomain(2, problem.domain_O, problem.levelset_construct)
         super().__init__(
             nb_unknowns=1,
             space_domain=space_domain,
@@ -55,6 +55,7 @@ class Poisson2D(AbstractPDEx):
         x1, x2 = self.get_coordinates(x)
         X = torch.stack([x1,x2])
         alpha = self.get_parameters(mu)
+        print("mu :",mu.shape)
         return self.problem.u_ex(torch, X, alpha)
 
 #####

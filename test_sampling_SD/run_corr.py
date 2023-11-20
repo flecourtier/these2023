@@ -81,13 +81,14 @@ if args.fem != 1:
 
     solver = FEMSolver(nb_cell=nb_vert-1, params=params)
 
-    # u_ex = UexExpr(params[0], degree=deg_corr, domain=solver.mesh)
+    u_ex = UexExpr(params[0], degree=deg_corr, domain=solver.mesh)
     
     # get coordinates of the dof
     V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
     XXYY = V_phi.tabulate_dof_coordinates()
     X_test = torch.tensor(XXYY)
-    mu = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)*S
+    ones = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)
+    mu = (torch.mean(trainer.pde.parameter_domain, axis=1) * ones).to(device)
 
     # get u_PINNs
     pred = trainer.network.setup_w_dict(X_test, mu)
@@ -97,7 +98,7 @@ if args.fem != 1:
 
     assert np.max(np.abs(phi_tild-u_PINNs.vector()[:]))<1e-10
 
-    # norm_L2_PINNs = (assemble((((u_ex - u_PINNs)) ** 2) * solver.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * solver.dx) ** (0.5))
+    norm_L2_PINNs = (assemble((((u_ex - u_PINNs)) ** 2) * solver.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * solver.dx) ** (0.5))
 
     # get u_corr
     u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs)
@@ -108,10 +109,10 @@ if args.fem != 1:
     print("# Error L2 - FEM : ",norm_L2_FEM)
     print("# Facteur : ", norm_L2_FEM/norm_L2_Corr)
 
-    u_ex = UexExpr(params[0], degree=1, domain=solver.mesh)
-    u_ex = project(u_ex, solver.V)
-    print(project(u_ex-u_FEM,solver.V).vector()[:].shape)
-    print(np.max(np.abs(project(u_ex-u_FEM,solver.V).vector()[:])))
+    # u_ex = UexExpr(params[0], degree=1, domain=solver.mesh)
+    # u_ex = project(u_ex, solver.V)
+    # print(project(u_ex-u_FEM,solver.V).vector()[:].shape)
+    # print(np.max(np.abs(project(u_ex-u_FEM,solver.V).vector()[:])))
 
     
     # #####
@@ -189,7 +190,8 @@ if args.fem != 0:
         V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
         XXYY = V_phi.tabulate_dof_coordinates()
         X_test = torch.tensor(XXYY)
-        mu = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)*S
+        ones = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)
+        mu = (torch.mean(trainer.pde.parameter_domain, axis=1) * ones).to(device)
 
         # get u_PINNs
         pred = trainer.network.setup_w_dict(X_test, mu)
@@ -277,7 +279,8 @@ if args.fem != 0:
         V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
         XXYY = V_phi.tabulate_dof_coordinates()
         X_test = torch.tensor(XXYY)
-        mu = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)*S
+        ones = torch.ones(XXYY.shape[0],trainer.pde.nb_parameters)
+        mu = (torch.mean(trainer.pde.parameter_domain, axis=1) * ones).to(device)
 
         # get u_PINNs
         pred = trainer.network.setup_w_dict(X_test, mu)

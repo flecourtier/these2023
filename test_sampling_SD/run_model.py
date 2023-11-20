@@ -14,6 +14,8 @@ from modules.Poisson2D import *
 
 
 problem_considered = Square
+sampling_on = "Omega"
+# sampling_on = "O_cal"
 pde_considered = Poisson2D_fixed2_carre
 
 save_sampling = True
