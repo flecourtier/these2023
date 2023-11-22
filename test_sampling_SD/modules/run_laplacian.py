@@ -1,82 +1,86 @@
+###########
+# Imports #
+###########
+
 import matplotlib.pyplot as plt
-
-new_training = False
-align_levelset = ""
-# align_levelset = "_align_levelset" 
-
-import torch
-torch.seed()
-
 from pathlib import Path
 
 from scimba.nets import mlp
 from scimba.pinns import pinn_x, training_x
 from scimba.sampling import sampling_pde, sampling_parameters, uniform_sampling
+
 from modules.Poisson2D import *
+
+###############
+# Define case #
+###############
 
 current = Path(__file__).parent.parent
 
-def plot_sampling(domain,data,name):
+def plot_sampling(bornes,data,name):
     plt.plot(data[:,0],data[:,1],"+")
-    # bornes = domain.surrounding_domain.bound
-    bornes = domain.bound
     plt.xlim(bornes[0][0],bornes[0][1])
     plt.ylim(bornes[1][0],bornes[1][1])
     plt.title(name)
 
-def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,save_sampling = False,save_phi = False):
-    problem = class_problem()
-    pde = class_pde(problem, use_levelset)
+def plot_solution(cas,sampling_on,trainer,fig_path):
+    pde = cas.class_PDE(cas.Problem, sampling_on=sampling_on, impose_exact_bc=cas.impose_exact_bc)
+    x_sampler = sampling_pde.XSampler(pde=pde)
+    mu_sampler = sampling_parameters.MuSampler(sampler=uniform_sampling.UniformSampling, model=pde)
+    sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
+    
+    trainer.plot(50000,filename=fig_path,sampler=sampler)
+
+def test_laplacian_2d(cas, num_config, dict, save_sampling = False, new_training = False):
+    ###
+    # Sampler
+    ###
+
+    impose_exact_bc = cas.impose_exact_bc
+    pde = cas.PDE
+    dir_name = current / cas.dir_name
+
+
     x_sampler = sampling_pde.XSampler(pde=pde)
     mu_sampler = sampling_parameters.MuSampler(
         sampler=uniform_sampling.UniformSampling, model=pde
     )
     sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
 
-    dir_name = current / "networks" / class_problem.__name__ / class_pde.__name__
-
     if save_sampling:
-        plt.figure(figsize=(10,5))
+        print(dict)
+        if cas.sampling_on=="Omega":
+            bornes = pde.space_domain.surrounding_domain.bound
+        elif cas.sampling_on=="O_cal":
+            bornes = pde.space_domain.bound
+        else:
+            raise ValueError("Sampling_on must be either 'Omega' or 'O_cal'")
+        
+        if impose_exact_bc:
+            data_inside = sampler.sampling(dict["n_collocations"])[0].detach().numpy()
+            plt.figure(figsize=(5,5))
+            plot_sampling(bornes,data_inside,"sampling on "+cas.sampling_on+" with "+str(dict["n_collocations"])+" points")
 
-        plt.subplot(1,2,1)
-        data_inside = sampler.sampling(dict["n_collocations"])[0].detach().numpy()
-        print(data_inside.shape)
-        plot_sampling(pde.space_domain,data_inside,"inside Omega")
+        else:
+            plt.figure(figsize=(10,5))
 
-        plt.subplot(1,2,2)
-        data_boundary = sampler.bc_sampling(dict["n_bc_collocation"])[0].detach().numpy()
-        plot_sampling(pde.space_domain,data_boundary,"on the border")
+            plt.subplot(1,2,1)
+            data_inside = sampler.sampling(dict["n_collocations"])[0].detach().numpy()
+            plot_sampling(bornes,data_inside,"sampling on "+cas.sampling_on)
 
-        plt.savefig(dir_name / "results" / ("sampling_"+str(num_config)+align_levelset+".png"))
+            plt.subplot(1,2,2)
+            data_boundary = sampler.bc_sampling(dict["n_bc_collocation"])[0].detach().numpy()
+            plot_sampling(bornes,data_boundary,"border sampling")
 
-    # if save_phi:
-    #     data_inside = sampler.sampling(10000)[0]
-    #     phi_inside = problem.levelset(data_inside).detach().cpu().numpy()
-    #     data_inside = data_inside.detach().numpy()
+        plt.savefig(dir_name / "models" / ("sampling_"+str(num_config)+".png"))
 
-    #     plt.figure(figsize=(15,5))
-
-    #     partial_S_plus = problem.polygon.detach().numpy()
-    #     nb_pts = problem.nb_pts
-    #     partial_S_plus = np.concatenate([partial_S_plus,[partial_S_plus[0]]])
-
-    #     plt.tricontourf(data_inside[:,0],data_inside[:,1],phi_inside,"o",levels=100)#,cmap="hot")
-    #     for i in range(nb_pts):
-    #         pt1 = partial_S_plus[i]
-    #         pt2 = partial_S_plus[i+1]
-    #         plt.plot([pt1[0],pt2[0]],[pt1[1],pt2[1]],"black",linewidth=3)
-    #     plt.title("phi")
-    #     plt.colorbar()
-
-    #     plt.savefig(dir_name / "results" / ("phi_"+str(num_config)+align_levelset+".png"))
-
+    ###
+    # Model
+    ###
+    
     name = "model_"+str(num_config)
-    if use_levelset:
-        name += "_exact_bc"
-    name += align_levelset
 
     file_path = dir_name / "models" / (name+".pth")
-    fig_path = dir_name / "results" / (name+".png")
     if new_training:
         file_path.unlink(missing_ok=True)
     
@@ -85,13 +89,20 @@ def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,s
         net=mlp.GenericMLP, pde=pde, layer_sizes=tlayers, activation_type=dict["activation"]
     )
 
+    ###
+    # Trainer
+    ###
+
+    if impose_exact_bc:
+        dict["n_bc_collocation"] = 0
+        dict["w_bc"] = 0.
+
     trainer = training_x.TrainerPINNSpace(
         pde=pde,
         network=network,
         sampler=sampler,
         file_name=file_path,
-        bc_loss_bool=not use_levelset,
-        # learning_rate=dict["lr"],
+        bc_loss_bool=not impose_exact_bc,
         decay=dict["decay"],
         batch_size=dict["n_collocations"],
         w_data=dict["w_data"],
@@ -113,18 +124,18 @@ def test_laplacian_2d(class_problem, class_pde, num_config, dict, use_levelset,s
         else:
             trainer.learning_rate = dict["lr"]
             trainer.train(epochs=dict["n_epochs"], n_collocation=dict["n_collocations"], n_bc_collocation=dict["n_bc_collocation"], n_data=dict["n_data"])
-
-    # plot sans mask
-    trainer.plot(50000,filename=fig_path)
     
-    # plot with mask
-    pde = Poisson2D_fixed2(problem, use_levelset)
-    x_sampler = sampling_pde.XSampler(pde=pde)
-    mu_sampler = sampling_parameters.MuSampler(
-        sampler=uniform_sampling.UniformSampling, model=pde
-    )
-    sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
-    trainer.plot_with_mask(sampler,50000,filename=fig_path)
+    ###
+    # Plot solutions
+    ###
+
+    # plot sur O_cal
+    fig_path = dir_name / "solutions" / (name+"_O_cal.png")
+    plot_solution(cas,"O_cal",trainer,fig_path)
+    
+    # plot sur Omega
+    fig_path = dir_name / "solutions" / (name+"_Omega.png")
+    plot_solution(cas,"Omega",trainer,fig_path)
 
     return trainer
 

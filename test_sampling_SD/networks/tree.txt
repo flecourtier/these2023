@@ -1,0 +1,370 @@
+.
+├── approach_bc
+│   ├── SingleProblem
+│   │   ├── Circle
+│   │   │   ├── O_cal_training
+│   │   │   │   ├── corrections
+│   │   │   │   │   ├── additive
+│   │   │   │   │   │   ├── FEM
+│   │   │   │   │   │   └── PhiFEM
+│   │   │   │   │   │       ├── Omega_h
+│   │   │   │   │   │       └── proj_Omega
+│   │   │   │   │   ├── additive_IPP
+│   │   │   │   │   │   ├── FEM
+│   │   │   │   │   │   └── PhiFEM
+│   │   │   │   │   │       ├── Omega_h
+│   │   │   │   │   │       └── proj_Omega
+│   │   │   │   │   └── multiplicative
+│   │   │   │   │       ├── FEM
+│   │   │   │   │       └── PhiFEM
+│   │   │   │   │           ├── Omega_h
+│   │   │   │   │           └── proj_Omega
+│   │   │   │   ├── derivatives
+│   │   │   │   │   ├── Omega
+│   │   │   │   │   └── Omega_h
+│   │   │   │   ├── models
+│   │   │   │   └── solutions
+│   │   │   └── Omega_training
+│   │   │       ├── corrections
+│   │   │       │   ├── additive
+│   │   │       │   │   ├── FEM
+│   │   │       │   │   └── PhiFEM
+│   │   │       │   │       ├── Omega_h
+│   │   │       │   │       └── proj_Omega
+│   │   │       │   ├── additive_IPP
+│   │   │       │   │   ├── FEM
+│   │   │       │   │   └── PhiFEM
+│   │   │       │   │       ├── Omega_h
+│   │   │       │   │       └── proj_Omega
+│   │   │       │   └── multiplicative
+│   │   │       │       ├── FEM
+│   │   │       │       └── PhiFEM
+│   │   │       │           ├── Omega_h
+│   │   │       │           └── proj_Omega
+│   │   │       ├── derivatives
+│   │   │       │   ├── Omega
+│   │   │       │   └── Omega_h
+│   │   │       ├── models
+│   │   │       └── solutions
+│   │   └── Square
+│   │       ├── O_cal_training
+│   │       │   ├── corrections
+│   │       │   │   ├── additive
+│   │       │   │   │   ├── FEM
+│   │       │   │   │   └── PhiFEM
+│   │       │   │   │       ├── Omega_h
+│   │       │   │   │       └── proj_Omega
+│   │       │   │   ├── additive_IPP
+│   │       │   │   │   ├── FEM
+│   │       │   │   │   └── PhiFEM
+│   │       │   │   │       ├── Omega_h
+│   │       │   │   │       └── proj_Omega
+│   │       │   │   └── multiplicative
+│   │       │   │       ├── FEM
+│   │       │   │       └── PhiFEM
+│   │       │   │           ├── Omega_h
+│   │       │   │           └── proj_Omega
+│   │       │   ├── derivatives
+│   │       │   │   ├── Omega
+│   │       │   │   └── Omega_h
+│   │       │   ├── models
+│   │       │   └── solutions
+│   │       └── Omega_training
+│   │           ├── corrections
+│   │           │   ├── additive
+│   │           │   │   ├── FEM
+│   │           │   │   └── PhiFEM
+│   │           │   │       ├── Omega_h
+│   │           │   │       └── proj_Omega
+│   │           │   ├── additive_IPP
+│   │           │   │   ├── FEM
+│   │           │   │   └── PhiFEM
+│   │           │   │       ├── Omega_h
+│   │           │   │       └── proj_Omega
+│   │           │   └── multiplicative
+│   │           │       ├── FEM
+│   │           │       └── PhiFEM
+│   │           │           ├── Omega_h
+│   │           │           └── proj_Omega
+│   │           ├── derivatives
+│   │           │   ├── Omega
+│   │           │   └── Omega_h
+│   │           ├── models
+│   │           └── solutions
+│   └── VariedSolution_S
+│       ├── Circle
+│       │   ├── O_cal_training
+│       │   │   ├── corrections
+│       │   │   │   ├── additive
+│       │   │   │   │   ├── FEM
+│       │   │   │   │   └── PhiFEM
+│       │   │   │   │       ├── Omega_h
+│       │   │   │   │       └── proj_Omega
+│       │   │   │   ├── additive_IPP
+│       │   │   │   │   ├── FEM
+│       │   │   │   │   └── PhiFEM
+│       │   │   │   │       ├── Omega_h
+│       │   │   │   │       └── proj_Omega
+│       │   │   │   └── multiplicative
+│       │   │   │       ├── FEM
+│       │   │   │       └── PhiFEM
+│       │   │   │           ├── Omega_h
+│       │   │   │           └── proj_Omega
+│       │   │   ├── derivatives
+│       │   │   │   ├── Omega
+│       │   │   │   └── Omega_h
+│       │   │   ├── models
+│       │   │   └── solutions
+│       │   └── Omega_training
+│       │       ├── corrections
+│       │       │   ├── additive
+│       │       │   │   ├── FEM
+│       │       │   │   └── PhiFEM
+│       │       │   │       ├── Omega_h
+│       │       │   │       └── proj_Omega
+│       │       │   ├── additive_IPP
+│       │       │   │   ├── FEM
+│       │       │   │   └── PhiFEM
+│       │       │   │       ├── Omega_h
+│       │       │   │       └── proj_Omega
+│       │       │   └── multiplicative
+│       │       │       ├── FEM
+│       │       │       └── PhiFEM
+│       │       │           ├── Omega_h
+│       │       │           └── proj_Omega
+│       │       ├── derivatives
+│       │       │   ├── Omega
+│       │       │   └── Omega_h
+│       │       ├── models
+│       │       └── solutions
+│       └── Square
+│           ├── O_cal_training
+│           │   ├── corrections
+│           │   │   ├── additive
+│           │   │   │   ├── FEM
+│           │   │   │   └── PhiFEM
+│           │   │   │       ├── Omega_h
+│           │   │   │       └── proj_Omega
+│           │   │   ├── additive_IPP
+│           │   │   │   ├── FEM
+│           │   │   │   └── PhiFEM
+│           │   │   │       ├── Omega_h
+│           │   │   │       └── proj_Omega
+│           │   │   └── multiplicative
+│           │   │       ├── FEM
+│           │   │       └── PhiFEM
+│           │   │           ├── Omega_h
+│           │   │           └── proj_Omega
+│           │   ├── derivatives
+│           │   │   ├── Omega
+│           │   │   └── Omega_h
+│           │   ├── models
+│           │   └── solutions
+│           └── Omega_training
+│               ├── corrections
+│               │   ├── additive
+│               │   │   ├── FEM
+│               │   │   └── PhiFEM
+│               │   │       ├── Omega_h
+│               │   │       └── proj_Omega
+│               │   ├── additive_IPP
+│               │   │   ├── FEM
+│               │   │   └── PhiFEM
+│               │   │       ├── Omega_h
+│               │   │       └── proj_Omega
+│               │   └── multiplicative
+│               │       ├── FEM
+│               │       └── PhiFEM
+│               │           ├── Omega_h
+│               │           └── proj_Omega
+│               ├── derivatives
+│               │   ├── Omega
+│               │   └── Omega_h
+│               ├── models
+│               └── solutions
+├── exact_bc
+│   ├── SingleProblem
+│   │   ├── Circle
+│   │   │   ├── O_cal_training
+│   │   │   │   ├── corrections
+│   │   │   │   │   ├── additive
+│   │   │   │   │   │   ├── FEM
+│   │   │   │   │   │   └── PhiFEM
+│   │   │   │   │   │       ├── Omega_h
+│   │   │   │   │   │       └── proj_Omega
+│   │   │   │   │   ├── additive_IPP
+│   │   │   │   │   │   ├── FEM
+│   │   │   │   │   │   └── PhiFEM
+│   │   │   │   │   │       ├── Omega_h
+│   │   │   │   │   │       └── proj_Omega
+│   │   │   │   │   └── multiplicative
+│   │   │   │   │       ├── FEM
+│   │   │   │   │       └── PhiFEM
+│   │   │   │   │           ├── Omega_h
+│   │   │   │   │           └── proj_Omega
+│   │   │   │   ├── derivatives
+│   │   │   │   │   ├── Omega
+│   │   │   │   │   └── Omega_h
+│   │   │   │   ├── models
+│   │   │   │   └── solutions
+│   │   │   └── Omega_training
+│   │   │       ├── corrections
+│   │   │       │   ├── additive
+│   │   │       │   │   ├── FEM
+│   │   │       │   │   └── PhiFEM
+│   │   │       │   │       ├── Omega_h
+│   │   │       │   │       └── proj_Omega
+│   │   │       │   ├── additive_IPP
+│   │   │       │   │   ├── FEM
+│   │   │       │   │   └── PhiFEM
+│   │   │       │   │       ├── Omega_h
+│   │   │       │   │       └── proj_Omega
+│   │   │       │   └── multiplicative
+│   │   │       │       ├── FEM
+│   │   │       │       └── PhiFEM
+│   │   │       │           ├── Omega_h
+│   │   │       │           └── proj_Omega
+│   │   │       ├── derivatives
+│   │   │       │   ├── Omega
+│   │   │       │   └── Omega_h
+│   │   │       ├── models
+│   │   │       └── solutions
+│   │   └── Square
+│   │       ├── O_cal_training
+│   │       │   ├── corrections
+│   │       │   │   ├── additive
+│   │       │   │   │   ├── FEM
+│   │       │   │   │   └── PhiFEM
+│   │       │   │   │       ├── Omega_h
+│   │       │   │   │       └── proj_Omega
+│   │       │   │   ├── additive_IPP
+│   │       │   │   │   ├── FEM
+│   │       │   │   │   └── PhiFEM
+│   │       │   │   │       ├── Omega_h
+│   │       │   │   │       └── proj_Omega
+│   │       │   │   └── multiplicative
+│   │       │   │       ├── FEM
+│   │       │   │       └── PhiFEM
+│   │       │   │           ├── Omega_h
+│   │       │   │           └── proj_Omega
+│   │       │   ├── derivatives
+│   │       │   │   ├── Omega
+│   │       │   │   └── Omega_h
+│   │       │   ├── models
+│   │       │   └── solutions
+│   │       └── Omega_training
+│   │           ├── corrections
+│   │           │   ├── additive
+│   │           │   │   ├── FEM
+│   │           │   │   └── PhiFEM
+│   │           │   │       ├── Omega_h
+│   │           │   │       └── proj_Omega
+│   │           │   ├── additive_IPP
+│   │           │   │   ├── FEM
+│   │           │   │   └── PhiFEM
+│   │           │   │       ├── Omega_h
+│   │           │   │       └── proj_Omega
+│   │           │   └── multiplicative
+│   │           │       ├── FEM
+│   │           │       └── PhiFEM
+│   │           │           ├── Omega_h
+│   │           │           └── proj_Omega
+│   │           ├── derivatives
+│   │           │   ├── Omega
+│   │           │   └── Omega_h
+│   │           ├── models
+│   │           └── solutions
+│   └── VariedSolution_S
+│       ├── Circle
+│       │   ├── O_cal_training
+│       │   │   ├── corrections
+│       │   │   │   ├── additive
+│       │   │   │   │   ├── FEM
+│       │   │   │   │   └── PhiFEM
+│       │   │   │   │       ├── Omega_h
+│       │   │   │   │       └── proj_Omega
+│       │   │   │   ├── additive_IPP
+│       │   │   │   │   ├── FEM
+│       │   │   │   │   └── PhiFEM
+│       │   │   │   │       ├── Omega_h
+│       │   │   │   │       └── proj_Omega
+│       │   │   │   └── multiplicative
+│       │   │   │       ├── FEM
+│       │   │   │       └── PhiFEM
+│       │   │   │           ├── Omega_h
+│       │   │   │           └── proj_Omega
+│       │   │   ├── derivatives
+│       │   │   │   ├── Omega
+│       │   │   │   └── Omega_h
+│       │   │   ├── models
+│       │   │   └── solutions
+│       │   └── Omega_training
+│       │       ├── corrections
+│       │       │   ├── additive
+│       │       │   │   ├── FEM
+│       │       │   │   └── PhiFEM
+│       │       │   │       ├── Omega_h
+│       │       │   │       └── proj_Omega
+│       │       │   ├── additive_IPP
+│       │       │   │   ├── FEM
+│       │       │   │   └── PhiFEM
+│       │       │   │       ├── Omega_h
+│       │       │   │       └── proj_Omega
+│       │       │   └── multiplicative
+│       │       │       ├── FEM
+│       │       │       └── PhiFEM
+│       │       │           ├── Omega_h
+│       │       │           └── proj_Omega
+│       │       ├── derivatives
+│       │       │   ├── Omega
+│       │       │   └── Omega_h
+│       │       ├── models
+│       │       └── solutions
+│       └── Square
+│           ├── O_cal_training
+│           │   ├── corrections
+│           │   │   ├── additive
+│           │   │   │   ├── FEM
+│           │   │   │   └── PhiFEM
+│           │   │   │       ├── Omega_h
+│           │   │   │       └── proj_Omega
+│           │   │   ├── additive_IPP
+│           │   │   │   ├── FEM
+│           │   │   │   └── PhiFEM
+│           │   │   │       ├── Omega_h
+│           │   │   │       └── proj_Omega
+│           │   │   └── multiplicative
+│           │   │       ├── FEM
+│           │   │       └── PhiFEM
+│           │   │           ├── Omega_h
+│           │   │           └── proj_Omega
+│           │   ├── derivatives
+│           │   │   ├── Omega
+│           │   │   └── Omega_h
+│           │   ├── models
+│           │   └── solutions
+│           └── Omega_training
+│               ├── corrections
+│               │   ├── additive
+│               │   │   ├── FEM
+│               │   │   └── PhiFEM
+│               │   │       ├── Omega_h
+│               │   │       └── proj_Omega
+│               │   ├── additive_IPP
+│               │   │   ├── FEM
+│               │   │   └── PhiFEM
+│               │   │       ├── Omega_h
+│               │   │       └── proj_Omega
+│               │   └── multiplicative
+│               │       ├── FEM
+│               │       └── PhiFEM
+│               │           ├── Omega_h
+│               │           └── proj_Omega
+│               ├── derivatives
+│               │   ├── Omega
+│               │   └── Omega_h
+│               ├── models
+│               └── solutions
+└── tree.txt
+
+366 directories, 1 file

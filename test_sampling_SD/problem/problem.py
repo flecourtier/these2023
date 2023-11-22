@@ -1,4 +1,4 @@
-from modules.problems import Circle
+from modules.Problem import Circle
 import sympy
 
 x, y = sympy.symbols('x y')
