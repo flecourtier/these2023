@@ -37,7 +37,7 @@ jobs:
       working-directory: docs
     - name: Exec pdflatex
       run:
-        bash pdflatex.sh a
+        bash pdflatex.sh ALL
       working-directory: docs
     - name: Run convert
       run: |
