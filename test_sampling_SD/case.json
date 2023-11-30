@@ -1,6 +1,8 @@
 {
     "Boundary_condition" : "exact_bc",
     "Class_PDE" : "SingleProblem",
-    "Class_Problem" : "Square",
-    "Sampling_on" : "O_cal"
+    "Geometry" : "Square",
+    "Problem" : 1,
+    "Sampling_on" : "O_cal",
+    "Correction" : "add"
 }

@@ -15,10 +15,6 @@ class Poisson2D(AbstractPDEx):
         :param sampling_on: Collocation points are sampled on the Omega domain or on the O_cal domain, defaults to "Omega"
         :param impose_exact_bc: Choice to learn u (False) or u=phi*w (True), , defaults to False
         """
-        print("problem : ",problem)
-        print("parameter_domain : ",parameter_domain)
-        print("sampling_on : ",sampling_on)
-        print("impose_exact_bc : ",impose_exact_bc)
         if sampling_on=="Omega":
             space_domain = domain.SignedDistanceBasedDomain(2, problem.domain_O, problem.levelset_construct)
         elif sampling_on=="O_cal":
@@ -125,6 +121,10 @@ class SingleProblem(Poisson2D):
         S, f, p = (0.5, 1, 0.)
         eps = 0.000001
         parameter_domain = [[S, S+eps],[f, f+eps],[p, p+eps]]
+
+        if isinstance(problem, Circle_Solution2) or isinstance(problem, Random_domain_Solution1):
+            parameter_domain = []
+
         super().__init__(problem, parameter_domain, sampling_on=sampling_on, impose_exact_bc=impose_exact_bc)
 
 #####

@@ -1,17 +1,13 @@
-from modules.problems import *
+from modules.solver.fenics_expressions import *
 
-from modules.solver.problem import *
-problem_considered = Problem().pb_considered
+from modules.Case import *
+cas = Case("case.json")
+pb_considered = cas.Problem
 
 homogeneous = True
+cd = "homo"
 
 from dolfin import *
-import dolfin as dol
-from dolfin.function.expression import (
-    BaseExpression,
-    _select_element,
-    _InterfaceExpression,
-)
 import multiphenics as mph
 import mshr
 
@@ -44,7 +40,7 @@ class PhiFemSolver:
         self.N = nb_cell
         self.params = params
 
-        domain_O = np.array(problem_considered.domain_O)
+        domain_O = np.array(pb_considered.domain_O)
         self.mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), self.N, self.N)
         self.V_macro = FunctionSpace(self.mesh_macro, "CG", polV)
 
@@ -67,7 +63,6 @@ class PhiFemSolver:
         self.phi_Omega = interpolate(self.phi_Omega, self.V_phi)
 
         # Facets and cells where we apply the ghost penalty
-                # Facets and cells where we apply the ghost penalty
         self.mesh.init(1, 2)
         facet_ghost = MeshFunction("size_t", self.mesh, self.mesh.topology().dim() - 1)
         cell_ghost = MeshFunction("size_t", self.mesh, self.mesh.topology().dim())
@@ -126,16 +121,16 @@ class PhiFemSolver:
 
     def __create_FEM_domain(self):
         # check if problem_considered is instance of Circle class
-        if isinstance(problem_considered, Circle):
-            domain = mshr.Circle(Point(problem_considered.x0, problem_considered.y0), problem_considered.r)
-        elif isinstance(problem_considered, Square):
+        if isinstance(pb_considered, Circle):
+            domain = mshr.Circle(Point(pb_considered.x0, pb_considered.y0), pb_considered.r)
+        elif isinstance(pb_considered, Square):
             domain = mshr.Rectangle(Point(0, 0), Point(1, 1))
         else:
             raise Exception("Problem not implemented")
 
         nb_vert = self.N+1
 
-        domain_O = np.array(problem_considered.domain_O)
+        domain_O = np.array(pb_considered.domain_O)
         mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), nb_vert - 1, nb_vert - 1)
         h_macro = mesh_macro.hmax()
         H = int(nb_vert/3)
@@ -150,31 +145,17 @@ class PhiFemSolver:
         dx = Measure("dx", domain=mesh)
 
         return mesh, V, dx
-    
-    def make_matrix(self, expr):
-        """To convert a FEniCS Expression into a Numpy matrix.
 
-        :param expr: FEniCS expression to convert 
-        :return: Numpy Matrix.
-        """
-        expr = project(expr)
-        expr = interpolate(expr, self.V_macro)
-        expr = expr.compute_vertex_values(self.mesh_macro)
-        expr = np.reshape(expr, [self.N + 1, self.N + 1])
-        return expr
-
-    # method direct in the non-homogeneous case
-    def fem(self, i, on_Omega=False):
+    # Phi-FEM Poisson solver
+    def fem(self, i):
         # parameter of the ghost penalty
         sigma_stab = 1.
 
         params = self.params[i]
         f_expr = FExpr(params, degree=6, domain=self.mesh)
-        y_true = UexExpr(params, degree=8, domain=self.mesh)
+        u_ex = UexExpr(params, degree=10, domain=self.mesh)
 
-        # V_phi = FunctionSpace(self.mesh, "CG", polPhi)
         phi = PhiExpr(degree=polPhi, domain=self.mesh)
-        # phi = interpolate(phi, V_phi)         
  
         a = (
             inner(grad(phi * self.u), grad(phi * self.v)) * self.dx
@@ -211,89 +192,25 @@ class PhiFemSolver:
 
         sol = phi * w
         
-        norm_L2 = (assemble((((y_true - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((y_true)) ** 2) * self.dx) ** (0.5))
+        norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
 
-        if on_Omega:
-            sol_ = project(sol, self.V)
-            sol_Omega = project(sol_, self.V_ex)
+        # if project_on_Omega:
+        #     sol_ = project(sol, self.V)
+        #     sol_Omega = project(sol_, self.V_ex)
 
-            u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
-            u_ex_Omega = project(u_ex_Omega, self.V)
-            u_ex_Omega = project(u_ex_Omega, self.V_ex)
+        #     u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
+        #     u_ex_Omega = project(u_ex_Omega, self.V)
+        #     u_ex_Omega = project(u_ex_Omega, self.V_ex)
             
-            norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
+        #     norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
             
-            return sol_Omega, norm_L2_Omega
+        #     return sol_Omega, norm_L2_Omega
 
         return sol,norm_L2
     
-    def fem_several(self):
-        sols = []
-        normes = []
-        nb = len(self.params)
-        for i in range(nb):
-            print(f"{i}/{nb}:", end="")
-            sol,norm = self.fem(i)
-            sols.append(sol)
-            normes.append(norm)
-
-        return sols,normes
-
-    def corr_mult(self, i, phi_tild):
-        """To solve the Laplace Problem for one parameters with the correction by multiplication.
-            We consider the problem : phi_tild*C
-
-        :param i: Index of the parameter.
-        :param phi_tild: FEniCS expression for the disturbed solution.
-        :return: L2 norm of the error.
-        """    
-        g = Constant("0.0")    
-        params = self.params[i]
-        f_expr = FExpr(params, degree=6, domain=self.mesh)
-        u_ex = UexExpr(params, degree=10, domain=self.mesh)
-
-        a = (
-            inner(grad((phi_tild-g) * self.u), grad((phi_tild-g) * self.v)) * self.dx
-            - dot(inner(grad((phi_tild-g) * self.u), self.n), (phi_tild-g) * self.v) * self.ds
-            # stab terms
-            + sigma_stab
-            * avg(self.h)
-            * dot(
-                jump(grad((phi_tild-g) * self.u), self.n),
-                jump(grad((phi_tild-g) * self.v), self.n),
-            )
-            * self.dS(1) #facets ghost
-            + sigma_stab
-            * self.h**2
-            * inner(
-                div(grad((phi_tild-g) * self.u)),
-                div(grad((phi_tild-g) * self.v)),
-            )
-            * self.dx(1) #cells ghost
-        )
-
-        L = (
-            f_expr * self.v * (phi_tild-g) * self.dx
-            # stab terms
-            - sigma_stab
-            * self.h**2
-            * inner(f_expr, div(grad((phi_tild-g) * self.v)))
-            * self.dx(1) #cells ghost
-        )
-
-        # Define solution function
-        C_h = Function(self.V)
-        solve(a == L, C_h)  # , solver_parameters={'linear_solver': 'mumps'})
-
-        sol = (phi_tild-g) * C_h 
-
-        norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
-
-        return sol, C_h, norm_L2
-    
-    def corr_add(self, i, phi_tild, on_Omega=False):
+    def corr_add(self, i, phi_tild):
         """To solve the Laplace Problem for one parameters with the correction by addition.
-            We consider the problem : phi_tild+C
+            We consider the problem : phi_tild + phi*C
 
         :param i: Index of the parameter.
         :param phi_tild: FEniCS expression for the disturbed solution.
@@ -303,7 +220,7 @@ class PhiFemSolver:
         params = self.params[i]
         f_expr = FExpr(params, degree=6, domain=self.mesh)
         u_ex = UexExpr(params, degree=10, domain=self.mesh)
-        phi = PhiExpr(degree=6, domain=self.mesh)
+        phi = PhiExpr(degree=polPhi, domain=self.mesh)
 
         f_tild = f_expr + div(grad(phi_tild))
 
@@ -345,73 +262,125 @@ class PhiFemSolver:
 
         norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
 
-        if on_Omega:
-            sol_ = project(sol, self.V)
-            sol_Omega = project(sol_, self.V_ex)
+        # if project_on_Omega:
+        #     sol_ = project(sol, self.V)
+        #     sol_Omega = project(sol_, self.V_ex)
 
-            u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
-            u_ex_Omega = project(u_ex_Omega, self.V)
-            u_ex_Omega = project(u_ex_Omega, self.V_ex)
+        #     u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
+        #     u_ex_Omega = project(u_ex_Omega, self.V)
+        #     u_ex_Omega = project(u_ex_Omega, self.V_ex)
             
-            norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
+        #     norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
             
-            return sol_Omega, C_tild, norm_L2_Omega
+        #     return sol_Omega, C_tild, norm_L2_Omega
     
         return sol, C_tild, norm_L2
 
-    def corr_add_IPP(self, i, phi_tild):
-        """To solve the Laplace Problem for one parameters with the correction by addition.
-            We consider the problem : phi_tild+C
+    # def corr_add_IPP(self, i, phi_tild):
+    #     """To solve the Laplace Problem for one parameters with the correction by addition.
+    #         We consider the problem : phi_tild+C
 
-        :param i: Index of the parameter.
-        :param phi_tild: FEniCS expression for the disturbed solution.
-        :return: L2 norm of the error.
-        """   
-        params = self.params[i]   
-        f_expr = FExpr(params, degree=6, domain=self.mesh)
-        u_ex = UexExpr(params, degree=10, domain=self.mesh)
-        phi = PhiExpr(degree=6, domain=self.mesh)
+    #     :param i: Index of the parameter.
+    #     :param phi_tild: FEniCS expression for the disturbed solution.
+    #     :return: L2 norm of the error.
+    #     """   
+    #     params = self.params[i]   
+    #     f_expr = FExpr(params, degree=6, domain=self.mesh)
+    #     u_ex = UexExpr(params, degree=10, domain=self.mesh)
+    #     phi = PhiExpr(degree=6, domain=self.mesh)
 
-        f_tild = f_expr + div(grad(phi_tild))
+    #     f_tild = f_expr + div(grad(phi_tild))
 
-        a = (
-            inner(grad(phi * self.u), grad(phi * self.v)) * self.dx
-            - dot(inner(grad(phi * self.u), self.n), phi * self.v) * self.ds
-            # stab terms
-            + sigma_stab
-            * avg(self.h)
-            * dot(
-                jump(grad(phi * self.u), self.n),
-                jump(grad(phi * self.v), self.n),
-            )
-            * self.dS(1) #facets ghost
-            + sigma_stab
-            * self.h**2
-            * inner(
-                div(grad(phi * self.u)),
-                div(grad(phi * self.v)),
-            )
-            * self.dx(1) #cells ghost
-        )
+    #     a = (
+    #         inner(grad(phi * self.u), grad(phi * self.v)) * self.dx
+    #         - dot(inner(grad(phi * self.u), self.n), phi * self.v) * self.ds
+    #         # stab terms
+    #         + sigma_stab
+    #         * avg(self.h)
+    #         * dot(
+    #             jump(grad(phi * self.u), self.n),
+    #             jump(grad(phi * self.v), self.n),
+    #         )
+    #         * self.dS(1) #facets ghost
+    #         + sigma_stab
+    #         * self.h**2
+    #         * inner(
+    #             div(grad(phi * self.u)),
+    #             div(grad(phi * self.v)),
+    #         )
+    #         * self.dx(1) #cells ghost
+    #     )
 
-        L = (
-            f_expr * self.v * phi * self.dx
-            - inner(grad(phi_tild), grad(phi * self.v)) * self.dx
-            + dot(inner(grad(phi_tild), self.n), phi * self.v) * self.ds
-            # stab terms
-            - sigma_stab
-            * self.h**2
-            * inner(f_tild, div(grad(phi * self.v)))
-            * self.dx(1) #cells ghost
-        )
+    #     L = (
+    #         f_expr * self.v * phi * self.dx
+    #         - inner(grad(phi_tild), grad(phi * self.v)) * self.dx
+    #         + dot(inner(grad(phi_tild), self.n), phi * self.v) * self.ds
+    #         # stab terms
+    #         - sigma_stab
+    #         * self.h**2
+    #         * inner(f_tild, div(grad(phi * self.v)))
+    #         * self.dx(1) #cells ghost
+    #     )
 
-        # Define solution function
-        C_h = Function(self.V)
-        solve(a == L, C_h)  # , solver_parameters={'linear_solver': 'mumps'})
+    #     # Define solution function
+    #     C_h = Function(self.V)
+    #     solve(a == L, C_h)  # , solver_parameters={'linear_solver': 'mumps'})
 
-        C_tild = phi*C_h
-        sol = C_tild + phi_tild
+    #     C_tild = phi*C_h
+    #     sol = C_tild + phi_tild
 
-        norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+    #     norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
 
-        return sol, C_h, norm_L2
+    #     return sol, C_h, norm_L2
+
+    # def corr_mult(self, i, phi_tild):
+    #     """To solve the Laplace Problem for one parameters with the correction by multiplication.
+    #         We consider the problem : phi_tild*C
+
+    #     :param i: Index of the parameter.
+    #     :param phi_tild: FEniCS expression for the disturbed solution.
+    #     :return: L2 norm of the error.
+    #     """    
+    #     g = Constant("0.0")    
+    #     params = self.params[i]
+    #     f_expr = FExpr(params, degree=6, domain=self.mesh)
+    #     u_ex = UexExpr(params, degree=10, domain=self.mesh)
+
+    #     a = (
+    #         inner(grad((phi_tild-g) * self.u), grad((phi_tild-g) * self.v)) * self.dx
+    #         - dot(inner(grad((phi_tild-g) * self.u), self.n), (phi_tild-g) * self.v) * self.ds
+    #         # stab terms
+    #         + sigma_stab
+    #         * avg(self.h)
+    #         * dot(
+    #             jump(grad((phi_tild-g) * self.u), self.n),
+    #             jump(grad((phi_tild-g) * self.v), self.n),
+    #         )
+    #         * self.dS(1) #facets ghost
+    #         + sigma_stab
+    #         * self.h**2
+    #         * inner(
+    #             div(grad((phi_tild-g) * self.u)),
+    #             div(grad((phi_tild-g) * self.v)),
+    #         )
+    #         * self.dx(1) #cells ghost
+    #     )
+
+    #     L = (
+    #         f_expr * self.v * (phi_tild-g) * self.dx
+    #         # stab terms
+    #         - sigma_stab
+    #         * self.h**2
+    #         * inner(f_expr, div(grad((phi_tild-g) * self.v)))
+    #         * self.dx(1) #cells ghost
+    #     )
+
+    #     # Define solution function
+    #     C_h = Function(self.V)
+    #     solve(a == L, C_h)  # , solver_parameters={'linear_solver': 'mumps'})
+
+    #     sol = (phi_tild-g) * C_h 
+
+    #     norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+
+    #     return sol, C_h, norm_L2

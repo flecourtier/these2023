@@ -48,7 +48,6 @@ def test_laplacian_2d(cas, num_config, dict, save_sampling = False, new_training
     sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
 
     if save_sampling:
-        print(dict)
         if cas.sampling_on=="Omega":
             bornes = pde.space_domain.surrounding_domain.bound
         elif cas.sampling_on=="O_cal":

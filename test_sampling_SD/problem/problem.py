@@ -1,11 +1,38 @@
-from modules.Problem import Circle
+# from modules.Problem import Circle
 import sympy
 
 x, y = sympy.symbols('x y')
 S, f, p = sympy.symbols('S f p')
-x0, y0 = sympy.symbols('x0 y0')
-r = sympy.symbols('r')
-u_ex = S * sympy.sin(1/(r**2)*sympy.pi*((x-x0)**2+(y-y0)**2))
+
+##########
+# Circle #
+##########
+
+# x0, y0 = sympy.symbols('x0 y0')
+# r = sympy.symbols('r')
+
+##
+# Solution 1
+##
+
+# u_ex = S * sympy.sin(1/(r**2)*sympy.pi*((x-x0)**2+(y-y0)**2))
+
+##
+# Solution 2
+##
+
+# phi = -r**2+(x-x0)**2+(y-y0)**2
+# u_ex = phi*sympy.sin(x)*sympy.exp(y)
+
+##########
+# Square #
+##########
+
+##
+# Solution 1
+##
+
+u_ex = S*sympy.sin(2*sympy.pi*f*x + p) * sympy.sin(2*sympy.pi*f*y + p)
 
 print("Dérivées premières : ")
 grad_x = sympy.diff(u_ex, x)

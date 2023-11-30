@@ -1,0 +1,90 @@
+\subsection*{Anciennes tâches}
+
+\textbf{Code :}
+\begin{itemize}[label=$\square$] 
+	\item[\previous{5}] trier les modifs dans le code ScimBa (pour pouvoir valider les issues)
+	\item[\previous{5}] faire une étude du paramètre $\sigma$ (possibilité de choisir 2 $\sigma$
+	\item[\previous{5}] afficher $\Delta \tilde{\phi}$ à la fin de l'entraînement (et comparer avec $f$)
+	\item[\previous{5}] tester correction par addition avec IPP
+	\item[\previous{5}] Tester $\tilde{u}=\tilde{\phi}+\tilde{\phi}\tilde{C}$ au lieu de $\tilde{u}=\tilde{\phi}+\phi\tilde{C}$ pour la correction par addition
+	\item[\previous{5}] Tester sur une forme aléatoire (générée par le code de Killian)
+	\item[\previous{6}] vérifier les projections faites pour les plots des erreurs (cas FEM standard)
+	\item[\previous{6}] (results Fig10+Fig11) : modifier colormap (comme plot dans scimba ?) + fixer l'échelle !
+	\item[\previous{6}] merge branche develop dans ma branche (car ajout d'une fonction d'activation supplémentaire qu'il faudra peut-être que je teste)
+	\item[\previous{6}] Cas $f$ qui varie : rajouter plus de paramètres (fréquence, phase à l'origine) 
+	\item[\previous{6}] Retester avec solveur itératif type gradient conjugué (+ regarder ce qui est fait actuellement)
+	\item[\previous{6}] Regarder \url{https://www.youtube.com/watch?v=G_hIppUWcsc} sur les PINNs
+	\item[\previous{7}] revoir résultats du stage où $\Omega$ est un carré
+	\item[\previous{7}] projeter dérivées 2ndes et 1ères sur $\Omega$
+	\item[\previous{7}] pour la correction par addition plot : \\
+	\begin{minipage}{0.48\linewidth}
+		\begin{tabular}[\linewidth]{lc}
+			$C_{theorique}$ & $\frac{u_{ex}-u_\theta}{\phi}$ \\
+			$C$ & $C_{\phi-FEM}$ \\
+			$\tilde{C}_{theorique}$ & $u_{ex}-u_\theta$ \\
+			$\tilde{C}$ & $\tilde{C}_{\phi-FEM}=\phi C_{\phi-FEM}$ et $\tilde{C}_{FEM}$
+		\end{tabular}
+	\end{minipage}
+	\begin{minipage}{0.48\linewidth}
+		\begin{tabular}[\linewidth]{l}
+			dérivées de $C_{theorique}$ \\
+			dérivées de $C$ \\
+			dérivées de $\tilde{C}_{theorique}$ \\
+			dérivées de $\tilde{C}$
+		\end{tabular}
+	\end{minipage} \\
+	sur $\Omega_h$ et projeté sur $\Omega$
+	\item[\previous{7}] Pour Correction par addition avec FEM : augmenter le degré de $\tilde{C}$ (P2) et comparer avec FEM où $u$ de plus haut degré aussi (P2) $\rightarrow$ But : voir l'influence du degré sur le facteur
+	\item[\previous{7}] Utiliser prédiction de $u_\theta$ sur un maillage conforme puis interpoler sur $\Omega_h$
+	\item[\previous{7}] Correction avec $\phi$-FEM : prédiction sur un maillage conforme de $\Omega$ puis interpolation FEniCS sur $\Omega_h$
+	\item[\previous{7}] Afficher $f$ et $\tilde{f}=f+\Delta u_\theta$ sur $\Omega$ et sur $\Omega_h$
+\end{itemize}
+\textbf{CI/Documentation :}
+\begin{itemize}[label=$\square$] 
+	\item[\previous{6}] Antora : pb avec couleur texte
+	\item[\previous{7}] modifier fichier résultat (+antora) pour ordonner les résultats plutôt sous forme de rapport que sous forme de week
+	\item[\previous{7}] penser rajouter la figure où on projette la solution sur $\omega$ dans le cas de l'entraînement sur le cercle
+	\item[\previous{8}] Github Pages : sommaire pas affiché dans les pdf + pb affichage avec antora (fichier "convert\_latex\_to\_antora" à modifier)
+	\item[\previous{8}] Documenter le code python (docstring)
+	\item[\previous{8}] rajouter doc sphinx sur github + CI
+	\item[\previous{8}] Antora : trier le script python convert\_latex\_to\_antora et le mettre au propre
+	\item[\previous{8}] mettre au propre tous les résultats 
+	\item[\previous{8}] rajouter : lancement de la CI uniquement quand docs est modifié
+\end{itemize}
+\textbf{Autre :}
+\begin{itemize}[label=$\square$] 
+	\item[\previous{4}] faire sauvegarder sur disque dur tablette et pc fixe
+	\item[\previous{6}] Regarder formations amethis
+	\item[\previous{7}] Rattraper Formation FIDLE - Seq 1
+	\item[\previous{8}] Rattraper Formation FIDLE - Seq 2
+	\item[\previous{8}] MOOC : intégrité scientifique
+	\item[\previous{8}] VPN du bâtiment explora à tester !
+\end{itemize}
+
+\newpage
+
+\subsection*{Nouvelles tâches}
+
+\textbf{Présentation - 12/12/2023 :}
+\begin{itemize}[label=$\square$] 
+	\item 
+\end{itemize}
+\textbf{Code :}
+\begin{itemize}[label=$\square$] 
+	\item
+\end{itemize}
+\textbf{CI/Documentation :}
+\begin{itemize}[label=$\square$] 
+	\item 
+\end{itemize}
+\textbf{Autre :}
+\begin{itemize}[label=$\square$] 
+	\item
+\end{itemize}
+\textbf{Hebdomadaire :}
+\begin{itemize}[label=$\square$] 
+%	\item Préparer Meeting \textcolor{red}{$\rightarrow$ DATE}
+	\item[\done] Préparer TP7 + cours 7 \textcolor{red}{$\rightarrow$ 01/12/2023}
+	\item faire abstract de la semaine 
+	\item push tout le code sur github \textbf{vendredi}
+\end{itemize}

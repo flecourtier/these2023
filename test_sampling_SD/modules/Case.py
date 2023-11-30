@@ -34,15 +34,35 @@ class Case:
             raise ValueError("Sampling_on not recognized")
         
         # Problem
-        if dict["Class_Problem"] == "Circle":
-            self.class_Problem = Circle
-        elif dict["Class_Problem"] == "Square":
-            self.class_Problem = Square
+        num_pb = dict["Problem"]
+        if dict["Geometry"] == "Circle":
+            if num_pb == 1:
+                self.class_Problem = Circle_Solution1
+            elif num_pb == 2:
+                self.class_Problem = Circle_Solution2
+            else:
+                raise ValueError("Problem not recognized")
+        elif dict["Geometry"] == "Square":
+            if num_pb == 1:
+                self.class_Problem = Square_Solution1
+            else:
+                raise ValueError("Problem not recognized")
+        elif dict["Geometry"] == "Random_domain":
+            if num_pb == 1:
+                self.class_Problem = Random_domain_Solution1
+            else:
+                raise ValueError("Problem not recognized")
         else:
-            raise ValueError("Class_Problem not recognized")
+            raise ValueError("Geometry not recognized")
+        
+        # Correction
+        self.corr_type = dict["Correction"]
+        assert self.corr_type in ["add","mult"]
 
         self.Problem = self.class_Problem()
         self.PDE = self.class_PDE(self.Problem, sampling_on=self.sampling_on, impose_exact_bc=self.impose_exact_bc)
         
-        self.dir_name = "networks/"+dict["Boundary_condition"]+"/"+dict["Class_PDE"]+"/"+dict["Class_Problem"]+"/"+dict["Sampling_on"]+"_training/"
+        subdir_name = dict["Geometry"]+"_Solution"+str(dict["Problem"])
+        self.dir_name = "networks/"+dict["Boundary_condition"]+"/"+dict["Class_PDE"]+"/"+subdir_name+"/"+dict["Sampling_on"]+"_training/"
 
+        self.corr_dir_name = self.dir_name+"corrections/"+self.corr_type+"/"

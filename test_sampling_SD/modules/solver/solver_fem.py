@@ -1,20 +1,13 @@
+from modules.solver.fenics_expressions import *
 
-from modules.problems import *
+from modules.Case import *
+cas = Case("case.json")
+pb_considered = cas.Problem
 
-from modules.solver.problem import *
-problem_considered = Problem().pb_considered
-
-homogeneous = True
+# homogeneous = True
 cd = "homo"
 
 from dolfin import *
-import dolfin as dol
-from dolfin.function.expression import (
-    BaseExpression,
-    _select_element,
-    _InterfaceExpression,
-)
-import multiphenics as mph
 import mshr
 
 parameters["ghost_mode"] = "shared_facet"
@@ -22,12 +15,11 @@ parameters["form_compiler"]["cpp_optimize"] = True
 parameters["form_compiler"]["optimize"] = True
 parameters["allow_extrapolation"] = True
 parameters["form_compiler"]["representation"] = "uflacs"
+# parameters["form_compiler"]["quadrature_degree"] = 10
 
-# #######
-# # FEM #
-# #######
-
-import matplotlib.pyplot as plt
+#######
+# FEM #
+#######
 
 class FEMSolver():
     def __init__(self,nb_cell,params):
@@ -35,24 +27,18 @@ class FEMSolver():
         self.params = params
         self.mesh,self.V,self.dx = self.__create_FEM_domain()
 
-    def make_matrix(self,expr):
-        nb_vert = self.N+1
-        expr = expr.compute_vertex_values(self.mesh)
-        expr = np.reshape(expr, [nb_vert, nb_vert])
-        return expr
-
     def __create_FEM_domain(self):
-        # check if problem_considered is instance of Circle class
-        if isinstance(problem_considered, Circle):
-            domain = mshr.Circle(Point(problem_considered.x0, problem_considered.y0), problem_considered.r)
-        elif isinstance(problem_considered, Square):
+        # check if pb_considered is instance of Circle class
+        if isinstance(pb_considered, Circle):
+            domain = mshr.Circle(Point(pb_considered.x0, pb_considered.y0), pb_considered.r)
+        elif isinstance(pb_considered, Square):
             domain = mshr.Rectangle(Point(0, 0), Point(1, 1))
         else:
             raise Exception("Problem not implemented")
         
         nb_vert = self.N+1
             
-        domain_O = np.array(problem_considered.domain_O)
+        domain_O = np.array(pb_considered.domain_O)
         mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), nb_vert - 1, nb_vert - 1)
         h_macro = mesh_macro.hmax()
         H = int(nb_vert/3)
@@ -76,7 +62,6 @@ class FEMSolver():
         u_ex = UexExpr(params, degree=10, domain=self.mesh)
 
         phi = PhiExpr(degree=10,domain=self.mesh)
-        phi_tild = Constant("1.0")
         
         if cd=="homo":
             g = Constant("0.0")
@@ -88,58 +73,16 @@ class FEMSolver():
         v = TestFunction(self.V)
         
         # Resolution of the variationnal problem
-        a = inner(grad(phi_tild * u), grad(phi_tild * v)) * self.dx
-        l = f_expr * phi_tild * v * self.dx
+        a = inner(grad(u), grad(v)) * self.dx
+        l = f_expr * v * self.dx
 
-        C = Function(self.V)
+        sol = Function(self.V)
 
-        solve(a==l, C, bcs=bc)
-        
-        u_Corr = phi_tild * C
+        solve(a==l, sol, bcs=bc)
 
-        norme_L2 = (assemble((((u_ex - u_Corr)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+        norme_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
 
-        return u_Corr,norme_L2
-    
-    def fem_several(self):
-        sols = []
-        normes = []
-        nb = len(self.params)
-        for i in range(nb):
-            print(f"{i}/{nb}:", end="")
-            sol,norm = self.fem(i)
-            sols.append(sol)
-            normes.append(norm)
-
-        return sols,normes
-        
-    def corr_mult(self, i, phi_tild, m=0.):
-        boundary = "on_boundary"
-
-        params = self.params[i]
-        f_expr = FExpr(params, degree=10, domain=self.mesh)
-        u_ex = UexExpr(params, degree=10, domain=self.mesh)
-
-        phi_hat = phi_tild+m
-
-        g = Constant("1.0")
-        bc = DirichletBC(self.V, g, boundary)
-
-        u = TrialFunction(self.V)
-        v = TestFunction(self.V)
-        
-        # Resolution of the variationnal problem
-        a = inner(grad(phi_hat * u), grad(phi_hat * v)) * self.dx
-        l = f_expr * phi_hat * v * self.dx
-        C = Function(self.V)
-
-        solve(a==l, C, bcs=bc)
-        
-        u_Corr = phi_hat * C - m
-
-        norme_L2 = (assemble((((u_ex - u_Corr)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
-        
-        return u_Corr,C,norme_L2
+        return sol,norme_L2
 
     def corr_add(self, i, phi_tild):
         boundary = "on_boundary"
@@ -147,9 +90,6 @@ class FEMSolver():
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh)
         u_ex = UexExpr(params, degree=10, domain=self.mesh)
-
-        # V = FunctionSpace(self.mesh, "CG", 2)
-        # phi_tild = project(phi_tild, V)
 
         f_tild = f_expr + div(grad(phi_tild))
 
@@ -162,40 +102,68 @@ class FEMSolver():
         # Resolution of the variationnal problem
         a = inner(grad(u), grad(v)) * self.dx
         l = f_tild * v * self.dx
-        C = Function(self.V)
+        C_tild = Function(self.V)
 
-        solve(a==l, C, bcs=bc)
+        solve(a==l, C_tild, bcs=bc)
         
-        u_Corr = C + phi_tild
+        sol = C_tild + phi_tild
 
-        norme_L2 = (assemble((((u_ex - u_Corr)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+        norme_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
         
-        return u_Corr,C,norme_L2
+        return sol,C_tild,norme_L2
     
-    def corr_add_IPP(self, i, phi_tild):
-        boundary = "on_boundary"
+    # def corr_add_IPP(self, i, phi_tild):
+    #     boundary = "on_boundary"
 
-        params = self.params[i]
-        f_expr = FExpr(params, degree=10, domain=self.mesh)
-        u_ex = UexExpr(params, degree=10, domain=self.mesh)
+    #     params = self.params[i]
+    #     f_expr = FExpr(params, degree=10, domain=self.mesh)
+    #     u_ex = UexExpr(params, degree=10, domain=self.mesh)
         
-        # f_tild = f_expr + div(grad(phi_tild))
+    #     # f_tild = f_expr + div(grad(phi_tild))
 
-        g = Constant(0.0)
-        bc = DirichletBC(self.V, g, boundary)
+    #     g = Constant(0.0)
+    #     bc = DirichletBC(self.V, g, boundary)
 
-        u = TrialFunction(self.V)
-        v = TestFunction(self.V)
+    #     u = TrialFunction(self.V)
+    #     v = TestFunction(self.V)
         
-        # Resolution of the variationnal problem
-        a = inner(grad(u), grad(v)) * self.dx
-        l = f_expr * v * self.dx - inner(grad(phi_tild), grad(v)) * self.dx
-        C = Function(self.V)
+    #     # Resolution of the variationnal problem
+    #     a = inner(grad(u), grad(v)) * self.dx
+    #     l = f_expr * v * self.dx - inner(grad(phi_tild), grad(v)) * self.dx
+    #     C = Function(self.V)
 
-        solve(a==l, C, bcs=bc)
+    #     solve(a==l, C, bcs=bc)
         
-        u_Corr = C + phi_tild
+    #     u_Corr = C + phi_tild
 
-        norme_L2 = (assemble((((u_ex - u_Corr)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+    #     norme_L2 = (assemble((((u_ex - u_Corr)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
         
-        return u_Corr,C,norme_L2
+    #     return u_Corr,C,norme_L2
+    
+    # def corr_mult(self, i, phi_tild, m=0.):
+    #     boundary = "on_boundary"
+
+    #     params = self.params[i]
+    #     f_expr = FExpr(params, degree=10, domain=self.mesh)
+    #     u_ex = UexExpr(params, degree=10, domain=self.mesh)
+
+    #     phi_hat = phi_tild+m
+
+    #     g = Constant("1.0")
+    #     bc = DirichletBC(self.V, g, boundary)
+
+    #     u = TrialFunction(self.V)
+    #     v = TestFunction(self.V)
+        
+    #     # Resolution of the variationnal problem
+    #     a = inner(grad(phi_hat * u), grad(phi_hat * v)) * self.dx
+    #     l = f_expr * phi_hat * v * self.dx
+    #     C = Function(self.V)
+
+    #     solve(a==l, C, bcs=bc)
+        
+    #     u_Corr = phi_hat * C - m
+
+    #     norme_L2 = (assemble((((u_ex - u_Corr)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+        
+    #     return u_Corr,C,norme_L2

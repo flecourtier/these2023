@@ -8,6 +8,7 @@ def get_empty_num_config(dir_name):
         config_filename = dir_name+"config_"+str(config)+".json"
         # si il n'existe pas, break
         if not os.path.isfile(config_filename):
+            print("LA",config_filename)
             break
         config += 1
     return config

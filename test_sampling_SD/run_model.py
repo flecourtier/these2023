@@ -89,7 +89,7 @@ def get_args():
     parser.add_argument("--n_epochs", help="Number of epochs during training.", type=int, default=10000)
     parser.add_argument("--n_collocations", help="Number of collocation points inside the domain during training.", type=int, default=2000)
     if not impose_exact_bc:
-        parser.add_argument("--n_bc_collocation", help="Number of collocation points on the boundary during training.", type=int, default=500)
+        parser.add_argument("--n_bc_collocations", help="Number of collocation points on the boundary during training.", type=int, default=500)
     parser.add_argument("--n_data", help="Number of data during training.", type=int, default=0)
 
     args = parser.parse_args()
@@ -121,7 +121,8 @@ def get_config_filename(args,parser):
         if args.config==None:
             print("## No config file provided")
             print("# New model created")
-            config = get_empty_num_config(dir_name+"models")
+            print(dir_name+"models")
+            config = get_empty_num_config(dir_name+"models/")
 
         # si il y a un fichier de configuration fournit ("--config" est dans les arguments)
         else:
@@ -145,7 +146,7 @@ def get_config_filename(args,parser):
                         value = getattr(args, arg)
                         vars(args_config)[arg] = value
 
-                config = get_empty_num_config(dir_name+"models")
+                config = get_empty_num_config(dir_name+"models/")
             else:
                 print("# Load model from config file")
 
@@ -170,4 +171,4 @@ print("### Model file : ",model_filename)
 dict = read_config(config_filename)
 
 test_laplacian_2d(cas,config,dict,save_sampling=save_sampling,new_training=new_training)
-# create_xlsx_file(problem_considered,pde_considered)
+create_xlsx_file(cas)
