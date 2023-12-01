@@ -6,6 +6,8 @@
 \newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\ding{51}}}%
 	\hspace{-2.5pt}}
 \newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\ding{55}}}
+\newcommand{\later}{$\downdownarrows$}
+\newcommand{\previous}[1]{\rlap{\large$\circlearrowright$}{\raisebox{2pt}{\tiny\hspace{2.5pt}#1}}}
 
 \newcommand{\sdone}{\rlap{\LARGE $\circ$}{\raisebox{2pt}{\hspace{1pt}\ding{51}}}}
 \newcommand{\swontfix}{\rlap{\LARGE $\circ$}{\hspace{1pt}\ding{55}}}
