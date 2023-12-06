@@ -1,0 +1,5 @@
+{
+    "geometry":"circle",
+    "method":"fem",
+    "homogeneous":1
+}
