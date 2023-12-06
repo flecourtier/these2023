@@ -61,12 +61,12 @@ class FEMSolver():
         f_expr = FExpr(params, degree=10, domain=self.mesh)
         u_ex = UexExpr(params, degree=10, domain=self.mesh)
 
-        phi = PhiExpr(degree=10,domain=self.mesh)
+        # phi = PhiExpr(degree=10,domain=self.mesh)
         
         if cd=="homo":
             g = Constant("0.0")
-        else:
-            g = u_ex*(Constant("1.0")+phi)
+        # else:
+        #     g = u_ex*(Constant("1.0")+phi)
         bc = DirichletBC(self.V, g, boundary)
 
         u = TrialFunction(self.V)

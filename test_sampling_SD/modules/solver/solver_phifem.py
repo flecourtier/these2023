@@ -23,8 +23,8 @@ parameters["form_compiler"]["representation"] = "uflacs"
 
 polV=1
 polPhi=2
-sigma_stab=1.0
-gamma=1.0 
+# sigma_stab=1.0
+# gamma=1.0 
 
 class PhiFemSolver:
     def __init__(self, nb_cell, params):
@@ -147,13 +147,10 @@ class PhiFemSolver:
         return mesh, V, dx
 
     # Phi-FEM Poisson solver
-    def fem(self, i):
-        # parameter of the ghost penalty
-        sigma_stab = 1.
-
+    def fem(self, i, sigma_stab=1.0):
         params = self.params[i]
         f_expr = FExpr(params, degree=6, domain=self.mesh)
-        u_ex = UexExpr(params, degree=10, domain=self.mesh)
+        u_ex = UexExpr(params, degree=8, domain=self.mesh)
 
         phi = PhiExpr(degree=polPhi, domain=self.mesh)
  
@@ -208,7 +205,7 @@ class PhiFemSolver:
 
         return sol,norm_L2
     
-    def corr_add(self, i, phi_tild):
+    def corr_add(self, i, phi_tild, sigma_stab=1.0):
         """To solve the Laplace Problem for one parameters with the correction by addition.
             We consider the problem : phi_tild + phi*C
 
@@ -218,9 +215,9 @@ class PhiFemSolver:
         """     
 
         params = self.params[i]
-        f_expr = FExpr(params, degree=6, domain=self.mesh)
+        f_expr = FExpr(params, degree=10, domain=self.mesh)
         u_ex = UexExpr(params, degree=10, domain=self.mesh)
-        phi = PhiExpr(degree=polPhi, domain=self.mesh)
+        phi = PhiExpr(degree=10, domain=self.mesh)
 
         f_tild = f_expr + div(grad(phi_tild))
 
@@ -255,24 +252,12 @@ class PhiFemSolver:
 
         # Define solution function
         C_h = Function(self.V)
-        solve(a == L, C_h)  # , solver_parameters={'linear_solver': 'mumps'})
+        solve(a == L, C_h)
 
         C_tild = phi*C_h
         sol = C_tild + phi_tild
 
         norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
-
-        # if project_on_Omega:
-        #     sol_ = project(sol, self.V)
-        #     sol_Omega = project(sol_, self.V_ex)
-
-        #     u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
-        #     u_ex_Omega = project(u_ex_Omega, self.V)
-        #     u_ex_Omega = project(u_ex_Omega, self.V_ex)
-            
-        #     norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
-            
-        #     return sol_Omega, C_tild, norm_L2_Omega
     
         return sol, C_tild, norm_L2
 
