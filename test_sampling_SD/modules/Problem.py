@@ -4,6 +4,8 @@ from modules.Geometry import *
 
 class Circle_Solution1(Circle):
     def __init__(self):
+        print(self.__class__.__name__)
+
         super().__init__()
 
     def u_ex(self, pre, xy, mu):
@@ -71,6 +73,7 @@ class Circle_Solution1(Circle):
 
 class Circle_Solution2(Circle):
     def __init__(self):
+        print(self.__class__.__name__)
         super().__init__()
 
     def u_ex(self, pre, xy, mu):
@@ -133,6 +136,7 @@ class Circle_Solution2(Circle):
 
 class Square_Solution1(Square):
     def __init__(self):
+        print(self.__class__.__name__)
         super().__init__()
         
     def u_ex(self, pre, xy, mu):
@@ -200,6 +204,7 @@ class Square_Solution1(Square):
 
 class Random_domain_Solution1(Random_domain):
     def __init__(self):
+        print(self.__class__.__name__)
         super().__init__()
 
     def u_ex(self, pre, xy, mu):
