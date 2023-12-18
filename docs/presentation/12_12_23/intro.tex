@@ -1,0 +1,179 @@
+\begin{frame}{Scientific context}
+    \textbf{Context :} Create real-time digital twins of an organ (such as the liver).
+
+    \textbf{$\phi$-FEM Method :} New fictitious domain finite element method.
+
+    \begin{enumerate}[\ding{217}]
+        \item domain given by a level-set function $\Rightarrow$ don't require a mesh fitting the boundary 
+        \item allow to work on complex geometries 
+        \item ensure geometric quality 
+        % \item Cartesian grid adapted for neural networks
+    \end{enumerate}
+    
+    \begin{center}
+        \pgfimage[width=0.65\linewidth]{images/intro/context_geometry.png}
+    \end{center}	
+
+    \textit{Practical case:} Real-time simulation, shape optimization...
+\end{frame}
+
+\begin{frame}{Objectives}
+    \textbf{Internship objective :} Correct and certify the prediction of a Fourier Neural Operator (FNO), trained with $\phi$-FEM solution.
+
+    \vspace{5pt}
+
+    \textbf{PhD Objective :} Develop hybrid finite element / neural network methods.
+    \small
+    \begin{center}
+        \setstretch{0.5}
+        \begin{minipage}[t]{0.49\linewidth}
+               \centering\textbf{OFFLINE}
+               \begin{itemize}
+                   \item Learn several geometry representations
+                   \item Generate $\phi$-FEM solutions as training data on several geometry
+                   \item Train a Neural Operator (to map the geometry and the function on the solution)
+               \end{itemize}
+           \end{minipage} \hfill\vline\hfill \begin{minipage}[t]{0.49\linewidth}
+               \centering\textbf{ONLINE} \\
+               Data : 1 geometry + 1 function
+               \begin{itemize}
+                   \item Compute representation of 1 geometry and 1 function
+                   \item Compute predictions from the Neural Operator
+                   \item Use $\phi$-FEM to correct the prediction
+               \end{itemize}
+           \end{minipage}
+    \end{center}
+
+    \vspace{5pt}
+
+    \normalsize
+
+    \textbf{Evolution :}
+
+    \small
+    % \setstretch{0.5}
+    \begin{itemize}
+        \item Geometry : 2D, simple, fixed (as circle, ellipse..) $ \; \rightarrow \;$ 3D / complex / variable
+        \item PDE : simple, static (Poisson problem) $\; \rightarrow \;$ complex / dynamic (elasticity, hyper-elasticity)
+        \item Neural Network : simple and defined everywhere (PINNs) $\; \rightarrow \;$ Neural Operator
+    \end{itemize}
+    
+    
+    % \begin{center}
+    %     \setstretch{0.5}
+    %     \begin{minipage}[t]{0.49\linewidth}
+    %            \centering\textbf{Preliminary case}
+    %            \begin{itemize}
+    %                \item Geometry : 2D, simple, fixed (as circle, ellipse..)
+    %                \item PDE : simple, static (Poisson problem)
+    %                \item Neural Network : simple and defined everywhere (PINNs)
+    %            \end{itemize}
+    %        \end{minipage} \hfill\vline\hfill \begin{minipage}[t]{0.49\linewidth}
+    %            \centering\textbf{Future case} 
+    %            \begin{itemize}
+    %                 \item 3d / complex / variable
+    %                \item complex / dynamic (elasticity, hyper-elasticity)
+    %                \item Neural Operator
+    %            \end{itemize}
+    %        \end{minipage}
+    % \end{center}
+\end{frame}
+
+\begin{frame}{PDE considered}
+    \textbf{Poisson problem with Dirichlet conditions :} \\
+    Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
+    \begin{equation}
+        \left\{
+        \begin{aligned}
+            -\Delta u &= f, \; &&\text{in } \; \Omega, \\
+            u&=g, \; &&\text{on } \; \Gamma,
+        \end{aligned}
+        \right. \tag{$\mathcal{P}$} \label{pb_initial}
+    \end{equation}
+    with $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary. \\
+    We will define by
+    \begin{equation*}
+        ||u_{ex}-u_{method}||_{0,\Omega}^{(rel)}=\frac{\int_\Omega (u_{ex}-u_{method})^2}{\int_\Omega u_{ex}^2}
+    \end{equation*}
+    the relative error between
+    \begin{itemize}
+        \item $u_{ex}$ : the exact solution  
+        \item $u_{method}$ : the solution obtained by a method \\
+        (can be : FEM or $\phi$-FEM, a correction solver or the prediction of an neural network).
+    \end{itemize}
+\end{frame}
+	
+% \begin{frame}{Problem 1 - Trigonometric solution on a Square}
+%     \setstretch{0.7}
+%     \begin{minipage}{0.3\linewidth}
+%         \centering
+%         \pgfimage[width=0.8\linewidth]{images/intro/geom_square.png}
+%     \end{minipage} \;
+%     \begin{minipage}{0.68\linewidth}
+%         \begin{enumerate}[\ding{217}]
+%             \item Level-set function : 
+%             $$\phi(x,y)=x(1-x)y(1-y)$$
+%             \item Analytical solution : (Homogeneous if $\varphi=0$)
+%             $$u_{ex}(x,y)=S\times sin\left(2\pi fx+\varphi\right)\times sin\left(2\pi fy+\varphi\right)$$				
+%         \end{enumerate}
+%     \end{minipage}
+    
+%     \begin{enumerate}[\ding{217}]
+%         \item Source term : $$f(x,y)=8\pi^2 Sf^2sin\left(2\pi fx + \varphi\right)sin\left(2\pi fy + \varphi\right)$$
+        
+%         \begin{minipage}{0.48\linewidth}
+%             \begin{itemize}
+%                 \item $S=0.5\in[0,1]$ : amplitude of the signal 
+%                 \item $f\in\mathbb{N}$ : "frequency" of the signal
+%                 \item $\varphi\in[0,1]$ : phase at the origin
+%             \end{itemize}
+%         \end{minipage} \;
+%         \begin{minipage}{0.48\linewidth}
+%             \centering
+%             \pgfimage[width=\linewidth]{images/intro/norms.png}
+%         \end{minipage}
+%     \end{enumerate}
+% \end{frame}
+
+\begin{frame}{Problem - Unknown solution on a Circle}
+    \setstretch{0.7}
+    \begin{minipage}{0.3\linewidth}
+        \centering
+        \pgfimage[width=0.9\linewidth]{images/intro/geom_circle2.png}
+    \end{minipage} \;
+    \begin{minipage}{0.68\linewidth}
+        \begin{enumerate}[\ding{217}]
+            \item \textbf{Level-set function : }
+            $$\phi(x,y)=-1/8+(x-1/2)^2+(y-1/2)^2$$
+
+            \item \textbf{FNO solution :} 
+    
+            \begin{equation}
+            	f(x,y) = \exp\left(-\frac{(x-\mu_0)^2 + (y-\mu_1)^2}{2\sigma^2}\right) \label{sol1}
+            \end{equation} 
+            with $\quad \begin{aligned}[t]
+                &\sigma \sim \mathcal{U}([0.1,0.6]) \\
+                &\mu_0, \mu_1 \sim \mathcal{U}(]X_0-r, X_0+r[)
+            \end{aligned}$
+            
+            \footnotesize
+            % \textit{Remark :} Since we don't know the exact solution, we will consider a FEM solution on an over-refined mesh as a reference solution.
+        \end{enumerate}
+    \end{minipage}
+
+    \begin{enumerate}[\ding{217}]
+        \item \textbf{Theoretical experiment solution :}
+        \begin{equation}
+        	u_{ex}(x,y)=S\sin\left(8\pi f\left((x-0.5)^2+(y-0.5)^2\right)+\varphi\right) \label{sol2}
+        \end{equation}
+        
+        \footnotesize
+        \textit{Remark :} $\varphi=0 \; \Rightarrow \; u=0 \text{ on } \Gamma$
+
+        \normalsize
+        \item \textbf{PINNs solution}
+        \begin{equation}
+        	u_{ex}(x,y)=\phi(x,y)\sin(x)\exp(y) \label{sol3}
+        \end{equation}
+    \end{enumerate}
+\end{frame}

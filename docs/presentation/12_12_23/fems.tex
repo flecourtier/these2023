@@ -1,0 +1,248 @@
+\subsection{Standard FEM method}
+
+\begin{frame}{Presentation of standard FEM method}	    
+    \textbf{Variational Problem :} $\quad\text{Find } u\in V \; | \; a(u,v)=l(v), \;\forall v\in V$
+    
+    with $V$ - Hilbert space, $a$ - bilinear form, $l$ - linear form.
+
+    \vspace{10pt}
+
+    \begin{minipage}[t]{0.76\linewidth}
+        \textbf{Approach Problem :} $\quad \text{Find } u_h\in V_h \; | \; a(u_h,v_h)=l(v_h), \;\forall v_h\in V_h$
+    
+        with $\textbullet$ $u_h\in V_h$ an approximate solution of $u$, 
+        
+        $\textbullet V_h\subset V, \; dim V_h=N_h<\infty, \; (\forall h>0)$ 
+        
+       $\Rightarrow$ Construct a piecewise continuous functions space
+       \vspace{-5pt}
+       \begin{equation*}
+           V_h:=P_{C,h}^k=\{v_h\in C^0(\bar{\Omega}), \forall K\in\mathcal{T}_h, {v_h}_{|K}\in\mathbb{P}_k\}
+       \end{equation*}
+
+       where $\mathbb{P}_k$ is the vector space of polynomials of total degree $\le k$.
+    \end{minipage} \hfill \begin{minipage}[t][][b]{0.2\linewidth}
+        \vspace{-5pt}
+        \centering
+        \pgfimage[width=0.9\linewidth]{images/fems/FEM_triangle_mesh.png}
+        
+        \footnotesize
+        $\mathcal{T}_h = \left\{K_1,\dots,K_{N_e}\right\}$
+
+        \tiny
+        ($N_e$ : number of elements)
+    \end{minipage}
+
+    
+
+    \vspace{10pt}
+
+    Finding an approximation of the PDE solution $\Rightarrow$ solving the following linear system:
+    \begin{equation*}
+        AU=b
+    \end{equation*}
+    with
+    \begin{equation*}
+        A=(a(\varphi_i,\varphi_j))_{1\le i,j\le N_h}, \quad U=(u_i)_{1\le i\le N_h} \quad \text{and} \quad b=(l(\varphi_j))_{1\le j\le N_h}
+    \end{equation*}
+    where $(\varphi_1,\dots,\varphi_{N_h})$ is a basis of $V_h$.
+\end{frame}
+	
+% \begin{frame}{Presentation of standard FEM method}	
+%     \fcolorbox{white}{yellow}{Réduire à une seule diapo rapide !}
+    
+%     \textbf{Variational Problem :} 
+%     \begin{equation*}
+%         \text{Find } u\in V \text{ such that } a(u,v)=l(v), \;\forall v\in V
+%     \end{equation*}
+%     where $V$ is a Hilbert space, $a$ is a bilinear form and $l$ is a linear form.
+    
+%     \textbf{Approach Problem :} 
+%     \begin{equation*}
+%         \text{Find } u_h\in V_h \text{ such that } a(u_h,v_h)=l(v_h), \;\forall v_h\in V
+%     \end{equation*}
+%     with $u_h$ an approximate solution in $V_h$, a finite-dimensional space dependent on $h$ such that $\quad V_h\subset V, \; dimV_h = N_h<\infty, \; (\forall h>0)$ 
+    
+%     As $u_h=\sum_{i=1}^{N_h}u_i\varphi_i$ with $(\varphi_1,\dots,\varphi_{N_h})$ a basis of $V_h$, finding an approximation of the PDE solution implies solving the following linear system:
+%     \begin{equation*}
+%         AU=b
+%     \end{equation*}
+%     with
+%     \begin{equation*}
+%         A=(a(\varphi_i,\varphi_j))_{1\le i,j\le N_h}, \quad U=(u_i)_{1\le i\le N_h} \quad \text{and} \quad b=(l(\varphi_j))_{1\le j\le N_h}
+%     \end{equation*}
+% \end{frame}
+
+% \begin{frame}{In practice}
+%     \begin{enumerate}[\ding{217}]
+%         \item \begin{minipage}[t]{0.68\linewidth}
+%             Construct a mesh of our $\Omega$ geometry with a family of elements (in 2D: triangle, rectangle; in 3D: tetrahedron, parallelepiped, prism) defined by
+%             $$\mathcal{T}_h = \left\{K_1,\dots,K_{N_e}\right\}$$
+%             where $N_e$ is the number of elements. \\
+%         \end{minipage} \begin{minipage}[t][][b]{0.28\linewidth}
+%             \centering
+%             \qquad \pgfimage[width=0.8\linewidth]{images/fems/FEM_triangle_mesh.png}
+%         \end{minipage}
+%         (Importance of geometric quality)
+%         \item Construct a space of piece-wise affine continuous functions, defined by
+%         \begin{equation*}
+%             V_h:=P_{C,h}^k=\{v_h\in C^0(\bar{\Omega}), \forall K\in\mathcal{T}_h, {v_h}_{|K}\in\mathbb{P}_k\}
+%         \end{equation*}
+%         where $\mathbb{P}_k$ is the vector space of polynomials of total degree less than or equal to $k$.
+%     \end{enumerate}
+    
+% \end{frame}
+
+\subsection{$\phi$-FEM method}
+
+\begin{frame}{Problem}
+    Let $u=\phi w+g$ such that
+    $$\left\{\begin{aligned}
+        -\Delta u &= f, \; \text{in } \Omega, \\
+        u&=g, \; \text{on } \Gamma, \\
+    \end{aligned}\right.$$
+    where $\phi$ is the level-set function and $\Omega$ and $\Gamma$ are given by :
+    \begin{center}
+        \pgfimage[width=0.5\linewidth]{images/fems/PhiFEM_level_set.png}
+    \end{center}
+    The level-set function $\phi$ is supposed to be known on $\mathbb{R}^d$ and sufficiently smooth. \\
+    For instance, the signed distance to $\Gamma$ is a good candidate.
+
+    \vspace{5pt}
+
+    \footnotesize
+    \textit{Remark :} Thanks to $\phi$ and $g$, the conditions on the boundary are respected.
+\end{frame}
+
+\begin{frame}{Fictitious domain}
+    \setstretch{0.5}
+
+    \vspace{10pt}
+    
+    \begin{center}
+        \begin{minipage}{0.43\linewidth}
+            \centering
+            \pgfimage[width=\linewidth]{images/fems/PhiFEM_domain.png}
+        \end{minipage} \hfill
+        \begin{minipage}{0.1\linewidth}
+            \centering
+            \pgfimage[width=\linewidth]{images/fems/PhiFEM_fleche.png} 
+        \end{minipage} \hfill
+        \begin{minipage}{0.43\linewidth}
+            \centering
+            \pgfimage[width=\linewidth]{images/fems/PhiFEM_domain_considered.png}
+        \end{minipage}
+    \end{center}
+
+    \begin{enumerate}[\ding{217}]
+        \item $\phi_h$ : approximation of $\phi$ \\ 
+        \item $\Gamma_h=\{\phi_h=0\}$ : approximate boundary of $\Gamma$
+        \item $\Omega_h$ : computational mesh
+        \item $\partial\Omega_h$ : boundary of $\Omega_h$ ($\partial\Omega_h \ne \Gamma_h$)
+    \end{enumerate}	
+    
+    % \begin{minipage}{0.6\linewidth}
+    %     \begin{enumerate}[\ding{217}]
+    %         \item $\mathcal{O}$ : fictitious domain such that $\Omega\subset\mathcal{O}$
+    %         \item $\mathcal{T}_h^\mathcal{O}$ : simple quasi-uniform mesh on $\mathcal{O}$
+    %         \item $\phi_h=I_{h,\mathcal{O}}^{(l)}(\phi)\in V_{h,\mathcal{O}}^{(l)}$ : approximation of $\phi$ \\ 
+    %         with $I_{h,\mathcal{O}}^{(l)}$ the standard Lagrange interpolation operator on
+    %         $$V_{h,\mathcal{O}}^{(l)}=\left\{v_h\in H^1(\mathcal{O}):v_{h|_T}\in\mathbb{P}_l(T) \;  \forall T\in\mathcal{T}_h^\mathcal{O}\right\}$$
+    %         \item $\Gamma_h=\{\phi_h=0\}$ : approximate boundary of $\Gamma$
+    %         \item $\mathcal{T}_h$ : sub-mesh of $\mathcal{T}_h^\mathcal{O}$ defined by
+    %         $$\mathcal{T}_h=\left\{T\in \mathcal{T}_h^\mathcal{O}:T\cap\{\phi_h<0\}\ne\emptyset\right\}$$
+    %         \item $\Omega_h$ : domain covered by the $\mathcal{T}_h$ mesh defined by
+    %         $$\Omega_h=\left(\cup_{T\in\mathcal{T}_h}T\right)^O$$
+    %         ($\partial\Omega_h$ its boundary)
+    %     \end{enumerate}			
+    % \end{minipage}
+    
+    \footnotesize
+    \; \\
+    \textit{Remark :} $n_{vert}$ will denote the number of vertices in each direction for $\mathcal{O}$
+\end{frame}
+
+\begin{frame}{Facets and Cells sets}
+
+    \vspace{15pt}
+
+    \begin{center}
+        \begin{minipage}{0.48\linewidth}
+            \centering
+            \pgfimage[width=\linewidth]{images/fems/PhiFEM_boundary_cells.png}
+        \end{minipage} \hfill
+        \begin{minipage}{0.48\linewidth}
+            \centering
+            \pgfimage[width=\linewidth]{images/fems/PhiFEM_boundary_edges.png}
+        \end{minipage}
+    \end{center}
+
+    \begin{enumerate}[\ding{217}]
+        \item $\mathcal{T}_h^\Gamma$ : mesh elements cut by $\Gamma_h$
+        \item $\mathcal{F}_h^\Gamma$ : collects the interior facets of $\mathcal{T}_h^\Gamma$ \\
+        (either cut by $\Gamma_h$ or belonging to a cut mesh element)
+    \end{enumerate}
+
+    % \begin{minipage}{0.6\linewidth}
+    %     \begin{enumerate}[\ding{217}]
+    %         \item $\mathcal{T}_h^\Gamma\subset \mathcal{T}_h$ : contains the mesh elements cut by $\Gamma_h$, i.e. 
+    %         \begin{equation*}
+    %             \mathcal{T}_h^\Gamma=\left\{T\in\mathcal{T}_h:T\cap\Gamma_h\ne\emptyset\right\},
+    %         \end{equation*}
+    %         \item $\Omega_h^\Gamma$ : domain covered by the $\mathcal{T}_h^\Gamma$ mesh, i.e.
+    %         \begin{equation*}
+    %             \Omega_h^\Gamma=\left(\cup_{T\in\mathcal{T}_h^\Gamma}T\right)^O
+    %         \end{equation*}
+    %         \item $\mathcal{F}_h^\Gamma$ : collects the interior facets of $\mathcal{T}_h$ either cut by $\Gamma_h$ or belonging to a cut mesh element, i.e.
+    %         \begin{align*}
+    %             \mathcal{F}_h^\Gamma=\left\{E\;(\text{an internal facet of } \mathcal{T}_h) \text{ such that }\right. \\
+    %             \left. \exists T\in \mathcal{T}_h:T\cap\Gamma_h\ne\emptyset \text{ and } E\in\partial T\right\}
+    %         \end{align*}
+    %     \end{enumerate}
+    % \end{minipage}
+\end{frame}
+
+\begin{frame}{$\phi$-FEM Method - Poisson problem}
+    \textbf{Approach Problem :} Find $w_h\in V_h^{(k)}$ such that 
+    $$a_h(w_h,v_h) = l_h(v_h) \quad \forall v_h \in V_h^{(k)}$$
+    where
+    $$a_h(w,v)=\int_{\Omega_h} \nabla (\phi_h w) \cdot \nabla (\phi_h v) - \int_{\partial\Omega_h} \frac{\partial}{\partial n}(\phi_h w)\phi_h v+G_h(w,v),$$
+    $$l_h(v)=\int_{\Omega_h} f \phi_h v + G_h^{rhs}(v) \qquad \qquad \color{white}\text{Stabilization terms}$$
+    and 
+    $$V_h^{(k)}=\left\{v_h\in H^1(\Omega_h):v_{h|_T}\in\mathbb{P}_k(T), \; \forall T\in\mathcal{T}_h\right\}.$$
+    For the non homogeneous case, we replace
+    $$u=\phi w \quad \rightarrow \quad u=\phi w+g$$ 
+    by supposing that $g$ is currently given over the entire $\Omega_h$.
+\end{frame}
+
+\begin{frame}[noframenumbering]{$\phi$-FEM Method - Poisson problem}
+    \textbf{Approach Problem :} Find $w_h\in V_h^{(k)}$ such that 
+    $$a_h(w_h,v_h) = l_h(v_h) \quad \forall v_h \in V_h^{(k)}$$
+    where
+    $$a_h(w,v)=\int_{\Omega_h} \nabla (\phi_h w) \cdot \nabla (\phi_h v) - \int_{\partial\Omega_h} \frac{\partial}{\partial n}(\phi_h w)\phi_h v+\fcolorbox{blue}{white}{$G_h(w,v)$},$$
+    $$l_h(v)=\int_{\Omega_h} f \phi_h v + \fcolorbox{blue}{white}{$G_h^{rhs}(v)$} \qquad \qquad \color{blue}\text{Stabilization terms}$$
+    and 
+    $$V_h^{(k)}=\left\{v_h\in H^1(\Omega_h):v_{h|_T}\in\mathbb{P}_k(T), \; \forall T\in\mathcal{T}_h\right\}.$$
+    For the non homogeneous case, we replace
+    $$u=\phi w \quad \rightarrow \quad u=\phi w+g$$ 
+    by supposing that $g$ is currently given over the entire $\Omega_h$.
+\end{frame}
+
+\begin{frame}{Stabilization terms}
+    \begin{center}
+        \centering
+        \pgfimage[width=\linewidth]{images/fems/PhiFEM_stab_terms.png}
+    \end{center}
+    \small
+    \underline{1st term :} ensure continuity of the solution by penalizing gradient jumps. \\
+    $\rightarrow$ Ghost penalty [Burman, 2010] \\
+    \underline{2nd term :} require the solution to verify the strong form on $\Omega_h^\Gamma$. \\
+    \normalsize
+    \textbf{Purpose :} 
+    \begin{enumerate}[\ding{217}]
+        \item reduce the errors created by the "fictitious" boundary 
+        \item ensure the correct condition number of the finite element matrix
+        \item restore the coercivity of the bilinear scheme
+    \end{enumerate}
+\end{frame}
+        

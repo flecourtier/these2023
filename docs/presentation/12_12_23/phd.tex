@@ -1,0 +1,96 @@
+\begin{frame}{Explanation}
+    \textbf{Context :} Need $u_\theta\in\mathbb{P}^k$ with $k$ of high degree
+
+    \begin{center}
+        \begin{minipage}{0.28\linewidth}
+            \centering
+            FNO \\
+            (on a regular grid) 
+        \end{minipage} $\rightarrow$ \begin{minipage}{0.35\linewidth}
+            \centering
+            NN which can predict \\
+            solution at any point
+        \end{minipage}
+    \end{center}
+
+    \textbf{Solutions :}
+
+    \vspace{2pt}
+    
+    \begin{minipage}{0.48\linewidth}
+        \; \\
+        \textbf{1. MLP} - Multi-Layer Perceptron \\
+        (= Fully connected)
+
+        \centering
+        \pgfimage[width=0.9\linewidth]{images/phd/MLP_schema.png}
+
+        \raggedright
+        \textit{Problem :} As the prediction is injected into an FEM solver, the accuracy of the derivatives is very important.
+    \end{minipage} \quad
+    \begin{minipage}{0.48\linewidth}
+        \textbf{2. PINNs} - MLP with a physical loss
+        \begin{center}
+            $loss = mse(\Delta (\phi(x_i,y_i)w_{\theta,i})+f_i)$
+
+            \vspace{1.5pt}
+        
+            \pgfimage[width=0.5\linewidth]{images/phd/PINNs_explanation.png}
+        \end{center}
+
+        with $(x_i,y_i)\in\mathcal{O}$.
+
+        \textit{Remark :} We impose exact boundary conditions. \\
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{PINNs Training}
+    We consider the solution on the circle defined in \eqref{sol3} and defined by
+    \begin{equation*}
+        u_{ex}(x,y)=\phi(x,y)\sin(x)\exp(y)
+    \end{equation*}
+    We train a PINNs with 4 layers of 20 neurons over 10000 epochs (with $n_{pts}=2000$ points selected uniformly over $\mathcal{O}$).
+
+    \centering
+    \pgfimage[width=0.9\linewidth]{images/phd/solution_config0.png}
+
+    {\fontencoding{U}\fontfamily{futs}\selectfont\char 49\relax} We consider a single problem ($f$ fixed) on a single geometry ($\phi$ fixed).
+
+    \raggedright    
+    $||u_{ex}-u_\theta||_{0,\Omega}^{(rel)}\approx 2.81e-3$
+\end{frame}
+
+\begin{frame}{Derivatives}
+    \; \\
+    
+    \centering
+    \pgfimage[width=0.75\linewidth]{images/phd/derivatives_x.png}
+\end{frame}
+
+\begin{frame}{Correction by addition}
+    $u_\theta\in\mathbb{P}^{10} \; \rightarrow \; \tilde{u}\in\mathbb{P}^1$
+
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \pgfimage[width=\linewidth]{images/phd/time_precision.png}
+    
+        \raggedright
+        FEM / $\phi$-FEM : $n_{vert}\in\{8,16,32,64,128\}$
+        
+        Corr : $n_{vert}\in\{5,10,15,20,25,30\}$
+    \end{minipage} \quad
+    \begin{minipage}{0.46\linewidth}
+        \centering
+        \pgfimage[width=\linewidth]{images/phd/results_time_1e-4.png}
+
+        \small\raggedright
+        $\textbullet$ \textbf{mesh} - FEM : construct the mesh \\
+        ($\phi$-FEM : construct cell/facet sets) \\
+        $\textbullet$ \textbf{u\_PINNs} - get $u_\theta$ in $\mathbb{P}^{10}$ freedom degrees \\
+        $\textbullet$ \textbf{assemble} - assemble the FE matrix \\
+        $\textbullet$ \textbf{solve} - resolve the linear system
+    \end{minipage}
+
+    \small
+    \textit{Remark :} The stabilisation parameter $\sigma$ of the $\phi$-FEM method has a major impact on the error obtained.
+\end{frame}
