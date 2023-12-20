@@ -14,7 +14,7 @@ from dolfin.function.expression import (
 # Expressions #
 ###############
 
-from modules.Case import *
+from modules.problem.Case import *
 cas = Case("case.json")
 pb_considered = cas.Problem
 

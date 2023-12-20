@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from modules.Geometry import *
+from modules.problem.Geometry import *
 
 class Circle_Solution1(Circle):
     def __init__(self):

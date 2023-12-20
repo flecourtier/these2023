@@ -1,15 +1,19 @@
 from modules.solver.fenics_expressions import *
 
-from modules.Case import *
+from modules.problem.Case import *
 cas = Case("case.json")
 pb_considered = cas.Problem
+
+print_time = False
 
 homogeneous = True
 cd = "homo"
 
 from dolfin import *
+import dolfin as df
 import multiphenics as mph
 import mshr
+import time
 
 parameters["ghost_mode"] = "shared_facet"
 parameters["form_compiler"]["cpp_optimize"] = True
@@ -40,6 +44,9 @@ class PhiFemSolver:
         self.N = nb_cell
         self.params = params
 
+        self.times_fem = {}
+        self.times_corr_add = {}
+
         domain_O = np.array(pb_considered.domain_O)
         self.mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), self.N, self.N)
         self.V_macro = FunctionSpace(self.mesh_macro, "CG", polV)
@@ -49,13 +56,20 @@ class PhiFemSolver:
         )
         domains.set_all(0)
 
+        start = time.time()
         for ind in range(self.mesh_macro.num_cells()):
             mycell = Cell(self.mesh_macro, ind)
             v1x, v1y, v2x, v2y, v3x, v3y = mycell.get_vertex_coordinates()
             if (pb_considered.Omega_bool(v1x, v1y) or pb_considered.Omega_bool(v2x, v2y) or pb_considered.Omega_bool(v3x, v3y)):
                 domains[ind] = 1
-
         self.mesh = SubMesh(self.mesh_macro, domains, 1)
+        end = time.time()
+
+        if print_time:
+            print("Time to generate Omega_h: ", end-start)
+        self.times_fem["Omega_h"] = end-start
+        self.times_corr_add["Omega_h"] = end-start
+
         self.V = FunctionSpace(self.mesh, "CG", polV)
         self.V_phi = FunctionSpace(self.mesh, "CG", polPhi)
 
@@ -66,16 +80,17 @@ class PhiFemSolver:
         self.mesh.init(1, 2)
         facet_ghost = MeshFunction("size_t", self.mesh, self.mesh.topology().dim() - 1)
         cell_ghost = MeshFunction("size_t", self.mesh, self.mesh.topology().dim())
-        cell_sub = MeshFunction("bool", self.mesh, self.mesh.topology().dim())
-        facet_sub = MeshFunction("bool", self.mesh, self.mesh.topology().dim() - 1)
-        vertices_sub = MeshFunction("bool", self.mesh, self.mesh.topology().dim() - 2)
+        # cell_sub = MeshFunction("bool", self.mesh, self.mesh.topology().dim())
+        # facet_sub = MeshFunction("bool", self.mesh, self.mesh.topology().dim() - 1)
+        # vertices_sub = MeshFunction("bool", self.mesh, self.mesh.topology().dim() - 2)
         facet_ghost.set_all(0)
         cell_ghost.set_all(0)
-        cell_sub.set_all(0)
-        facet_sub.set_all(0)
-        vertices_sub.set_all(0)
+        # cell_sub.set_all(0)
+        # facet_sub.set_all(0)
+        # vertices_sub.set_all(0)
         count_cell_ghost = 0
 
+        start = time.time()
         for mycell in cells(self.mesh):
             for myfacet in facets(mycell):
                 v1, v2 = vertices(myfacet)
@@ -85,26 +100,33 @@ class PhiFemSolver:
                     < 1e-10
                 ):
                     cell_ghost[mycell] = 1
-                    cell_sub[mycell] = 1
+                    # cell_sub[mycell] = 1
                     for myfacet2 in facets(mycell):
                         facet_ghost[myfacet2] = 1
-                        facet_sub[myfacet2] = 1
+                        # facet_sub[myfacet2] = 1
                         v1, v2 = vertices(myfacet2)
-                        vertices_sub[v1], vertices_sub[v2] = 1,1
+                        # vertices_sub[v1], vertices_sub[v2] = 1,1
 
         for mycell in cells(self.mesh):
             if cell_ghost[mycell] == 1:
                 count_cell_ghost += 1
+
+        end = time.time()
+        if print_time:
+            print("Time to generate cells/facets : ", end-start)
+        self.times_fem["cells-facets"] = end-start
+        self.times_corr_add["cells-facets"] = end-start
+
         print("num of cell in the ghost penalty:", count_cell_ghost)
 
-        File2 = File("sub.rtc.xml/mesh_function_2.xml")
-        File2 << cell_sub
-        File1 = File("sub.rtc.xml/mesh_function_1.xml")
-        File1 << facet_sub
-        File0 = File("sub.rtc.xml/mesh_function_0.xml")
-        File0 << vertices_sub
+        # File2 = File("sub.rtc.xml/mesh_function_2.xml")
+        # File2 << cell_sub
+        # File1 = File("sub.rtc.xml/mesh_function_1.xml")
+        # File1 << facet_sub
+        # File0 = File("sub.rtc.xml/mesh_function_0.xml")
+        # File0 << vertices_sub
 
-        self.yp_res = mph.MeshRestriction(self.mesh,"sub.rtc.xml")
+        # self.yp_res = mph.MeshRestriction(self.mesh,"sub.rtc.xml")
 
         # Initialize cell function for domains
         self.dx = Measure("dx")(domain=self.mesh, subdomain_data=cell_ghost)
@@ -154,6 +176,7 @@ class PhiFemSolver:
 
         phi = PhiExpr(degree=polPhi, domain=self.mesh)
  
+        start = time.time()
         a = (
             inner(grad(phi * self.u), grad(phi * self.v)) * self.dx
             - dot(inner(grad(phi * self.u), self.n), phi * self.v) * self.ds
@@ -174,7 +197,7 @@ class PhiFemSolver:
             * self.dx(1) #cells ghost
         )
 
-        L = (
+        l = (
             f_expr * self.v * phi * self.dx
             # stab terms
             - sigma_stab
@@ -183,25 +206,42 @@ class PhiFemSolver:
             * self.dx(1) #cells ghost
         )
 
+        A = df.assemble(a)
+        L = df.assemble(l)
+
+        end = time.time()
+
+        if print_time:
+            print("Time to assemble the matrix : ",end-start)
+        self.times_fem["assemble"] = end-start
+
         # Define solution function
         w = Function(self.V)
-        solve(a == L, w)  # , solver_parameters={'linear_solver': 'mumps'})
 
+        start = time.time()
+        solve(A,w.vector(),L)
+        # solve(a == L, w)  # , solver_parameters={'linear_solver': 'mumps'})
         sol = phi * w
+        end = time.time()
+
+        if print_time:
+            print("Time to solve the system :",end-start)
+        self.times_fem["solve"] = end-start
         
         norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
 
-        # if project_on_Omega:
-        #     sol_ = project(sol, self.V)
-        #     sol_Omega = project(sol_, self.V_ex)
+        project_on_Omega = True
+        if project_on_Omega:
+            sol_ = project(sol, self.V)
+            sol_Omega = project(sol_, self.V_ex)
 
-        #     u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
-        #     u_ex_Omega = project(u_ex_Omega, self.V)
-        #     u_ex_Omega = project(u_ex_Omega, self.V_ex)
+            u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
+            u_ex_Omega = project(u_ex_Omega, self.V)
+            u_ex_Omega = project(u_ex_Omega, self.V_ex)
             
-        #     norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
+            norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
             
-        #     return sol_Omega, norm_L2_Omega
+            return sol_Omega, norm_L2_Omega
 
         return sol,norm_L2
     
@@ -221,6 +261,7 @@ class PhiFemSolver:
 
         f_tild = f_expr + div(grad(phi_tild))
 
+        start = time.time()
         a = (
             inner(grad(phi * self.u), grad(phi * self.v)) * self.dx
             - dot(inner(grad(phi * self.u), self.n), phi * self.v) * self.ds
@@ -241,7 +282,7 @@ class PhiFemSolver:
             * self.dx(1) #cells ghost
         )
 
-        L = (
+        l = (
             f_tild * self.v * phi * self.dx
             # stab terms
             - sigma_stab
@@ -250,15 +291,44 @@ class PhiFemSolver:
             * self.dx(1) #cells ghost
         )
 
+        A = df.assemble(a)
+        L = df.assemble(l)
+
+        end = time.time()
+
+        if print_time:
+            print("Time to assemble the matrix : ",end-start)
+        self.times_corr_add["assemble"] = end-start
+
         # Define solution function
         C_h = Function(self.V)
-        solve(a == L, C_h)
 
+        start = time.time()
+        solve(A,C_h.vector(),L)
+        # solve(a == L, C_h)
         C_tild = phi*C_h
         sol = C_tild + phi_tild
+        end = time.time()
+
+        if print_time:
+            print("Time to solve the system :",end-start)
+        self.times_corr_add["solve"] = end-start
 
         norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
     
+        project_on_Omega = True
+        if project_on_Omega:
+            sol_ = project(sol, self.V)
+            sol_Omega = project(sol_, self.V_ex)
+
+            u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex)
+            u_ex_Omega = project(u_ex_Omega, self.V)
+            u_ex_Omega = project(u_ex_Omega, self.V_ex)
+            
+            norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
+            
+            return sol_Omega, C_tild, norm_L2_Omega
+
         return sol, C_tild, norm_L2
 
     # def corr_add_IPP(self, i, phi_tild):

@@ -4,8 +4,8 @@
 
 import argparse
 
-from modules.Case import *
-from modules.Poisson2D import *
+from modules.problem.Case import *
+from modules.problem.Poisson2D import *
 from modules.utils import read_config,create_tree
 from modules.run_laplacian import *
 
@@ -24,10 +24,10 @@ impose_exact_bc = cas.impose_exact_bc
 problem_considered = cas.Problem
 pde_considered = cas.PDE
 
-dir_name = cas.dir_name
+dir_name = "../"+cas.dir_name
 models_dir = dir_name+"models/"
 corr_type = cas.corr_type
-corr_dir = cas.corr_dir_name
+corr_dir = "../"+cas.corr_dir_name
 create_tree(corr_dir)
 
 #############
@@ -263,35 +263,35 @@ if args.fem != 1:
     normes = [norm_L2_PINNs,norm_L2_Corr,norm_L2_FEM]
     plot_sol(corr_type,"PhiFEM",u_ex,solutions,normes,solver.V)
 
-    print("### Correction par addition avec PhiFEM - Projection sur Omega")
+    # print("### Correction par addition avec PhiFEM - Projection sur Omega")
 
-    #####
-    # Compute !
-    #####
+    # #####
+    # # Compute !
+    # #####
 
-    # project u_ex on Omega
-    u_ex_Omega = project(u_ex, solver.V_ex)
+    # # project u_ex on Omega
+    # u_ex_Omega = project(u_ex, solver.V_ex)
 
-    # project u_Corr on Omega
-    u_Corr_ = project(u_Corr, solver.V)
-    u_Corr_Omega = project(u_Corr_, solver.V_ex)    
-    norm_L2_Corr_Omega = (assemble((((u_ex_Omega - u_Corr_Omega)) ** 2) * solver.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * solver.dx_ex) ** (0.5))
+    # # project u_Corr on Omega
+    # u_Corr_ = project(u_Corr, solver.V)
+    # u_Corr_Omega = project(u_Corr_, solver.V_ex)    
+    # norm_L2_Corr_Omega = (assemble((((u_ex_Omega - u_Corr_Omega)) ** 2) * solver.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * solver.dx_ex) ** (0.5))
     
 
-    # project u_FEM on Omega
-    u_FEM_ = project(u_FEM, solver.V)
-    u_FEM_Omega = project(u_FEM_, solver.V_ex)
+    # # project u_FEM on Omega
+    # u_FEM_ = project(u_FEM, solver.V)
+    # u_FEM_Omega = project(u_FEM_, solver.V_ex)
     
-    norm_L2_FEM_Omega = (assemble((((u_ex_Omega - u_FEM_Omega)) ** 2) * solver.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * solver.dx_ex) ** (0.5))
+    # norm_L2_FEM_Omega = (assemble((((u_ex_Omega - u_FEM_Omega)) ** 2) * solver.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * solver.dx_ex) ** (0.5))
 
 
-    #####
-    # Plot !
-    #####
+    # #####
+    # # Plot !
+    # #####
 
-    solutions = [u_Corr_Omega,u_FEM_Omega]
-    normes = [norm_L2_Corr_Omega,norm_L2_FEM_Omega]
-    plot_sol(corr_type,"PhiFEM",u_ex_Omega,solutions,normes,solver.V_ex,project_on_Omega=True)
+    # solutions = [u_Corr_Omega,u_FEM_Omega]
+    # normes = [norm_L2_Corr_Omega,norm_L2_FEM_Omega]
+    # plot_sol(corr_type,"PhiFEM",u_ex_Omega,solutions,normes,solver.V_ex,project_on_Omega=True)
 
 
 create_xlsx_file(cas)

@@ -13,7 +13,7 @@
 import sys
 import argparse
 
-from modules.Case import *
+from modules.problem.Case import *
 # from modules.Poisson2D import *
 from modules.utils import *
 from modules.run_laplacian import *
@@ -29,7 +29,7 @@ cas = Case("case.json")
 impose_exact_bc = cas.impose_exact_bc
 problem_considered = cas.Problem
 pde_considered = cas.PDE
-dir_name = cas.dir_name
+dir_name = "../"+cas.dir_name
 create_tree(dir_name)
 for subdir in [dir_name+"models", dir_name+"solutions"]: # dir_name+"corrections", dir_name+"derivatives", 
     create_tree(subdir)
@@ -137,7 +137,7 @@ def get_config_filename(args,parser):
             for arg,value in dict.items():
                 vars(args_config)[arg] = value      
 
-            if len(sys.argv)!=3:
+            if len(sys.argv)!=3 and not (len(sys.argv)==5 and "--casefile" in sys.argv):
                 print("# New model created from config file")
                 # si l'utilisateur rajoute des args, on modifie les valeurs du fichier de config
                 # (c'est alors un nouveau modèle)
@@ -152,6 +152,8 @@ def get_config_filename(args,parser):
 
             args = args_config
 
+    print(args)
+
     config_filename = dir_name+"models/config_"+str(config)+".json"
     model_filename = dir_name+"models/model_"+str(config)+".pth"
     write_config(args, config_filename)
@@ -164,6 +166,7 @@ def get_config_filename(args,parser):
 #############
 
 args, parser = get_args()
+print(args)
 config, args, config_filename, model_filename = get_config_filename(args,parser)
 print("### Config file : ",config_filename)
 print("### Model file : ",model_filename)

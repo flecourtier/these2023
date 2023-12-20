@@ -1,6 +1,6 @@
 from modules.utils import read_config
-from modules.Poisson2D import *
-from modules.Problem import *
+from modules.problem.Poisson2D import *
+from modules.problem.Problem import *
 
 class Case:
     def __init__(self,case_file="case.json"):

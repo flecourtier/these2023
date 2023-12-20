@@ -9,7 +9,7 @@ from scimba.nets import mlp
 from scimba.pinns import pinn_x, training_x
 from scimba.sampling import sampling_pde, sampling_parameters, uniform_sampling
 
-from modules.Poisson2D import *
+from modules.problem.Poisson2D import *
 
 ###############
 # Define case #

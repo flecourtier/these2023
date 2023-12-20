@@ -1,4 +1,4 @@
-from modules.Problem import *
+from modules.problem.Problem import *
 
 import torch
 from scimba.pinns import domain

@@ -1,11 +1,16 @@
+# -----------------------------------------------------------------------------#
+# -------- Fichier non trié - étude en fonction du paramètre sigma ! ----------#
+# -----------------------------------------------------------------------------#
+
+
 ###########
 # Imports #
 ###########
 
 import argparse
 
-from modules.Case import *
-from modules.Poisson2D import *
+from modules.problem.Case import *
+from modules.problem.Poisson2D import *
 from modules.utils import read_config,create_tree
 from modules.run_laplacian import *
 

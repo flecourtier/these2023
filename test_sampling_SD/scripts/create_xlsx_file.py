@@ -5,7 +5,7 @@ import os
 import openpyxl as xl
 
 from modules.utils import read_config
-from modules.Case import *
+from modules.problem.Case import *
 
 # define cells formats
 def create_formats(workbook):
@@ -292,7 +292,7 @@ def create_xlsx_file(cas):
     class_PDE = cas.class_PDE
     name_class_PDE = class_PDE.__name__
 
-    root_dir = "networks/"
+    root_dir = "../networks/"
     if impose_exact_bc:
         root_dir += "exact_bc/"
     else:
@@ -370,5 +370,5 @@ def create_xlsx_file(cas):
 
     workbook.close()
 
-cas = Case("case.json")
-create_xlsx_file(cas)
+# cas = Case("case.json")
+# create_xlsx_file(cas)

@@ -4,7 +4,7 @@
 
 import argparse
 
-from modules.Case import *
+from modules.problem.Case import *
 from modules.utils import read_config,create_tree
 from modules.run_laplacian import *
 
@@ -22,20 +22,7 @@ import matplotlib.pyplot as plt
 # from dolfin import parameters
 # parameters["form_compiler"]["quadrature_degree"] = 10
 
-###############
-# Define case #
-###############
 
-cas = Case("case.json")
-
-impose_exact_bc = cas.impose_exact_bc
-problem_considered = cas.Problem
-pde_considered = cas.PDE
-
-dir_name = cas.dir_name
-models_dir = dir_name+"models/"
-derivees_dir = dir_name+"derivees/"
-create_tree(derivees_dir)
 
 #############
 # Arguments #
@@ -55,6 +42,21 @@ def get_args():
     return args, parser
 
 args, parser = get_args()
+
+###############
+# Define case #
+###############
+
+cas = Case("case.json")
+
+impose_exact_bc = cas.impose_exact_bc
+problem_considered = cas.Problem
+pde_considered = cas.PDE
+
+dir_name = "../"+cas.dir_name
+models_dir = dir_name+"models/"
+derivees_dir = dir_name+"derivees/"
+create_tree(derivees_dir)
 
 ##########################
 # Récupération du modèle #
