@@ -11,7 +11,7 @@ num_pb=$(jq -r '.Problem' "$case_file")
 sampling=$(jq -r '.Sampling_on' "$case_file")
 
 # Create the name of the directory
-geom_name="networks/$bc/$pde/$geom"
+geom_name="../networks/$bc/$pde/$geom"
 sol='_Solution'
 train='_training'
 solname="$geom_name$sol$num_pb"

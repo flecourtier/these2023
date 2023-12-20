@@ -10,7 +10,7 @@ pb=$(jq -r '.Class_Problem' "$case_file")
 sampling=$(jq -r '.Sampling_on' "$case_file")
 
 # Create the name of the directory
-variablename="networks/$bc/$pde/$pb/$sampling"
+variablename="../networks/$bc/$pde/$pb/$sampling"
 myvariable='training'
 dir_name="$variablename"_"$myvariable"
 echo "$dir_name"
