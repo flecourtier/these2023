@@ -1,6 +1,6 @@
 from modules.solver.fenics_expressions import *
-
 from modules.problem.Case import *
+
 cas = Case("case.json")
 pb_considered = cas.Problem
 
