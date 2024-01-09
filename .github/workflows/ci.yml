@@ -1,6 +1,10 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'docs/**' # Déclencher seulement si des changements sont faits dans le répertoire "docs"
+
 
 jobs:
   activate:
