@@ -22,6 +22,7 @@ function run_abstracts {
     cd $dir
     echo $dir$latexfilename
     run_pdflatex "./" $latexfilename
+    run_pdflatex "./" $latexfilename
     cd "../"
 }
 
@@ -36,6 +37,7 @@ function run_meetings {
     do
         cd $subdir
         echo $subdir$latexfilename
+        run_pdflatex "./" $latexfilename
         run_pdflatex "./" $latexfilename
         cd "../"
     done
@@ -62,6 +64,7 @@ function run_results {
     cd $dir
     echo $dir$latexfilename
     run_pdflatex "./" $latexfilename
+    run_pdflatex "./" $latexfilename
     cd "../"
 }
 
@@ -73,6 +76,7 @@ function run_to_do_list {
     cd $dir
     latexfilename="to_do_list.tex"
     echo $dir$latexfilename
+    run_pdflatex "./" $latexfilename
     run_pdflatex "./" $latexfilename
     cd "../"
 }
