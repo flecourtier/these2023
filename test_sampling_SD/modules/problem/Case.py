@@ -1,6 +1,32 @@
 from modules.utils import read_config
-from modules.problem.Poisson2D import *
-from modules.problem.Problem import *
+from modules.problem import Poisson2D,Geometry,Problem,SDFunction
+from scimba.equations import domain
+import inspect
+
+# get all the class name in the module (not abstract class)
+def get_class_name(module):
+    class_name = []
+    for name, obj in inspect.getmembers(module):
+        if inspect.isclass(obj) and not inspect.isabstract(obj):
+            class_name.append(name)
+    return class_name
+    
+# get the class by its name
+def get_class(name,module):
+    try:
+        # Récupérer la classe par son nom
+        class_ = getattr(module, name)
+        return class_
+    except AttributeError:
+        # Gestion de l'erreur si la classe n'est pas trouvée
+        print(f"Erreur : Classe {name} non trouvée dans le module {module.__name__}.")
+    except Exception as e:
+        # Gestion d'autres exceptions
+        print(f"Une erreur s'est produite : {e}")
+
+# geometry_set = get_class_name(Geometry)
+# sdf_set = get_class_name(SDFunction)
+# problem_set = get_class_name(Problem)
 
 class Case:
     def __init__(self,case_file="case.json"):
@@ -8,61 +34,37 @@ class Case:
 
         # read config file
         dict = read_config(self.case_file)
+        
+        geom_class_name = dict["geometry"]        
+        sdf_class_name = dict["sdf"]
+        problem_class_name = dict["problem"]
+        pde_class_name = dict["pde"]
+        assert pde_class_name == "Poisson2D"
 
-        # Boundary condition
-        if dict["Boundary_condition"] == "exact_bc":
-            self.impose_exact_bc = True
-        elif dict["Boundary_condition"] == "approach_bc":
-            self.impose_exact_bc = False
-        else:
-            raise ValueError("Boundary condition not recognized")
+        if sdf_class_name != "SDCircle":
+            assert geom_class_name == "Circle"
+
+        if geom_class_name != "Circle":
+            assert problem_class_name == "UnknownSolForMVP"
+
+        geom_class = get_class(geom_class_name,Geometry)
+        sdf_class = get_class(sdf_class_name,SDFunction)
+        problem_class = get_class(problem_class_name,Problem)
+        pde_class = get_class(pde_class_name,Poisson2D)
+
+        threshold = dict["threshold"]
+
+        self.form = geom_class()
+        self.sd_function = sdf_class(self.form,threshold=threshold)
+        self.problem = problem_class(self.form)
+        bound_box = self.sd_function.bound_box
+        self.xdomain = domain.SignedDistanceBasedDomain(2, bound_box, self.sd_function)
+        self.pde = pde_class(self.xdomain, self.problem)
+
+        self.dir_name = "networks/"+pde_class_name+"/"+geom_class_name+"/"+sdf_class_name+"/"+problem_class_name+"/"+str(threshold)+"/"
         
-        # PDE type
-        if dict["Class_PDE"] == "SingleProblem":
-            self.class_PDE = SingleProblem
-        elif dict["Class_PDE"] == "VariedSolution_S":
-            self.class_PDE = VariedSolution_S
-        else:
-            raise ValueError("Class_PDE not recognized")
-        
-        # Sampling_on
-        if dict["Sampling_on"] == "Omega":
-            self.sampling_on = "Omega"
-        elif dict["Sampling_on"] == "O_cal":
-            self.sampling_on = "O_cal"
-        else:
-            raise ValueError("Sampling_on not recognized")
-        
-        # Problem
-        num_pb = dict["Problem"]
-        if dict["Geometry"] == "Circle":
-            if num_pb == 1:
-                self.class_Problem = Circle_Solution1
-            elif num_pb == 2:
-                self.class_Problem = Circle_Solution2
-            else:
-                raise ValueError("Problem not recognized")
-        elif dict["Geometry"] == "Square":
-            if num_pb == 1:
-                self.class_Problem = Square_Solution1
-            else:
-                raise ValueError("Problem not recognized")
-        elif dict["Geometry"] == "Random_domain":
-            if num_pb == 1:
-                self.class_Problem = Random_domain_Solution1
-            else:
-                raise ValueError("Problem not recognized")
-        else:
-            raise ValueError("Geometry not recognized")
-        
-        # Correction
-        self.corr_type = dict["Correction"]
+        # corr
+        self.corr_type = dict["correction"]
         assert self.corr_type in ["add","mult"]
-
-        self.Problem = self.class_Problem()
-        self.PDE = self.class_PDE(self.Problem, sampling_on=self.sampling_on, impose_exact_bc=self.impose_exact_bc)
-        
-        subdir_name = dict["Geometry"]+"_Solution"+str(dict["Problem"])
-        self.dir_name = "networks/"+dict["Boundary_condition"]+"/"+dict["Class_PDE"]+"/"+subdir_name+"/"+dict["Sampling_on"]+"_training/"
 
         self.corr_dir_name = self.dir_name+"corrections/"+self.corr_type+"/"

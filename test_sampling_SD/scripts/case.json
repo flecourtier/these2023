@@ -1,8 +1,8 @@
 {
-    "Boundary_condition" : "exact_bc",
-    "Class_PDE" : "SingleProblem",
-    "Geometry" : "Circle",
-    "Problem" : 2,
-    "Sampling_on" : "O_cal",
-    "Correction" : "add"
+    "pde" : "Poisson2D",
+    "geometry" : "Circle",
+    "sdf" : "SDMVP",
+    "problem" : "TrigSolOnCircle",
+    "threshold" : 0.0,
+    "correction" : "add"
 }

@@ -26,9 +26,6 @@ from create_xlsx_file import *
 
 cas = Case("case.json")
 
-impose_exact_bc = cas.impose_exact_bc
-problem_considered = cas.Problem
-pde_considered = cas.PDE
 dir_name = "../"+cas.dir_name
 create_tree(dir_name)
 for subdir in [dir_name+"models", dir_name+"solutions"]: # dir_name+"corrections", dir_name+"derivatives", 
@@ -82,14 +79,10 @@ def get_args():
 
     parser.add_argument("--w_data", help="Weight of data in the loss.", type=float, default=0.0)
     parser.add_argument("--w_res", help="Weight of residue in the loss.", type=float, default=1.0)
-    if not impose_exact_bc:
-        parser.add_argument("--w_bc", help="Weight of boundary conditions in the loss.", type=float, default=10.0)
-
+    
     # Training arguments
     parser.add_argument("--n_epochs", help="Number of epochs during training.", type=int, default=10000)
     parser.add_argument("--n_collocations", help="Number of collocation points inside the domain during training.", type=int, default=2000)
-    if not impose_exact_bc:
-        parser.add_argument("--n_bc_collocations", help="Number of collocation points on the boundary during training.", type=int, default=500)
     parser.add_argument("--n_data", help="Number of data during training.", type=int, default=0)
 
     args = parser.parse_args()
@@ -174,4 +167,4 @@ print("### Model file : ",model_filename)
 dict = read_config(config_filename)
 
 test_laplacian_2d(cas,config,dict,save_sampling=save_sampling,new_training=new_training)
-create_xlsx_file(cas)
+# create_xlsx_file(cas)

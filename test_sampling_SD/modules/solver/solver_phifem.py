@@ -11,7 +11,7 @@ cd = "homo"
 
 from dolfin import *
 import dolfin as df
-import multiphenics as mph
+# import multiphenics as mph
 import mshr
 import time
 
