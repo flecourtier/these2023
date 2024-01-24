@@ -23,6 +23,10 @@ meeting.*
 !meeting.tex
 !meeting.pdf
 
+presentation.*
+!presentation.tex
+!presentation.pdf
+
 texput.log
 
 docs/antora/cache
