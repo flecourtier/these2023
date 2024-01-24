@@ -17,7 +17,7 @@ class ParametricCurves(abc.ABC):
 
     def c_prime_rot(self,t): # theta = 90°
         x,y = self.c_prime(t)
-        return torch.Tensor([-y.cpu().numpy(),x.cpu().numpy()])
+        return torch.Tensor(np.array([-y.cpu().numpy(),x.cpu().numpy()]))
         
     def plot_curve(self,color="white"):
         t = np.linspace(0,1,100)
@@ -42,13 +42,13 @@ class Circle(ParametricCurves):
         x = self.x0 + self.r*np.cos(2*np.pi*t)
         y = self.y0 + self.r*np.sin(2*np.pi*t)
         # return np.array([x,y])
-        return torch.Tensor([x,y])
+        return torch.Tensor(np.array([x,y]))
     
     def c_prime(self,t):
         x = -2.*np.pi*self.r*np.sin(2*np.pi*t)
         y = 2.*np.pi*self.r*np.cos(2*np.pi*t)
         # return np.array([x,y])
-        return torch.Tensor([x,y])
+        return torch.Tensor(np.array([x,y]))
 
 class Astroid(ParametricCurves):
     def __init__(self):

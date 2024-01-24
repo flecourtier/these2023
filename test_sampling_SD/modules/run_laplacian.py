@@ -25,13 +25,33 @@ def plot_sampling(bornes,data,name):
     plt.ylim(bornes[1][0],bornes[1][1])
     plt.title(name)
 
-def plot_solution(cas,trainer,fig_path):
+def plot_solution(cas,trainer,fig_path,derivees_path,derivees2_path,phi_path):
     pde = cas.pde
     x_sampler = sampling_pde.XSampler(pde=pde)
     mu_sampler = sampling_parameters.MuSampler(sampler=uniform_sampling.UniformSampling, model=pde)
     sampler = sampling_pde.PdeXCartesianSampler(x_sampler, mu_sampler)
     
     trainer.plot(50000,filename=fig_path,sampler=sampler)
+
+    trainer.plot_first_derivative_x(filename=derivees_path,n_visu=5000)
+    trainer.plot_second_derivative_x(filename=derivees2_path,n_visu=5000)
+
+    trainer.plot_mul_derivatives_x(filename=phi_path,n_visu=5000)
+
+# def get_memory(step):
+#     def convert(nb_bytes):
+#         return nb_bytes / (1024**3)
+
+#     print("#### "+step)
+#     total_memory = torch.cuda.get_device_properties(device).total_memory
+#     allocated_memory = torch.cuda.memory_allocated(device)
+#     reserved_memory = torch.cuda.memory_reserved(device)
+#     free_memory = reserved_memory - allocated_memory
+
+#     print(f"Total GPU Memory: {convert(total_memory):.2f} GiB")
+#     print(f"Allocated GPU Memory: {convert(allocated_memory):.2f} GiB")
+#     print(f"Reserved GPU Memory: {convert(reserved_memory):.2f} GiB")
+#     print(f"Free GPU Memory: {convert(free_memory):.2f} GiB")    
 
 def test_laplacian_2d(cas, num_config, dict, save_sampling = False, new_training = False):
     ###
@@ -64,10 +84,7 @@ def test_laplacian_2d(cas, num_config, dict, save_sampling = False, new_training
         phi_inside = cas.sd_function.sdf(data_inside)[:,0].detach().cpu().numpy()
         data_inside = data_inside.detach().cpu().numpy()
 
-        print("phi_inside.shape = ",phi_inside.shape)
-        print("data_inside.shape = ",data_inside.shape)
-
-        plt.figure(figsize=(15,5))
+        plt.figure(figsize=(10,10))
         plt.tricontourf(data_inside[:,0],data_inside[:,1],phi_inside,"o",levels=100)#,cmap="hot")
         plt.title("phi")
         plt.colorbar()
@@ -87,6 +104,7 @@ def test_laplacian_2d(cas, num_config, dict, save_sampling = False, new_training
     tlayers = dict["layers"]
     network = pinn_x.MLP_x(pde=pde, layer_sizes=tlayers, activation_type=dict["activation"])
     pinn = pinn_x.PINNx(network, pde)
+
     # network = pinn_x.PINNx(
     #     net=mlp.GenericMLP, pde=pde, layer_sizes=tlayers, activation_type=dict["activation"]
     # )
@@ -122,12 +140,19 @@ def test_laplacian_2d(cas, num_config, dict, save_sampling = False, new_training
             trainer.learning_rate = dict["lr"]
             trainer.train(epochs=dict["n_epochs"], n_collocation=dict["n_collocations"], n_data=dict["n_data"])
     
+    # get_memory("after train")
+
     ###
     # Plot solutions
     ###
 
     fig_path = dir_name / "solutions" / (name+".png")
-    plot_solution(cas,trainer,fig_path)
+    derivees_path = dir_name / "solutions" / (name+"_first.png")
+    derivees2_path = dir_name / "solutions" / (name+"_second.png")
+    phi_path = dir_name / "solutions" / (name+"_phi.png")
+    plot_solution(cas,trainer,fig_path,derivees_path,derivees2_path,phi_path)
+
+    # get_memory("plot")
 
     return trainer
 
