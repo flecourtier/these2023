@@ -27,6 +27,13 @@ presentation.*
 !presentation.tex
 !presentation.pdf
 
+docs/presentation/2024_02_06-07/explications/explications.*
+!docs/presentation/2024_02_06-07/explications/explications.tex
+!docs/presentation/2024_02_06-07/explications/explications.pdf
+docs/presentation/2024_02_06-07/explications/sans_preuve/explications.*
+!docs/presentation/2024_02_06-07/explications/sans_preuve/explications.tex
+!docs/presentation/2024_02_06-07/explications/sans_preuve/explications.pdf
+
 texput.log
 
 docs/antora/cache
