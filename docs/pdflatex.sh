@@ -4,12 +4,14 @@
 function run_pdflatex {
     if pdflatex -synctex=1 -interaction=nonstopmode -output-directory=$1 $2 >/dev/null 2>&1; then
         echo "pdflatex a été exécuté avec succès"
+        exit 0
     else
         echo "Erreur lors de l'exécution de pdflatex"        
         pdflatex -synctex=1 -interaction=nonstopmode -output-directory=$1 $2 #>/dev/null
         pwd_dir=$(pwd)
         filename="${2%.*}"
         echo "Voir $pwd_dir/$filename.log pour plus d'informations"
+        exit 1
     fi
 }
 
