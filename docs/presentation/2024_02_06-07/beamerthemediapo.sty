@@ -1,0 +1,125 @@
+% beamertheme.sty
+% \ProvidesPackage{beamertheme}
+\RequirePackage{silence}
+\RequirePackage{etoolbox}
+\RequirePackage{tikz}
+\RequirePackage{fontspec}
+\WarningsOff[mathdesign/mdbch]
+
+% couleurs utilisées
+\definecolor{bulles}{RGB}{19, 42, 19}
+\definecolor{title}{RGB}{96, 108, 56}
+\definecolor{other}{RGB}{134, 151, 79}
+\definecolor{triangleinf}{RGB}{221, 229, 182}
+\definecolor{trianglesup}{RGB}{221, 229, 182}
+
+% color
+\setbeamercolor{title}{fg=title}
+\setbeamercolor{author}{fg=other}
+\setbeamercolor{frametitle}{fg=title}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg=black}
+\setbeamercolor{block title}{fg=title}
+
+% font
+\setromanfont{Georgia}
+%\usefonttheme{serif} %fonctionne
+\setsansfont[Scale=MatchLowercase]{Open Sans}
+\setbeamerfont{title}{family=\rmfamily,series=\bfseries,size=\LARGE}
+\setbeamerfont{subtitle}{family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamerfont{author}{size=\normalsize} %series=\bfseries,
+\setbeamerfont{frametitle}{family=\rmfamily,series=\bfseries,size=\Large}
+\setbeamerfont{block title}{family=\rmfamily,size=\large}
+
+\setbeamersize{text margin left=2em, text margin right=2em}
+
+% template
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+% \setbeamertemplate{title page}[default][left]
+\setbeamertemplate{frametitle}{\vskip0.01\paperheight\usebeamercolor[fg]{frametitle}\insertframetitle} 
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{itemize subsubitem}{\textbullet}
+% \setlength{\leftmargini}{1.25em}
+% \setlength{\leftmarginii}{1em}
+% \setlength{\leftmarginiii}{1em}
+\setbeamertemplate{footline}{\vskip0.15\paperheight}
+
+% titlepage
+%\newcommand{\supervisor}[1]{\def\insertsupervisor{Supervisors : #1}}
+
+\usepackage{xargs}
+\newcommandx{\authors}[1][1=]{%
+	\def\insertauthors{\begin{minipage}[t]{\linewidth}
+			%\centering
+			\Large\textbf{Authors:}\\
+			\normalsize\foreach \s in {#1} {
+				\s\\
+			}
+	\end{minipage}}
+}
+
+
+% Définir la commande \supervisor avec un nombre variable d'arguments
+\newcommandx{\supervisors}[1][1=]{%
+	\def\insertsupervisors{\begin{minipage}[t]{\linewidth}
+		%\centering
+		\Large\textbf{Supervisors:}\\
+		\normalsize\foreach \s in {#1} {
+			\s\\
+		}
+	\end{minipage}}
+}
+
+
+\defbeamertemplate*{title page}{customized}[1][]
+{
+    \usebeamerfont{subtitle}\usebeamercolor[fg]{title}\insertsubtitle\par
+    \vspace{15pt}
+    \usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par
+    \bigskip
+    %\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthors\par
+    \begin{minipage}[t]{0.48\linewidth}
+    	\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthors
+    \end{minipage}
+    \begin{minipage}[t]{0.48\linewidth}
+    	\usebeamerfont{author}\usebeamercolor[fg]{author}\insertsupervisors
+    \end{minipage}\par
+	\vfill
+    \usebeamerfont{author}\usebeamercolor[fg]{author}\insertdate\par
+}
+
+% triangles et logo
+\pgfdeclareimage[height=0.05\paperheight]{logo}{images/logo-mimesis}
+
+% \defbeamertemplate{background nonumber}{%
+% 	\begin{tikzpicture}[overlay,remember picture]
+% 		\fill[trianglesup] (current page.north west) -- +(0, -0.16\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+% 		\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.16\paperheight) -- (current page.south east) -- cycle;  
+% 		\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.04\paperheight] at (current page.south east) {\pgfuseimage{logo}};%
+% 	\end{tikzpicture}%
+%     \usebeamerfont{footline}%
+% 	\usebeamercolor[fg]{footline}%
+% 	\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+% }
+
+\setbeamertemplate{background}{%
+	\begin{tikzpicture}[overlay,remember picture]
+		\fill[trianglesup] (current page.north west) -- +(0, -0.16\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+		\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.16\paperheight) -- (current page.south east) -- cycle;  
+		\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.04\paperheight] at (current page.south east) {\pgfuseimage{logo}};%
+	\end{tikzpicture}%
+    \usebeamerfont{footline}%
+	\usebeamercolor[fg]{footline}%
+	\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+}
+
+% page number
+\addtobeamertemplate{navigation symbols}{}{%
+	\usebeamerfont{footline}%
+	\usebeamercolor[fg]{footline}%
+	\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+}
+\setbeamercolor{footline}{fg=black}
+\setbeamerfont{footline}{series=\bfseries,size=\normalsize}

@@ -1,0 +1,18 @@
+\subsection{Encoding/Decoding}
+
+\begin{frame}{Encoding/Decoding - FEMs}
+	\begin{enumerate}[\textbullet]
+		\item \textbf{Decoding :} Linear combination of piecewise polynomial function $\varphi_i$.
+		\begin{equation*}
+			\mathcal{D}_{\theta_u}(x) = \sum_{i=1}^{N}(\theta_u)_i\varphi_i
+		\end{equation*}
+		$\Rightarrow$ linear decoding $\Rightarrow$ approximation space $V_N$ = vectorial space
+		\item \textbf{Encoding :} Orthogonal projection on vector space $V_N$.  \refappendix{frame:encoding_fems} \ref{frame:encoding_fems}
+		\begin{equation*}
+			\theta_f=E(f)=M^{-1}b(f)
+		\end{equation*}
+		with $M_{ij}=\int_\omega \varphi_i(x)\varphi_j(x)$ and $b_i(f)=\int_\omega \varphi_i(x)f(x)$.
+	\end{enumerate}
+\end{frame}
+
+\subsection{Approximation}

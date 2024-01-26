@@ -1,0 +1,211 @@
+%% Requires compilation with XeLaTeX or LuaLaTeX
+\documentclass[compress,10pt,xcolor={table,dvipsnames},t]{beamer}
+\usetheme{diapo}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage[bottom]{footmisc}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{array,multirow,makecell}
+\usepackage{pifont}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{appendixnumberbeamer}
+\usepackage[backend=biber,style=numeric,sorting=nyt,doi=false,url=false]{biblatex}
+\usepackage{etoolbox}
+% box colorée dans équation
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+% numéro frame en appendix
+\usepackage{appendixnumberbeamer}
+
+\setcellgapes{1pt}
+\setlength{\parindent}{0pt}
+\makegapedcells
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+\renewcommand*{\bibfont}{\scriptsize}
+% Supprimer "In:" pour les articles
+\renewbibmacro{in:}{}
+% Supprimer les champs d'eprints
+\AtEveryBibitem{\clearfield{arxiv}}
+\AtEveryBibitem{\clearfield{eprint}}
+\AtEveryBibitem{\clearfield{note}}
+\AtEveryBibitem{\clearfield{eprintclass}}
+\AtEveryBibitem{\clearfield{eprinttype}}
+% Supprimer les URL
+\ExecuteBibliographyOptions{url=false}
+% Charger votre fichier de bibliographie
+\addbibresource{biblio.bib}
+\useoutertheme[subsection=false]{miniframes}
+\makeatletter
+\patchcmd{\slideentry}{\advance\beamer@xpos by1\relax}{}{}{}
+\def\beamer@subsectionentry#1#2#3#4#5{\advance\beamer@xpos by1\relax}%
+\makeatother
+\setbeamercolor*{mini frame}{fg=bulles,bg=bulles}
+\hypersetup{
+	colorlinks=true,
+	urlcolor=blue,
+	citecolor=blue,
+	linkcolor=title,
+}
+
+\title[PhiFEM]{Mesh-based methods and physically informed learning}
+\subtitle{Macaron/Tonus retreat presentation}
+\authors[LECOURTIER Frédérique]
+\supervisors[DUPREZ Michel, FRANCK Emmanuel, LLERAS Vanessa]
+\date{February 6-7, 2024}
+
+\allowbreak
+
+% u_chapeau (chapeau en couleur)
+\usepackage{accents}
+\newcommand{\uchapeau}[1]{\accentset{\textcolor{red}{\wedge}}{#1}}
+\newcommand{\refappendix}[1]{\tikz[baseline=(char.base)]{\node[framednumber] (char) {\hyperref[#1]{\small \textcolor{white}{Appendix \ref*{#1}}}};}}
+
+\definecolor{appendix}{RGB}{180, 189, 138}
+\tikzset{
+	framednumber/.style={
+		draw=appendix,% Couleur de la bordure
+		fill=appendix, % Couleur de fond
+		rounded corners, % Coins arrondis
+		inner sep=2pt,  % Espace intérieur
+	}
+}
+
+\begin{document}
+	\nocite{*}
+	
+	\renewcommand{\inserttotalframenumber}{\pageref{lastslide}}
+	
+	{\setbeamertemplate{footline}{} 
+		\begin{frame}
+			\maketitle
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1} 
+	
+	% \begin{frame}[plain]
+		% 	\maketitle
+		% \end{frame}
+	
+	\AtBeginSection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+				\end{beamercolorbox}
+				%\tableofcontents[sectionstyle=hide,subsectionstyle=show]
+				
+				%subsectionstyle=⟨style for current subsection⟩/⟨style for other subsections in current section⟩/⟨style for subsections in other sections⟩
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1} 
+	}
+	
+	\AtBeginSubsection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+				\end{beamercolorbox}
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/shaded/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1} 
+	}
+	
+	% \begin{frame}{Test anmiation}
+		%     \begin{center}
+			%         \begin{animateinline}[autoplay,loop,controls]{3} 
+				%     		% \multiframe{11}{rPos=0+0.1}{ 
+					%     		% 	\begin{tikzpicture}
+						%     		% 		\draw[start segment=\rPos,black!70, line width=2.5] (0,0) -- (1,0) -- (1,1) -- (0,1) --cycle ;
+						%      	% 		\end{tikzpicture} 
+					%     		% } 
+				%         \animate<1-2>
+				%         \multiframe{2}{rX=1+1}{
+					%         \begin{center}
+						%           \includegraphics[width=0.2\textwidth]{images/image\rX.png}
+						%         \end{center}
+					%         }
+				%     	\end{animateinline} 
+			%     \end{center}
+		% \end{frame}
+	
+	\section{Introduction}
+	\input{sections/intro}
+	
+	\section{Mesh-based methods}
+	\input{sections/mesh_methods}
+	
+	%	\section{Finite Element Methods}
+	%	\input{sections/fems}
+	
+	\section{Internship results}
+	\input{sections/internship}
+	
+	\section{PhD results}
+	\input{sections/phd}
+	
+	\section{Conclusion} %perspectives
+	
+	\begin{frame}[label={lastslide}]{Conclusion}
+		\textbf{Observations :}
+		
+		\textbf{1.} Correction by addition seems to be the best choice \\
+		(based on theoretical results obtained with FEM)
+		
+		\textbf{2.} We need a high degree prediction ($u_\theta\in\mathbb{P}^{10}$) \\
+		$\Rightarrow$ no longer use FNO (needs NN defined at any point)
+		
+		\textbf{3.} We need to approximate the derivatives of the solution precisely \\
+		$\Rightarrow$ no longer use simple MLP, replaced by a PINNs
+		
+		\vspace{15pt}
+		
+		\textbf{What's next ?}
+		
+		\textbf{1.} Consider multiple problems (varying $f$)
+		
+		\textbf{2.} Consider multiple and more complex geometry (varying $\phi$)
+		
+		\textbf{3.} Replace PINNs with a Neural Operator  %\refappendix{frame:encoding_fems}
+		%        \begin{figure}
+			%        	\begin{tikzpicture}[remember picture,overlay]
+				%        		\node[framednumber] {\ref{frame:encoding_fems}};
+				%        	\end{tikzpicture}
+			%        \end{figure}
+		
+		%        \tikz[baseline=(char.base)]{\node[anchor=base,draw=blue,circle,inner sep=2pt] (char) {\hyperlink{frame:encoding_fems}{\color{blue}{Appendix \thesection}}};}
+	\end{frame}
+	
+	\section{Bibliography}
+	
+	{\setbeamertemplate{footline}{} 
+		\begin{frame}{Bibliography}
+			\small
+			% \vspace{30pt}
+			% \setstretch{0.2}
+			% \AtNextBibliography{\small}
+			\printbibliography[heading=none]
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1} 
+	
+	\appendix
+	
+	\input{sections/more}
+	
+\end{document}

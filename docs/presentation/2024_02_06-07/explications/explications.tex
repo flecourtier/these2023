@@ -347,7 +347,7 @@
 
 				donc
 				\begin{align*}
-					\frac{J_{bv}(v+\epsilon h)-J_{bc}(v)}{\epsilon} = \int_{\Omega} v^2+\frac{\epsilon}{2} h^2 - hg
+					\frac{J_{bc}(v+\epsilon h)-J_{bc}(v)}{\epsilon} = \int_{\Omega} v^2+\frac{\epsilon}{2} h^2 - hg
 				\end{align*}
 				
 				On en déduit que
@@ -713,5 +713,20 @@
 
 	\section{Réseaux de neurones}
 
+	A présent, nous allons nous intéresser aux réseaux de neurones dit "Physiquement informés". Nous considérerons 2 types de méthodes : les méthodes Deep-Ritz et les méthodes PINNs standard.
+	
+	\begin{tcolorbox}[
+		colback=white, % Couleur de fond de la boîte
+		colframe=black!70!black, % Couleur du cadre de la boîte
+		arc=2mm, % Rayon de l'arrondi des coins
+		boxrule=1pt, % Épaisseur du cadre de la boîte
+		breakable, enhanced jigsaw
+		]
+		\textcolor{black!70!black}{\textbf{Idée centrale.} \\}
+		
+		Les méthodes FEM dont on a parlé précédemment utilise un décodeur linéaire par rapport aux paramètres, ce qui implique qui revient à se restreindre à un espace vectoriel de dimension finie. Les méthodes dont on va parler maintenant utilise un \textbf{décodeur non linéaire} ce qui revient à se restreindre à des variétés. En plus d'utiliser un décodeur non linéaire, on utilise des modèles réguliers plusieurs fois dérivables dont on calcule les dérivées par \textbf{différentiation automatique}
+	\end{tcolorbox}
 
+	\subsection{Encodeur/Décodeur}
+	
 \end{document}
