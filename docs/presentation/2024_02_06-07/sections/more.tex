@@ -1,74 +1,19 @@
-\begin{frame}{\appendixname~\insertframenumber~: Encoding - FEMs}\phantomsection\label{frame:encoding_fems}
-	
-	Pourquoi ?
+\begin{frame}{\appendixname~\insertframenumber~: Encoding - FEMs}\label{frame:encoding_fems}
+	\hl{A compléter !}
 \end{frame}
 
-%\begin{frame}{Architecture of the FNO}
-%    \begin{center}
-%        \centering
-%        \pgfimage[width=\linewidth]{images/more/FNO/FNO_schema.png}
-%    \end{center}
-%    \textbf{Input $X$} of shape (bs,ni,nj,nk) \qquad \qquad \textbf{Output $Y$} of shape (bs,ni,nj,1) \\
-%    with bs the batch size, ni and nj the grid resolution and nk the number of channels.
-%\end{frame}
-%
-%\begin{frame}{Description of the FNO architecture}
-%    \begin{center}
-%        \centering
-%        \pgfimage[width=\linewidth]{images/more/FNO/FNO_schema_moitie1.png}
-%    \end{center}
-%    \begin{enumerate}[\ding{217}]
-%        \item perform a $P$ transformation, to move to a space with more channels (to build a sufficiently rich representation of the data)
-%        \item apply $L$ Fourier layers defined by
-%        $$\mathcal{H}_\theta^l(\tilde{X})=\sigma\left(\mathcal{C}_\theta^l(\tilde{X})+\mathcal{B}_\theta^l(\tilde{X})\right),\; l=1,\dots,L$$
-%        with $\tilde{X}$ the input of the current layer and
-%        \begin{itemize}
-%            \item $\sigma$ an activation function (ReLU or GELU)
-%            \item $\mathcal{C}_\theta^l$ : convolution sublayer (convolution performed by Fast Fourier Transform)
-%            \item $\mathcal{B}_\theta^l$ : "bias-sublayer"
-%        \end{itemize}
-%        \item return to the target dimension by performing a $Q$ transformation (in our case, the number of output channels is 1)
-%    \end{enumerate}
-%\end{frame}
-%
-%\begin{frame}{Fourier Layer Structure}
-%    \setstretch{0.5}
-%    \textbf{Convolution sublayer : } \quad $\mathcal{C}_\theta^l(X)=\mathcal{F}^{-1}(\mathcal{F}(X)\cdot\hat{W})$ \quad
-%    \begin{minipage}{0.3\linewidth}
-%        \vspace{-15pt}
-%        \centering
-%        \pgfimage[width=\linewidth]{images/more/FNO/FNO_schema_moitie2.png}
-%    \end{minipage}
-%    \begin{enumerate}[\ding{217}]
-%        \item $\hat{W}$ : a trainable kernel
-%        \item $\mathcal{F}$ : 2D Discrete Fourier Transform (DFT) defined by
-%        \begin{equation*}
-%            \mathcal{F}(X)_{ijk}=\frac{1}{ni}\frac{1}{nj}\sum_{i'=0}^{ni-1}\sum_{j'=0}^{nj-1}X_{i'j'k}e^{-2\sqrt{-1}\pi\left(\frac{ii'}{ni}+\frac{jj'}{nj}\right)}
-%        \end{equation*}
-%        $\mathcal{F}^{-1}$ : its inverse.
-%        \item $(Y\cdot\hat{W})_{ijk}=\sum_{k'}Y_{ijk'}\hat{W}_{ijk'} \quad \Rightarrow \quad$ applied channel by channel
-%    \end{enumerate} \; \\
-%    \textbf{Bias-sublayer :} \quad  $\mathcal{B}_\theta^l(X)_{ijk}=\sum_{k'}X_{ijk}W_{k'k}+B_k$ \quad
-%    \begin{minipage}{0.3\linewidth}
-%        \vspace{-10pt}
-%        \pgfimage[width=0.3\linewidth]{images/more/FNO/FNO_schema_moitie2_bis.png}
-%    \end{minipage}
-%    \begin{enumerate}[\ding{217}]
-%        \item 2D convolution with a kernel of size 1
-%        \item allowing channels to be mixed via a kernel without allowing interaction between pixels.
-%    \end{enumerate}
-%\end{frame}
-%
-%\begin{frame}{Dual method -  Poisson Problem}
-%    \setstretch{0.5}		
-%    \textbf{Problem :} Find $u$ on $\Omega_h$ and $p$ on $\Omega_h^\Gamma$ such that
-%    \begin{align*}
-%        \int_{\Omega_h}\nabla u\nabla v&-\int_{\partial\Omega_h}\frac{\partial u}{\partial n} v + \frac{\gamma}{h^2} \sum_{T\in\mathcal{T}_h^\Gamma}\int_T \left(u-\frac{1}{h}\phi p\right)\left(v-\frac{1}{h}\phi q\right) \\
-%        &+ G_h(u,v) = \int_{\Omega_h}fv + G_h^{rhs}(v), \; \forall v \; \text{on } \Omega_h, \; q \; \text{on } \Omega_h^\Gamma
-%    \end{align*}
-%    with $\gamma$ an other positive stabilization parameter and $G_h$ and $G_h^{rhs}$ the stabilization terms defined previously.
-%    
-%    For the non homogeneous case, we replace
-%    $$\int_T \left(u-\frac{1}{h}\phi p\right)\left(v-\frac{1}{h}\phi q\right) \quad \rightarrow \quad \int_T\left(u-\frac{1}{h}\phi p-g\right)\left(v-\frac{1}{h}\phi q\right)$$ 
-%    by assuming $g$ is defined on $\Omega_h^\Gamma$
-%\end{frame}
+\begin{frame}{\appendixname~\insertframenumber~: Energetic form}\label{frame:minpb_galerkin}
+	\hl{A compléter !}
+\end{frame}
+
+\begin{frame}{\appendixname~\insertframenumber~: Galerkin Projection}\label{frame:galerkin_proj}
+	\hl{A compléter !}
+\end{frame}
+
+\begin{frame}{\appendixname~\insertframenumber~: Least-Square form}\label{frame:minpb_leastsquare}
+	\hl{A compléter !}
+\end{frame}
+
+\begin{frame}{\appendixname~\insertframenumber~: LS Galerkin Projection}\label{frame:leastsquare_proj}
+	\hl{A compléter !}
+\end{frame}

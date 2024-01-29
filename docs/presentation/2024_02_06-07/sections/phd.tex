@@ -45,7 +45,7 @@
 \end{frame}
 
 \begin{frame}{PINNs Training}
-    We consider the solution on the circle defined in \eqref{sol3} and defined by
+    We consider the solution on the circle defined in \\eqref{sol3} and defined by
     \begin{equation*}
         u_{ex}(x,y)=\phi(x,y)\sin(x)\exp(y)
     \end{equation*}
@@ -84,11 +84,13 @@
         \pgfimage[width=\linewidth]{images/phd/results_time_1e-4.png}
 
         \small\raggedright
-        $\textbullet$ \textbf{mesh} - FEM : construct the mesh \\
-        ($\phi$-FEM : construct cell/facet sets) \\
-        $\textbullet$ \textbf{u\_PINNs} - get $u_\theta$ in $\mathbb{P}^{10}$ freedom degrees \\
-        $\textbullet$ \textbf{assemble} - assemble the FE matrix \\
-        $\textbullet$ \textbf{solve} - resolve the linear system
+        \begin{enumerate}[\textbullet]
+        	\item \textbf{mesh} - FEM : construct the mesh \\
+        	($\phi$-FEM : construct cell/facet sets) \\
+        	\item \textbf{u\_PINNs} - get $u_\theta$ in $\mathbb{P}^{10}$ freedom degrees \\
+        	\item \textbf{assemble} - assemble the FE matrix \\
+        	\item \textbf{solve} - resolve the linear system
+        \end{enumerate}
     \end{minipage}
 
     \small

@@ -3,15 +3,15 @@
 
     \textbf{$\phi$-FEM Method :} New fictitious domain finite element method.
 
-    \begin{enumerate}[\ding{217}]
+    \begin{itemize}[\ding{217}]
         \item domain given by a level-set function $\Rightarrow$ don't require a mesh fitting the boundary 
         \item allow to work on complex geometries 
         \item ensure geometric quality 
         % \item Cartesian grid adapted for neural networks
-    \end{enumerate}
+    \end{itemize}
     
     \begin{center}
-        \pgfimage[width=0.65\linewidth]{images/intro/context_geometry.png}
+        \includegraphics[width=0.65\linewidth]{images/intro/context_geometry.png}
     \end{center}	
 
     \textit{Practical case:} Real-time simulation, shape optimization...
@@ -136,11 +136,11 @@
 	\end{center}
 	
 	\textbf{Numerical methods :} Discrete an infinite-dimensional problem (unknown = function) and solve it in a finite-dimensional space (unknown = vector).
-	\begin{enumerate}[\textbullet]
+	\begin{itemize}[\textbullet]
 		\item \textbf{Encoding :} we encode the problem in a finite-dimensional space
 		\item \textbf{Approximation :} solve the problem in finite-dimensional space
 		\item \textbf{Decoding :} bring the solution back into infinite dimensional space
-	\end{enumerate}
+	\end{itemize}
 	
 	\begin{center}
 		\begin{tabular}{|c|c|c|}

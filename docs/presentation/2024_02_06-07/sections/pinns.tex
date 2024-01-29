@@ -1,0 +1,54 @@
+\subsection{Encoding/Decoding}
+
+\begin{frame}{Encoding/Decoding - NNs}
+	\hl{A compléter !}
+\end{frame}
+
+\begin{frame}{Non-Linear Decoder - Advantages}
+	\hl{A compléter !}
+\end{frame}
+
+\subsection{Approximation}
+
+\begin{frame}{Approximation}
+	\hl{A compléter !}
+\end{frame}
+
+\begin{frame}{Deep-Ritz}
+	\hl{A compléter !}
+\end{frame}
+
+\begin{frame}{Standard PINNs}
+	\hl{A compléter !}
+\end{frame}
+
+\begin{frame}{In practice...}
+	\hl{A compléter !}
+\end{frame}
+
+\begin{frame}{Steps Decomposition - NNs}
+	\begin{center}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\textbf{Encoding} & \multicolumn{2}{c|}{\textbf{Approximation}} & \textbf{Decoding} \\
+			\hline
+			$f \; \rightarrow \theta_f$ & \multicolumn{2}{c|}{$\theta_f \; \rightarrow \theta_u$} & $\theta_u \; \rightarrow u_\theta$ \\
+			\hline
+			\multirow{3}{*}{$\begin{aligned}
+					\theta_f&=\mathcal{E}(f) \\
+					&=M^{-1}b(f)
+				\end{aligned}$} & Galerkin & LS Galerkin & \multirow{3}{*}{$\begin{aligned}
+					u_\theta(x)&=\mathcal{D}_\theta(x) \\
+					&=\sum_{i=1}^N (\theta_u)_i\varphi_i
+				\end{aligned}$} \\
+			& \small $\langle R(u_\theta),\varphi_i\rangle_{L^2}=0$ & \small $\langle R(u_\theta),(\nabla_\theta R(u_\theta))_i\rangle_{L^2}=0$ & \\
+			\cline{2-3}
+			& \multicolumn{2}{c|}{$A\theta_u=B$} & \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\hl{A compléter !}
+\end{frame}
+

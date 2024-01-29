@@ -1,18 +1,367 @@
 \subsection{Encoding/Decoding}
 
 \begin{frame}{Encoding/Decoding - FEMs}
-	\begin{enumerate}[\textbullet]
+	\begin{itemize}[\textbullet]
 		\item \textbf{Decoding :} Linear combination of piecewise polynomial function $\varphi_i$.
 		\begin{equation*}
 			\mathcal{D}_{\theta_u}(x) = \sum_{i=1}^{N}(\theta_u)_i\varphi_i
 		\end{equation*}
-		$\Rightarrow$ linear decoding $\Rightarrow$ approximation space $V_N$ = vectorial space
-		\item \textbf{Encoding :} Orthogonal projection on vector space $V_N$.  \refappendix{frame:encoding_fems} \ref{frame:encoding_fems}
+		$\Rightarrow$ linear decoding $\Rightarrow$ approximation space $V_N$ = vectorial space \\
+		$\Rightarrow$ existence and uniqueness of the orthogonal projector
+		\item \textbf{Encoding :} Orthogonal projection on vector space $V_N=Vect\{\varphi_1,\dots,\varphi_N\}$.
 		\begin{equation*}
 			\theta_f=E(f)=M^{-1}b(f)
 		\end{equation*}
-		with $M_{ij}=\int_\omega \varphi_i(x)\varphi_j(x)$ and $b_i(f)=\int_\omega \varphi_i(x)f(x)$.
-	\end{enumerate}
+		with $M_{ij}=\int_\Omega \varphi_i(x)\varphi_j(x)$ and $b_i(f)=\int_\Omega \varphi_i(x)f(x)$. \refappendix{frame:encoding_fems} 
+	\end{itemize}
 \end{frame}
 
 \subsection{Approximation}
+
+\begin{frame}{Approximation}
+	\textbf{Idea :} Project a certain form of the equation onto the vector space $V_N$. \\
+	We introduce the residual of the equation defined by
+	\begin{equation*}
+		R(v) = R_{in}(v)\mathds{1}_{\Omega} + R_{bc}(v)\mathds{1}_{\partial \Omega}
+	\end{equation*}
+	with 
+	\begin{equation*}
+		R_{in}(v)=L(v) - f \qquad \text{and} \qquad R_{bc}(v)=v-g
+	\end{equation*}
+	which respectively define the residues inside $\Omega$ and on the boundary $\partial\Omega$. 
+	
+	\vspace{10pt}
+	
+	\textbf{Discretization :} Degrees of freedom problem (which also has a unique solution)
+	\begin{center}
+		$u=\arg\min_{v\in V_N} J(v) \quad \longrightarrow \quad \theta_u=\arg\min_{\theta\in \mathbb{R}^N} J(\theta) $
+	\end{center}
+	with $J$ a functional to minimize.
+	
+	\vspace{10pt}
+	
+	\textbf{Variants :} Depends on the problem form used for projection.
+	
+	\begin{center}
+		\begin{tabular}{c|c}
+			Problem - Energetic form & Problem - Least-square form \\
+			Galerkin projection & Galerkin Least-square projection
+		\end{tabular}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Energetic form}
+	\textbf{Minimization Problem :}
+	\begin{equation}
+		u_\theta(x)=\arg\min_{v\in V_N} J(v), \qquad J(v)=J_{in}(v)+J_{bc}(v)\label{minpb_galerkin}
+	\end{equation}
+	with 
+	\begin{equation*}
+		J_{in}(v)=\frac{1}{2}\int_\Omega L(v)v - \int_\Omega fv  \qquad \text{et} \qquad J_{bc}(v)=\frac{1}{2}\int_\Omega R_{bc}(v)^2
+	\end{equation*}
+
+	\footnotesize	
+	\textit{Remark :} This form of the problem is due to the Lax-Milgram theorem as $a$ is symmetrical.
+	\normalsize
+	
+	\footnotesize
+	\begin{center}
+		\begin{tcolorbox}[
+			colback=white, % Couleur de fond de la boîte
+			colframe=other, % Couleur du cadre de la boîte
+			arc=2mm, % Rayon de l'arrondi des coins
+			boxrule=0.5pt, % Épaisseur du cadre de la boîte
+			breakable, enhanced jigsaw,
+			width=0.8\linewidth
+			]
+			
+			\textbf{Minimization Problem \eqref{minpb_galerkin} $\Leftrightarrow$ PDE \eqref{edp} :}
+			
+			\centering
+			$\nabla_v \; J(v)=R(v) \qquad $ \refappendix{frame:minpb_galerkin} 
+			
+			\vspace{5pt}
+			
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{minpb_galerkin}
+			\end{minipage} $\Leftrightarrow \; \nabla_{u_\theta} \; J(u_\theta)=0 \; \Leftrightarrow \; \left\{\begin{aligned}
+				&R_{in}(u_\theta)=0 \; \text{in} \; \Omega \\
+				&u_\theta=g \; \text{on} \; \partial\Omega
+			\end{aligned}\right. \; \Leftrightarrow$ \begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{edp}
+			\end{minipage}
+		
+			\vspace{5pt}
+			
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{Min pb}
+			\end{minipage} \; \hspace{150pt} \; \begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{PDE}
+			\end{minipage}
+		\end{tcolorbox}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Galerkin Projection}
+	\textbf{Discrete minimization Problem :}
+	\begin{equation}
+		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J(\theta), \qquad J(\theta)=J_{in}(\theta)=\frac{1}{2}\int_\Omega L(u_\theta)v_\theta - \int_\Omega fv_\theta \label{minpb_galerkin_discret}
+	\end{equation}
+%	with 
+%	\begin{equation*}
+%		
+%	\end{equation*}
+	
+	\footnotesize	
+	\textit{Remark :} In practice, boundary conditions can be imposed in different ways. We are therefore only interested in the minimization problem in $\Omega$.
+	
+	\normalsize	
+	
+	\textbf{Galerkin projection :} Consists in resolving
+	\begin{equation}
+		\langle R_{in}(u_\theta(x)),\varphi_i\rangle_{L^2}=0, \qquad \forall i\in\{1,\dots,N\}\label{galerkin_proj}
+	\end{equation}
+
+	\footnotesize
+	\begin{center}
+		\begin{tcolorbox}[
+			colback=white, % Couleur de fond de la boîte
+			colframe=other, % Couleur du cadre de la boîte
+			arc=2mm, % Rayon de l'arrondi des coins
+			boxrule=0.5pt, % Épaisseur du cadre de la boîte
+			breakable, enhanced jigsaw,
+			width=\linewidth
+			]
+			
+			\textbf{Galerkin Projection \eqref{galerkin_proj} $\Leftrightarrow$ PDE \eqref{edp} :}
+			
+			\centering
+			$\nabla_\theta \; J(\theta)=\left(\int_\Omega R_{in}(v_\theta)\varphi_i\right)_{i=1,\dots,N} \qquad $ \refappendix{frame:galerkin_proj} 
+			
+			\vspace{5pt}
+			
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{edp}
+			\end{minipage} $\; \Leftrightarrow \;$	\begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{minpb_galerkin}
+			\end{minipage} $\; \Leftrightarrow \;$	\begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{minpb_galerkin_discret}
+			\end{minipage} $\Leftrightarrow \; \nabla_\theta \; J(\theta)=0 \; \Leftrightarrow$ \begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{galerkin_proj}
+			\end{minipage}
+		
+			\vspace{5pt}
+		
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{PDE}
+			\end{minipage} $\; \quad \;$ \begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{Min pb}
+			\end{minipage} $\; \quad \;$ \begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{Discrete} \\
+				\textbf{min pb}
+			\end{minipage} \; \hspace{60pt} \; \begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{Galerkin} \\
+				\textbf{projection}
+			\end{minipage}
+		\end{tcolorbox}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Least-Square form}
+	\textbf{Minimization Problem :}
+	\begin{equation}
+		u_\theta(x)=\arg\min_{v\in V_N} J(v), \qquad J(v)=J_{in}(v)+J_{bc}(v)\label{minpb_leastsquare}
+	\end{equation}
+	with 
+	\begin{equation*}
+		J_{in}(v)=\frac{1}{2}\int_\Omega R_{in}(v)^2  \qquad \text{and} \qquad J_{bc}(v)=\frac{1}{2}\int_\Omega R_{bc}(v)^2
+	\end{equation*}
+	
+	\footnotesize	
+	\textit{Remark :} This form of the problem is due to the Lax-Milgram theorem as $a$ is symmetrical.
+	\normalsize
+	
+	\footnotesize
+	\begin{center}
+		\begin{tcolorbox}[
+			colback=white, % Couleur de fond de la boîte
+			colframe=other, % Couleur du cadre de la boîte
+			arc=2mm, % Rayon de l'arrondi des coins
+			boxrule=0.5pt, % Épaisseur du cadre de la boîte
+			breakable, enhanced jigsaw,
+			width=\linewidth
+			]
+			
+			\textbf{Minimization Problem \eqref{minpb_leastsquare} $\Leftrightarrow$ PDE \eqref{edp} :}
+			
+			\centering
+			$\nabla_v \; J(v)=L(R(v))\mathds{1}_\Omega+(v-g)\mathds{1}_{\partial\Omega} \qquad $ \refappendix{frame:minpb_leastsquare} 
+			
+			\vspace{5pt}
+			
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{minpb_leastsquare}
+			\end{minipage} $\Leftrightarrow \; \nabla_{u_\theta} \; J(u_\theta)=0 \; \Leftrightarrow \; \left\{\begin{aligned}
+				&L(R(u_\theta))=0 \; \text{in} \; \Omega \\
+				&R(u_\theta)=0 \; \text{on} \; \partial\Omega
+			\end{aligned}\right. \; \Leftrightarrow \; R(u_\theta)=0 \; \Leftrightarrow$ \begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{edp}
+			\end{minipage}
+			
+			\vspace{5pt}
+			
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{Min pb}
+			\end{minipage} \; \hspace{210pt} \; \begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{PDE}
+			\end{minipage}
+		\end{tcolorbox}
+	
+		\hl{A modifier !}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Least-Square Galerkin Projection}
+	\textbf{Discrete minimization Problem :}
+	\begin{equation}
+		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J(\theta), \qquad J(\theta)=J_{in}(\theta)=\frac{1}{2}\int_\Omega (L(u_\theta) - f)^2 \label{minpb_leastsquare_discret}
+	\end{equation}
+	%	with 
+	%	\begin{equation*}
+		%		
+		%	\end{equation*}
+	
+	\footnotesize	
+	\textit{Remark :} In practice, boundary conditions can be imposed in different ways. We are therefore only interested in the minimization problem in $\Omega$.
+	
+	\normalsize	
+	
+	\textbf{Galerkin projection :} Consists in resolving
+	\begin{equation}
+		\langle R_{in}(u_\theta(x)),(\nabla_\theta R_{in}(u_\theta(x)))_i\rangle_{L^2}=0, \qquad \forall i\in\{1,\dots,N\}\label{leastsquare_proj}
+	\end{equation}
+	
+	\footnotesize
+	\begin{center}
+		\begin{tcolorbox}[
+			colback=white, % Couleur de fond de la boîte
+			colframe=other, % Couleur du cadre de la boîte
+			arc=2mm, % Rayon de l'arrondi des coins
+			boxrule=0.5pt, % Épaisseur du cadre de la boîte
+			breakable, enhanced jigsaw,
+			width=\linewidth
+			]
+			
+			\textbf{Least-Square Galerkin Projection \eqref{leastsquare_proj} $\Leftrightarrow$ PDE \eqref{edp} :}
+			
+			\centering
+			$\nabla_\theta \; J(\theta)=\left(\int_\Omega L(R_{in}(v_\theta))\varphi_i\right)_{i=1,\dots,N} \qquad $ \refappendix{frame:leastsquare_proj} 
+			
+			\vspace{5pt}
+			
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{edp}
+			\end{minipage} $\; \Leftrightarrow \;$	\begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{minpb_leastsquare}
+			\end{minipage} $\; \Leftrightarrow \;$	\begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{minpb_leastsquare_discret}
+			\end{minipage} $\Leftrightarrow \; \nabla_\theta \; J(\theta)=0 \; \Leftrightarrow$ \begin{minipage}{0.1\linewidth}
+				\centering
+				$u_\theta$ sol \\
+				of \eqref{leastsquare_proj}
+			\end{minipage}
+			
+			\vspace{5pt}
+			
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{PDE}
+			\end{minipage} $\; \quad \;$ \begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{Min pb}
+			\end{minipage} $\; \quad \;$ \begin{minipage}{0.1\linewidth}
+				\centering
+				\textbf{Discrete} \\
+				\textbf{min pb}
+			\end{minipage} \; \hspace{60pt} \; \begin{minipage}{0.15\linewidth}
+				\centering
+				\textbf{LS Galerkin} \\
+				\textbf{projection}
+			\end{minipage}
+		\end{tcolorbox}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Steps Decomposition - FEMs}
+	\begin{center}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\textbf{Encoding} & \multicolumn{2}{c|}{\textbf{Approximation}} & \textbf{Decoding} \\
+			\hline
+			$f \; \rightarrow \theta_f$ & \multicolumn{2}{c|}{$\theta_f \; \rightarrow \theta_u$} & $\theta_u \; \rightarrow u_\theta$ \\
+			\hline
+			\multirow{3}{*}{$\begin{aligned}
+				\theta_f&=\mathcal{E}(f) \\
+				&=M^{-1}b(f)
+			\end{aligned}$} & Galerkin & LS Galerkin & \multirow{3}{*}{$\begin{aligned}
+				u_\theta(x)&=\mathcal{D}_\theta(x) \\
+				&=\sum_{i=1}^N (\theta_u)_i\varphi_i
+			\end{aligned}$} \\
+			 & \small $\langle R(u_\theta),\varphi_i\rangle_{L^2}=0$ & \small $\langle R(u_\theta),(\nabla_\theta R(u_\theta))_i\rangle_{L^2}=0$ & \\
+			\cline{2-3}
+			 & \multicolumn{2}{c|}{$A\theta_u=B$} & \\
+			 \hline
+		\end{tabular}
+	\end{center}
+
+	\footnotesize
+	\textit{\textbf{Example :}} Galerkin projection.
+	
+	\begin{minipage}{0.48\linewidth}
+		For $i\in\{1,\dots,N\}$,
+		\begin{align*}
+			\langle R(u_\theta),\varphi_i\rangle_{L^2}&=0 \\
+			\iff \quad \int_\Omega L(u_\theta)\varphi_i &= \int_\Omega f\varphi_i \\
+			\iff \quad \sum_{j=1}^N(\theta_u)_j \int_\Omega \varphi_i L(\varphi_j) &= \int_\Omega f\varphi_i
+		\end{align*}
+	\end{minipage}
+	\begin{minipage}{0.48\linewidth}
+		\begin{equation*}
+			A\theta_u=B \; \text{with}
+		\end{equation*}
+		\begin{equation*}
+			A_{i,j} = \int_\Omega \varphi_i L(\varphi_j) \quad \text{,} \quad B_i =  \int_\Omega f\varphi_i
+		\end{equation*}
+	\end{minipage}
+\end{frame}
