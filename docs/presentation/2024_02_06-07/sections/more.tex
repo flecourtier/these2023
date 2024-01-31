@@ -152,6 +152,162 @@
 \section{Physically Informed Learning}
 
 \begin{frame}{\appendixname~\theappendixframenumber~: ADAM Method}\labelappendixframe{frame:adam}
-	\hl{A compléter !}
+	Adam = Adaptive Moment Estimation" - combine les idées du moment et de RMSProp.
+
+	\begin{align*}
+		&1: \qquad m \leftarrow \frac{\beta_1 m +  (1-\beta_1) \nabla f_{x}}{1-\beta_1^T}\\
+		&2: \qquad s \leftarrow \frac{\beta_2 s +  (1-\beta_2) \nabla^2 f_{x}}{1-\beta_2^T}\\
+		&3: \qquad x \leftarrow x-  \ell \frac{m }{\sqrt{s+\epsilon}} 
+	\end{align*}
+
+	with 
+	\begin{itemize}[\textbullet]
+		\item $T$ the number of iteration (starting at 1) 
+		\item $\epsilon$ a smoothing paramete
+		\item $\beta_i \in ]0,1[$ which convergence quickly to 0. 
+	\end{itemize}	
+\end{frame}
+\addtocounter{appendixframenumber}{1}
+
+\section{Our hybrid method}
+
+\subsection{\appendixname~\theappendixframenumber~: $\phi$-FEM Method}\labelappendixframe{frame:phifem}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Problem}
+	Let $u=\phi w+g$ such that
+	$$\left\{\begin{aligned}
+		-\Delta u &= f, \; \text{in } \Omega, \\
+		u&=g, \; \text{on } \Gamma, \\
+	\end{aligned}\right.$$
+	where $\phi$ is the level-set function and $\Omega$ and $\Gamma$ are given by :
+	\begin{center}
+		\pgfimage[width=0.5\linewidth]{images/more/PhiFEM_level_set.png}
+	\end{center}
+	The level-set function $\phi$ is supposed to be known on $\mathbb{R}^d$ and sufficiently smooth. \\
+	For instance, the signed distance to $\Gamma$ is a good candidate.
+	
+	\vspace{5pt}
+	
+	\footnotesize
+	\textit{Remark :} Thanks to $\phi$ and $g$, the conditions on the boundary are respected.
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Fictitious domain}
+	\setstretch{0.5}
+	
+	\vspace{10pt}
+	
+	\begin{center}
+		\begin{minipage}{0.43\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/more/PhiFEM_domain.png}
+		\end{minipage} \hfill
+		\begin{minipage}{0.1\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/more/PhiFEM_fleche.png} 
+		\end{minipage} \hfill
+		\begin{minipage}{0.43\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/more/PhiFEM_domain_considered.png}
+		\end{minipage}
+	\end{center}
+	
+	\begin{enumerate}[\ding{217}]
+		\item $\phi_h$ : approximation of $\phi$ \\ 
+		\item $\Gamma_h=\{\phi_h=0\}$ : approximate boundary of $\Gamma$
+		\item $\Omega_h$ : computational mesh
+		\item $\partial\Omega_h$ : boundary of $\Omega_h$ ($\partial\Omega_h \ne \Gamma_h$)
+	\end{enumerate}	
+	
+	% \begin{minipage}{0.6\linewidth}
+		%     \begin{enumerate}[\ding{217}]
+			%         \item $\mathcal{O}$ : fictitious domain such that $\Omega\subset\mathcal{O}$
+			%         \item $\mathcal{T}_h^\mathcal{O}$ : simple quasi-uniform mesh on $\mathcal{O}$
+			%         \item $\phi_h=I_{h,\mathcal{O}}^{(l)}(\phi)\in V_{h,\mathcal{O}}^{(l)}$ : approximation of $\phi$ \\ 
+			%         with $I_{h,\mathcal{O}}^{(l)}$ the standard Lagrange interpolation operator on
+			%         $$V_{h,\mathcal{O}}^{(l)}=\left\{v_h\in H^1(\mathcal{O}):v_{h|_T}\in\mathbb{P}_l(T) \;  \forall T\in\mathcal{T}_h^\mathcal{O}\right\}$$
+			%         \item $\Gamma_h=\{\phi_h=0\}$ : approximate boundary of $\Gamma$
+			%         \item $\mathcal{T}_h$ : sub-mesh of $\mathcal{T}_h^\mathcal{O}$ defined by
+			%         $$\mathcal{T}_h=\left\{T\in \mathcal{T}_h^\mathcal{O}:T\cap\{\phi_h<0\}\ne\emptyset\right\}$$
+			%         \item $\Omega_h$ : domain covered by the $\mathcal{T}_h$ mesh defined by
+			%         $$\Omega_h=\left(\cup_{T\in\mathcal{T}_h}T\right)^O$$
+			%         ($\partial\Omega_h$ its boundary)
+			%     \end{enumerate}			
+		% \end{minipage}
+	
+	\footnotesize
+	\; \\
+	\textit{Remark :} $n_{vert}$ will denote the number of vertices in each direction for $\mathcal{O}$
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Facets and Cells sets}
+	
+	\vspace{15pt}
+	
+	\begin{center}
+		\begin{minipage}{0.48\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/more/PhiFEM_boundary_cells.png}
+		\end{minipage} \hfill
+		\begin{minipage}{0.48\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/more/PhiFEM_boundary_edges.png}
+		\end{minipage}
+	\end{center}
+	
+	\begin{enumerate}[\ding{217}]
+		\item $\mathcal{T}_h^\Gamma$ : mesh elements cut by $\Gamma_h$
+		\item $\mathcal{F}_h^\Gamma$ : collects the interior facets of $\mathcal{T}_h^\Gamma$ \\
+		(either cut by $\Gamma_h$ or belonging to a cut mesh element)
+	\end{enumerate}
+	
+	% \begin{minipage}{0.6\linewidth}
+		%     \begin{enumerate}[\ding{217}]
+			%         \item $\mathcal{T}_h^\Gamma\subset \mathcal{T}_h$ : contains the mesh elements cut by $\Gamma_h$, i.e. 
+			%         \begin{equation*}
+				%             \mathcal{T}_h^\Gamma=\left\{T\in\mathcal{T}_h:T\cap\Gamma_h\ne\emptyset\right\},
+				%         \end{equation*}
+			%         \item $\Omega_h^\Gamma$ : domain covered by the $\mathcal{T}_h^\Gamma$ mesh, i.e.
+			%         \begin{equation*}
+				%             \Omega_h^\Gamma=\left(\cup_{T\in\mathcal{T}_h^\Gamma}T\right)^O
+				%         \end{equation*}
+			%         \item $\mathcal{F}_h^\Gamma$ : collects the interior facets of $\mathcal{T}_h$ either cut by $\Gamma_h$ or belonging to a cut mesh element, i.e.
+			%         \begin{align*}
+				%             \mathcal{F}_h^\Gamma=\left\{E\;(\text{an internal facet of } \mathcal{T}_h) \text{ such that }\right. \\
+				%             \left. \exists T\in \mathcal{T}_h:T\cap\Gamma_h\ne\emptyset \text{ and } E\in\partial T\right\}
+				%         \end{align*}
+			%     \end{enumerate}
+		% \end{minipage}
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Poisson problem}
+	\textbf{Approach Problem :} Find $w_h\in V_h^{(k)}$ such that 
+	$$a_h(w_h,v_h) = l_h(v_h) \quad \forall v_h \in V_h^{(k)}$$
+	where
+	$$a_h(w,v)=\int_{\Omega_h} \nabla (\phi_h w) \cdot \nabla (\phi_h v) - \int_{\partial\Omega_h} \frac{\partial}{\partial n}(\phi_h w)\phi_h v+\fcolorbox{blue}{white}{$G_h(w,v)$},$$
+	$$l_h(v)=\int_{\Omega_h} f \phi_h v + \fcolorbox{blue}{white}{$G_h^{rhs}(v)$} \qquad \qquad \color{blue}\text{Stabilization terms}$$
+	and 
+	$$V_h^{(k)}=\left\{v_h\in H^1(\Omega_h):v_{h|_T}\in\mathbb{P}_k(T), \; \forall T\in\mathcal{T}_h\right\}.$$
+	For the non homogeneous case, we replace
+	$$u=\phi w \quad \rightarrow \quad u=\phi w+g$$ 
+	by supposing that $g$ is currently given over the entire $\Omega_h$.
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Stabilization terms}
+	\begin{center}
+		\centering
+		\pgfimage[width=\linewidth]{images/more/PhiFEM_stab_terms.png}
+	\end{center}
+	\small
+	\underline{1st term :} ensure continuity of the solution by penalizing gradient jumps. \\
+	$\rightarrow$ Ghost penalty [Burman, 2010] \\
+	\underline{2nd term :} require the solution to verify the strong form on $\Omega_h^\Gamma$. \\
+	\normalsize
+	\textbf{Purpose :} 
+	\begin{enumerate}[\ding{217}]
+		\item reduce the errors created by the "fictitious" boundary 
+		\item ensure the correct condition number of the finite element matrix
+		\item restore the coercivity of the bilinear scheme
+	\end{enumerate}
 \end{frame}
 \addtocounter{appendixframenumber}{1}

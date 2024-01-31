@@ -1,5 +1,40 @@
 \begin{frame}{$\phi$-FEM Method}
-	\hl{A compléter !}
+	\textbf{Main ideas :} \small
+	
+	\begin{minipage}[t]{0.48\linewidth}
+		\begin{itemize}[\textbullet]
+			\item Domain defined by a LevelSet Function $\phi$.
+		\end{itemize}
+		\centering
+		\pgfimage[width=0.6\linewidth]{images/hybrid/PhiFEM_level_set.png}
+	\end{minipage} \hfill
+	\begin{minipage}[t]{0.48\linewidth}
+		\begin{itemize}[\textbullet]
+			\item We are looking for $w$ such that $u=\phi w+g$. \\
+			Thus, the decoder is written as
+			\begin{equation*}
+				u_\theta(x)=\mathcal{D}_{\theta_w}(x) = \phi(x)\sum_{i=1}^{N}(\theta_w)_i\varphi_i+g(x)
+			\end{equation*}
+		\end{itemize}
+	\end{minipage}
+
+	\begin{itemize}[\textbullet]
+		\item Mesh of a fictitious domain containing $\Omega$.
+	\end{itemize}
+	\begin{center}
+		\begin{minipage}{0.43\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/more/PhiFEM_domain.png}
+		\end{minipage} \hfill
+		\begin{minipage}{0.1\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/more/PhiFEM_fleche.png} 
+		\end{minipage} \hfill
+		\begin{minipage}{0.43\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/more/PhiFEM_domain_considered.png}
+		\end{minipage}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Impose exact BC in PINNs}
