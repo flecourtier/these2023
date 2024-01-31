@@ -1,19 +1,157 @@
-\begin{frame}{\appendixname~\insertframenumber~: Encoding - FEMs}\label{frame:encoding_fems}
-	\hl{A compléter !}
-\end{frame}
+\section{Mesh-based methods}
 
-\begin{frame}{\appendixname~\insertframenumber~: Energetic form}\label{frame:minpb_galerkin}
-	\hl{A compléter !}
+\begin{frame}{\appendixname~\theappendixframenumber~: Encoding - FEMs}\labelappendixframe{frame:encoding_fems}
+	We want to project $f$ onto the vector subspace $V_N$ so that $f_\theta = p_{V_N}(f)$ \\	
+	then $\forall i \in \{1,\dots,N\}$, we have
+	\begin{align*}
+		&\quad \langle f_\theta - f, \varphi_i \rangle = 0 \\
+		\iff &\quad \langle f_\theta, \varphi_i \rangle = \langle f, \varphi_i \rangle \quad  \\
+		\iff &\quad \sum_{j=1}^N(\theta_f)_j \langle \varphi_j, \varphi_i\rangle = \langle f, \varphi_i \rangle \\ 
+		\iff &\quad M \theta_f = b(f) \\
+		\iff &\quad \theta_f = M^{-1} b(f)
+	\end{align*}	
+	with 
+	\begin{align*}
+		M_{ij} &= \langle \varphi_i, \varphi_j\rangle = \int_{\Omega} \varphi_i(x) \varphi_j(x) \, dx \\
+		b_i(f) &= \langle f, \varphi_i \rangle = \int_{\Omega} f(x) \varphi_i(x) \, dx
+	\end{align*}	
 \end{frame}
+\addtocounter{appendixframenumber}{1}
 
-\begin{frame}{\appendixname~\insertframenumber~: Galerkin Projection}\label{frame:galerkin_proj}
-	\hl{A compléter !}
-\end{frame}
+\begin{frame}[allowframebreaks]{\appendixname~\theappendixframenumber~: Energetic form} \labelappendixframe{frame:minpb_galerkin}
+	Let's compute the gradient of $J$ with respect to $v$ with
+	\begin{equation*}
+		J(v)=J_{in}(v)+J_{bc}(v)=\left(\frac{1}{2}\int_\Omega L(v)v - \int_\Omega fv\right) + \left(\frac{1}{2}\int_\Omega R_{bc}(v)^2\right)
+	\end{equation*}
 
-\begin{frame}{\appendixname~\insertframenumber~: Least-Square form}\label{frame:minpb_leastsquare}
-	\hl{A compléter !}
+	\begin{itemize}[\textbullet]
+		\item First, let's calculate the differential of $J_{in}$ with respect to $v$.
+		\begin{align*}
+			J_{in}(v+\epsilon h)=\frac{1}{2} \int_{\Omega} (A\nabla(v+\epsilon h)) \cdot \nabla(v+\epsilon h) + c(v+\epsilon h)^2 - \int_{\Omega} f(v+\epsilon h)
+		\end{align*}
+		
+		By bilinearity of the scalar product and by symmetry of $A$, we finally obtain
+		\begin{equation*}
+			\mathcal{D}J_{in}(v)\cdot h = \lim_{\epsilon\rightarrow 0}\frac{J_{in}(v+\epsilon h)-J_{in}(v)}{\epsilon} = \int_{\Omega} (-\nabla\cdot(A\nabla v) + cv - f)h
+		\end{equation*}
+		
+		And thus
+		\begin{equation*}
+			\nabla_v \; J_{in}(v) = L(v) - f = R_{in}(v)
+		\end{equation*}
+	
+		\newpage
+		
+		\item In the same way, we can compute the differential of $J_{bc}$ with respect to $v$.
+		\begin{align*}
+			J_{bc}(v+\epsilon h)=\frac{1}{2} \int_{\Omega} v^2+2\epsilon vh +\epsilon^2 h^2 - 2vg - 2\epsilon hg+g^2
+		\end{align*}
+		
+		Then
+		\begin{align*}
+			\mathcal{D}J_{bc}(v)\cdot h =  \lim_{\epsilon\rightarrow 0}\frac{J_{bc}(v+\epsilon h)-J_{bc}(v)}{\epsilon} = \int_{\Omega} v^2 - hg
+		\end{align*}
+		
+		And thus
+		\begin{align*}
+			\nabla_v \; J_{bc}(v) = (v-g) = R_{bc}(v) 
+		\end{align*}
+	\end{itemize}
+	
+	Finally
+	\begin{equation*}
+		\nabla_v \; J(v) = \nabla_v \; J_{i}(v) + \nabla_v \; J_{bc}(v) = R(v)
+	\end{equation*}
 \end{frame}
+\addtocounter{appendixframenumber}{1}
 
-\begin{frame}{\appendixname~\insertframenumber~: LS Galerkin Projection}\label{frame:leastsquare_proj}
+\begin{frame}{\appendixname~\theappendixframenumber~: Galerkin Projection}\labelappendixframe{frame:galerkin_proj}
+	Let's compute the gradient of $J$ with respect to $\theta$ with
+	\begin{equation*}
+		J(\theta)=J_{in}(\theta)=\frac{1}{2}\int_\Omega L(u_\theta)v_\theta - \int_\Omega fv_\theta
+	\end{equation*}
+	First, we define
+	\begin{equation*}
+		v_\theta=\sum_{i=1}^{N} \theta_i \varphi_i=\theta\cdot\varphi \qquad \text{and} \qquad v_{\theta+\epsilon h}=(\theta+\epsilon h)\cdot\varphi=v_\theta+\epsilon v_h
+	\end{equation*}
+	Then since $A$ is symmetric
+	\begin{equation*}
+		\mathcal{D}J(\theta)\cdot h =\int_\Omega R(v_\theta)v_h =\sum_{i=1}^N h_i\int_\Omega R(v_\theta)\varphi_i
+	\end{equation*}
+	Finally
+	\begin{align*}
+		\nabla_\theta \; J(\theta) = \left(\int_\Omega R(v_\theta)\varphi_i\right)_{i=1,\dots,N}
+	\end{align*}
+\end{frame}
+\addtocounter{appendixframenumber}{1}
+
+\begin{frame}[allowframebreaks]{\appendixname~\theappendixframenumber~: Least-Square form}\labelappendixframe{frame:minpb_leastsquare}
+	Let's compute the gradient of $J$ with respect to $v$ with
+	\begin{equation*}
+		J(v)=J_{in}(v)+J_{bc}(v)=\left(\frac{1}{2}\int_\Omega R_{in}(v)^2\right)=\left(\frac{1}{2}\int_\Omega R_{bc}(v)^2\right)
+	\end{equation*}
+	\begin{itemize}[\textbullet]
+		\item First, let's calculate the differential of $J_{in}$ with respect to $v$.
+		\begin{align*}
+			\mathcal{D}J_{in}(v)\cdot h &= \langle \nabla\cdot(A\nabla h), \nabla\cdot(A\nabla v) - cv +f \rangle+\langle ch, -\nabla\cdot(A\nabla v) + cv - f \rangle \\ 
+			&= -\langle \nabla\cdot(A\nabla h), R_{in}(v) \rangle+\langle ch, R_{in}(v)\rangle \\ 
+			&= \langle -\nabla\cdot(A\nabla R_{in}(v))+cR_{in}(v), h \rangle \\
+			&= \langle L(R_{in}(v)), h \rangle
+		\end{align*}
+		And thus		
+		\begin{equation*}
+			\nabla_v \; J_{in}(v) = L(R_{in}(v))
+		\end{equation*}
+	
+		\newpage
+		
+		\item In the same way, we can compute the differential of $J_{bc}$ with respect to $v$.
+		\begin{align*}
+			J_{bc}(v+\epsilon h)=\frac{1}{2} \int_{\Omega} v^2+2\epsilon vh +\epsilon^2 h^2 - 2vg - 2\epsilon hg+g^2
+		\end{align*}
+		
+		Then
+		\begin{align*}
+			\mathcal{D}J_{bc}(v)\cdot h =  \lim_{\epsilon\rightarrow 0}\frac{J_{bc}(v+\epsilon h)-J_{bc}(v)}{\epsilon} = \int_{\Omega} v^2 - hg
+		\end{align*}
+		
+		And thus
+		\begin{align*}
+			\nabla_v \; J_{bc}(v) = (v-g) = R_{bc}(v) 
+		\end{align*}
+	\end{itemize}
+	
+	Finally
+	\begin{equation*}
+		\nabla_v \; J(v) = L(R(v))\mathds{1}_\Omega + (v-g)\mathds{1}_{\partial\Omega}
+	\end{equation*}
+	
+\end{frame}
+\addtocounter{appendixframenumber}{1}
+
+\begin{frame}{\appendixname~\arabic{appendixframenumber}~: LS Galerkin Projection}\labelappendixframe{frame:leastsquare_proj}
+	Let's compute the gradient of $J$ with respect to $\theta$ with
+	\begin{equation*}
+		J(\theta)=J_{in}(\theta)=\frac{1}{2}\int_\Omega (L(u_\theta) - f)^2
+	\end{equation*}
+	First, we define
+	\begin{equation*}
+		v_\theta=\sum_{i=1}^{N} \theta_i \varphi_i=\theta\cdot\varphi \qquad \text{and} \qquad v_{\theta+\epsilon h}=(\theta+\epsilon h)\cdot\varphi=v_\theta+\epsilon v_h
+	\end{equation*}
+	Then since $A$ is symmetric
+	\begin{equation*}
+		\mathcal{D}J(\theta)\cdot h = \int_\Omega L(R(v_\theta))v_h = \sum_{i=1}^N h_i\int_\Omega L(R(v_\theta))\varphi_i
+	\end{equation*}
+	Finally
+	\begin{align*}
+		\nabla_\theta J(\theta) = \left(\int_\Omega L(R(v_\theta))\varphi_i\right)_{i=1,\dots,N}
+	\end{align*}
+\end{frame}
+\addtocounter{appendixframenumber}{1}
+
+\section{Physically Informed Learning}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: ADAM Method}\labelappendixframe{frame:adam}
 	\hl{A compléter !}
 \end{frame}
+\addtocounter{appendixframenumber}{1}

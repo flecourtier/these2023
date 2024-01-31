@@ -4,7 +4,7 @@
 	\begin{itemize}[\textbullet]
 		\item \textbf{Decoding :} Linear combination of piecewise polynomial function $\varphi_i$.
 		\begin{equation*}
-			\mathcal{D}_{\theta_u}(x) = \sum_{i=1}^{N}(\theta_u)_i\varphi_i
+			u_\theta(x)=\mathcal{D}_{\theta_u}(x) = \sum_{i=1}^{N}(\theta_u)_i\varphi_i
 		\end{equation*}
 		$\Rightarrow$ linear decoding $\Rightarrow$ approximation space $V_N$ = vectorial space \\
 		$\Rightarrow$ existence and uniqueness of the orthogonal projector
@@ -30,7 +30,7 @@
 	\end{equation*}
 	which respectively define the residues inside $\Omega$ and on the boundary $\partial\Omega$. 
 	
-	\vspace{10pt}
+	\vspace{5pt}
 	
 	\textbf{Discretization :} Degrees of freedom problem (which also has a unique solution)
 	\begin{center}
@@ -38,12 +38,13 @@
 	\end{center}
 	with $J$ a functional to minimize.
 	
-	\vspace{10pt}
+	\vspace{5pt}
 	
 	\textbf{Variants :} Depends on the problem form used for projection.
 	
 	\begin{center}
 		\begin{tabular}{c|c}
+			\textbf{Spatial PDE} & \textbf{Any type of PDE} \\
 			Problem - Energetic form & Problem - Least-square form \\
 			Galerkin projection & Galerkin Least-square projection
 		\end{tabular}
@@ -57,7 +58,7 @@
 	\end{equation}
 	with 
 	\begin{equation*}
-		J_{in}(v)=\frac{1}{2}\int_\Omega L(v)v - \int_\Omega fv  \qquad \text{et} \qquad J_{bc}(v)=\frac{1}{2}\int_\Omega R_{bc}(v)^2
+		J_{in}(v)=\frac{1}{2}\int_\Omega L(v)v - \int_\Omega fv  \qquad \text{and} \qquad J_{bc}(v)=\frac{1}{2}\int_\Omega R_{bc}(v)^2
 	\end{equation*}
 
 	\footnotesize	
@@ -111,7 +112,7 @@
 \begin{frame}{Galerkin Projection}
 	\textbf{Discrete minimization Problem :}
 	\begin{equation}
-		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J(\theta), \qquad J(\theta)=J_{in}(\theta)=\frac{1}{2}\int_\Omega L(u_\theta)v_\theta - \int_\Omega fv_\theta \label{minpb_galerkin_discret}
+		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J(\theta), \qquad J(\theta)=J_{in}(\theta)=\frac{1}{2}\int_\Omega L(v_\theta)v_\theta - \int_\Omega fv_\theta \label{minpb_galerkin_discret}
 	\end{equation}
 %	with 
 %	\begin{equation*}
@@ -248,7 +249,7 @@
 \begin{frame}{Least-Square Galerkin Projection}
 	\textbf{Discrete minimization Problem :}
 	\begin{equation}
-		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J(\theta), \qquad J(\theta)=J_{in}(\theta)=\frac{1}{2}\int_\Omega (L(u_\theta) - f)^2 \label{minpb_leastsquare_discret}
+		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J(\theta), \qquad J(\theta)=J_{in}(\theta)=\frac{1}{2}\int_\Omega (L(v_\theta) - f)^2 \label{minpb_leastsquare_discret}
 	\end{equation}
 	%	with 
 	%	\begin{equation*}
