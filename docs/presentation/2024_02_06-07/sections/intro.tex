@@ -102,6 +102,10 @@
     	\end{aligned}\right. \label{edp}
     \end{equation}
 	with $A$ a definite positive coercivity condition and $c$ a scalar. We consider $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary. 
+	
+	\footnotesize
+	\textit{Remark :} For simplicity, we will not consider 1st order terms. 
+	\normalsize
     
     \textbf{Weak formulation :}
     \begin{equation*}
@@ -113,24 +117,10 @@
     	a(u,v)&=\int_{\Omega} (A(x)\nabla u(x)) \cdot \nabla v(x) + c(x)u(x)v(x) \, dx \\
     	l(v)&=\int_{\Omega} f(x)v(x) \, dx
     \end{align*}
-    
-    \footnotesize
-    \textit{Remark :} For simplicity, we will not consider 1st order terms. 
-
-%    We will define by
-%    \begin{equation*}
-%        ||u_{ex}-u_{method}||_{0,\Omega}^{(rel)}=\frac{\int_\Omega (u_{ex}-u_{method})^2}{\int_\Omega u_{ex}^2}
-%    \end{equation*}
-%    the relative error between
-%    \begin{itemize}
-%        \item $u_{ex}$ : the exact solution  
-%        \item $u_{method}$ : the solution obtained by a method \\
-%        (can be : FEM or $\phi$-FEM, a correction solver or the prediction of an neural network).
-%    \end{itemize}
 \end{frame}
 
 \begin{frame}{Numerical methods}
-	\textbf{Objective :} Show that the philosophy behind most ofd the methods are the same.
+	\textbf{Objective :} Show that the philosophy behind most of the methods are the same.
 	\begin{center}
 		Mesh-based methods \hspace{5pt} // \hspace{5pt} Physically informed learning
 	\end{center}
@@ -151,4 +141,23 @@
 			\hline
 		\end{tabular}
 	\end{center}
+
+	\bigskip
+
+	\textbf{Projector :} Encoder + Decoder
+	\begin{figure}[htb]
+		\vspace{-10pt}
+		\begin{tikzpicture}
+			\node at (-0.2,0) {$f$};
+			\draw[->, line width=1pt] (0,0.1) -- (1.2,0.4);
+			\node at (1.4,0.4) {$\theta_f$};
+			\draw[->, line width=1pt] (1.6,0.4) -- (2.8,0.1);
+			\node at (3.1,0) {$f_\theta$};
+			\draw[->, line width=1pt] (0,-0.1) -- (2.8,-0.1);
+			
+			\node[rotate=14] at (0.45,0.45) {Encoder};
+			\node[rotate=-14] at (2.25,0.45) {Decoder};
+			\node at (1.25,-0.4) {Projector};
+		\end{tikzpicture} 
+	\end{figure}
 \end{frame}

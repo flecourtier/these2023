@@ -23,6 +23,7 @@
 \usepackage{soul}
 % pour l'indicatrice
 \usepackage{dsfont}
+\usepackage{cancel}
 
 
 \setcellgapes{1pt}
@@ -46,7 +47,7 @@
 \addbibresource{biblio.bib}
 \useoutertheme[subsection=false]{miniframes}
 \makeatletter
-\patchcmd{\slideentry}{\advance\beamer@xpos by1\relax}{}{}{}
+%\patchcmd{\slideentry}{\advance\beamer@xpos by1\relax}{}{}{}
 \def\beamer@subsectionentry#1#2#3#4#5{\advance\beamer@xpos by1\relax}%
 \makeatother
 \setbeamercolor*{mini frame}{fg=bulles,bg=bulles}
@@ -100,6 +101,9 @@
 %	\addtocounter{appendixframenumber}{1}
 %}
 
+% barre en couleur terme dans équation
+\newcommand\Ccancel[2][black]{\renewcommand\CancelColor{\color{#1}}\cancel{#2}}
+
 \begin{document}
 	\nocite{*}
 	
@@ -145,24 +149,6 @@
 		\addtocounter{framenumber}{-1} 
 	}
 	
-	% \begin{frame}{Test anmiation}
-		%     \begin{center}
-			%         \begin{animateinline}[autoplay,loop,controls]{3} 
-				%     		% \multiframe{11}{rPos=0+0.1}{ 
-					%     		% 	\begin{tikzpicture}
-						%     		% 		\draw[start segment=\rPos,black!70, line width=2.5] (0,0) -- (1,0) -- (1,1) -- (0,1) --cycle ;
-						%      	% 		\end{tikzpicture} 
-					%     		% } 
-				%         \animate<1-2>
-				%         \multiframe{2}{rX=1+1}{
-					%         \begin{center}
-						%           \includegraphics[width=0.2\textwidth]{images/image\rX.png}
-						%         \end{center}
-					%         }
-				%     	\end{animateinline} 
-			%     \end{center}
-		% \end{frame}
-	
 	\section{Introduction}
 	\input{sections/intro}
 	
@@ -175,22 +161,43 @@
 	\section{Our hybrid method}
 	\input{sections/hybrid}
 	
-	%	\section{Finite Element Methods}
-	%	\input{sections/fems}
-	
-%	\section{Internship results}
-%	\input{sections/internship}
-%	
-%	\section{PhD results}
-%	\input{sections/phd}
-	
 	\section{Conclusion} %perspectives
 	
-	\begin{frame}[label={lastslide}]{Conclusion}
-		\hl{A compléter !}
+	\begin{frame}{Conclusion - What has been seen }
+		\begin{itemize}[\textbullet]
+			\item "Physical Informed Learning" methods are simply an extension of classic numerical methods such as FEM, where the decoder belongs to a variety (whose properties are different from those of vector spaces).
+			\item These approaches have real advantages in high dimensions, particularly in the context of parametric PDEs.
+			\item Moreover, as they are mesh-free methods, they have a major advantage in the context of complex geometries.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}[label={lastslide}]{Conclusion - Our hybrid approach}
+		\textbf{Interest of our approach:} 
+		\begin{itemize}[\textbullet]
+			\item It combines
+			\begin{itemize}[\ding{217}]
+				\item Speed of neural networks in predicting a solution
+				\item Precision of FEM methods to correct and certify the prediction of the neural network (which can be completely wrong, on an unknown dataset for example)
+			\end{itemize}
+			\item In the context of complex geometry (or in application domains such as real-time or shape optimisation), like NNs, $\phi$-FEM makes it possible to avoid mesh (re-)generation.
+		\end{itemize}
+		
+		\textbf{Current results:}
+		\begin{itemize}[\textbullet]
+			\item Encouraging results on simple geometries \refappendix{frame:results}
+			\item Difficulties on complex geometries - Importance of the regularity of the LevelSet function \\
+			$\rightarrow$ Next step: learning levelset functions (Eikonal equation)
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\vfill
+		\centering
+		\LARGE Thank you !
+		\vfill
 	\end{frame}
 	
-	\section{Bibliography}
+%	\section{Bibliography}
 	
 	{\setbeamertemplate{footline}{} 
 		\begin{frame}{Bibliography}
@@ -201,7 +208,7 @@
 			\printbibliography[heading=none]
 		\end{frame}
 	}
-	\addtocounter{framenumber}{-2} 
+	\addtocounter{framenumber}{-1} 
 	
 	\appendix
 	

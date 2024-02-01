@@ -21,7 +21,7 @@
 \begin{frame}[allowframebreaks]{\appendixname~\theappendixframenumber~: Energetic form} \labelappendixframe{frame:minpb_galerkin}
 	Let's compute the gradient of $J$ with respect to $v$ with
 	\begin{equation*}
-		J(v)=J_{in}(v)+J_{bc}(v)=\left(\frac{1}{2}\int_\Omega L(v)v - \int_\Omega fv\right) + \left(\frac{1}{2}\int_\Omega R_{bc}(v)^2\right)
+		J(v)=J_{in}(v)+J_{bc}(v)=\left(\frac{1}{2}\int_\Omega L(v)v - \int_\Omega fv\right) + \left(\frac{1}{2}\int_{\partial\Omega} R_{bc}(v)^2\right)
 	\end{equation*}
 
 	\begin{itemize}[\textbullet]
@@ -44,12 +44,12 @@
 		
 		\item In the same way, we can compute the differential of $J_{bc}$ with respect to $v$.
 		\begin{align*}
-			J_{bc}(v+\epsilon h)=\frac{1}{2} \int_{\Omega} v^2+2\epsilon vh +\epsilon^2 h^2 - 2vg - 2\epsilon hg+g^2
+			J_{bc}(v+\epsilon h)=\frac{1}{2} \int_{\partial\Omega} v^2+2\epsilon vh +\epsilon^2 h^2 - 2vg - 2\epsilon hg+g^2
 		\end{align*}
 		
 		Then
 		\begin{align*}
-			\mathcal{D}J_{bc}(v)\cdot h =  \lim_{\epsilon\rightarrow 0}\frac{J_{bc}(v+\epsilon h)-J_{bc}(v)}{\epsilon} = \int_{\Omega} v^2 - hg
+			\mathcal{D}J_{bc}(v)\cdot h =  \lim_{\epsilon\rightarrow 0}\frac{J_{bc}(v+\epsilon h)-J_{bc}(v)}{\epsilon} = \int_{\partial\Omega} (v-g)h
 		\end{align*}
 		
 		And thus
@@ -88,7 +88,7 @@
 \begin{frame}[allowframebreaks]{\appendixname~\theappendixframenumber~: Least-Square form}\labelappendixframe{frame:minpb_leastsquare}
 	Let's compute the gradient of $J$ with respect to $v$ with
 	\begin{equation*}
-		J(v)=J_{in}(v)+J_{bc}(v)=\left(\frac{1}{2}\int_\Omega R_{in}(v)^2\right)=\left(\frac{1}{2}\int_\Omega R_{bc}(v)^2\right)
+		J(v)=J_{in}(v)+J_{bc}(v)=\left(\frac{1}{2}\int_\Omega R_{in}(v)^2\right)+\left(\frac{1}{2}\int_{\partial\Omega} R_{bc}(v)^2\right)
 	\end{equation*}
 	\begin{itemize}[\textbullet]
 		\item First, let's calculate the differential of $J_{in}$ with respect to $v$.
@@ -107,12 +107,12 @@
 		
 		\item In the same way, we can compute the differential of $J_{bc}$ with respect to $v$.
 		\begin{align*}
-			J_{bc}(v+\epsilon h)=\frac{1}{2} \int_{\Omega} v^2+2\epsilon vh +\epsilon^2 h^2 - 2vg - 2\epsilon hg+g^2
+			J_{bc}(v+\epsilon h)=\frac{1}{2} \int_{\partial\Omega} v^2+2\epsilon vh +\epsilon^2 h^2 - 2vg - 2\epsilon hg+g^2
 		\end{align*}
 		
 		Then
 		\begin{align*}
-			\mathcal{D}J_{bc}(v)\cdot h =  \lim_{\epsilon\rightarrow 0}\frac{J_{bc}(v+\epsilon h)-J_{bc}(v)}{\epsilon} = \int_{\Omega} v^2 - hg
+			\mathcal{D}J_{bc}(v)\cdot h =  \lim_{\epsilon\rightarrow 0}\frac{J_{bc}(v+\epsilon h)-J_{bc}(v)}{\epsilon} = \int_{\partial\Omega} (v-g)h
 		\end{align*}
 		
 		And thus
@@ -309,5 +309,12 @@
 		\item ensure the correct condition number of the finite element matrix
 		\item restore the coercivity of the bilinear scheme
 	\end{enumerate}
+\end{frame}
+\addtocounter{appendixframenumber}{1}
+
+\subsection{\appendixname~\theappendixframenumber~: Results}\labelappendixframe{frame:results}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Results}
+	\hl{A compléter !}
 \end{frame}
 \addtocounter{appendixframenumber}{1}

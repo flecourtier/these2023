@@ -11,7 +11,7 @@
 		$\Rightarrow$ there is no unique projector
 		\item \textbf{Encoding :} Optimization process.
 		\begin{equation*}
-			\theta_f=E(f)=\arg\min_{\theta\in\mathbb{R}^N}\int_\Omega ||f_\theta(x)-f(x)||^2 dx f(x) \text{\hl{*f ?}}
+			\theta_f=E(f)=\arg\min_{\theta\in\mathbb{R}^N}\int_\Omega ||f_\theta(x)-f(x)||^2 dx
 		\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -76,7 +76,7 @@
 	\end{equation}
 	with 
 	\begin{equation*}
-		J_{in}(\theta)=\frac{1}{2}\int_\Omega L(v_\theta)v_\theta - \int_\Omega fv_\theta  \qquad \text{and} \qquad J_{bc}(\theta)=\frac{1}{2}\int_\Omega (v_\theta-g)^2
+		J_{in}(\theta)=\frac{1}{2}\int_\Omega L(v_\theta)v_\theta - \int_\Omega fv_\theta  \qquad \text{and} \qquad J_{bc}(\theta)=\frac{1}{2}\int_{\partial\Omega} (v_\theta-g)^2
 	\end{equation*}	
 	
 	\textbf{Monte-Carlo method :} Discretize the cost function by random process.
@@ -96,11 +96,11 @@
 \begin{frame}{Standard PINNs}
 	\textbf{Discrete minimization Problem :} Considering the least-square form of our PDE, our discrete problem is
 	\begin{equation}
-		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J_{in}(\theta)+J_{bc}(\theta) \label{minpb_deepritz}
+		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J_{in}(\theta)+J_{bc}(\theta) \label{minpb_pinns}
 	\end{equation}
 	with 
 	\begin{equation*}
-		J_{in}(\theta)=\frac{1}{2}\int_\Omega (L(v_\theta) - f)^2  \qquad \text{and} \qquad J_{bc}(\theta)=\frac{1}{2}\int_\Omega (v_\theta-g)^2
+		J_{in}(\theta)=\frac{1}{2}\int_\Omega (L(v_\theta) - f)^2  \qquad \text{and} \qquad J_{bc}(\theta)=\frac{1}{2}\int_{\partial\Omega} (v_\theta-g)^2
 	\end{equation*}	
 	
 	\textbf{Monte-Carlo method :} Discretize the cost function by random process.

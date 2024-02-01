@@ -8,7 +8,11 @@
 		\end{equation*}
 		$\Rightarrow$ linear decoding $\Rightarrow$ approximation space $V_N$ = vectorial space \\
 		$\Rightarrow$ existence and uniqueness of the orthogonal projector
-		\item \textbf{Encoding :} Orthogonal projection on vector space $V_N=Vect\{\varphi_1,\dots,\varphi_N\}$.
+		\item \textbf{Encoding :} Optimization process.
+		\begin{equation*}
+			\theta_f=E(f)=\arg\min_{\theta\in\mathbb{R}^N}\int_\Omega ||f_\theta(x)-f(x)||^2 dx
+		\end{equation*}
+		$\Leftrightarrow$ Orthogonal projection on vector space $V_N=Vect\{\varphi_1,\dots,\varphi_N\}$.
 		\begin{equation*}
 			\theta_f=E(f)=M^{-1}b(f)
 		\end{equation*}
@@ -58,7 +62,7 @@
 	\end{equation}
 	with 
 	\begin{equation*}
-		J_{in}(v)=\frac{1}{2}\int_\Omega L(v)v - \int_\Omega fv  \qquad \text{and} \qquad J_{bc}(v)=\frac{1}{2}\int_\Omega R_{bc}(v)^2
+		J_{in}(v)=\frac{1}{2}\int_\Omega L(v)v - \int_\Omega fv  \qquad \text{and} \qquad J_{bc}(v)=\frac{1}{2}\int_{\partial\Omega} R_{bc}(v)^2
 	\end{equation*}
 
 	\footnotesize	
@@ -193,7 +197,7 @@
 	\end{equation}
 	with 
 	\begin{equation*}
-		J_{in}(v)=\frac{1}{2}\int_\Omega R_{in}(v)^2  \qquad \text{and} \qquad J_{bc}(v)=\frac{1}{2}\int_\Omega R_{bc}(v)^2
+		J_{in}(v)=\frac{1}{2}\int_\Omega R_{in}(v)^2  \qquad \text{and} \qquad J_{bc}(v)=\frac{1}{2}\int_{\partial\Omega} R_{bc}(v)^2
 	\end{equation*}
 	
 	\footnotesize	
@@ -241,8 +245,6 @@
 				\textbf{PDE}
 			\end{minipage}
 		\end{tcolorbox}
-	
-		\hl{A modifier !}
 	\end{center}
 \end{frame}
 
