@@ -219,22 +219,6 @@
 		\item $\partial\Omega_h$ : boundary of $\Omega_h$ ($\partial\Omega_h \ne \Gamma_h$)
 	\end{enumerate}	
 	
-	% \begin{minipage}{0.6\linewidth}
-		%     \begin{enumerate}[\ding{217}]
-			%         \item $\mathcal{O}$ : fictitious domain such that $\Omega\subset\mathcal{O}$
-			%         \item $\mathcal{T}_h^\mathcal{O}$ : simple quasi-uniform mesh on $\mathcal{O}$
-			%         \item $\phi_h=I_{h,\mathcal{O}}^{(l)}(\phi)\in V_{h,\mathcal{O}}^{(l)}$ : approximation of $\phi$ \\ 
-			%         with $I_{h,\mathcal{O}}^{(l)}$ the standard Lagrange interpolation operator on
-			%         $$V_{h,\mathcal{O}}^{(l)}=\left\{v_h\in H^1(\mathcal{O}):v_{h|_T}\in\mathbb{P}_l(T) \;  \forall T\in\mathcal{T}_h^\mathcal{O}\right\}$$
-			%         \item $\Gamma_h=\{\phi_h=0\}$ : approximate boundary of $\Gamma$
-			%         \item $\mathcal{T}_h$ : sub-mesh of $\mathcal{T}_h^\mathcal{O}$ defined by
-			%         $$\mathcal{T}_h=\left\{T\in \mathcal{T}_h^\mathcal{O}:T\cap\{\phi_h<0\}\ne\emptyset\right\}$$
-			%         \item $\Omega_h$ : domain covered by the $\mathcal{T}_h$ mesh defined by
-			%         $$\Omega_h=\left(\cup_{T\in\mathcal{T}_h}T\right)^O$$
-			%         ($\partial\Omega_h$ its boundary)
-			%     \end{enumerate}			
-		% \end{minipage}
-	
 	\footnotesize
 	\; \\
 	\textit{Remark :} $n_{vert}$ will denote the number of vertices in each direction for $\mathcal{O}$
@@ -314,7 +298,117 @@
 
 \subsection{\appendixname~\theappendixframenumber~: Results}\labelappendixframe{frame:results}
 
-\begin{frame}{\appendixname~\theappendixframenumber~: Results}
-	\hl{A compléter !}
+\begin{frame}{\appendixname~\theappendixframenumber~: Problem considered}
+	\textbf{PDE :} Poisson problem with Homogeneous Dirichlet conditions \\
+	Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
+	\begin{equation*}
+		\left\{
+		\begin{aligned}
+			-\Delta u &= f, \; &&\text{in } \; \Omega, \\
+			u&=0, \; &&\text{on } \; \Gamma,
+		\end{aligned}
+		\right.
+	\end{equation*}
+	with $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary. \\
+	
+	\textbf{Geometry :} Circle - center=$(0.5,0.5)$ , radius=$\sqrt{2}/4$ \\
+	\begin{minipage}{0.3\linewidth}
+		\centering
+		\pgfimage[width=0.9\linewidth]{images/more/circle.png}
+	\end{minipage} \;
+	\begin{minipage}{0.68\linewidth}
+		\begin{enumerate}[\ding{217}]
+			\item \textbf{Level-set function : }
+			$$\phi(x,y)=-1/8+(x-1/2)^2+(y-1/2)^2$$
+			
+			\item \textbf{Exact solution :} 
+			
+			\begin{equation*}
+				u_{ex}(x,y) = \phi(x,y)\sin(x)\exp(y)
+			\end{equation*} 
+		\end{enumerate}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Networks}
+	\textbf{PINNs :} Multi-Layer Perceptron (MLP, Fully connected) with a physical loss
+
+	\begin{minipage}{0.58\linewidth}
+		\centering
+		\pgfimage[width=0.6\linewidth]{images/more/MLP_schema.png}
+		
+		\setstretch{0.2}\small
+		\begin{itemize}[\ding{217}]
+			\item n\_layers=4
+			\item n\_neurons=20 (in each layer)
+			\item n\_epochs=10000
+			\item n\_pts=2000 (randomly drawn in the square $[0,1]^2$)
+		\end{itemize}
+	\end{minipage} \quad
+	\begin{minipage}{0.38\linewidth}
+		\begin{center}
+			$loss = mse(\Delta (\phi(x_i,y_i)w_{\theta,i})+f_i)$
+			
+			\vspace{1.5pt}
+			
+			\pgfimage[width=0.5\linewidth]{images/more/PINNs_explanation.png}
+		\end{center}
+		
+		with $(x_i,y_i)\in\mathcal{O}$.
+		
+		\small
+		\textit{Remark :} We impose exact boundary conditions.
+	\end{minipage}
+
+	\vspace{5pt}
+
+	\textbf{Some important points :}
+	\begin{itemize}[\textbullet]
+		\item Need $u_{NN}\in\mathbb{P}^k$ of high degree (PINNs Ok)
+		\item Need the derivatives to be well learn (PINNs Ok)
+		\item For the correction : Need a correct solution on $\Omega_h$, not on $\Omega$ (training on the square for the moment).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Training}
+	\begin{center}
+		\pgfimage[width=\linewidth]{images/more/solution_config0.png}
+	\end{center}
+	
+	{\fontencoding{U}\fontfamily{futs}\selectfont\char 49\relax} We consider a single problem ($f$ fixed) on a single geometry ($\phi$ fixed).
+	 
+	$$||u_{ex}-u_\theta||_{L^2(\Omega)}^{(rel)}\approx 2.81e-3$$
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Correction}
+	$u_\theta\in\mathbb{P}^{10} \; \rightarrow \; \tilde{u}\in\mathbb{P}^1$
+	
+	\begin{minipage}{0.5\linewidth}
+		\centering
+		\pgfimage[width=\linewidth]{images/more/time_precision.png}
+		
+		\raggedright
+		FEM / $\phi$-FEM : $n_{vert}\in\{8,16,32,64,128\}$
+		
+		Corr : $n_{vert}\in\{5,10,15,20,25,30\}$
+	\end{minipage} \quad
+	\begin{minipage}{0.46\linewidth}
+		\centering
+		\pgfimage[width=\linewidth]{images/more/results_time_1e-4.png}
+		
+		\tiny\raggedright
+		\textit{Remark :} Problem with assemble and solve time \\
+		+ mesh time for $\phi$-FEM would be parallelized
+		
+		\small
+		$\textbullet$ \textbf{mesh} - FEM : construct the mesh \\
+		($\phi$-FEM : construct cell/facet sets) \\
+		$\textbullet$ \textbf{u\_PINNs} - get $u_\theta$ in $\mathbb{P}^{10}$ freedom degrees \\
+		$\textbullet$ \textbf{assemble} - assemble the FE matrix \\
+		$\textbullet$ \textbf{solve} - resolve the linear system
+	\end{minipage}
+	
+	\small
+	\textit{Remark :} The stabilisation parameter $\sigma$ of the $\phi$-FEM method has a major impact on the error obtained.
 \end{frame}
 \addtocounter{appendixframenumber}{1}
