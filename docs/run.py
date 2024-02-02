@@ -121,9 +121,17 @@ def run_todolist():
 
         # si to_do_list existe 
         if os.path.exists(current_dir+todo_filename):
+            # lire première ligne de week_i.tex
+            with open(current_dir+todo_filename, 'r') as file:
+                first_line = file.readline()
+                status=False
+                if "COMPLET" in first_line:
+                    status=True  
             liste.append(i)
             file_write.write('\n\t\\newpage\n')
             week_title = "Week "+str(i)+" : "+monday_str+" - "+friday_str
+            if status:
+                week_title += " - COMPLET"
             file_write.write('\n\t\\section*{'+week_title+'}\n')
             file_write.write('\t\\addcontentsline{toc}{section}{'+week_title+'}\n')
             file_write.write('\t\input{'+todo_filename+'}\n')
