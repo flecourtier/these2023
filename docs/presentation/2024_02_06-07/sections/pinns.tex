@@ -16,8 +16,8 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Non-Linear Decoder}
-	\textbf{Advantages :}
+\begin{frame}{Neural Network Decoder}
+	\textbf{Advantages of a non-linear decoder :}
 	\begin{itemize}[\textbullet]
 		\item We gain in the richness of the approximation
 		\item We can hope to significantly reduce the number of degrees of freedom
@@ -61,7 +61,7 @@
 	
 	\begin{center}
 		\begin{tabular}{c|c}
-			\textbf{Spatial PDE} & \textbf{Any type of PDE} \\
+			\textbf{Symmetric spatial PDE} & \textbf{Any type of PDE} \\
 			Problem - Energetic form & Problem - Least-square form \\
 			Deep-Ritz & Standard PINNs \\
 			(Galerkin projection) & (Galerkin Least-square projection)
@@ -70,6 +70,7 @@
 \end{frame}
 
 \begin{frame}{Deep-Ritz}
+	\small 
 	\textbf{Discrete minimization Problem :} Considering the energetic form of our PDE, our discrete problem is
 	\begin{equation}
 		\theta_u=\arg\min_{\theta\in\mathbb{R}^N} J_{in}(\theta)+J_{bc}(\theta) \label{minpb_deepritz}
@@ -91,6 +92,10 @@
 			J_{bc}(\theta)=\frac{1}{2n_b}\sum_{i=1}^{n_b} (v_\theta(y_i)-g(y_i))^2
 		\end{equation*}
 	\end{itemize}	
+
+	\footnotesize
+	\textit{Remark :} \ding{217} Two different random generation processes (to have enough boundary points) \\
+	\ding{217} Weights in front of the cost functions still need to be determined
 \end{frame}
 
 \begin{frame}{Standard PINNs}
@@ -115,20 +120,34 @@
 			J_{bc}(\theta)=\frac{1}{2n_b}\sum_{i=1}^{n_b} (v_\theta(y_i)-g(y_i))^2
 		\end{equation*}
 	\end{itemize}	
+
+	\footnotesize
+	\textit{Remark :} Same.
 \end{frame}
 
 \begin{frame}{In practice...}
-	\begin{itemize}[\ding{217}]
-		\item Two different random generation processes (to have enough boundary points)
-		
-		\item Weights in front of the cost functions still need to be determined
-		
+	\begin{itemize}[\ding{217}]		
 		\item Use regular model, derivable several times (and automatic differentiation)
 		
 		\item Activation functions regular enough to be derived 2 times (due to the Laplacian) \\
 		$\Rightarrow$ Tangent Hyperbolic rather than ReLU \\
 		(or adaptive methods where we parameterize the activation functions)
 		
+		\begin{center}
+			\begin{minipage}{0.43\linewidth}
+				\raggedleft
+				\pgfimage[width=0.6\linewidth]{images/pinns/relu.png}
+			\end{minipage} \hfill
+			\begin{minipage}{0.1\linewidth}
+				\centering
+				\pgfimage[width=\linewidth]{images/pinns/fleche.png} 
+			\end{minipage} \hfill
+			\begin{minipage}{0.43\linewidth}
+				\raggedright
+				\pgfimage[width=0.65\linewidth]{images/pinns/tanh.png}
+			\end{minipage}
+		\end{center}
+	
 		\item Stochastic gradient descent method (by mini-batch) - ADAM method \refappendix{frame:adam}		
 	\end{itemize}
 
@@ -139,6 +158,8 @@
 		
 		\item Impose boundary conditions using a LevelSet function
 	\end{itemize}
+
+	
 \end{frame}
 
 \begin{frame}{Steps Decomposition - NNs}

@@ -97,14 +97,19 @@
 
 	\textbf{Correct by adding :} Considering $u_{NN}$ as the prediction of our PINNs (trained to learn the solution of the elliptic problem), the correction problem consists in writing the solution as
 	\begin{equation*}
-		\tilde{u}=u_{NN}+\fcolorbox{blue}{white}{$\tilde{C}$}\textcolor{blue}{\approx 0}
+		\tilde{u}=u_{NN}+\underset{\textcolor{blue}{\approx 0}}{\fcolorbox{blue}{white}{$\tilde{C}$}}
 	\end{equation*}
-	and searching $\tilde{C}: \Omega \rightarrow \mathbb{R}^d$ such that
-	\begin{equation*}
-		\left\{\begin{aligned}
-			L(\tilde{C})&=\tilde{f}, \; &&\text{in } \Omega, \\
-			\tilde{C}&=0, \; &&\text{on } \Gamma,
-		\end{aligned}\right. %\tag{$\mathcal{C}_{+}$} %\label{corr_add}
-	\end{equation*}
-	with $\tilde{f}=f-L(u_{NN})$ and $\tilde{C}=\phi C$ for the $\phi$-FEM method.
+
+	\vspace{-8pt}
+	\begin{minipage}{\linewidth}
+		\setstretch{0.5}
+		and searching $\tilde{C}: \Omega \rightarrow \mathbb{R}^d$ such that
+		\begin{equation*}
+			\left\{\begin{aligned}
+				L(\tilde{C})&=\tilde{f}, \; &&\text{in } \Omega, \\
+				\tilde{C}&=0, \; &&\text{on } \Gamma,
+			\end{aligned}\right. %\tag{$\mathcal{C}_{+}$} %\label{corr_add}
+		\end{equation*}
+		with $\tilde{f}=f-L(u_{NN})$ and $\tilde{C}=\phi C$ for the $\phi$-FEM method.
+	\end{minipage}
 \end{frame}

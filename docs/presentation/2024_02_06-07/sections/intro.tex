@@ -1,17 +1,19 @@
 \begin{frame}{Scientific context}
-    \textbf{Context :} Create real-time digital twins of an organ (such as the liver).
+    \textbf{Context :} Create real-time digital twins of an organ, described by a levelset function.
+    
+    $\rightarrow$ This levelset function can easily be obtained from medical images.
 
     \textbf{$\phi$-FEM Method :} New fictitious domain finite element method.
 
     \begin{itemize}[\ding{217}]
         \item domain given by a level-set function $\Rightarrow$ don't require a mesh fitting the boundary 
         \item allow to work on complex geometries 
-        \item ensure geometric quality 
+        \item ensure geometric quality of the mesh
         % \item Cartesian grid adapted for neural networks
     \end{itemize}
     
     \begin{center}
-        \includegraphics[width=0.65\linewidth]{images/intro/context_geometry.png}
+        \includegraphics[width=0.55\linewidth]{images/intro/context_geometry.png}
     \end{center}	
 
     \textit{Practical case:} Real-time simulation, shape optimization...
@@ -39,7 +41,7 @@
 						\node at (0,0.8) {Several Geometries};
 						\node[draw=none, inner sep=0pt] at (0,0) {\includegraphics[width=2cm]{images/intro/objective_geom.png}};
 						\node[title,font=\Large] at (1.6,0.1) {+};
-						\node at (3.5,0.8) {Several Functions};
+						\node at (3.5,0.8) {Several Forces};
 						\node[draw=none, inner sep=0pt] at (3.5,0) {\includegraphics[width=3cm]{images/intro/objective_fct.png}};
 						
 						% Ajouter une flèche entre les deux rectangles
@@ -59,7 +61,7 @@
 				\centering
 				\resizebox{\textwidth}{!}{%
 					\begin{tikzpicture}
-						\node at (0,0.8) {1 Geometry - 1 Function};
+						\node at (0,0.8) {1 Geometry - 1 Force};
 						\node[draw=none, inner sep=0pt] at (0,0) {\includegraphics[width=2cm]{images/intro/objective_onegeom_onefct.png}};
 						%		\node[title,font=\Large] at (1.6,0.1) {+};
 						%		\node at (3.5,0.8) {Several Functions};
@@ -125,7 +127,7 @@
 		Mesh-based methods \hspace{5pt} // \hspace{5pt} Physically informed learning
 	\end{center}
 	
-	\textbf{Numerical methods :} Discrete an infinite-dimensional problem (unknown = function) and solve it in a finite-dimensional space (unknown = vector).
+	\textbf{Numerical methods :} Discretize an infinite-dimensional problem (unknown = function) and solve it in a finite-dimensional space (unknown = vector).
 	\begin{itemize}[\textbullet]
 		\item \textbf{Encoding :} we encode the problem in a finite-dimensional space
 		\item \textbf{Approximation :} solve the problem in finite-dimensional space
