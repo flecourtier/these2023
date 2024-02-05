@@ -2,6 +2,8 @@
 \documentclass[compress,10pt,xcolor={table,dvipsnames},t]{beamer}
 \usetheme{diapo}
 \usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{argmin}
 \usepackage{amssymb}
 \usepackage{xcolor}
 \usepackage[bottom]{footmisc}
@@ -91,8 +93,8 @@
 
 \title[PhiFEM]{Mesh-based methods and physically informed learning}
 \subtitle{Macaron/Tonus retreat presentation}
-\authors[LECOURTIER Frédérique]
-\supervisors[FRANCK Emmanuel, DUPREZ Michel, LLERAS Vanessa]
+\authors[Frédérique LECOURTIER]
+\supervisors[Emmanuel FRANCK, Michel DUPREZ, Vanessa LLERAS]
 \date{February 6-7, 2024}
 
 \allowbreak
@@ -183,7 +185,7 @@
 	\section{Introduction}
 	\input{sections/intro}
 	
-	\section{Mesh-based methods}
+	\section{Mesh-based methods (FEM)}
 	\input{sections/mesh_methods}
 	
 	\section{Physically Informed Learning}
@@ -194,43 +196,39 @@
 	
 	\section{Conclusion} %perspectives
 	
-	\begin{frame}{Conclusion - What has been seen }
+	\begin{frame}[label={lastslide}]{Conclusion}
+		\textbf{What has been seen ?}
 		\begin{itemize}[\textbullet]
-			\item "Physical Informed Learning" methods are simply an extension of classic numerical methods such as FEM, where the decoder belongs to a variety (whose properties are different from those of vector spaces).
-			\item These approaches have real advantages in high dimensions, particularly in the context of parametric PDEs.
-			\item Moreover, as they are mesh-free methods, they have a major advantage in the context of complex geometries.
+			\item "Physical Informed Learning" = extension of classic numerical methods \\
+			$\rightarrow$ where decoder belongs to a manyfold
+			\item advantage in high dimensions (parametric PDEs)
+			\item advantage in the context of complex geometries (mesh-free methods)
 		\end{itemize}
-	\end{frame}
-
-	\begin{frame}[label={lastslide}]{Conclusion - Our hybrid approach}
-		\textbf{Interest of our approach:} 
+%	\end{frame}
+%
+%	\begin{frame}[label={lastslide}]{Conclusion - Our hybrid approach}
+		\textbf{Our hybrid approach :} \refappendix{frame:hybridmethod}
 		\begin{itemize}[\textbullet]
 			\item It combines
 			\begin{itemize}[\ding{217}]
 				\item Speed of neural networks in predicting a solution
-				\item Precision of FEM methods to correct and certify the prediction of the neural network (which can be completely wrong, on an unknown dataset for example)
+				\item Precision of FEM methods to correct and certify the prediction of the NN \\
+				(which can be completely wrong, on an unknown dataset for example)
 			\end{itemize}
-			\item In the context of complex geometry (or in application domains such as real-time or shape optimisation), like NNs, $\phi$-FEM makes it possible to avoid mesh (re-)generation.
-		\end{itemize}
-		
-		\textbf{Current results:}
-		\begin{itemize}[\textbullet]
+%			\item In the context of complex geometry (or in application domains such as real-time or shape optimisation), like NNs, $\phi$-FEM makes it possible to avoid mesh (re-)generation.
 			\item Encouraging results on simple geometries \refappendix{frame:results}
-			\item Difficulties on complex geometries - Importance of the regularity of the LevelSet function \\
-			$\rightarrow$ Next step: learning levelset functions (Eikonal equation)
+			\item Difficulties on complex geometries - Important that its derivatives don't explode $\rightarrow$ Next step: learning levelset functions (Eikonal equation)
 		\end{itemize}
 	\end{frame}
-
-	\begin{frame}
-		\vfill
-		\centering
-		\LARGE Thank you !
-		\vfill
-	\end{frame}
-	
-%	\section{Bibliography}
 	
 	{\setbeamertemplate{footline}{} 
+		\begin{frame}
+			\vfill
+			\centering
+			\LARGE Thank you !
+			\vfill
+		\end{frame}
+	
 		\begin{frame}{Bibliography}
 			\small
 			% \vspace{30pt}
@@ -239,7 +237,7 @@
 			\printbibliography[heading=none]
 		\end{frame}
 	}
-	\addtocounter{framenumber}{-1} 
+	\addtocounter{framenumber}{-2} 
 	
 	\appendix
 	

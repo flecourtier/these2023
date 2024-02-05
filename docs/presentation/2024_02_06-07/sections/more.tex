@@ -149,17 +149,17 @@
 \end{frame}
 \addtocounter{appendixframenumber}{1}
 
-\section{Physically Informed Learning}
+\section{Physically-Informed Learning}
 
 \begin{frame}{\appendixname~\theappendixframenumber~: ADAM Method}\labelappendixframe{frame:adam}
-	Adam = Adaptive Moment Estimation" - combine les idées du moment et de RMSProp.
-
+	ADAM = "Adaptive Moment Estimation" - Combine the idea of Moment and RMSProp.
+	
 	\begin{align*}
 		&1: \qquad m \leftarrow \frac{\beta_1 m +  (1-\beta_1) \nabla f_{x}}{1-\beta_1^T}\\
 		&2: \qquad s \leftarrow \frac{\beta_2 s +  (1-\beta_2) \nabla^2 f_{x}}{1-\beta_2^T}\\
 		&3: \qquad x \leftarrow x-  \ell \frac{m }{\sqrt{s+\epsilon}} 
 	\end{align*}
-
+	
 	with 
 	\begin{itemize}[\textbullet]
 		\item $T$ the number of iteration (starting at 1) 
@@ -170,6 +170,134 @@
 \addtocounter{appendixframenumber}{1}
 
 \section{Our hybrid method}
+
+\subsection{\appendixname~\theappendixframenumber~: Description}\labelappendixframe{frame:hybridmethod}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Objective}
+	\textbf{Current Objective :} Develop hybrid finite element / neural network methods.
+	
+	\begin{center}
+		\begin{tcolorbox}[
+			colback=white, % Couleur de fond de la boîte
+			colframe=other, % Couleur du cadre de la boîte
+			arc=2mm, % Rayon de l'arrondi des coins
+			boxrule=0.5pt, % Épaisseur du cadre de la boîte
+			breakable, enhanced jigsaw,
+			width=0.8\linewidth
+			]
+			
+			\textbf{OFFLINE :}
+			
+			\begin{figure}[htb]
+				\centering
+				\resizebox{\textwidth}{!}{%
+					\begin{tikzpicture}
+						\node at (0,0.8) {Several Geometries};
+						\node[draw=none, inner sep=0pt] at (0,0) {\includegraphics[width=2cm]{images/intro/objective_geom.png}};
+						\node[title,font=\Large] at (1.6,0.1) {+};
+						\node at (3.5,0.8) {Several Forces};
+						\node[draw=none, inner sep=0pt] at (3.5,0) {\includegraphics[width=3cm]{images/intro/objective_fct.png}};
+						
+						% Ajouter une flèche entre les deux rectangles
+						\draw[->, title, line width=1.5pt] (5.5,0.1) -- (6.5,0.1);
+						%		
+						\node at (8,0.8) {Train a PINNs};
+						\node[draw=none, inner sep=0pt] at (8,-0.1) {\includegraphics[width=1.5cm]{images/intro/objective_pinns.jpg}};				
+					\end{tikzpicture}
+				}%
+			\end{figure}
+			
+			\textbf{ONLINE :}
+			
+			\vspace{-30pt}
+			
+			\begin{figure}[htb]
+				\centering
+				\resizebox{\textwidth}{!}{%
+					\begin{tikzpicture}
+						\node at (0,0.8) {1 Geometry - 1 Force};
+						\node[draw=none, inner sep=0pt] at (0,0) {\includegraphics[width=2cm]{images/intro/objective_onegeom_onefct.png}};
+						%		\node[title,font=\Large] at (1.6,0.1) {+};
+						%		\node at (3.5,0.8) {Several Functions};
+						%		\node[draw=none, inner sep=0pt] at (3.5,0) {\includegraphics[width=3cm]{images/intro/objective_fct.png}};
+						
+						\draw[->, title, line width=1.5pt] (2,0.1) -- (3,0.1);
+						
+						\node[align=center] at (4,1) {Get PINNs \\ prediction};
+						\node[draw=none, inner sep=0pt] at (4,-0.1) {\includegraphics[width=1.5cm]{images/intro/objective_pinns.jpg}};
+						
+						% Ajouter une flèche entre les deux rectangles
+						\draw[->, title, line width=1.5pt] (5.5,0.1) -- (6.4,0.1);
+						\draw[draw=black] (6.5,-1) rectangle ++(3,2.5);	
+						\node[align=center] at (8,1) {Correct prediction \\ with $\phi$-FEM};
+						\node[draw=none, inner sep=0pt] at (8,-0.1) {\includegraphics[width=2.5cm]{images/intro/objective_corr.png}};		
+					\end{tikzpicture}
+				}%
+			\end{figure}
+		\end{tcolorbox}
+	\end{center}
+	
+	\textbf{On going work :}
+	
+	\small
+	% \setstretch{0.5}
+	\begin{itemize}
+		\item Geometry : 2D, simple, fixed (as circle, ellipse..) $ \; \rightarrow \;$ 3D / complex / variable
+		\item PDE : simple, static (Poisson problem) $\; \rightarrow \;$ complex / dynamic (elasticity, hyper-elasticity)
+		\item Neural Network : simple and defined everywhere (PINNs) $\; \rightarrow \;$ Neural Operator
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Correction}
+	\vspace{-20pt}
+	\begin{figure}[htb]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tikzpicture}
+				\node at (0,0.8) {1 Geometry - 1 Force};
+				\node[draw=none, inner sep=0pt] at (0,0) {\includegraphics[width=2cm]{images/hybrid/objective_onegeom_onefct.png}};
+				\node at (0,-1) {$\begin{aligned}[t]
+						\; \phi \quad \text{\small and} \quad &f \\
+						\; (\text{\small and} \quad &g)
+					\end{aligned}$};
+				
+				\draw[->, title, line width=1.5pt] (2,0.1) -- (3,0.1);
+				
+				\node[align=center] at (4,1) {Get PINNs \\ prediction};
+				\node[draw=none, inner sep=0pt] at (4,-0.1) {\includegraphics[width=1.5cm]{images/hybrid/objective_pinns.jpg}};
+				\node at (4,-1) {$u_{NN}=\phi w_{NN}+g$};
+				
+				% Ajouter une flèche entre les deux rectangles
+				\draw[->, title, line width=1.5pt] (5,0.1) -- (6,0.1);
+				
+				\node[align=center] at (7.8,1) {Correct prediction \\ with $\phi$-FEM};
+				\node[draw=none, inner sep=0pt] at (7.8,-0.1) {\includegraphics[width=2.5cm]{images/hybrid/objective_corr.png}};		
+				\node at (7.8,-1) {$u_{NN}\rightarrow\tilde{u}=u_{NN}+\phi C$};
+			\end{tikzpicture} 
+		}%
+	\end{figure}
+	
+	\vspace{-10pt}
+	
+	\textbf{Correct by adding :} Considering $u_{NN}$ as the prediction of our PINNs (trained to learn the solution of the elliptic problem), the correction problem consists in writing the solution as
+	\begin{equation*}
+		\tilde{u}=u_{NN}+\underset{\textcolor{blue}{\ll 1}}{\fcolorbox{blue}{white}{$\tilde{C}$}}
+	\end{equation*}
+	
+	\vspace{-8pt}
+	\begin{minipage}{\linewidth}
+		\setstretch{0.5}
+		and searching $\tilde{C}: \Omega \rightarrow \mathbb{R}^d$ such that
+		\begin{equation*}
+			\left\{\begin{aligned}
+				L(\tilde{C})&=\tilde{f}, \; &&\text{in } \Omega, \\
+				\tilde{C}&=0, \; &&\text{on } \Gamma,
+			\end{aligned}\right. %\tag{$\mathcal{C}_{+}$} %\label{corr_add}
+		\end{equation*}
+		with $\tilde{f}=f-L(u_{NN})$ and $\tilde{C}=\phi C$ for the $\phi$-FEM method.
+	\end{minipage}
+\end{frame}
+\addtocounter{appendixframenumber}{1}
 
 \subsection{\appendixname~\theappendixframenumber~: $\phi$-FEM Method}\labelappendixframe{frame:phifem}
 
@@ -189,7 +317,7 @@
 	\vspace{5pt}
 	
 	\footnotesize
-	\textit{Remark :} Thanks to $\phi$ and $g$, the conditions on the boundary are respected.
+	\textit{Remark :} Thanks to $\phi$ and $g$, the boundary conditions are respected.
 \end{frame}
 
 \begin{frame}{\appendixname~\theappendixframenumber~: Fictitious domain}
@@ -221,7 +349,7 @@
 	
 	\footnotesize
 	\; \\
-	\textit{Remark :} $n_{vert}$ will denote the number of vertices in each direction for $\mathcal{O}$
+	\textit{Remark :} $n_{vert}$ will denote the number of vertices in each direction
 \end{frame}
 
 \begin{frame}{\appendixname~\theappendixframenumber~: Facets and Cells sets}
@@ -412,3 +540,5 @@
 	\textit{Remark :} The stabilisation parameter $\sigma$ of the $\phi$-FEM method has a major impact on the error obtained.
 \end{frame}
 \addtocounter{appendixframenumber}{1}
+
+
