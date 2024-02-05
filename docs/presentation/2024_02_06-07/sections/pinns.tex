@@ -7,11 +7,11 @@
 			u_\theta(x)=\mathcal{D}_{\theta_u}(x)=u_{NN}(x)
 		\end{equation*}
 		with $u_{NN}$ a neural network (for example a MLP). \\
-		$\Rightarrow$ non-linear decoding $\Rightarrow$ approximation space $V_N$ = finite-dimensional variety \\
+		$\Rightarrow$ non-linear decoding $\Rightarrow$ approximation space $\mathcal{M}_N$ = finite-dimensional variety \\
 		$\Rightarrow$ there is no unique projector
 		\item \textbf{Encoding :} Optimization process.
 		\begin{equation*}
-			\theta_f=E(f)=\arg\min_{\theta\in\mathbb{R}^N}\int_\Omega ||f_\theta(x)-f(x)||^2 dx
+			\theta_f=\mathcal{E}(f)=\arg\min_{\theta\in\mathbb{R}^N}\int_\Omega ||f_\theta(x)-f(x)||^2 dx
 		\end{equation*}
 	\end{itemize}
 \end{frame}
@@ -127,8 +127,8 @@
 
 \begin{frame}{In practice...}
 	\begin{itemize}[\ding{217}]		
+		\item Stochastic gradient descent method (by mini-batch) - ADAM method \refappendix{frame:adam}		
 		\item Use regular model, derivable several times (and automatic differentiation)
-		
 		\item Activation functions regular enough to be derived 2 times (due to the Laplacian) \\
 		$\Rightarrow$ Tangent Hyperbolic rather than ReLU \\
 		(or adaptive methods where we parameterize the activation functions)
@@ -148,7 +148,7 @@
 			\end{minipage}
 		\end{center}
 	
-		\item Stochastic gradient descent method (by mini-batch) - ADAM method \refappendix{frame:adam}		
+		
 	\end{itemize}
 
 	\textbf{To go further :}

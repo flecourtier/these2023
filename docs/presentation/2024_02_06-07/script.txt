@@ -1,0 +1,99 @@
+0. Hello everyone. For those of you who don't know me, my name is Frédérique Lecourtier. I'm a first-year PhD student in the Mimesis team at Inria under the supervision of Emmanuel Franck, Michel Duprez and Vanessa Lleras.
+Today I'm going to talk about a subject related to my thesis, which is based on Emmanuel's teaching material and which I've called Mesh-Based Methods and Physically Informed Learning. 
+
+INTRODUCTION:
+T : Let's start with a quick introduction
+
+1. The scientific context is the following : Create real-time digital twins of organs described by a LevelSet function. This LevelSet function can easily be obtained from medical imaging.
+To do this, we will consider the PhiFEM method, which is a new finite element method with a fictitious domain developed by some of the Mimesis team. 
+I'm going to give you some important points. First of all, the domain will be given by a Levelset function, which means that we will not need a mesh that fits the boundary of our domain. Secondly, this will enable us to work on complex geometries and also ensure the geometric quality of the mesh. The practical cases could be, for example, real-time simulations or shape optimisation.
+
+2. So now that I have explained the scientific context, I'd like to tell you a little about our current objective, which is to develop hybrid methods that combine finite element methods and neural networks. To do this, we're going to consider two steps.
+The first, the offline stage, where we will consider several geometries and several forces, and train a neural network called PINNs (Physically Informed Neural Networks) to learn the solution of our PDE.
+In the second stage, which is our online phase, we will get the PINNs' prediction for a single geometry and a single force and apply what we call a correction. In fact, the aim is to correct the network's prediction using the PhiFEM method to improve the solution, especially in some places where the network could have made big mistakes. 
+Here, I've noted the evolution of the work. In fact, for the moment, we are considering very simple and fixed geometries, such as 2D circles, a very simple PDE, such as the poisson problem, and a neural network which is a PINNs. But the aim is to complexify all this in the future. 
+
+3. In this talk, we will look at an elliptic problem with Dirichlet condition, which will be defined as follows with A a positive definite coercivity condition and c a scalar. For simplicity, we have removed the first-order term here. And so our weak formulation is defined as follows.
+
+4. As I said before, the aim of this presentation is not to introduce you to my thesis work. I would like to show you that the philosophy behind most numerical methods is the same, in particular mesh-based methods and physically-informed learning.
+The idea behind a numerical method is very simple: we want to discretize an infinite-dimensional problem, where our unknown is a function, into a finite-dimensional problem, where our unknown is a vector. To achieve this, we'll consider three steps:
+- First, encoding, which consists in encoding the problem in a finite-dimensional space. This step consists in passing from our force f, which is a function, to theta_f, which is a vector. 
+- Next, we have the approximation, which consists in solving our problem in this finite-dimensional space and passing from theta_f to theta_u, which represents our solution vector. 
+- And finally, the last step, which is the decoding step, will bring our solution back into an infinite-dimensional space, and so pass from our solution vector theta_u to a solution u_theta, which will be a function. 
+Note that what we call a projector is nothing more than the combination of encoder and decoder. With the encoder, we go from f to theta_f and then the decoder takes us from theta_f to f_theta. Projection is simply the transition from f to f_theta. 
+
+MESH-BASED METHODS
+T : We will now look at these three steps in the context of mesh-based methods.
+
+- ENCODING/DECODING
+T : First, the encoding and decoding stages.
+
+5. In this section, we'll consider only the standard finite element method. 
+We start by defining the decoder (which is the final step), since it gives us the approximation space in which we are going to work. Here, the decoder that gives us u_theta is written as the linear combination of our piecewise polynomial basis functions phi_i. Since we are considering a linear decoder, our approximation space, which we will note V_N, is a vector space, and so we have the existence and uniqueness of a projector, the orthogonal projector.
+The encoder consists of an optimization process described by this formula *, which provides us with theta_f. And since we are working in a vector space, it's a simple as performing the orthogonal projection onto our V_N space, which is described by the following matrix multiplication *.
+
+- APPROXIMATION
+T : Now that we have defined the encoder and decoder, we can turn to the approximator. 
+
+6. The idea of the approximation is to project a certain form of our equation onto our vector space V_N. To do this, we will introduce the residue of our equation defined as follows * with R_in the residue inside Omega and R_bc the residue on the boundary D-Omega.
+Then, the continuous problem written on the left, where J is a functional to be minimized, reduces to a problem on degrees of freedom ( so a discrete problem). 
+We can identify two variants. The first concerns only symmetric spatial PDEs, where our functional J takes the energy form of our PDE, corresponding to the Gallerkin projection. The second variant is valid for any type of PDE, and this time consists in considering our J functional as the least-squared form of our PDE, corresponding to the Gallerkin least-squared projection. 
+
+7. Let's start with the energy case. We can write our minimization problem in the following form * with J_in the energetic form of our PDE defined on Omega as follows * and J_bc defined on D-Omega in this way *. 
+We can easily show that this minimization problem is equivalent to our PDE. In fact, by calculating the gradient of our functional J with respect to v, we find the residue of our equation. And so, if u_theta is the solution of our minimization problem, we will have the gradient of J equal to 0, and therefore the residue inside Omega equal to 0, and the residue at the boundary too. This in fact corresponds to the following equation, so u_theta is the solution of our PDE. 
+
+8. Now that we have verified that our continuous minimization problem is equivalent to solving our PDE, we can discretize it as follows *. Note that here we will ignore the boundary term for simplicity of explanation. 
+We define the Gallerkin projection as follows and can show in the same way as on the previous slide that the Gallerkin projection is equivalent to solving our PDE. This time, we calculate the gradient of J with respect to theta and obtain the following formula *. And so, if u_theta is a solution of our PDE, u_theta is a solution of the continuous minimization problem defined on the previous slide. Therefore, theta_u is the solution to the discrete minimization problem defined here. And finally, solving this minimization problem precisely describes the Galerkin projection described above. 
+
+9. We will now consider the least-squared form. We then write our minimization problem in the following form * with J_in the least-squared form of our PDE defined on Omega in the following way and J_bc defined on D-Omega as before. 
+We can easily show that this minimization problem is equivalent to our PDE. This time, the gradient of our functional J with respect to v is equal to the left-hand side term of our PDE, denoted L, applied to the residue of the equation. And so, if u_theta is the solution to the minimization problem, we will have the gradient of J equal to 0, and so the residue inside Omega is equal to 0, and the residue at the boundary too. This in fact corresponds to the following equation, so u_theta is the solution of our PDE. 
+
+10. Now that we have verified that our continuous minimization problem is equivalent to solving our PDE, we can discretize it as follows *. 
+We define the Lest-Square Gallerkin projection as follows and can show in the same way that the Least-Square Gallerkin projection is equivalent to solving our PDE. This time, we calculate the gradient of J with respect to theta and obtain the following formula *. And so, if u_theta is a solution of our PDE, u_theta is a solution of the continuous minimization problem. Therefore, theta_u is the solution to the discrete minimization problem defined here. And finally, solving this minimization problem precisely describes the Least-Square Galerkin projection described here.
+
+11.  The standard finite element method can now be decomposed into the following three steps. The first step is to encode the force f by the following matrix multiplication. Next, we get the approximator that will allow us to solve the problem using either the galerkin projection defined here, or the least-square galerkin projection defined here. Finally, we will use the decoder, defined as a linear combination of polynomial functions, to return to our infinite-dimensional space and obtain our u_theta solution. In practice, the approximation is written as a linear system with theta_u as the unknown and, for example, in the context of Galerkin projection, we solve the following linear system ( by omitting the boundary conditions here).
+
+PHYSICALLY-INFORMED LEARNING
+T: We're now going to look at these same three stages in the context of physically informed learning.
+
+- ENCODING/DECODING
+T : First, the encoding and decoding stages.
+
+12. As with standard FEM, we start by defining the decoder, since this is what gives us the approximation space in which we will be working. Here, the decoder that gives us u_theta is written as a u_NN neural network ( like MLP, for example). Since we are considering a non-linear decoder, our approximation space is no longer a vector space but a finite-dimensional variety, so there is no unique projector. Next, the encoder consists of the optimization process described by this formula *, which gives us theta_f. 
+
+13. Now, we can talk about some of the advantages of having a non-linear decoder, such as a neural network. First of all, we gain in approximation richness. Secondly, we can expect to significantly reduce the number of degrees of freedom, and finally, we can avoid using a mesh. In fact, polynomial models have local precision and therefore require the use of a mesh, which is not the case with neural network models, which have global precision. 
+
+- APPROXIMATION
+T : Now that we have defined the encoder and decoder, we can turn to the approximator. 
+
+14. The idea of the approximator is the same as before, but this time we want to project a certain form of our equation onto our M_N variety. Therefore, the continuous problem written on the left, where J is a functional to be minimized on our variety, reduces to a problem on degrees of freedom ( so a discrete problem). We can now identify two variants. The first concerns only symmetrical spatial PDEs, where our J functional takes the energy form of our PDE, corresponding to the Deep-Ritz method ( which is comparable to Galerkin projection). The second variant is valid for any type of PDE, and this time consists of considering our J functional as the least-square form of our PDE, corresponding to the method known as standard PINNs (which is comparable to Gallerkin's least-square projection). 
+
+15. So for the Deep-Ritz method we will consider the same discrete minimization problem (this time including boundary conditions) with J_in our energy form. And this time, we discretize the cost functions by a random process using a Monte-Carlo method. 
+
+In fact, we will consider 2 random generation processes, one inside Omega and the other on the boundary. Note also that the weights in front of the cost functions are still to be determined.
+
+16. In the same way, for standard PINN methods, we will consider the discrete minimization problem (including boundary conditions) with J_in our least-squares form, and in the same way we discretize the cost functions by a random process using a Monte-Carlo method.
+
+17. In practice, to solve these two discrete minimization problems defined above for the Deep-Ritz method and standard PINNs, we use a mini-batch stochastic gradient descent method, such as the ADAM method. We also use a regular multiply derivable model and the principle of automatic differentiation, as well as activation functions that are regular enough to be derived twice (because of the Laplacian). For example, a hyperbolic tangent instead of a relu, or adaptive methods where activation functions are parameterized. 
+There are two further points to be made. The first is that, with standard PINNs, we can add a cost function called J_data to approximate known solutions. On, we can also impose edge conditions in an exact manner using a levelset function, which we'll describe in the following.
+
+18. Now, if we decompose a physically-informed learning method in the same way as before, we can see that the philosophy behind these two types of method is in fact very similar. The main difference lies in the approximation space of the solution we consider (in the FEM case using vector spaces, and in the NN case using varieties).
+
+OUR HYBRID METHOD
+T : Let's finish by talking briefly about the hybrid method we are currently developing.
+
+19. First of all, let me tell you a little about the main ideas behind the PhiFEM method. The first idea is, as I said before, that the domain is defined by what we call a LevelSet function, which we denote phi. This function is defined as zero at the boundary, negative inside Omega and positive outside.  The second idea is that we are not looking for the solution u, but for w such that the solution is of the following form. We see that the first term is zero at the boundary and then we add the Dirichlet condition g. And so, in the context of PhiFEM, the decoder is written as follows. A final important point of the PhiFEM method is that we don't use a mesh that fit Omega, but a mesh of a fictitious domain around Omega, including Omega.
+
+20. With this same simple idea, we can impose the boundary conditions exactly in the PINNs. We then consider our solution to be of the same form as in the PhiFEM method, where this time w_theta is our decoder defined by a neural network such as an MLP. We then consider the same minimization problem as before, this time removing the cost function associated with the boundary. 
+
+21. The pipeline is then as follows: We consider a geometry defined by a Levelset function, a force f and possibly a function describing our boundary conditions g. We get the prediction from the PINNs where we impose the boundary conditions exactly. Then, we correct the prediction of our neural network using the PhiFEM method. One of the simplest methods of correction is what we call correction by addition. It consists simply in writing the solution in the form of the neural network plus C_tild, and thus solving the following problem, which is equivalent to the elliptic problem introduced at the start of this presentation. In fact, we are simply looking for C such that C_tild equals phi*C. C_tild is in fact the difference between our prediction and the exact solution of our PDE. If the prediction is quite correct, C_tild is quite close to 0 and we hope that u_tild is better than the prediction.
+
+CONCLUSION
+T: Now for the conclusion.
+
+22. Let's start with what we have seen. First of all, physically informed learning methods are simply an extension of classical numerical methods such as FEM, where the decoder belongs to a variety (whose properties are different from those of vector spaces). Then, these approaches have real advantages in high dimensions, particularly in the context of parametric PDEs. Moreover, as they are mesh-free methods, they have a real advantage in the context of complex geometry. 
+
+23. Finally, to conclude our hybrid approach. The interest of this method is that it combines the speed of neural networks in predicting a solution with the accuracy of FEM methods in correcting and certifying the prediction of neural networks (which can be completely wrong on an unknown dataset, for example). Moreover, in the context of complex geometries (or in application domains such as real-time or shape optimization), like neural networks, PhiFEM avoids the need to (re)-generate meshes.
+We have already obtained some encouraging results on simple geometries such as circles. However, we are having more difficulty with complex geometries, due to the importance of the regularity of our levelset functions. The next step is to learn these levelset functions.
+
+THANK YOU !

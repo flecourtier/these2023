@@ -4,17 +4,17 @@
 	\begin{itemize}[\textbullet]
 		\item \textbf{Decoding :} Linear combination of piecewise polynomial function $\varphi_i$.
 		\begin{equation*}
-			u_\theta(x)=\mathcal{D}_{\theta_u}(x) = \sum_{i=1}^{N}(\theta_u)_i\varphi_i
+			u_\theta(x)=\mathcal{D}_{\theta_u}(x) = \sum_{i=1}^{N}(\theta_u)_i\varphi_i(x)
 		\end{equation*}
 		$\Rightarrow$ linear decoding $\Rightarrow$ approximation space $V_N$ = vectorial space \\
 		$\Rightarrow$ existence and uniqueness of the orthogonal projector
 		\item \textbf{Encoding :} Optimization process.
 		\begin{equation*}
-			\theta_f=E(f)=\arg\min_{\theta\in\mathbb{R}^N}\int_\Omega ||f_\theta(x)-f(x)||^2 dx
+			\theta_f=\mathcal{E}(f)=\arg\min_{\theta\in\mathbb{R}^N}\int_\Omega ||f_\theta(x)-f(x)||^2 dx
 		\end{equation*}
 		$\Leftrightarrow$ Orthogonal projection on vector space $V_N=Vect\{\varphi_1,\dots,\varphi_N\}$.
 		\begin{equation*}
-			\theta_f=E(f)=M^{-1}b(f)
+			\theta_f=\mathcal{E}(f)=M^{-1}b(f)
 		\end{equation*}
 		with $M_{ij}=\int_\Omega \varphi_i(x)\varphi_j(x)$ and $b_i(f)=\int_\Omega \varphi_i(x)f(x)$. \refappendix{frame:encoding_fems} 
 	\end{itemize}
@@ -200,10 +200,6 @@
 		J_{in}(v)=\frac{1}{2}\int_\Omega R_{in}(v)^2  \qquad \text{and} \qquad J_{bc}(v)=\frac{1}{2}\int_{\partial\Omega} R_{bc}(v)^2
 	\end{equation*}
 	
-	\footnotesize	
-	\textit{Remark :} This form of the problem is due to the Lax-Milgram theorem as $a$ is symmetrical.
-	\normalsize
-	
 	\footnotesize
 	\begin{center}
 		\begin{tcolorbox}[
@@ -263,7 +259,7 @@
 	
 	\normalsize	
 	
-	\textbf{Galerkin projection :} Consists in resolving
+	\textbf{Least-Square Galerkin projection :} Consists in resolving
 	\begin{equation}
 		\langle R_{in}(u_\theta(x)),(\nabla_\theta R_{in}(u_\theta(x)))_i\rangle_{L^2}=0, \qquad \forall i\in\{1,\dots,N\}\label{leastsquare_proj}
 	\end{equation}
