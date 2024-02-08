@@ -72,7 +72,7 @@
 			arc=2mm, % Rayon de l'arrondi des coins
 			boxrule=0.5pt, % Épaisseur du cadre de la boîte
 			breakable, enhanced jigsaw,
-			width=0.8\linewidth
+			width=0.85\linewidth
 			]
 			
 			\textbf{Discrete Minimization Problem \eqref{minpb_galerkin} $\Leftrightarrow$ PDE \eqref{edp} :}
@@ -86,7 +86,10 @@
 				\centering
 				$u_\theta$ sol \\
 				of \eqref{minpb_galerkin}
-			\end{minipage} $\Leftrightarrow \; \nabla_{u_\theta} \; J(u_\theta)=0 \; \Leftrightarrow \; \left\{\begin{aligned}
+			\end{minipage} $\Leftrightarrow \; \left\{\begin{aligned}
+				&\nabla_v \; J_{in}(u_\theta)=0 \\
+				&\nabla_v \; J_{bc}(u_\theta)=0
+			\end{aligned}\right. \; \Leftrightarrow \; \left\{\begin{aligned}
 				&R_{in}(u_\theta)=0 \; \text{in} \; \Omega \\
 				&u_\theta=g \; \text{on} \; \partial\Omega
 			\end{aligned}\right. \; \Leftrightarrow$ \begin{minipage}{0.15\linewidth}
@@ -101,7 +104,7 @@
 				\centering
 				\textbf{Discrete} \\
 				\textbf{min pb}
-			\end{minipage} \; \hspace{160pt} \; \begin{minipage}{0.1\linewidth}
+			\end{minipage} \; \hspace{165pt} \; \begin{minipage}{0.1\linewidth}
 				\centering
 				\textbf{PDE}
 			\end{minipage}
