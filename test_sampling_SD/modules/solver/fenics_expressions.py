@@ -16,7 +16,8 @@ from dolfin.function.expression import (
 
 from modules.problem.Case import *
 cas = Case("case.json")
-pb_considered = cas.Problem
+pb_considered = cas.problem
+sdf_considered = cas.sd_function
 
 # noinspection PyAbstractClass
 class MyUserExpression(BaseExpression):
@@ -44,14 +45,14 @@ class PhiConstructExpr(MyUserExpression):
         super().__init__(degree, domain)
 
     def eval(self, value, x):
-        value[0] = pb_considered.phi_construct(dol, x)
+        value[0] = sdf_considered.phi(dol, x)
 
 class PhiExpr(MyUserExpression):
     def __init__(self, degree, domain):
         super().__init__(degree, domain)
 
     def eval(self, value, x):
-        value[0] = pb_considered.phi(dol, x)
+        value[0] = sdf_considered.phi(dol, x)
 
 class UexExpr(MyUserExpression):
     def __init__(self, params, degree, domain):

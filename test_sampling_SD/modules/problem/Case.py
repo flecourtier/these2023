@@ -57,8 +57,8 @@ class Case:
         self.form = geom_class()
         self.sd_function = sdf_class(self.form,threshold=threshold)
         self.problem = problem_class(self.form)
-        bound_box = self.sd_function.bound_box
-        self.xdomain = domain.SignedDistanceBasedDomain(2, bound_box, self.sd_function)
+        self.bound_box = self.sd_function.bound_box
+        self.xdomain = domain.SignedDistanceBasedDomain(2, self.bound_box, self.sd_function)
         self.pde = pde_class(self.xdomain, self.problem)
 
         self.dir_name = "networks/"+pde_class_name+"/"+geom_class_name+"/"+sdf_class_name+"/"+problem_class_name+"/"+str(threshold)+"/"

@@ -2,7 +2,9 @@ from modules.solver.fenics_expressions import *
 from modules.problem.Case import *
 
 cas = Case("case.json")
-pb_considered = cas.Problem
+pb_considered = cas.problem
+form_considered = cas.form
+sdf_considered = cas.sd_function
 
 print_time = False
 
@@ -14,6 +16,7 @@ import dolfin as df
 # import multiphenics as mph
 import mshr
 import time
+import numpy as np
 
 parameters["ghost_mode"] = "shared_facet"
 parameters["form_compiler"]["cpp_optimize"] = True
@@ -47,7 +50,7 @@ class PhiFemSolver:
         self.times_fem = {}
         self.times_corr_add = {}
 
-        domain_O = np.array(pb_considered.domain_O)
+        domain_O = np.array(sdf_considered.bound_box)
         self.mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), self.N, self.N)
         self.V_macro = FunctionSpace(self.mesh_macro, "CG", polV)
 
@@ -60,7 +63,7 @@ class PhiFemSolver:
         for ind in range(self.mesh_macro.num_cells()):
             mycell = Cell(self.mesh_macro, ind)
             v1x, v1y, v2x, v2y, v3x, v3y = mycell.get_vertex_coordinates()
-            if (pb_considered.Omega_bool(v1x, v1y) or pb_considered.Omega_bool(v2x, v2y) or pb_considered.Omega_bool(v3x, v3y)):
+            if (sdf_considered.Omega_bool(v1x, v1y) or sdf_considered.Omega_bool(v2x, v2y) or sdf_considered.Omega_bool(v3x, v3y)):
                 domains[ind] = 1
         self.mesh = SubMesh(self.mesh_macro, domains, 1)
         end = time.time()
@@ -143,16 +146,16 @@ class PhiFemSolver:
 
     def __create_FEM_domain(self):
         # check if problem_considered is instance of Circle class
-        if isinstance(pb_considered, Circle):
+        if isinstance(form_considered, Geometry.Circle):
             domain = mshr.Circle(Point(pb_considered.x0, pb_considered.y0), pb_considered.r)
-        elif isinstance(pb_considered, Square):
-            domain = mshr.Rectangle(Point(0, 0), Point(1, 1))
+        # elif isinstance(pb_considered, Square):
+        #     domain = mshr.Rectangle(Point(0, 0), Point(1, 1))
         else:
             raise Exception("Problem not implemented")
 
         nb_vert = self.N+1
 
-        domain_O = np.array(pb_considered.domain_O)
+        domain_O = np.array(sdf_considered.bound_box)
         mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), nb_vert - 1, nb_vert - 1)
         h_macro = mesh_macro.hmax()
         H = int(nb_vert/3)

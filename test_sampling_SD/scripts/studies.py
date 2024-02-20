@@ -25,11 +25,11 @@ from create_xlsx_file import *
 
 cas = Case("case.json")
 
-impose_exact_bc = cas.impose_exact_bc
-problem_considered = cas.Problem
-pde_considered = cas.PDE
+# impose_exact_bc = cas.impose_exact_bc
+problem_considered = cas.problem
+pde_considered = cas.pde
 
-dir_name = cas.dir_name
+dir_name = "../"+cas.dir_name
 models_dir = dir_name+"models/"
 corr_type = cas.corr_type
 corr_dir = cas.corr_dir_name

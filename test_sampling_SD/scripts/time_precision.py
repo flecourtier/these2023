@@ -19,9 +19,8 @@ import pandas as pd
 
 cas = Case("case.json")
 
-impose_exact_bc = cas.impose_exact_bc
-problem_considered = cas.Problem
-pde_considered = cas.PDE
+problem_considered = cas.problem
+pde_considered = cas.pde
 
 dir_name = "../"+cas.dir_name
 models_dir = dir_name+"models/"
@@ -56,7 +55,7 @@ if args.load:
     args.corr_fem = 0
     args.corr_phifem = 0
 
-deg_corr = 10
+deg_corr = 5
 result_dir = dir_name+"time_precision/"+"config"+str(args.config)+"_P"+str(deg_corr)+"/"
 if not os.path.exists(result_dir):
     os.makedirs(result_dir)
@@ -287,7 +286,7 @@ else:
 # SAVE DATA #
 #############
 
-save_data = False
+save_data = True
 
 if save_data:
 
@@ -325,7 +324,7 @@ if save_data:
 # PLOT DATA #
 ###########
 
-plot_data = False
+plot_data = True
 
 import seaborn as sns
 sns.set_theme(style="whitegrid")

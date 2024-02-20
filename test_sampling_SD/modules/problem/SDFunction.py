@@ -17,6 +17,16 @@ class SDCircle(domain.SignedDistance):
         self.eps = 0.5-self.r
         self.bound_box = [[self.x0-self.r-self.eps,self.x0+self.r+self.eps],[self.y0-self.r-self.eps,self.y0+self.r+self.eps]]
 
+    def phi(self,pre,xy):
+        """Level set function for the circle domain
+
+        :param x: x coordinate
+        :param y: y coordinate
+        :return: Level set function evaluated at (x,y)
+        """
+        x,y = xy
+        return -self.r**2+(x-self.x0)**2+(y-self.y0)**2
+    
     def sdf(self,x):
         """Level set function for the circle domain
 
@@ -24,7 +34,24 @@ class SDCircle(domain.SignedDistance):
         :return: Level set function evaluated at (x,y)
         """
         x1, x2 = self.get_coordinates(x)
-        return -self.r**2+(x1-self.x0)**2+(x2-self.y0)**2
+        return self.phi(None,[x1,x2])
+    
+    def Omega_bool(self, x, y):
+        """Returns True if (x,y) is in the Omega domain
+        :param x: x coordinate
+        :param y: y coordinate
+        :return: True if (x,y) is in the Omega domain
+        """
+        xy = (x,y)
+        return self.call_Omega(xy)
+    
+    def call_Omega(self, xy):
+        """Returns True if (x,y) is in the Omega domain
+        :param pre: Preconditioner
+        :param xy: (x,y) coordinates
+        :return: True if (x,y) is in the Omega domain
+        """
+        return self.phi(None,xy)<0
 
 class SDMVP(domain.SignedDistance):
     def __init__(self, form : ParametricCurves, threshold: float = 0.0):

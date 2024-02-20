@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 from modules.problem import Geometry
+from modules.problem.SDFunction import SDCircle
 
 class TrigSolOnCircle:
     def __init__(self,circle:Geometry.Circle):
@@ -75,7 +76,8 @@ class TrigSolOnCircle:
         return 0*torch.ones_like(xy[0])
 
 class WSolOnCircle:
-    def __init__(self,circle:Geometry.Circle):
+    def __init__(self,circle:Geometry.Circle,sdf=SDCircle):
+        self.sdf = sdf(circle)
         self.x0,self.y0 = circle.x0,circle.y0
         self.r = circle.r
         
@@ -90,7 +92,7 @@ class WSolOnCircle:
         :return: Analytical solution evaluated at (x,y)
         """
         x,y=xy
-        return self.phi(pre,xy)*pre.sin(x)*pre.exp(y)
+        return self.sdf.phi(pre,xy)*pre.sin(x)*pre.exp(y)
 
     def u_ex_prime(self, pre, xy, mu):
         """First derivative of the analytical solution for the Circle domain

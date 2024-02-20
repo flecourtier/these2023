@@ -11,7 +11,7 @@ from scimba.sampling import sampling_parameters, sampling_pde, uniform_sampling
 
 from modules.problem.Poisson2D import *
 import torch
-torch.cuda.set_per_process_memory_fraction(0.8)
+# torch.cuda.set_per_process_memory_fraction(0.8)
 
 ###############
 # Define case #
@@ -33,10 +33,10 @@ def plot_solution(cas,trainer,fig_path,derivees_path,derivees2_path,phi_path):
     
     trainer.plot(50000,filename=fig_path,sampler=sampler)
 
-    trainer.plot_first_derivative_x(filename=derivees_path,n_visu=5000)
-    trainer.plot_second_derivative_x(filename=derivees2_path,n_visu=5000)
+    # trainer.plot_first_derivative_x(filename=derivees_path,n_visu=5000)
+    # trainer.plot_second_derivative_x(filename=derivees2_path,n_visu=5000)
 
-    trainer.plot_mul_derivatives_x(filename=phi_path,n_visu=5000)
+    # trainer.plot_mul_derivatives_x(filename=phi_path,n_visu=5000)
 
 # def get_memory(step):
 #     def convert(nb_bytes):
@@ -76,7 +76,7 @@ def test_laplacian_2d(cas, num_config, dict, save_sampling = False, new_training
         plt.figure(figsize=(5,5))
         plot_sampling(bornes,data_inside,str(dict["n_collocations"])+" points")
 
-        plt.savefig(dir_name / "models" / ("sampling_"+str(num_config)+".png"))
+        plt.savefig(dir_name / "models" / ("sampling_"+str(num_config)+"_diapo.png"),dpi=500)
 
     save_phi = True
     if save_phi:

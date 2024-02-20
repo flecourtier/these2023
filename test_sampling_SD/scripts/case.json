@@ -1,8 +1,8 @@
 {
     "pde" : "Poisson2D",
     "geometry" : "Circle",
-    "sdf" : "SDMVP",
-    "problem" : "TrigSolOnCircle",
-    "threshold" : 0.0,
+    "sdf" : "SDCircle",
+    "problem" : "WSolOnCircle",
+    "threshold" : -0.1,
     "correction" : "add"
 }

@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import abc
 import forms
 
-classform = forms.Bean
-plot = False
+classform = forms.Pumpkin
+plot = True
 
 nameform = classform.__name__
 nameform = nameform.lower()
