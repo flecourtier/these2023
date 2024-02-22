@@ -1,6 +1,10 @@
 
 #!/bin/bash
 
+######
+### A REVOIR !
+######
+
 # Read the case.json file
 case_file="case.json"
 

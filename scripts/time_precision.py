@@ -5,13 +5,17 @@
 import matplotlib.pyplot as plt
 import argparse
 import os
+import pandas as pd
 
 from scar.problem.Case import *
-from scar.utils import read_config
 from scar.equations.run_Poisson2D import *
+from scar.utils import read_config
+
 from scar.solver.solver_fem import *
 from scar.solver.solver_phifem import *
-import pandas as pd
+
+from scar.correction.correct_pred import *
+from scar.correction.time_precision import *
 
 #############
 # Arguments #
@@ -24,18 +28,24 @@ def get_args():
     parser.add_argument("--config", help="Index of configuration file.", type=int, default=0)
     parser.add_argument("--casefile", help="Path to the case file.", type=str, default="case.json")
     
+    parser.add_argument("--deg_corr", help="Degree of the correction.", type=int, default=10)
+
+    parser.add_argument("--load", help="If activate, just try to load data", action='store_true')
     parser.add_argument("--fem", help="0 - False ; 1 - True", type=int, default=1)
     parser.add_argument("--phifem", help="0 - False ; 1 - True", type=int, default=1)
-    parser.add_argument("--pinns", help="0 - False ; 1 - True", type=int, default=1)
     parser.add_argument("--corr_fem", help="0 - False ; 1 - True", type=int, default=1)
     parser.add_argument("--corr_phifem", help="0 - False ; 1 - True", type=int, default=1)
-    parser.add_argument("--load", help="If activate, just try to load data", action='store_true')
 
     args = parser.parse_args()
 
     return args, parser
 
 args, parser = get_args()
+if args.load:
+    args.fem = 0
+    args.phifem = 0
+    args.corr_fem = 0
+    args.corr_phifem = 0
 
 ###############
 # Define case #
@@ -54,14 +64,7 @@ models_dir = dir_name+"models/"
 # Define paths #
 ################
 
-if args.load:
-    args.fem = 0
-    args.phifem = 0
-    args.pinns = 0
-    args.corr_fem = 0
-    args.corr_phifem = 0
-
-deg_corr = 10
+deg_corr = args.deg_corr
 result_dir = dir_name+"time_precision/"+"config"+str(args.config)+"_P"+str(deg_corr)+"/"
 if not os.path.exists(result_dir):
     os.makedirs(result_dir)
@@ -72,140 +75,21 @@ print(result_dir)
 ##############
 
 config = args.config
-
 config_filename = models_dir+"config_"+str(config)+".json"
-model_filename = models_dir+"model_"+str(config)+".pth"
-print("### Config file : ",config_filename)
-print("### Model file : ",model_filename)
-
 dict = read_config(config_filename)
-print("### Config ", config, " : ", dict)
 
 # Load model #
-
-trainer = test_laplacian_2d(cas,config,dict)
-
-# Get test sample #
-
-def get_test_sample(solver,parameter_domain,deg_corr):
-    # get coordinates of the dof
-    V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
-    XXYY = V_phi.tabulate_dof_coordinates()
-    X_test = torch.tensor(XXYY)
-
-    # get parameters
-    nb_params = len(parameter_domain)
-    shape = (XXYY.shape[0],nb_params)
-    if shape[1] == 0:
-        mu_test = torch.zeros(shape)
-    else:
-        ones = torch.ones(shape)
-        mu_test = (torch.mean(parameter_domain, axis=1) * ones).to(device)
-    return V_phi,X_test,mu_test
-
-# Get u_PINNs #
-
-def get_u_PINNs(solver,parameter_domain,deg_corr):
-    V_phi,X_test,mu_test = get_test_sample(solver,parameter_domain,deg_corr)
-
-    pred = trainer.network.setup_w_dict(X_test, mu_test)
-    phi_tild = pred["w"][:,0].cpu().detach().numpy()
-    u_PINNs = Function(V_phi)
-    u_PINNs.vector()[:] = phi_tild
-
-    return u_PINNs
+trainer = run_Poisson2D(cas,config,dict)
 
 ##################
 # TIME PRECISION #
 ##################
 
-params = [[0.5,1.0,0.]]
-
 tab_nb_vert = [8*2**i for i in range(5)]
 tab_nb_vert_corr = [5*i for i in range(1,7)]
+
 np.save(result_dir+"tab_nb_vert_corr.npy",tab_nb_vert_corr)
 np.save(result_dir+"tab_nb_vert.npy",tab_nb_vert)
-
-def get_time_precision(class_solver,result_subdir):
-    subtimes = {}
-    times = []
-    norms = []
-    for nb_vert in tab_nb_vert:
-        print("# nb_vert : ", nb_vert)
-        solver = class_solver(nb_cell=nb_vert-1, params=params, cas=cas)
-        sol,norm_L2 = solver.fem(0)
-        times_fem = solver.times_fem
-        for key in times_fem:
-            if key in subtimes:
-                subtimes[key].append(times_fem[key])
-            else:
-                subtimes[key] = [times_fem[key]]
-        times.append(sum(times_fem.values()))
-        norms.append(norm_L2)
-        
-    np.save(result_subdir+"norms.npy",norms)
-    np.save(result_subdir+"times.npy",times)
-    np.save(result_subdir+"subtimes.npy",subtimes)
-
-    return subtimes, times, norms
-
-def get_time_precision_corr(class_solver,result_subdir,get_pinns=False):
-    subtimes = {}
-    times = []
-    norms = []
-
-    times_pinns = []
-    norms_pinns = []
-
-    for nb_vert in tab_nb_vert_corr:
-        print("# nb_vert : ", nb_vert)
-
-        solver = class_solver(nb_cell=nb_vert-1, params=params, cas=cas)
-
-        ###
-        # PINNs
-        ###
-        
-        start = time.time()
-        u_PINNs = get_u_PINNs(solver,trainer.pde.parameter_domain,deg_corr)
-        end = time.time()
-        
-        time_get_u_PINNs = end-start
-        print("Time to get u_PINNs : ",time_get_u_PINNs)
-
-        if get_pinns:
-            subtimes_pinns = solver.times_corr_add.copy()
-            subtimes_pinns["get_u_PINNs"] = time_get_u_PINNs
-            times_pinns.append(sum(subtimes_pinns.values()))
-
-            u_ex = UexExpr(params[0], degree=deg_corr, domain=solver.mesh, pb_considered=solver.pb_considered)
-            norm_L2_PINNs = (assemble((((u_ex - u_PINNs)) ** 2) * solver.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * solver.dx) ** (0.5))
-            norms_pinns.append(norm_L2_PINNs)
-
-        ###
-        # Correction
-        ###
-
-        u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs)
-
-        times_corr_add = solver.times_corr_add
-        times_corr_add["get_u_PINNs"] = time_get_u_PINNs
-        for key in times_corr_add:
-            if key in subtimes:
-                subtimes[key].append(times_corr_add[key])
-            else:
-                subtimes[key] = [times_corr_add[key]]
-
-        times.append(sum(times_corr_add.values()))
-        norms.append(norm_L2_Corr)
-
-    np.save(result_subdir+"norms_pinns.npy",norms_pinns)
-    np.save(result_subdir+"times_pinns.npy",times_pinns)
-    np.save(result_subdir+"norms.npy",norms)
-    np.save(result_subdir+"times.npy",times)
-    np.save(result_subdir+"subtimes.npy",subtimes)
-
-    return subtimes, times, norms, times_pinns, norms_pinns
 
 # COMPUTE FEM
 
@@ -216,7 +100,7 @@ if not os.path.exists(result_subdir):
     os.makedirs(result_subdir)
 
 if args.fem:
-    subtimes_fem, times_fem, norms_fem = get_time_precision(FEMSolver,result_subdir)
+    subtimes_fem, times_fem, norms_fem = get_time_precision(FEMSolver,trainer,result_subdir,tab_nb_vert,cas)
 else:
     try:
         norms_fem = np.load(result_subdir+"norms.npy")
@@ -238,7 +122,7 @@ if not os.path.exists(result_subdir):
     os.makedirs(result_subdir)
 
 if args.phifem:
-    subtimes_phifem, times_phifem, norms_phifem = get_time_precision(PhiFemSolver,result_subdir)
+    subtimes_phifem, times_phifem, norms_phifem = get_time_precision(PhiFemSolver,trainer,result_subdir,tab_nb_vert,cas)
 else:
     try:
         norms_phifem = np.load(result_subdir+"norms.npy")
@@ -258,7 +142,7 @@ if not os.path.exists(result_subdir):
     os.makedirs(result_subdir)
 
 if args.corr_fem:
-    subtimes_corr_add_fem, times_corr_add_fem, norms_corr_add_fem, times_pinns, norms_pinns = get_time_precision_corr(FEMSolver,result_subdir,get_pinns=True)
+    subtimes_corr_add_fem, times_corr_add_fem, norms_corr_add_fem, times_pinns, norms_pinns = get_time_precision_corr(FEMSolver,trainer,result_subdir,tab_nb_vert_corr,cas,deg_corr,get_pinns=True)
 else:
     try:
         norms_pinns = np.load(result_subdir+"norms_pinns.npy")
@@ -279,7 +163,7 @@ if not os.path.exists(result_subdir):
     os.makedirs(result_subdir)
 
 if args.corr_phifem:
-    subtimes_corr_add_phifem, times_corr_add_phifem, norms_corr_add_phifem, _, _ = get_time_precision_corr(PhiFemSolver,result_subdir)
+    subtimes_corr_add_phifem, times_corr_add_phifem, norms_corr_add_phifem, _, _ = get_time_precision_corr(PhiFemSolver,trainer,result_subdir,tab_nb_vert_corr,cas,deg_corr)
 else:
     try:
         norms_corr_add_phifem = np.load(result_subdir+"norms.npy")
@@ -361,7 +245,7 @@ if plot_data:
 # TIMES TABLE #
 ###############
     
-times_table = False
+times_table = True
 
 if times_table:
 
@@ -415,8 +299,8 @@ if times_table:
         
         return t_inter
     
-    given_precision = 1e-4
-    
+    given_precision = 1e-3
+
     times_inter = {}
     for method in methods:
         times_inter[method] = {}
@@ -437,4 +321,4 @@ if times_table:
 
     # Create an excel file with the times
 
-    df.to_excel(result_dir+'times_table.xlsx')
+    df.to_excel(result_dir+'times_table_1e'+str(int(np.log10(given_precision)))+'.xlsx')
