@@ -1,0 +1,6 @@
+README.md
+setup.py
+src/scar.egg-info/PKG-INFO
+src/scar.egg-info/SOURCES.txt
+src/scar.egg-info/dependency_links.txt
+src/scar.egg-info/top_level.txt
