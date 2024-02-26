@@ -158,3 +158,62 @@ class UnknownSolForMVP:
         :return: Boundary condition evaluated at (x,y)
         """
         return 0*torch.ones_like(xy[0])
+    
+class ConstantForce:
+    def __init__(self,form:Geometry.ParametricCurves):
+        self.form = form
+        self.parameter_domain = []
+
+    def u_ex(self, pre, xy, mu):
+        """Analytical solution for the Circle domain
+
+        :param pre: Preconditioner
+        :param xy: (x,y) coordinates
+        :param mu: (S) parameter
+        :return: Analytical solution evaluated at (x,y)
+        """
+        if isinstance(self.form,Geometry.Circle) or isinstance(self.form,Geometry.BigCircle):
+            x,y=xy
+            return -1./4.*((x-self.form.x0)**2+(y-self.form.y0)**2-self.form.r**2)
+        else:
+            return torch.ones_like(xy[0])
+
+    def u_ex_prime(self, pre, xy, mu):
+        """First derivative of the analytical solution for the Circle domain
+
+        :param pre: Preconditioner
+        :param xy: (x,y) coordinates
+        :param mu: (S) parameter
+        :return: First derivative of the analytical solution evaluated at (x,y)
+        """
+        pass
+
+    def u_ex_prime2(self, pre, xy, mu):
+        """Second derivative of the analytical solution for the Circle domain
+
+        :param pre: Preconditioner
+        :param xy: (x,y) coordinates
+        :param mu: (S) parameter
+        :return: Second derivative of the analytical solution evaluated at (x,y)
+        """
+        pass
+
+    def f(self, pre, xy, mu):
+        """Right hand side of the PDE for the Circle domain
+
+        :param pre: Preconditioner
+        :param xy: (x,y) coordinates
+        :param mu: (S) parameter
+        :return: Right hand side of the PDE evaluated at (x,y)
+        """
+        return torch.ones_like(xy[0])
+
+    def g(self, pre, xy, mu):
+        """Boundary condition for the Circle domain
+
+        :param pre: Preconditioner
+        :param xy: (x,y) coordinates
+        :param mu: (S) parameter
+        :return: Boundary condition evaluated at (x,y)
+        """
+        return 0*torch.ones_like(xy[0])

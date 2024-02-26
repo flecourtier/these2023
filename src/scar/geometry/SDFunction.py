@@ -1,10 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scimba.equations import domain
-from scar.geometry.Geometry import ParametricCurves,Circle
+from pathlib import Path
 import torch
 
+from scimba.equations import domain
+
+from scar.geometry.Geometry import ParametricCurves,Circle
+from scar.utils import read_config
+from scar.equations.run_Eikonal2D import run_Eikonal2D
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+current = Path(__file__).parent.parent.parent.parent
 
 class SDCircle(domain.SignedDistance):
     def __init__(self, form : Circle, threshold: float = 0.0):
@@ -118,4 +124,56 @@ class SDMVP(domain.SignedDistance):
 
     #     plt.savefig(savedir+"MVP_"+self.form.name+".png")
     #     plt.show()
+
+# A modifier :
+class SDLearn(domain.SignedDistance):
+    def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
+        """Circle domain centered at (x_0,y_0) with radius r
+        """
+        super().__init__(2, threshold)
+
+        self.form = form
+        self.bound_box = [[form.bord_a,form.bord_b],[form.bord_a2,form.bord_b2]]
+
+        class_name = form.__class__.__name__
+        form_dir_name = current / "networks" / "Eikonal2D" / class_name / "models" / ("config_"+str(form_config)+".json")
+        dict_config = read_config(form_dir_name)
+        self.eik_pinns, self.form_trainer = run_Eikonal2D(form,form_config,dict_config)
+        self.pde = self.eik_pinns.pde
+
+        self.mu = torch.tensor([])
+
+    # def phi(self,pre,xy):
+    #     """Level set function for the circle domain
+
+    #     :param x: x coordinate
+    #     :param y: y coordinate
+    #     :return: Level set function evaluated at (x,y)
+    #     """
+    #     x,y = xy
+    #     return -self.r**2+(x-self.x0)**2+(y-self.y0)**2
     
+    def sdf(self,x):
+        """Level set function for the circle domain
+
+        :param X: (x,y) coordinates
+        :return: Level set function evaluated at (x,y)
+        """
+        return self.form_trainer(x,self.mu)
+    
+    # def Omega_bool(self, x, y):
+    #     """Returns True if (x,y) is in the Omega domain
+    #     :param x: x coordinate
+    #     :param y: y coordinate
+    #     :return: True if (x,y) is in the Omega domain
+    #     """
+    #     xy = (x,y)
+    #     return self.call_Omega(xy)
+    
+    # def call_Omega(self, xy):
+    #     """Returns True if (x,y) is in the Omega domain
+    #     :param pre: Preconditioner
+    #     :param xy: (x,y) coordinates
+    #     :return: True if (x,y) is in the Omega domain
+    #     """
+    #     return self.phi(None,xy)<0

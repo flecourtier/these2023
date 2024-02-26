@@ -50,64 +50,6 @@ def get_args():
 
     return args, parser
 
-##############################################
-# Création/Récupération du fichier de config #
-##############################################
-
-def get_config_filename(args,parser,dir_name):
-    # si l'utilisateur a rentré n_layers et units, on remplace layers par [units, units, ...]
-    if not arg_is_default(args, parser, "n_layers") or not arg_is_default(args, parser, "units"):
-        args.layers = [args.units]*args.n_layers
-    vars(args)["n_layers"] = None
-    vars(args)["units"] = None
-
-    # cas par défaut (modèle 0)
-    if len(sys.argv)==1: #or args.config==0:
-        print("### Default case")
-        config=0
-    else:
-        print("### Not default case")
-        # si il n'y a pas de fichier de configuration fournit ("--config" n'est pas dans les arguments)
-        if args.config==None:
-            print("## No config file provided")
-            print("# New model created")
-            print(dir_name+"models")
-            config = get_empty_num_config(dir_name+"models/")
-
-        # si il y a un fichier de configuration fournit ("--config" est dans les arguments)
-        else:
-            print("## Config file provided")
-            config = args.config       
-            config_filename = dir_name+"models/config_"+str(config)+".json"
-            model_filename = dir_name+"models/model_"+str(config)+".pth"
-            
-            # on lit le fichier de configuration et on remplace les arguments par défaut par ceux du fichier
-            args_config = argparse.Namespace(**vars(args))
-            dict = read_config(config_filename)
-            for arg,value in dict.items():
-                vars(args_config)[arg] = value      
-
-            if len(sys.argv)!=3 and not (len(sys.argv)==5 and "--casefile" in sys.argv):
-                print("# New model created from config file")
-                # si l'utilisateur rajoute des args, on modifie les valeurs du fichier de config
-                # (c'est alors un nouveau modèle)
-                for arg in vars(args):
-                    if arg!="config" and not arg_is_default(args, parser, arg):
-                        value = getattr(args, arg)
-                        vars(args_config)[arg] = value
-
-                config = get_empty_num_config(dir_name+"models/")
-            else:
-                print("# Load model from config file")
-
-            args = args_config
-
-    config_filename = dir_name+"models/config_"+str(config)+".json"
-    model_filename = dir_name+"models/model_"+str(config)+".pth"
-    write_config(args, config_filename)
-
-    return config, args, config_filename, model_filename
-
 ####################
 # Define Test case #
 ####################
@@ -128,10 +70,11 @@ for subdir in [dir_name+"models", dir_name+"solutions"]:
 # Run model #
 #############
 
-config, args, config_filename, model_filename = get_config_filename(args,parser,dir_name)
+condition = len(sys.argv)!=3 and not (len(sys.argv)==5 and "--casefile" in sys.argv)
+config, args, config_filename, model_filename = get_config_filename(args,parser,dir_name,condition=condition)
 print("### Config file : ",config_filename)
 print("### Model file : ",model_filename)
 
 dict = read_config(config_filename)
 
-run_Poisson2D(cas,config,dict,save_sampling=False,save_phi=False,new_training=False)
+run_Poisson2D(cas,config,dict,save_sampling=True,save_phi=True,new_training=False)

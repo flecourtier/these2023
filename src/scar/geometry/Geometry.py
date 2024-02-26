@@ -15,9 +15,10 @@ class ParametricCurves(abc.ABC):
     def c_prime(self,t):
         pass
 
-    def c_prime_rot(self,t): # theta = 90°
-        x,y = self.c_prime(t)
-        return torch.Tensor(np.array([-y.cpu().numpy(),x.cpu().numpy()]))
+    def c_prime_rot(self,t,theta=np.pi/2):
+        rot_mat = np.array([[np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
+        c_prime = self.c_prime(t).detach().numpy()
+        return torch.Tensor(rot_mat @ c_prime)
         
     def plot_curve(self,color="white"):
         t = np.linspace(0,1,100)
@@ -37,6 +38,69 @@ class Circle(ParametricCurves):
 
         self.x0,self.y0 = (0.5,0.5) # centre du cercle
         self.r = np.sqrt(2.)/4. # rayon du cercle
+
+    def c(self,t): # t \in [0,1]
+        x = self.x0 + self.r*np.cos(2*np.pi*t)
+        y = self.y0 + self.r*np.sin(2*np.pi*t)
+        # return np.array([x,y])
+        return torch.Tensor(np.array([x,y]))
+    
+    def c_prime(self,t):
+        x = -2.*np.pi*self.r*np.sin(2*np.pi*t)
+        y = 2.*np.pi*self.r*np.cos(2*np.pi*t)
+        # return np.array([x,y])
+        return torch.Tensor(np.array([x,y]))
+
+class CircleQuarter(ParametricCurves):
+    def __init__(self):
+        self.name = self.__class__.__name__
+        self.bord_a,self.bord_b = (0.5,1.)
+        self.bord_a2,self.bord_b2 = (0.5,1.)
+
+        self.x0,self.y0 = (0.5,0.5) # centre du cercle
+        self.r = np.sqrt(2.)/4. # rayon du cercle
+
+    def c(self,t): # t \in [0,1]
+        x = self.x0 + self.r*np.cos(2*np.pi*t)
+        y = self.y0 + self.r*np.sin(2*np.pi*t)
+        # return np.array([x,y])
+        return torch.Tensor(np.array([x,y]))
+    
+    def c_prime(self,t):
+        x = -2.*np.pi*self.r*np.sin(2*np.pi*t)
+        y = 2.*np.pi*self.r*np.cos(2*np.pi*t)
+        # return np.array([x,y])
+        return torch.Tensor(np.array([x,y]))
+
+class BigCircle(ParametricCurves):
+    def __init__(self):
+        self.name = self.__class__.__name__
+        self.bord_a,self.bord_b = (-1.,1.)
+        self.bord_a2,self.bord_b2 = (-1.,1.)
+
+        self.x0,self.y0 = (0.,0.) # centre du cercle
+        self.r = 1. # rayon du cercle
+
+    def c(self,t): # t \in [0,1]
+        x = self.x0 + self.r*np.cos(2*np.pi*t)
+        y = self.y0 + self.r*np.sin(2*np.pi*t)
+        # return np.array([x,y])
+        return torch.Tensor(np.array([x,y]))
+    
+    def c_prime(self,t):
+        x = -2.*np.pi*self.r*np.sin(2*np.pi*t)
+        y = 2.*np.pi*self.r*np.cos(2*np.pi*t)
+        # return np.array([x,y])
+        return torch.Tensor(np.array([x,y]))
+    
+class BigCircleQuarter(ParametricCurves):
+    def __init__(self):
+        self.name = self.__class__.__name__
+        self.bord_a,self.bord_b = (0.,1.)
+        self.bord_a2,self.bord_b2 = (0.,1.)
+
+        self.x0,self.y0 = (0.,0.) # centre du cercle
+        self.r = 1. # rayon du cercle
 
     def c(self,t): # t \in [0,1]
         x = self.x0 + self.r*np.cos(2*np.pi*t)

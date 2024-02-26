@@ -1,5 +1,4 @@
-import json
-import os 
+import os,sys,argparse,inspect,json
 
 # Récupérer un indice de configuration non utilisé
 def get_empty_num_config(dir_name):
@@ -53,3 +52,79 @@ def create_tree(path):
         subdir = "/".join(path_split[:i])
         if not os.path.isdir(subdir):
             os.mkdir(subdir)
+
+# Création/Récupération du fichier de config
+def get_config_filename(args,parser,dir_name,condition):
+    # si l'utilisateur a rentré n_layers et units, on remplace layers par [units, units, ...]
+    if not arg_is_default(args, parser, "n_layers") or not arg_is_default(args, parser, "units"):
+        args.layers = [args.units]*args.n_layers
+    vars(args)["n_layers"] = None
+    vars(args)["units"] = None
+
+    # cas par défaut (modèle 0)
+    if len(sys.argv)==1: #or args.config==0:
+        print("### Default case")
+        config=0
+    else:
+        print("### Not default case")
+        # si il n'y a pas de fichier de configuration fournit ("--config" n'est pas dans les arguments)
+        if args.config==None:
+            print("## No config file provided")
+            print("# New model created")
+            print(dir_name+"models")
+            config = get_empty_num_config(dir_name+"models/")
+
+        # si il y a un fichier de configuration fournit ("--config" est dans les arguments)
+        else:
+            print("## Config file provided")
+            config = args.config       
+            config_filename = dir_name+"models/config_"+str(config)+".json"
+            model_filename = dir_name+"models/model_"+str(config)+".pth"
+            
+            # on lit le fichier de configuration et on remplace les arguments par défaut par ceux du fichier
+            args_config = argparse.Namespace(**vars(args))
+            dict = read_config(config_filename)
+            for arg,value in dict.items():
+                vars(args_config)[arg] = value      
+
+            if condition:
+                print("# New model created from config file")
+                # si l'utilisateur rajoute des args, on modifie les valeurs du fichier de config
+                # (c'est alors un nouveau modèle)
+                for arg in vars(args):
+                    if arg!="config" and not arg_is_default(args, parser, arg):
+                        value = getattr(args, arg)
+                        vars(args_config)[arg] = value
+
+                config = get_empty_num_config(dir_name+"models/")
+            else:
+                print("# Load model from config file")
+
+            args = args_config
+
+    config_filename = dir_name+"models/config_"+str(config)+".json"
+    model_filename = dir_name+"models/model_"+str(config)+".pth"
+    write_config(args, config_filename)
+
+    return config, args, config_filename, model_filename
+
+# get all the class name in the module (not abstract class)
+def get_class_name(module):
+    class_name = []
+    for name, obj in inspect.getmembers(module):
+        if inspect.isclass(obj) and not inspect.isabstract(obj):
+            class_name.append(name)
+    return class_name
+    
+# get the class by its name
+def get_class(name,module):
+    try:
+        # Récupérer la classe par son nom
+        class_ = getattr(module, name)
+        return class_
+    except AttributeError:
+        # Gestion de l'erreur si la classe n'est pas trouvée
+        print(f"Erreur : Classe {name} non trouvée dans le module {module.__name__}.")
+    except Exception as e:
+        # Gestion d'autres exceptions
+        print(f"Une erreur s'est produite : {e}")
