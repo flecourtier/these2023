@@ -1,10 +1,10 @@
 import numpy as np
 import torch
-from scar.geometry import Geometry
+from scar.geometry import Geometry2D
 from scar.geometry.SDFunction import SDCircle
 
 class TrigSolOnCircle:
-    def __init__(self,circle:Geometry.Circle):
+    def __init__(self,circle:Geometry2D.Circle):
         self.x0,self.y0 = circle.x0,circle.y0
         self.r = circle.r
 
@@ -76,7 +76,7 @@ class TrigSolOnCircle:
         return 0*torch.ones_like(xy[0])
 
 class WSolOnCircle:
-    def __init__(self,circle:Geometry.Circle,sdf=SDCircle):
+    def __init__(self,circle:Geometry2D.Circle,sdf=SDCircle):
         self.sdf = sdf(circle)
         self.x0,self.y0 = circle.x0,circle.y0
         self.r = circle.r
@@ -143,7 +143,7 @@ class WSolOnCircle:
 
 
 class UnknownSolForMVP:
-    def __init__(self, form:Geometry.ParametricCurves):
+    def __init__(self, form:Geometry2D.ParametricCurves):
         self.parameter_domain = []
 
     def f(self, pre, xy, mu):
@@ -160,7 +160,7 @@ class UnknownSolForMVP:
         return 0*torch.ones_like(xy[0])
     
 class ConstantForce:
-    def __init__(self,form:Geometry.ParametricCurves):
+    def __init__(self,form:Geometry2D.ParametricCurves):
         self.form = form
         self.parameter_domain = []
 
@@ -172,7 +172,7 @@ class ConstantForce:
         :param mu: (S) parameter
         :return: Analytical solution evaluated at (x,y)
         """
-        if isinstance(self.form,Geometry.Circle) or isinstance(self.form,Geometry.BigCircle):
+        if isinstance(self.form,Geometry2D.Circle) or isinstance(self.form,Geometry2D.BigCircle):
             x,y=xy
             return -1./4.*((x-self.form.x0)**2+(y-self.form.y0)**2-self.form.r**2)
         else:

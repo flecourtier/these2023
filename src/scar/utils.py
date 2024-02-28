@@ -54,7 +54,7 @@ def create_tree(path):
             os.mkdir(subdir)
 
 # Création/Récupération du fichier de config
-def get_config_filename(args,parser,dir_name,condition):
+def get_config_filename(args,parser,dir_name,default,from_config):
     # si l'utilisateur a rentré n_layers et units, on remplace layers par [units, units, ...]
     if not arg_is_default(args, parser, "n_layers") or not arg_is_default(args, parser, "units"):
         args.layers = [args.units]*args.n_layers
@@ -62,7 +62,7 @@ def get_config_filename(args,parser,dir_name,condition):
     vars(args)["units"] = None
 
     # cas par défaut (modèle 0)
-    if len(sys.argv)==1: #or args.config==0:
+    if default: #or args.config==0:
         print("### Default case")
         config=0
     else:
@@ -87,7 +87,7 @@ def get_config_filename(args,parser,dir_name,condition):
             for arg,value in dict.items():
                 vars(args_config)[arg] = value      
 
-            if condition:
+            if from_config:
                 print("# New model created from config file")
                 # si l'utilisateur rajoute des args, on modifie les valeurs du fichier de config
                 # (c'est alors un nouveau modèle)

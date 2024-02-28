@@ -1,0 +1,14 @@
+{
+	"form":"Circle",
+	"eps":0.001,
+	"layers":[64, 64, 64, 64, 64, 64],
+	"activation":"sine",
+	"lr":0.007,
+	"decay":0.99,
+	"w_eik":100.0,
+	"w_bc":100.0,
+	"w_tv":20.0,
+	"n_epochs":10000,
+	"n_collocations":4000,
+	"n_bc_collocations":1000
+}

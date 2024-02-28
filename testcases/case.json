@@ -2,7 +2,7 @@
     "pde" : "Poisson2D",
     "geometry" : "Circle",
     "sdf" : "SDCircle",
-    "problem" : "WSolOnCircle",
-    "threshold" : -0.1,
+    "problem" : "ConstantForce",
+    "threshold" : 0.0,
     "correction" : "add"
 }

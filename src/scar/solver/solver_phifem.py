@@ -7,7 +7,7 @@ print_time=False
 ###########
 
 from scar.solver.fenics_expressions import *
-from scar.geometry import Geometry
+from scar.geometry import Geometry2D
 
 from dolfin import *
 import dolfin as df
@@ -143,7 +143,7 @@ class PhiFemSolver:
 
     def __create_FEM_domain(self):
         # check if problem_considered is instance of Circle class
-        if isinstance(self.form_considered, Geometry.Circle):
+        if isinstance(self.form_considered, Geometry2D.Circle):
             domain = mshr.Circle(Point(self.pb_considered.x0, self.pb_considered.y0), self.pb_considered.r)
         else:
             raise Exception("Problem not implemented")

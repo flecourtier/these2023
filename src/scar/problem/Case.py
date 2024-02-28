@@ -1,5 +1,5 @@
 from scar.equations import Poisson2D
-from scar.geometry import Geometry, SDFunction
+from scar.geometry import Geometry2D, SDFunction
 from scar.utils import read_config,get_class
 from scar.problem import Problem
 from scimba.equations import domain
@@ -29,13 +29,13 @@ class Case:
 
         if isinstance(sdf_class,dict):
             sdf_class_name = sdf_class["type"]
-            assert sdf_class_name == "SDLearn"
+            assert sdf_class_name in {"SDEikonal","SDEikonalReg"}
             assert problem_class_name == "ConstantForce"
             self.form_config = sdf_class["config"]
         else:
             sdf_class_name = sdf_class
 
-        geom_class = get_class(geom_class_name,Geometry)
+        geom_class = get_class(geom_class_name,Geometry2D)
         sdf_class = get_class(sdf_class_name,SDFunction)
         problem_class = get_class(problem_class_name,Problem)
         pde_class = get_class(pde_class_name,Poisson2D)
@@ -43,7 +43,7 @@ class Case:
         threshold = dict_config["threshold"]
 
         self.form = geom_class()
-        if sdf_class_name == "SDLearn":
+        if sdf_class_name in {"SDEikonal","SDEikonalReg"}:
             self.sd_function = sdf_class(self.form,self.form_config,threshold=threshold)
             form_config = "form_"+str(self.form_config)+"/"
         else:

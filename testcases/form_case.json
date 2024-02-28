@@ -2,7 +2,7 @@
     "pde" : "Poisson2D",
     "geometry" : "Circle",
     "sdf" : {
-        "type" : "SDLearn",
+        "type" : "SDEikonal",
         "config" : 1
     },
     "problem" : "ConstantForce",

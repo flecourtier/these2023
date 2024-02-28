@@ -70,8 +70,9 @@ for subdir in [dir_name+"models", dir_name+"solutions"]:
 # Run model #
 #############
 
-condition = len(sys.argv)!=3 and not (len(sys.argv)==5 and "--casefile" in sys.argv)
-config, args, config_filename, model_filename = get_config_filename(args,parser,dir_name,condition=condition)
+default = len(sys.argv)==1
+from_config = len(sys.argv)!=3 and not (len(sys.argv)==5 and "--casefile" in sys.argv)
+config, args, config_filename, model_filename = get_config_filename(args,parser,dir_name,default,from_config)
 print("### Config file : ",config_filename)
 print("### Model file : ",model_filename)
 

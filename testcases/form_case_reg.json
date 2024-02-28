@@ -1,0 +1,11 @@
+{
+    "pde" : "Poisson2D",
+    "geometry" : "Circle",
+    "sdf" : {
+        "type" : "SDEikonalReg",
+        "config" : 4
+    },
+    "problem" : "ConstantForce",
+    "threshold" : 0.0,
+    "correction" : "add"
+}

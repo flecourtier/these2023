@@ -5,7 +5,7 @@ import torch
 
 from scimba.equations import domain
 
-from scar.geometry.Geometry import ParametricCurves,Circle
+from scar.geometry.Geometry2D import ParametricCurves,Circle
 from scar.utils import read_config
 from scar.equations.run_Eikonal2D import run_Eikonal2D
 
@@ -126,22 +126,24 @@ class SDMVP(domain.SignedDistance):
     #     plt.show()
 
 # A modifier :
-class SDLearn(domain.SignedDistance):
+class SDEikonal(domain.SignedDistance):
     def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
-        """Circle domain centered at (x_0,y_0) with radius r
-        """
         super().__init__(2, threshold)
 
         self.form = form
+        self.form_config = form_config
         self.bound_box = [[form.bord_a,form.bord_b],[form.bord_a2,form.bord_b2]]
 
-        class_name = form.__class__.__name__
-        form_dir_name = current / "networks" / "Eikonal2D" / class_name / "models" / ("config_"+str(form_config)+".json")
-        dict_config = read_config(form_dir_name)
-        self.eik_pinns, self.form_trainer = run_Eikonal2D(form,form_config,dict_config)
-        self.pde = self.eik_pinns.pde
+        self.init_eik()
 
         self.mu = torch.tensor([])
+
+    def init_eik(self):
+        class_name = self.form.__class__.__name__
+        form_dir_name = current / "networks" / "Eikonal2D" / class_name / "models" / ("config_"+str(self.form_config)+".json")
+        dict_config = read_config(form_dir_name)
+        self.eik_pinns, self.form_trainer = run_Eikonal2D(self.form,self.form_config,dict_config)
+        self.pde = self.eik_pinns.pde
 
     # def phi(self,pre,xy):
     #     """Level set function for the circle domain
@@ -177,3 +179,15 @@ class SDLearn(domain.SignedDistance):
     #     :return: True if (x,y) is in the Omega domain
     #     """
     #     return self.phi(None,xy)<0
+
+class SDEikonalReg(SDEikonal):
+    def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
+        super().__init__(form, form_config, threshold)
+
+    def init_eik(self):
+        print("init eik")
+        class_name = self.form.__class__.__name__
+        form_dir_name = current / "networks" / "EikonalRegularised2D" / class_name / "models" / ("config_"+str(self.form_config)+".json")
+        dict_config = read_config(form_dir_name)
+        self.eik_pinns, self.form_trainer = run_Eikonal2D(self.form,self.form_config,dict_config,regularised=True)
+        self.pde = self.eik_pinns.pde

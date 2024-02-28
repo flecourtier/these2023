@@ -36,15 +36,18 @@ def from_xyz_normals(path):
     f.close()
     return np.array(L), np.array(n)
 
-def run_Eikonal2D(form,num_config,dict,new_training = False,createxyzfile = False):
+def run_Eikonal2D(form,num_config,dict,new_training = False,createxyzfile = False,regularised=False):
     bound = [[form.bord_a,form.bord_b],[form.bord_a2,form.bord_b2]]
     class_name = form.__class__.__name__
-    print(f"Running Eikonal2D for {class_name}")
-    
-    dir_name = current / "networks" / "Eikonal2D" / class_name
+    if regularised:
+        print(f"Running EikonalRegularised2D for {class_name}")
+        dir_name = current / "networks" / "EikonalRegularised2D" / class_name
+    else:
+        print(f"Running Eikonal2D for {class_name}")
+        dir_name = current / "networks" / "Eikonal2D" / class_name
 
     n_bc_points = dict["n_bc_collocations"]
-    surface_filename = "../xyzfiles/"+class_name+"_"+str(n_bc_points)+".xyz"
+    surface_filename = "../xyzfiles/"+class_name+"_"+str(n_bc_points)+".xy"
     if not Path(surface_filename).exists():
         if createxyzfile:
             t = np.linspace(0,1,n_bc_points)
@@ -90,11 +93,14 @@ def run_Eikonal2D(form,num_config,dict,new_training = False,createxyzfile = Fals
 
     net = pinn_x.MLP_x
     tlayers = dict["layers"]
-    eik = EikonalPINNx(2, bound, bc_points, bc_normals, net, layer_sizes=tlayers, activation_type=dict["activation"])
+    if regularised:
+        eik = EikonalPINNx(2, bound, bc_points, bc_normals, net, layer_sizes=tlayers, activation_type=dict["activation"], regularised=regularised, eps=dict["eps"])
+    else:
+        eik = EikonalPINNx(2, bound, bc_points, bc_normals, net, layer_sizes=tlayers, activation_type=dict["activation"], regularised=regularised)
 
     ##
     # Trainer
-    ###
+    ### 
 
     trainer = TrainerEikonal(
         eik=eik,

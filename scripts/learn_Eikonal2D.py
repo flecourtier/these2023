@@ -59,7 +59,7 @@ def get_args():
 args, parser = get_args()
 
 geom_class_name = args.form
-geom_class = get_class(geom_class_name,Geometry)
+geom_class = get_class(geom_class_name,Geometry2D)
 form = geom_class()
 
 dir_name = "../networks/Eikonal2D/"+geom_class_name+"/"
@@ -71,91 +71,12 @@ if not Path(dir_name+"models").exists():
 if not Path(dir_name+"solutions").exists():
     Path(dir_name+"solutions").mkdir(parents=True)
 
-condition = (len(sys.argv)!=3 and not "--form" in sys.argv) or len(sys.argv)>5
-print("len(sys.argv) : ", len(sys.argv))
-print("cond1 : ", (len(sys.argv)!=3 and not "--form" in sys.argv))
-print("cond2 : ", len(sys.argv)>5)
-config, args, config_filename, model_filename = get_config_filename(args,parser,dir_name,condition=condition)
+default = len(sys.argv)==1 or (len(sys.argv)==3 and "--form" in sys.argv)
+from_config = (len(sys.argv)!=3 and not "--form" in sys.argv) or len(sys.argv)>5
+config, args, config_filename, model_filename = get_config_filename(args,parser,dir_name,default,from_config)
 print("### Config file : ",config_filename)
 print("### Model file : ",model_filename)
 
 dict_config = read_config(config_filename)
 
-run_Eikonal2D(form,config,dict_config,new_training = False,createxyzfile=False)
-
-
-# ######
-
-
-# from pathlib import Path
-# import torch
-# import numpy as np
-
-# import scimba.pinns.pinn_x as pinn_x
-
-# from scimba.shape.eikonal_x import EikonalPINNx
-# from scimba.shape.training_x import TrainerEikonal
-
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# print(f"torch loaded; device is {device}")
-
-# torch.set_default_dtype(torch.double)
-# torch.set_default_device(device)
-
-# def from_xyz_normals(path):
-#     f = open(path, "r")
-#     s = f.readline()
-#     L = []
-#     n = []
-#     while s:
-#         t = s.split()
-#         L.append(np.array([float(t[0]), float(t[1])]))
-#         n.append(np.array([float(t[2]), float(t[3])]))
-#         s = f.readline()
-#     f.close()
-#     return np.array(L), np.array(n)
-
-# def run_Eikonal2D(form):
-#     bound = [[form.bord_a,form.bord_b],[form.bord_a2,form.bord_b2]]
-#     class_name = form.__class__.__name__
-#     surface_filename = "../xyzfiles/"+class_name+".xyz"
-
-#     bc_points, bc_normals = from_xyz_normals(surface_filename)
-#     bc_points = torch.tensor(bc_points, dtype=torch.double, device=device, requires_grad=True)
-#     bc_normals = torch.tensor(bc_normals, dtype=torch.double, device=device)
-
-#     net = pinn_x.MLP_x
-#     eik = EikonalPINNx(2, bound, bc_points, bc_normals, net)
-
-#     file_name = "test.pth"
-#     new_training = False
-
-#     if new_training:
-#         (
-#             Path.cwd()
-#             / Path(TrainerEikonal.FOLDER_FOR_SAVED_NETWORKS)
-#             / file_name
-#         ).unlink(missing_ok=True)
-
-#     trainer = TrainerEikonal(
-#         eik=eik,
-#         file_name=file_name,
-#         learning_rate=1.e-2,
-#         decay=0.99,
-#         batch_size=5000,
-#         w_tv = 0.0,
-#         # w_data=0,
-#         # w_res=0.1,
-#         # w_bc=10,
-#     )
-
-#     if new_training:
-#         trainer.train(epochs=20000, n_collocation=2000)
-
-#     trainer.plot(20000)
-
-#     return eik, trainer
-
-
-# if __name__ == "__main__":
-#     network, trainer = run_Eikonal2D()
+run_Eikonal2D(form,config,dict_config,new_training = False,createxyzfile=True)
