@@ -42,7 +42,7 @@ def run_EikonalLap2D(form,num_config,dict,new_training = False,createxyzfile = F
     dir_name = current / "networks" / "EikonalLap2D" / class_name
 
     n_bc_points = dict["n_bc_collocations"]
-    surface_filename = "../xyzfiles/"+class_name+"_"+str(n_bc_points)+".xy"
+    surface_filename = current / "xyzfiles" / (class_name+"_"+str(n_bc_points)+".xy")
     if not Path(surface_filename).exists():
         if createxyzfile:
             t = np.linspace(0,1,n_bc_points)
