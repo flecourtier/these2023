@@ -8,6 +8,7 @@ from scimba.equations import domain
 from scar.geometry.Geometry2D import ParametricCurves,Circle
 from scar.utils import read_config
 from scar.equations.run_Eikonal2D import run_Eikonal2D
+from scar.equations.run_EikonalLap2D import run_EikonalLap2D
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 current = Path(__file__).parent.parent.parent.parent
@@ -96,36 +97,7 @@ class SDMVP(domain.SignedDistance):
         val = 1./self.W_p(x,p)
         val[np.isnan(val.cpu().detach().numpy())] = 0
         return (val**(1./p))[:,None]
-    
-    # def plot_phi(self,savedir="./"):
-    #     N = 200
 
-    #     lin = np.linspace(self.form.bord_a,self.form.bord_b,N)
-    #     lin2 = np.linspace(self.form.bord_a2,self.form.bord_b2,N)
-
-    #     XX,YY = np.meshgrid(lin,lin2)
-
-    #     plt.figure(figsize=(15,5))
-
-    #     plt.subplot(1,2,1)
-    #     val = self.sdf(np.array([XX,YY]))
-    #     plt.contourf(XX,YY,val,levels=100)
-    #     self.form.plot_curve()
-    #     plt.title("phi")
-    #     plt.colorbar()
-
-    #     plt.subplot(1,2,2)
-    #     pos_val = val>0
-    #     val[pos_val] = 0.
-    #     plt.contourf(XX,YY,-val,levels=100)
-    #     self.form.plot_curve()
-    #     plt.title("phi (zero outside)")
-    #     plt.colorbar()
-
-    #     plt.savefig(savedir+"MVP_"+self.form.name+".png")
-    #     plt.show()
-
-# A modifier :
 class SDEikonal(domain.SignedDistance):
     def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
         super().__init__(2, threshold)
@@ -162,32 +134,25 @@ class SDEikonal(domain.SignedDistance):
         :return: Level set function evaluated at (x,y)
         """
         return self.form_trainer(x,self.mu)
-    
-    # def Omega_bool(self, x, y):
-    #     """Returns True if (x,y) is in the Omega domain
-    #     :param x: x coordinate
-    #     :param y: y coordinate
-    #     :return: True if (x,y) is in the Omega domain
-    #     """
-    #     xy = (x,y)
-    #     return self.call_Omega(xy)
-    
-    # def call_Omega(self, xy):
-    #     """Returns True if (x,y) is in the Omega domain
-    #     :param pre: Preconditioner
-    #     :param xy: (x,y) coordinates
-    #     :return: True if (x,y) is in the Omega domain
-    #     """
-    #     return self.phi(None,xy)<0
 
 class SDEikonalReg(SDEikonal):
     def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
         super().__init__(form, form_config, threshold)
 
     def init_eik(self):
-        print("init eik")
         class_name = self.form.__class__.__name__
         form_dir_name = current / "networks" / "EikonalRegularised2D" / class_name / "models" / ("config_"+str(self.form_config)+".json")
         dict_config = read_config(form_dir_name)
         self.eik_pinns, self.form_trainer = run_Eikonal2D(self.form,self.form_config,dict_config,regularised=True)
+        self.pde = self.eik_pinns.pde
+
+class SDEikonalLap(SDEikonal):
+    def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
+        super().__init__(form, form_config, threshold)
+
+    def init_eik(self):
+        class_name = self.form.__class__.__name__
+        form_dir_name = current / "networks" / "EikonalLap2D" / class_name / "models" / ("config_"+str(self.form_config)+".json")
+        dict_config = read_config(form_dir_name)
+        self.eik_pinns, self.form_trainer = run_EikonalLap2D(self.form,self.form_config,dict_config)
         self.pde = self.eik_pinns.pde

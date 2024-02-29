@@ -172,7 +172,7 @@ class ConstantForce:
         :param mu: (S) parameter
         :return: Analytical solution evaluated at (x,y)
         """
-        if isinstance(self.form,Geometry2D.Circle) or isinstance(self.form,Geometry2D.BigCircle):
+        if isinstance(self.form,Geometry2D.Circle):
             x,y=xy
             return -1./4.*((x-self.form.x0)**2+(y-self.form.y0)**2-self.form.r**2)
         else:

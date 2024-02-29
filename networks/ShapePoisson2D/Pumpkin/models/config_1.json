@@ -1,0 +1,12 @@
+{
+	"form":"Pumpkin",
+	"layers":[64, 64, 64, 64, 64, 64],
+	"activation":"sine",
+	"lr":0.01,
+	"decay":0.99,
+	"w_res":0.1,
+	"w_bc":10.0,
+	"n_epochs":10000,
+	"n_collocations":4000,
+	"n_bc_collocations":2000
+}

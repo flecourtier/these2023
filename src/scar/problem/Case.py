@@ -29,7 +29,7 @@ class Case:
 
         if isinstance(sdf_class,dict):
             sdf_class_name = sdf_class["type"]
-            assert sdf_class_name in {"SDEikonal","SDEikonalReg"}
+            assert sdf_class_name in {"SDEikonal","SDEikonalReg","SDEikonalLap"}
             assert problem_class_name == "ConstantForce"
             self.form_config = sdf_class["config"]
         else:
@@ -43,7 +43,7 @@ class Case:
         threshold = dict_config["threshold"]
 
         self.form = geom_class()
-        if sdf_class_name in {"SDEikonal","SDEikonalReg"}:
+        if sdf_class_name in {"SDEikonal","SDEikonalReg","SDEikonalLap"}:
             self.sd_function = sdf_class(self.form,self.form_config,threshold=threshold)
             form_config = "form_"+str(self.form_config)+"/"
         else:
