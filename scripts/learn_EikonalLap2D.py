@@ -39,7 +39,8 @@ def get_args():
     parser.add_argument("--decay", help="Multiplicative factor of learning rate decay.", type=float, default=0.99)
 
     parser.add_argument("--w_eik", help="Weight in the Eikonal loss.", type=float, default=100.0)
-    parser.add_argument("--w_bc", help="Weight in the Boundary loss.", type=float, default=100.0)
+    parser.add_argument("--w_dir", help="Weight in the Boundary loss.", type=float, default=100.0)
+    parser.add_argument("--w_neu", help="Weight in the Boundary loss.", type=float, default=100.0)
     parser.add_argument("--w_lap", help="Weight in the TV loss.", type=float, default=20.0)
     
     # Training arguments

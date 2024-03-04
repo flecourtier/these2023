@@ -101,7 +101,8 @@ def run_EikonalLap2D(form,num_config,dict,new_training = False,createxyzfile = F
         decay=dict["decay"],
         batch_size=dict["n_collocations"],
         w_eik=dict["w_eik"],
-        w_bc=dict["w_bc"],
+        w_dir=dict["w_dir"],
+        w_neu=dict["w_neu"],
         w_tv=dict["w_lap"],
         tv_loss_f=torch.nn.MSELoss()
 

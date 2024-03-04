@@ -1,6 +1,6 @@
 {
     "pde" : "Poisson2D",
-    "geometry" : "Bean",
+    "geometry" : "Pumpkin",
     "sdf" : {
         "type" : "SDEikonalLap",
         "config" : 1
