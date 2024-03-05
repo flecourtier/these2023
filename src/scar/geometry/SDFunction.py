@@ -117,15 +117,32 @@ class SDEikonal(domain.SignedDistance):
         self.eik_pinns, self.form_trainer = run_Eikonal2D(self.form,self.form_config,dict_config)
         self.pde = self.eik_pinns.pde
 
-    # def phi(self,pre,xy):
-    #     """Level set function for the circle domain
+    def phi(self,pre,xy):
+        """Level set function for the circle domain
 
-    #     :param x: x coordinate
-    #     :param y: y coordinate
-    #     :return: Level set function evaluated at (x,y)
-    #     """
-    #     x,y = xy
-    #     return -self.r**2+(x-self.x0)**2+(y-self.y0)**2
+        :param x: x coordinate
+        :param y: y coordinate
+        :return: Level set function evaluated at (x,y)
+        """
+        x,y = xy
+        return self.form_trainer(torch.tensor([[x,y]]),self.mu)
+    
+    def Omega_bool(self, x, y):
+        """Returns True if (x,y) is in the Omega domain
+        :param x: x coordinate
+        :param y: y coordinate
+        :return: True if (x,y) is in the Omega domain
+        """
+        xy = (x,y)
+        return self.call_Omega(xy)
+    
+    def call_Omega(self, xy):
+        """Returns True if (x,y) is in the Omega domain
+        :param pre: Preconditioner
+        :param xy: (x,y) coordinates
+        :return: True if (x,y) is in the Omega domain
+        """
+        return self.phi(None,xy)<0
     
     def sdf(self,x):
         """Level set function for the circle domain

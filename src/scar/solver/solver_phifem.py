@@ -8,6 +8,7 @@ print_time=False
 
 from scar.solver.fenics_expressions import *
 from scar.geometry import Geometry2D
+from scar.geometry.PolygonalMesh import create_domain
 
 from dolfin import *
 import dolfin as df
@@ -146,7 +147,8 @@ class PhiFemSolver:
         if isinstance(self.form_considered, Geometry2D.Circle):
             domain = mshr.Circle(Point(self.pb_considered.x0, self.pb_considered.y0), self.pb_considered.r)
         else:
-            raise Exception("Problem not implemented")
+            domain = create_domain(self.form_considered, n_bc_points=200)
+            # raise Exception("Problem not implemented")s
 
         nb_vert = self.N+1
 
@@ -167,11 +169,13 @@ class PhiFemSolver:
         return mesh, V, dx
 
     # Phi-FEM Poisson solver
-    def fem(self, i, sigma_stab=1.0):
+    def fem(self, i, sigma_stab=1.0, analytical_sol=True):
         params = self.params[i]
         f_expr = FExpr(params, degree=6, domain=self.mesh, pb_considered=self.pb_considered)
-        u_ex = UexExpr(params, degree=8, domain=self.mesh, pb_considered=self.pb_considered)
-
+        if analytical_sol:
+            u_ex = UexExpr(params, degree=8, domain=self.mesh, pb_considered=self.pb_considered)
+        else:
+            u_ex = self.pb_considered.u_ref()
         phi = PhiExpr(degree=polPhi, domain=self.mesh, sdf_considered=self.sdf_considered)
  
         start = time.time()
@@ -228,22 +232,22 @@ class PhiFemSolver:
         
         norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
 
-        project_on_Omega = True
-        if project_on_Omega:
-            sol_ = project(sol, self.V)
-            sol_Omega = project(sol_, self.V_ex)
+        # project_on_Omega = True
+        # if project_on_Omega:
+        #     sol_ = project(sol, self.V)
+        #     sol_Omega = project(sol_, self.V_ex)
 
-            u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex, pb_considered=self.pb_considered)
-            u_ex_Omega = project(u_ex_Omega, self.V)
-            u_ex_Omega = project(u_ex_Omega, self.V_ex)
+        #     u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex, pb_considered=self.pb_considered)
+        #     u_ex_Omega = project(u_ex_Omega, self.V)
+        #     u_ex_Omega = project(u_ex_Omega, self.V_ex)
             
-            norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
+        #     norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
             
-            return sol_Omega, norm_L2_Omega
+        #     return sol_Omega, norm_L2_Omega
 
         return sol,norm_L2
     
-    def corr_add(self, i, phi_tild, sigma_stab=1.0):
+    def corr_add(self, i, phi_tild, sigma_stab=1.0,analytical_sol=True):
         """To solve the Laplace Problem for one parameters with the correction by addition.
             We consider the problem : phi_tild + phi*C
 
@@ -254,7 +258,12 @@ class PhiFemSolver:
 
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
+        if analytical_sol:
+            print("analytical_sol")
+            u_ex = UexExpr(params, degree=8, domain=self.mesh, pb_considered=self.pb_considered)
+        else:
+            print("not analytical_sol")
+            u_ex = self.pb_considered.u_ref()
         phi = PhiExpr(degree=10, domain=self.mesh, sdf_considered=self.sdf_considered)
 
         f_tild = f_expr + div(grad(phi_tild))
@@ -313,17 +322,23 @@ class PhiFemSolver:
 
         norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
     
-        project_on_Omega = True
-        if project_on_Omega:
-            sol_ = project(sol, self.V)
-            sol_Omega = project(sol_, self.V_ex)
+        # project_on_Omega = True
+        # if project_on_Omega:
+        #     sol_ = project(sol, self.V)
+        #     sol_Omega = project(sol_, self.V_ex)
 
-            u_ex_Omega = UexExpr(params, degree=10, domain=self.mesh_ex, pb_considered=self.pb_considered)
-            u_ex_Omega = project(u_ex_Omega, self.V)
-            u_ex_Omega = project(u_ex_Omega, self.V_ex)
+        #     if analytical_sol:
+        #         print("analytical_sol")
+        #         u_ex_Omega = UexExpr(params, degree=8, domain=self.mesh_ex, pb_considered=self.pb_considered)
+        #     else:
+        #         print("not analytical_sol")
+        #         u_ex_Omega = self.pb_considered.u_ref()
+
+        #     u_ex_Omega = project(u_ex_Omega, self.V)
+        #     u_ex_Omega = project(u_ex_Omega, self.V_ex)
             
-            norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
+        #     norm_L2_Omega = (assemble((((u_ex_Omega - sol_Omega)) ** 2) * self.dx_ex) ** (0.5)) / (assemble((((u_ex_Omega)) ** 2) * self.dx_ex) ** (0.5))
             
-            return sol_Omega, C_tild, norm_L2_Omega
+        #     return sol_Omega, C_tild, norm_L2_Omega
 
         return sol, C_tild, norm_L2

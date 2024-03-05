@@ -8,6 +8,7 @@ print_time=False
 
 from scar.solver.fenics_expressions import *
 from scar.geometry import Geometry2D
+from scar.geometry.PolygonalMesh import create_domain
 
 from dolfin import *
 import dolfin as df
@@ -43,7 +44,8 @@ class FEMSolver():
         if isinstance(self.form_considered, Geometry2D.Circle):
             domain = mshr.Circle(Point(self.pb_considered.x0, self.pb_considered.y0), self.pb_considered.r)
         else:
-            raise Exception("Problem not implemented")
+            domain = create_domain(self.form_considered, n_bc_points=200)
+            # raise Exception("Problem not implemented")
 
         nb_vert = self.N+1
             
@@ -70,12 +72,18 @@ class FEMSolver():
 
         return mesh, V, dx
 
-    def fem(self, i):
+    def fem(self, i, analytical_sol=True):
         boundary = "on_boundary"
 
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
+        if analytical_sol:
+            u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
+        else:
+            u_ex = self.pb_considered.u_ref()
+            # V = FunctionSpace(mesh, "CG", 10)
+            # u_ex = project(u_ex, V)
+            # print("u_ex projected")
         # phi = PhiExpr(degree=10,domain=self.mesh, sdf_considered=self.sdf_considered)
         
         if cd=="homo":
@@ -119,16 +127,19 @@ class FEMSolver():
 
         return sol,norme_L2
 
-    def corr_add(self, i, phi_tild):
+    def corr_add(self, i, phi_tild,analytical_sol=True):
         boundary = "on_boundary"
 
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-
+        if analytical_sol:
+            u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
+        else:
+            u_ex = self.pb_considered.u_ref()
         f_tild = f_expr + div(grad(phi_tild))
 
-        g = Constant(0.0)
+        # g = Constant(0.0)
+        g = -phi_tild
         bc = DirichletBC(self.V, g, boundary)
 
         u = TrialFunction(self.V)

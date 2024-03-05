@@ -1,7 +1,12 @@
 import numpy as np
 import torch
+import mshr
+import dolfin as df
+from dolfin import *
+
 from scar.geometry import Geometry2D
 from scar.geometry.SDFunction import SDCircle
+from scar.geometry.PolygonalMesh import create_domain
 
 class TrigSolOnCircle:
     def __init__(self,circle:Geometry2D.Circle):
@@ -164,6 +169,13 @@ class ConstantForce:
         self.form = form
         self.parameter_domain = []
 
+        if isinstance(self.form,Geometry2D.Circle):
+            self.analytical_sol = True
+            self.x0,self.y0 = self.form.x0,self.form.y0
+            self.r = self.form.r
+        else:
+            self.analytical_sol = False
+
     def u_ex(self, pre, xy, mu):
         """Analytical solution for the Circle domain
 
@@ -172,11 +184,49 @@ class ConstantForce:
         :param mu: (S) parameter
         :return: Analytical solution evaluated at (x,y)
         """
-        if isinstance(self.form,Geometry2D.Circle):
+        if self.analytical_sol:
             x,y=xy
             return -1./4.*((x-self.form.x0)**2+(y-self.form.y0)**2-self.form.r**2)
         else:
             return torch.ones_like(xy[0])
+
+    def get_u_ref(self,mesh_form):
+        V = FunctionSpace(mesh_form, "CG", 1)
+        dx = Measure("dx", domain=mesh_form)
+
+        g = Constant("0.0")
+        bc = DirichletBC(V, g, "on_boundary")
+
+        f_expr = Constant("1.0")
+
+        u = TrialFunction(V)
+        v = TestFunction(V)
+
+        # Resolution of the variationnal problem
+        a = inner(grad(u), grad(v)) * dx
+        l = f_expr * v * dx
+
+        A = df.assemble(a)
+        L = df.assemble(l)
+        bc.apply(A, L)
+
+        sol = Function(V)
+        solve(A,sol.vector(),L)
+
+        return sol
+
+    def u_ref(self):
+        if not self.analytical_sol:
+            domain = create_domain(self.form, n_bc_points=1000)
+            mesh_form = mshr.generate_mesh(domain, 50)
+
+            # show mesh_form
+            # print là
+            plot(mesh_form)
+
+            return self.get_u_ref(mesh_form)
+        else:
+            pass
 
     def u_ex_prime(self, pre, xy, mu):
         """First derivative of the analytical solution for the Circle domain
@@ -206,7 +256,8 @@ class ConstantForce:
         :param mu: (S) parameter
         :return: Right hand side of the PDE evaluated at (x,y)
         """
-        return torch.ones_like(xy[0])
+        # return torch.ones_like(xy[0])
+        return 1.0
 
     def g(self, pre, xy, mu):
         """Boundary condition for the Circle domain

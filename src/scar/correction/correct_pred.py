@@ -32,7 +32,7 @@ def get_test_sample(solver,parameter_domain,deg_corr):
     return V_phi,X_test,mu_test
 
 # get the PINNs prediction for the set of points (fenics function)
-def get_u_PINNs(trainer,solver,deg_corr, get_error=False):
+def get_u_PINNs(trainer,solver,deg_corr,get_error=False,analytical_sol=True):
     parameter_domain = trainer.pde.parameter_domain
     V_phi,X_test,mu_test = get_test_sample(solver,parameter_domain,deg_corr)
 
@@ -43,7 +43,11 @@ def get_u_PINNs(trainer,solver,deg_corr, get_error=False):
 
     norm_L2_PINNs = None
     if get_error:
-        u_ex = UexExpr(solver.params[0], degree=deg_corr, domain=solver.mesh, pb_considered=solver.pb_considered)
+        if analytical_sol:
+            u_ex = UexExpr(solver.params[0], degree=deg_corr, domain=solver.mesh, pb_considered=solver.pb_considered)
+        else:
+            u_ex = solver.pb_considered.u_ref()
+        
         norm_L2_PINNs = (assemble((((u_ex - u_PINNs)) ** 2) * solver.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * solver.dx) ** (0.5))
 
     return u_PINNs, norm_L2_PINNs
@@ -52,10 +56,10 @@ def get_u_PINNs(trainer,solver,deg_corr, get_error=False):
 # Correct prediction #
 ###################### 
 
-def correct_pred(solver,u_PINNs,corr_type):
+def correct_pred(solver,u_PINNs,corr_type,analytical_sol=True):
     # get u_Corr
     if corr_type == "add":
-        u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs)
+        u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs,analytical_sol=analytical_sol)
     # elif corr_type == "mult":
     #     u_Corr,C,norm_L2_Corr = solver.corr_mult(0,u_PINNs)
     else:
@@ -99,6 +103,7 @@ def plot_sol(corr_dir,config,solver_type,u_ex,C,solutions,normes,project_on,proj
     plt.subplot(nb_row,3,3)
     u_FEM_proj = project(u_FEM,project_on)
     error = abs(u_ex-u_FEM_proj)
+    # error = project(error,project_on)
     c = plot(error, title="||u_ex-u_"+solver_type+"||_L2 = {:.2e}".format(norm_L2_FEM))
     plt.colorbar(c)
 
@@ -107,7 +112,8 @@ def plot_sol(corr_dir,config,solver_type,u_ex,C,solutions,normes,project_on,proj
     # PINNs
     if not project_on_Omega:
         plt.subplot(nb_row,3,count)
-        c = plot(u_ex, title="u_ex")
+        u_ex_proj = project(u_ex,project_on)
+        c = plot(u_ex_proj, title="u_ex")
         plt.colorbar(c)
 
         plt.subplot(nb_row,3,count+1)
@@ -117,6 +123,7 @@ def plot_sol(corr_dir,config,solver_type,u_ex,C,solutions,normes,project_on,proj
 
         plt.subplot(nb_row,3,count+2)
         error = abs(u_ex-project(u_PINNs,project_on))
+        # error = project(error,project_on)
         c = plot(error, title="||u_ex-u_PINNs||_L2 : {:.2e}".format(norm_L2_PINNs))
         plt.colorbar(c)
 
@@ -124,16 +131,19 @@ def plot_sol(corr_dir,config,solver_type,u_ex,C,solutions,normes,project_on,proj
 
     # Corr
     plt.subplot(nb_row,3,count)
-    c = plot(C, title="C_tild")
+    C_proj = project(C,project_on)
+    c = plot(C_proj, title="C_tild")
     plt.ylabel("Corr", fontsize=20)
     plt.colorbar(c) 
 
     plt.subplot(nb_row,3,count+1)
-    c = plot(u_Corr, title="u_Corr")
+    u_Corr_proj = project(u_Corr,project_on)
+    c = plot(u_Corr_proj, title="u_Corr")
     plt.colorbar(c)
 
     plt.subplot(nb_row,3,count+2)
     error = abs(u_ex-project(u_Corr,project_on))
+    # error = project(error,project_on)
     c = plot(error, title="||u_ex-u_Corr||_L2 : {:.2e}".format(norm_L2_Corr))
     plt.colorbar(c)
 

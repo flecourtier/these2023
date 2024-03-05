@@ -1,9 +1,9 @@
 {
     "pde" : "Poisson2D",
-    "geometry" : "Pumpkin",
+    "geometry" : "Bean",
     "sdf" : {
         "type" : "SDEikonalLap",
-        "config" : 1
+        "config" : 3
     },
     "problem" : "ConstantForce",
     "threshold" : 0.0,
