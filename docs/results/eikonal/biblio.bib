@@ -1,0 +1,13 @@
+@article{CLEMOT2023368,
+	title = {Neural skeleton: Implicit neural representation away from the surface},
+	journal = {Computers and Graphics},
+	volume = {114},
+	pages = {368-378},
+	year = {2023},
+	issn = {0097-8493},
+	doi = {https://doi.org/10.1016/j.cag.2023.06.012},
+	url = {https://www.sciencedirect.com/science/article/pii/S0097849323001085},
+	author = {Mattéo Clémot and Julie Digne},
+	keywords = {Skeleton computation, Neural implicit representation, Total variation},
+	abstract = {Implicit Neural Representations are powerful tools for representing 3D shapes. They encode an implicit field in the parameters of a Neural Network, leveraging the power of auto-differentiation for optimizing the implicit function and avoiding the need for a manually crafted function. So far, Implicit Neural Representations have been mainly designed to extract or render object surfaces and methods primarily focus on improving the implicit function near the surface. In this paper we argue that implicit fields are useful for other shape analysis tasks, in particular skeleton (medial axis) extraction. Indeed, a medial axis is defined through distances to the surface, which can be provided by an implicit neural representation, making it robust to noise and missing data. However this requires the implicit field to be reliable away from the surface, something most representations are not optimized for. To achieve this, inspired by variational image denoising techniques, we propose to add a Total Variation term, to regularize the implicit field. We further design a skeleton sampling method working directly on the GPU, and link the extracted points using a coverage formulation. We show that our resulting neural skeleton is more robust to sample defects such as noise or missing data compared to other medial axis extraction methods.}
+}

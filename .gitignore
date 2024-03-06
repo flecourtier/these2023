@@ -15,6 +15,10 @@ docs/results/results.*
 !docs/results/results.tex
 !docs/results/results.pdf
 
+docs/results/eikonal/results.*
+!docs/results/eikonal/results.tex
+!docs/results/eikonal/results.pdf
+
 docs/meetings/meetings.*
 !docs/meetings/meetings.tex
 !docs/meetings/meetings.pdf

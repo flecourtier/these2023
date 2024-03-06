@@ -1,0 +1,11 @@
+{
+	"layers":[64, 64, 64, 64, 64, 64],
+	"activation":"sine",
+	"lr":0.007,
+	"decay":0.99,
+	"w_data":0.0,
+	"w_res":1.0,
+	"n_epochs":10000,
+	"n_collocations":2000,
+	"n_data":0
+}
