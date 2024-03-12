@@ -8,7 +8,7 @@ Vous pouvez trouver les contenus supplémentaires suivants:
 
 * un xref:attachment$abstracts.pdf[résumé hebdomadaire]
 * des xref:attachment$meetings.pdf[préparations aux meetings] (avec les résultats à présenter)
-* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine
+* une xref:attachment$to_do_list.pdf[ToDo List] des travaux à effectuer chaque semaine
 
 == Résultats
 
