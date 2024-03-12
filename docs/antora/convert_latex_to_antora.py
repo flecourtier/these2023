@@ -166,7 +166,7 @@ def create_main_page_file(section_files,sections):
 
     intro = "Après un stage dans l'équipe INRIA MIMESIS dans le cadre de mon master (Master CSMI à l'Université de Strasbourg), j'ai rejoint l'équipe en tant que doctorante en octobre 2023 sous la direction d'Emmanuel Franck, Michel Duprez et Vanessa Lleras. L'objectif de ce projet est le *\"Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à la création de jumeaux chirurgicaux numériques\"*.\n\n"
 
-    attach = "Vous pouvez trouver les contenus supplémentaires suivants:\n\n* un xref:attachment$abstracts.pdf[résumé hebdomadaire]\n* des xref:attachment$meetings.pdf[préparations aux meetings] (avec les résultats à présenter)\n* une xref:attachment$to_do_list.pdf[ToDo List] des travaux à effectuer chaque semaine\n\n"
+    attach = "Vous pouvez trouver les contenus supplémentaires suivants:\n\n* un xref:attachment$abstracts.pdf[résumé hebdomadaire]\n* des xref:attachment$meetings.pdf[préparations aux meetings] (avec les résultats à présenter)\n* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine\n\n"
 
     file_write.write(intro)
 
