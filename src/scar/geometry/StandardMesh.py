@@ -99,3 +99,16 @@ def get_boundary_vertices(mesh):
     xy_boundary = xy[vertices_on_boundary]
 
     return xy_boundary
+
+def overrefined_mesh(form,trainer,dir_name,n=101,hmin=0.001,hmax=0.005):
+    parameter_domain = trainer.pde.parameter_domain
+    XY = get_XY(form.bound_box,n)
+    X_test,mu_test = create_test_sample(XY,parameter_domain)
+    M,phiP1 = get_levelset(trainer,X_test,mu_test,n)
+
+    filename = dir_name+"overrefined_mesh"
+    if not os.path.exists(filename+".xml"):
+        construct_mesh(M,phiP1,hmin,hmax,filename)
+    mesh = get_df_mesh(form.bound_box,filename)
+
+    return mesh
