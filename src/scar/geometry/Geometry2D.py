@@ -35,6 +35,7 @@ class Circle(ParametricCurves):
         self.name = self.__class__.__name__
         self.bord_a,self.bord_b = (0.,1.)
         self.bord_a2,self.bord_b2 = (0.,1.)
+        self.bound_box = [[self.bord_a,self.bord_b],[self.bord_a2,self.bord_b2]]
 
         self.x0,self.y0 = (0.5,0.5) # centre du cercle
         self.r = np.sqrt(2.)/4. # rayon du cercle
@@ -56,6 +57,7 @@ class Astroid(ParametricCurves):
         self.name = self.__class__.__name__
         self.bord_a,self.bord_b = (-1,1)
         self.bord_a2,self.bord_b2 = (-1,1)
+        self.bound_box = [[self.bord_a,self.bord_b],[self.bord_a2,self.bord_b2]]
 
     def c(self,t): # t \in [0,1]
         x = np.cos(2*np.pi*t)**3
@@ -74,6 +76,7 @@ class SmoothAstroid(ParametricCurves):
         self.name = self.__class__.__name__
         self.bord_a,self.bord_b = (-1,1)
         self.bord_a2,self.bord_b2 = (-1,1)
+        self.bound_box = [[self.bord_a,self.bord_b],[self.bord_a2,self.bord_b2]]
         self.r = 0.4
 
     def c(self,t): # t \in [0,1]
@@ -93,6 +96,7 @@ class SmoothCardioid(ParametricCurves):
         self.name = self.__class__.__name__
         self.bord_a,self.bord_b = (-1,1)
         self.bord_a2,self.bord_b2 = (-1,1)
+        self.bound_box = [[self.bord_a,self.bord_b],[self.bord_a2,self.bord_b2]]
         self.r = 0.3
 
     def c(self,t):
@@ -112,6 +116,7 @@ class Pumpkin(ParametricCurves):
         self.name = self.__class__.__name__
         self.bord_a,self.bord_b = (-1.5,1.5)
         self.bord_a2,self.bord_b2 = (-1.5,1.5)
+        self.bound_box = [[self.bord_a,self.bord_b],[self.bord_a2,self.bord_b2]]
 
     def c(self,t):
         x = np.cos(2*np.pi*t)+0.3*np.cos(6*np.pi*t)+0.1*np.cos(10*np.pi*t)
@@ -130,6 +135,8 @@ class Bean(ParametricCurves):
         self.name = self.__class__.__name__
         self.bord_a,self.bord_b = (-0.5,1.5)
         self.bord_a2,self.bord_b2 = (-1.5,0.5)
+        self.bound_box = [[self.bord_a,self.bord_b],[self.bord_a2,self.bord_b2]]
+        
         self.a = a
         self.b = b
         self.theta = -np.pi/2
