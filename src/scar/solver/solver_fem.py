@@ -8,13 +8,15 @@ print_time=False
 
 from scar.solver.fenics_expressions import *
 from scar.geometry import Geometry2D
-from scar.geometry.PolygonalMesh import create_domain
+from scar.geometry.StandardMesh import *
+# from scar.geometry.PolygonalMesh import create_domain
 
 from dolfin import *
 import dolfin as df
 import mshr
 import time
 import numpy as np
+from pathlib import Path
 
 parameters["ghost_mode"] = "shared_facet"
 parameters["form_compiler"]["cpp_optimize"] = True
@@ -22,6 +24,8 @@ parameters["form_compiler"]["optimize"] = True
 parameters["allow_extrapolation"] = True
 parameters["form_compiler"]["representation"] = "uflacs"
 # parameters["form_compiler"]["quadrature_degree"] = 10
+
+current = Path(__file__).parent.parent.parent.parent
 
 #######
 # FEM #
@@ -39,53 +43,88 @@ class FEMSolver():
         self.times_corr_add = {}
         self.mesh,self.V,self.dx = self.__create_FEM_domain()
 
-    def __create_FEM_domain(self):
-        # check if pb_considered is instance of Circle class
-        if isinstance(self.form_considered, Geometry2D.Circle):
-            domain = mshr.Circle(Point(self.pb_considered.x0, self.pb_considered.y0), self.pb_considered.r)
-        else:
-            domain = create_domain(self.form_considered, n_bc_points=200)
-            # raise Exception("Problem not implemented")
+    # def __create_FEM_domain(self):
+    #     # check if pb_considered is instance of Circle class
+    #     if isinstance(self.form_considered, Geometry2D.Circle):
+    #         domain = mshr.Circle(Point(self.pb_considered.x0, self.pb_considered.y0), self.pb_considered.r)
+    #     else:
+    #         domain = create_domain(self.form_considered, n_bc_points=200)
+    #         # raise Exception("Problem not implemented")
 
-        nb_vert = self.N+1
+    #     nb_vert = self.N+1
             
+    #     domain_O = np.array(self.sdf_considered.bound_box)
+    #     mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), nb_vert - 1, nb_vert - 1)
+    #     h_macro = mesh_macro.hmax()
+    #     H = int(nb_vert/3)
+    #     mesh = mshr.generate_mesh(domain,H)
+    #     h = mesh.hmax()
+    #     while h > h_macro:
+    #         H += 1
+    #         start = time.time()
+    #         mesh = mshr.generate_mesh(domain,H)
+    #         end = time.time()
+    #         h = mesh.hmax()
+
+    #     if print_time:
+    #         print("Time to generate mesh: ", end-start)
+    #     self.times_fem["mesh"] = end-start
+    #     self.times_corr_add["mesh"] = end-start
+        
+    #     V = FunctionSpace(mesh, "CG", 1)
+    #     dx = Measure("dx", domain=mesh)
+
+    #     return mesh, V, dx
+
+    def __create_FEM_domain(self):
+        nb_vert = self.N+1
+                
         domain_O = np.array(self.sdf_considered.bound_box)
         mesh_macro = RectangleMesh(Point(domain_O[0,0], domain_O[1,0]), Point(domain_O[0,1], domain_O[1,1]), nb_vert - 1, nb_vert - 1)
         h_macro = mesh_macro.hmax()
-        H = int(nb_vert/3)
-        mesh = mshr.generate_mesh(domain,H)
-        h = mesh.hmax()
-        while h > h_macro:
-            H += 1
-            start = time.time()
-            mesh = mshr.generate_mesh(domain,H)
-            end = time.time()
-            h = mesh.hmax()
 
-        if print_time:
-            print("Time to generate mesh: ", end-start)
-        self.times_fem["mesh"] = end-start
-        self.times_corr_add["mesh"] = end-start
-        
+        # check if pb_considered is instance of Circle class
+        if isinstance(self.form_considered, Geometry2D.Circle):
+            domain = mshr.Circle(Point(self.pb_considered.x0, self.pb_considered.y0), self.pb_considered.r)
+            
+            H = int(nb_vert/3)
+            mesh = mshr.generate_mesh(domain,H)
+            h = mesh.hmax()
+            while h > h_macro:
+                H += 1
+                start = time.time()
+                mesh = mshr.generate_mesh(domain,H)
+                end = time.time()
+                h = mesh.hmax()
+
+            if print_time:
+                print("Time to generate mesh: ", end-start)
+            self.times_fem["mesh"] = end-start
+            self.times_corr_add["mesh"] = end-start
+        else:
+            hmin = h_macro-0.001
+            hmax = h_macro
+            form_trainer = self.sdf_considered.form_trainer
+            form_dir_name = current / "networks" / "EikonalLap2D" / self.form_considered.__class__.__name__ / "meshes"
+            mesh = standard_mesh(self.form_considered,form_trainer,str(form_dir_name)+"/",hmin,hmax,n=101)
+
         V = FunctionSpace(mesh, "CG", 1)
         dx = Measure("dx", domain=mesh)
 
         return mesh, V, dx
+    
 
-    def fem(self, i, analytical_sol=True):
+    def fem(self, i, get_error=True, analytical_sol=True):
         boundary = "on_boundary"
 
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        if analytical_sol:
-            u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        else:
-            u_ex = self.pb_considered.u_ref()
-            # V = FunctionSpace(mesh, "CG", 10)
-            # u_ex = project(u_ex, V)
-            # print("u_ex projected")
-        # phi = PhiExpr(degree=10,domain=self.mesh, sdf_considered=self.sdf_considered)
-        
+        if get_error:
+            if analytical_sol:
+                u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
+            else:
+                u_ex = self.pb_considered.u_ref()
+            
         if cd=="homo":
             g = Constant("0.0")
         # else:
@@ -123,19 +162,22 @@ class FEMSolver():
             print("Time to solve the system :",end-start)
         self.times_fem["solve"] = end-start
 
-        norme_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+        norme_L2 = None
+        if get_error:
+            norme_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
 
         return sol,norme_L2
 
-    def corr_add(self, i, phi_tild,analytical_sol=True):
+    def corr_add(self, i, phi_tild, get_error=True, analytical_sol=True):
         boundary = "on_boundary"
 
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        if analytical_sol:
-            u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        else:
-            u_ex = self.pb_considered.u_ref()
+        if get_error:
+            if analytical_sol:
+                u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
+            else:
+                u_ex = self.pb_considered.u_ref()
         f_tild = f_expr + div(grad(phi_tild))
 
         # g = Constant(0.0)
@@ -172,6 +214,8 @@ class FEMSolver():
 
         sol = C_tild + phi_tild
 
-        norme_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+        norme_L2 = None
+        if get_error:
+            norme_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
         
         return sol,C_tild,norme_L2

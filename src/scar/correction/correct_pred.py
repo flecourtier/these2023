@@ -56,10 +56,10 @@ def get_u_PINNs(trainer,solver,deg_corr,get_error=False,analytical_sol=True):
 # Correct prediction #
 ###################### 
 
-def correct_pred(solver,u_PINNs,corr_type,analytical_sol=True):
+def correct_pred(solver,u_PINNs,corr_type,get_error=True,analytical_sol=True):
     # get u_Corr
     if corr_type == "add":
-        u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs,analytical_sol=analytical_sol)
+        u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs,get_error=get_error,analytical_sol=analytical_sol)
     # elif corr_type == "mult":
     #     u_Corr,C,norm_L2_Corr = solver.corr_mult(0,u_PINNs)
     else:
@@ -102,7 +102,7 @@ def plot_sol(corr_dir,config,solver_type,u_ex,C,solutions,normes,project_on,proj
 
     plt.subplot(nb_row,3,3)
     u_FEM_proj = project(u_FEM,project_on)
-    error = abs(u_ex-u_FEM_proj)
+    error = u_ex-u_FEM_proj
     # error = project(error,project_on)
     c = plot(error, title="||u_ex-u_"+solver_type+"||_L2 = {:.2e}".format(norm_L2_FEM))
     plt.colorbar(c)
@@ -122,7 +122,7 @@ def plot_sol(corr_dir,config,solver_type,u_ex,C,solutions,normes,project_on,proj
         plt.colorbar(c)
 
         plt.subplot(nb_row,3,count+2)
-        error = abs(u_ex-project(u_PINNs,project_on))
+        error = u_ex-project(u_PINNs,project_on)
         # error = project(error,project_on)
         c = plot(error, title="||u_ex-u_PINNs||_L2 : {:.2e}".format(norm_L2_PINNs))
         plt.colorbar(c)
@@ -142,7 +142,7 @@ def plot_sol(corr_dir,config,solver_type,u_ex,C,solutions,normes,project_on,proj
     plt.colorbar(c)
 
     plt.subplot(nb_row,3,count+2)
-    error = abs(u_ex-project(u_Corr,project_on))
+    error = u_ex-project(u_Corr,project_on)
     # error = project(error,project_on)
     c = plot(error, title="||u_ex-u_Corr||_L2 : {:.2e}".format(norm_L2_Corr))
     plt.colorbar(c)

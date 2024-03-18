@@ -6,7 +6,8 @@ from dolfin import *
 
 from scar.geometry import Geometry2D
 from scar.geometry.SDFunction import SDCircle
-from scar.geometry.PolygonalMesh import create_domain
+from scar.geometry.StandardMesh import overrefined_mesh
+# from scar.geometry.PolygonalMesh import create_domain
 
 class TrigSolOnCircle:
     def __init__(self,circle:Geometry2D.Circle):
@@ -215,16 +216,22 @@ class ConstantForce:
 
         return sol
 
-    def u_ref(self):
+    # def u_ref(self):
+    #     if not self.analytical_sol:
+    #         domain = create_domain(self.form, n_bc_points=1000)
+    #         mesh_form = mshr.generate_mesh(domain, 50)
+
+    #         return self.get_u_ref(mesh_form)
+    #     else:
+    #         pass
+
+    def u_ref(self,trainer,mesh_dir):
         if not self.analytical_sol:
-            domain = create_domain(self.form, n_bc_points=1000)
-            mesh_form = mshr.generate_mesh(domain, 50)
+            mesh_ex = overrefined_mesh(self.form,trainer,mesh_dir)
+            V_ex = FunctionSpace(mesh_ex, "CG", 1)
+            u_ref = self.get_u_ref(mesh_ex)
 
-            # show mesh_form
-            # print là
-            plot(mesh_form)
-
-            return self.get_u_ref(mesh_form)
+            return mesh_ex,V_ex,u_ref
         else:
             pass
 

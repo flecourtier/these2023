@@ -169,13 +169,14 @@ class PhiFemSolver:
         return mesh, V, dx
 
     # Phi-FEM Poisson solver
-    def fem(self, i, sigma_stab=1.0, analytical_sol=True):
+    def fem(self, i, sigma_stab=1.0, get_error=True, analytical_sol=True):
         params = self.params[i]
         f_expr = FExpr(params, degree=6, domain=self.mesh, pb_considered=self.pb_considered)
-        if analytical_sol:
-            u_ex = UexExpr(params, degree=8, domain=self.mesh, pb_considered=self.pb_considered)
-        else:
-            u_ex = self.pb_considered.u_ref()
+        if get_error:
+            if analytical_sol:
+                u_ex = UexExpr(params, degree=8, domain=self.mesh, pb_considered=self.pb_considered)
+            else:
+                u_ex = self.pb_considered.u_ref()
         phi = PhiExpr(degree=polPhi, domain=self.mesh, sdf_considered=self.sdf_considered)
  
         start = time.time()
@@ -230,7 +231,9 @@ class PhiFemSolver:
             print("Time to solve the system :",end-start)
         self.times_fem["solve"] = end-start
         
-        norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+        norm_L2 = None
+        if get_error:
+            norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
 
         # project_on_Omega = True
         # if project_on_Omega:
@@ -247,7 +250,7 @@ class PhiFemSolver:
 
         return sol,norm_L2
     
-    def corr_add(self, i, phi_tild, sigma_stab=1.0,analytical_sol=True):
+    def corr_add(self, i, phi_tild, sigma_stab=1.0,get_error=True,analytical_sol=True):
         """To solve the Laplace Problem for one parameters with the correction by addition.
             We consider the problem : phi_tild + phi*C
 
@@ -258,12 +261,13 @@ class PhiFemSolver:
 
         params = self.params[i]
         f_expr = FExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        if analytical_sol:
-            print("analytical_sol")
-            u_ex = UexExpr(params, degree=8, domain=self.mesh, pb_considered=self.pb_considered)
-        else:
-            print("not analytical_sol")
-            u_ex = self.pb_considered.u_ref()
+        if get_error:
+            if analytical_sol:
+                print("analytical_sol")
+                u_ex = UexExpr(params, degree=8, domain=self.mesh, pb_considered=self.pb_considered)
+            else:
+                print("not analytical_sol")
+                u_ex = self.pb_considered.u_ref()
         phi = PhiExpr(degree=10, domain=self.mesh, sdf_considered=self.sdf_considered)
 
         f_tild = f_expr + div(grad(phi_tild))
@@ -320,7 +324,9 @@ class PhiFemSolver:
             print("Time to solve the system :",end-start)
         self.times_corr_add["solve"] = end-start
 
-        norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
+        norm_L2 = None
+        if get_error:
+            norm_L2 = (assemble((((u_ex - sol)) ** 2) * self.dx) ** (0.5)) / (assemble((((u_ex)) ** 2) * self.dx) ** (0.5))
     
         # project_on_Omega = True
         # if project_on_Omega:
