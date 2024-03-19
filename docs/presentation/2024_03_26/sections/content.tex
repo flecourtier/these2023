@@ -1,0 +1,100 @@
+\begin{frame}{Problem considered}
+    \textbf{Poisson problem with homogeneous Dirichlet conditions :} \\
+    Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
+    \begin{equation*}
+    	\left\{\begin{aligned}
+    		&-\Delta u(X) = f \quad \text{in } \Omega, \\
+    		&u(X) = g \quad \text{on } \partial \Omega
+    	\end{aligned}\right. \label{edp}
+    \end{equation*}
+	with $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary.
+	
+	\textbf{Standard PINNs :} We are looking for $\theta$ such that
+	\begin{equation*}
+		\theta_u = \argmin_{\theta} w_{r}\; J_{r}(\theta)+w_{bc}\; J_{bc}(\theta)
+	\end{equation*}
+	where $w_{r}$ and $w_{bc}$ are the respective weights associated with
+	\begin{equation*}
+		J_{r} = \int_\Omega (\Delta u+1)^2 \; \text{ and } \; J_{bc} = \int_{\partial\Omega} u^2.
+	\end{equation*}	
+	
+	\footnotesize
+	\textit{Remark :} In practice, we use a Monte-Carlo method to discretize the cost function by random process.
+\end{frame}
+
+\begin{frame}{Simple geometry}
+	\textbf{Claim on PINNs :} \textcolor{orange}{No mesh, so easy to go on complex geometry !}
+	
+	\centering
+	\pgfimage[width=0.8\linewidth]{images/simple_geom/diapo.jpg}
+\end{frame}
+
+\begin{frame}{Complex geometry}
+	\textbf{In practice :} Not so easy ! We need to find \textcolor{orange}{how to sample in the geometry}.
+	
+	\begin{center}
+		\begin{tabular}{c|c}
+			\textbf{1st approach :} \textcolor{orange}{Mapping} & \textbf{2nd approach :} \textcolor{orange}{LevelSet function} \\
+			\hline
+			\begin{minipage}{0.48\linewidth}
+				\textbf{Idea :} \\
+				\ding{217} $\Omega_0$ a simple domain (as circle) \\
+				\ding{217} $\Omega$ a target domain \\
+				\ding{217} A mapping from $\Omega_0$ to $\Omega$
+				$$\Omega=\phi(\Omega_0)$$
+				
+				\centering
+				\pgfimage[width=0.8\linewidth]{images/complex_geom/mapping.jpg}
+			\end{minipage} & \begin{minipage}{0.48\linewidth}
+				\centering
+				\pgfimage[width=0.6\linewidth]{images/complex_geom/levelset.png}
+				
+	%			\flushleft	
+				\textbf{Advantages :} \\
+				\ding{217} Sample is easy in this case. \\
+				\ding{217} Allow to impose in hard the BC :
+				\begin{equation*}
+					u_\theta(X)=\phi(X)w_\theta(X)+g(X)
+				\end{equation*}
+				
+				\textbf{Natural LevelSet :} \\
+				Signed Distance Function (SDF)
+			\end{minipage}
+		\end{tabular}
+		
+	\end{center}
+\end{frame}
+
+\begin{frame}{LevelSet Approach}
+	\textbf{Problem :} \\
+	SDF is a $\mathcal{C}^0$ function $\Rightarrow$ its derivatives explodes $\Rightarrow$ We \textcolor{orange}{need a regular levelset}
+	
+	\textbf{How construct smooth SDF ?}
+	\begin{itemize}[\ding{217}]
+		\item \textbf{1st solution :} \textcolor{orange}{Approximation theory} \hl{ADD REFERENCE !!}
+		
+		$\Delta u$ can be singular at the boundary. Sampling at $\epsilon$ to it solve the problem.
+		
+		\item \textbf{2nd solution :} \textcolor{orange}{Learn the levelset.} How make that ? with a \textcolor{orange}{PINNs}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Approximation theory}
+	TO COMPLETE !
+\end{frame}
+
+\begin{frame}{Learn LevelSet \rom{1}}
+	TO COMPLETE !
+\end{frame}
+
+\begin{frame}{Learn LevelSet \rom{1}}
+	TO COMPLETE !
+\end{frame}
+
+\begin{frame}{Learn LevelSet \rom{2}}
+	TO COMPLETE !
+\end{frame}
+
+\begin{frame}{Learn LevelSet \rom{2}}
+	TO COMPLETE !
+\end{frame}
