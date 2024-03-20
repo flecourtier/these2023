@@ -1,12 +1,21 @@
 \begin{frame}{Problem considered}
-    \textbf{Poisson problem with homogeneous Dirichlet conditions :} \\
-    Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
-    \begin{equation*}
-    	\left\{\begin{aligned}
-    		&-\Delta u(X) = f \quad \text{in } \Omega, \\
-    		&u(X) = g \quad \text{on } \partial \Omega
-    	\end{aligned}\right. \label{edp}
-    \end{equation*}
+	\vspace{5pt}
+    \begin{minipage}{0.7\linewidth}
+    	\textbf{Poisson problem with homogeneous Dirichlet conditions :} \\
+    	Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
+    	\begin{equation*}
+    		\left\{\begin{aligned}
+    			&-\Delta u(X) = f \quad \text{in } \Omega, \\
+    			&u(X) = g \quad \text{on } \partial \Omega
+    		\end{aligned}\right. \label{edp}
+    	\end{equation*}
+    \end{minipage}
+	\begin{minipage}{0.26\linewidth}
+		\vspace{-20pt}
+		\pgfimage[width=\linewidth]{images/geometries.png}
+	\end{minipage}
+	
+
 	with $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary.
 	
 	\textbf{Standard PINNs :} We are looking for $\theta$ such that
@@ -27,72 +36,175 @@
 	
 	\centering
 	\pgfimage[width=0.8\linewidth]{images/simple_geom/diapo.jpg}
+	
+	\textbf{In practice :} Not so easy ! We need to find \textcolor{orange}{how to sample in the geometry}.
 \end{frame}
 
 \begin{frame}{Complex geometry}
-	\textbf{In practice :} Not so easy ! We need to find \textcolor{orange}{how to sample in the geometry}.
-	
-	\begin{center}
-		\begin{tabular}{c|c}
-			\textbf{1st approach :} \textcolor{orange}{Mapping} & \textbf{2nd approach :} \textcolor{orange}{LevelSet function} \\
-			\hline
-			\begin{minipage}{0.48\linewidth}
-				\textbf{Idea :} \\
-				\ding{217} $\Omega_0$ a simple domain (as circle) \\
-				\ding{217} $\Omega$ a target domain \\
-				\ding{217} A mapping from $\Omega_0$ to $\Omega$
-				$$\Omega=\phi(\Omega_0)$$
-				
-				\centering
-				\pgfimage[width=0.8\linewidth]{images/complex_geom/mapping.jpg}
-			\end{minipage} & \begin{minipage}{0.48\linewidth}
-				\centering
+	\begin{tabular}{c|c}
+		\textbf{1st approach :} \textcolor{orange}{Mapping} & \textbf{2nd approach :} \textcolor{orange}{LevelSet function} \\
+		\hline
+		\begin{minipage}{0.44\linewidth}
+			\textbf{Idea :} \\
+			\ding{217} $\Omega_0$ a simple domain (as circle) \\
+			\ding{217} $\Omega$ a target domain \\
+			\ding{217} A mapping from $\Omega_0$ to $\Omega$ :
+			$$\Omega=\phi(\Omega_0)$$
+			
+			\centering
+			\pgfimage[width=0.95\linewidth]{images/complex_geom/mapping.jpg}
+		\end{minipage} & \begin{minipage}{0.52\linewidth}
+			\vspace{4pt}
+			\begin{center}
 				\pgfimage[width=0.6\linewidth]{images/complex_geom/levelset.png}
-				
-	%			\flushleft	
-				\textbf{Advantages :} \\
-				\ding{217} Sample is easy in this case. \\
-				\ding{217} Allow to impose in hard the BC :
-				\begin{equation*}
-					u_\theta(X)=\phi(X)w_\theta(X)+g(X)
-				\end{equation*}
-				
-				\textbf{Natural LevelSet :} \\
-				Signed Distance Function (SDF)
-			\end{minipage}
-		\end{tabular}
-		
-	\end{center}
+			\end{center}
+			\vspace{-6pt}
+			\textbf{Advantages :} \\
+			\ding{217} Sample is easy in this case. \\
+			\ding{217} Allow to impose in hard the BC :
+			\begin{equation*}
+				u_\theta(X)=\phi(X)w_\theta(X)+g(X)
+			\end{equation*}
+			
+			\textbf{Natural LevelSet :} \\
+			Signed Distance Function (SDF)
+			
+			\textbf{Problem :} SDF is a $\mathcal{C}^0$ function  \\
+			$\Rightarrow$ its derivatives explodes \\
+			$\Rightarrow$ We \textcolor{orange}{need a regular levelset}
+		\end{minipage}
+	\end{tabular}
 \end{frame}
 
-\begin{frame}{LevelSet Approach}
-	\textbf{Problem :} \\
-	SDF is a $\mathcal{C}^0$ function $\Rightarrow$ its derivatives explodes $\Rightarrow$ We \textcolor{orange}{need a regular levelset}
-	
-	\textbf{How construct smooth SDF ?}
-	\begin{itemize}[\ding{217}]
-		\item \textbf{1st solution :} \textcolor{orange}{Approximation theory} \hl{ADD REFERENCE !!}
+\begin{frame}[allowframebreaks]{Construct smooth SDF}
+		\textbf{1st solution :} \textcolor{orange}{Approximation theory} \hl{REFERENCE !!}
 		
 		$\Delta u$ can be singular at the boundary. Sampling at $\epsilon$ to it solve the problem.
 		
-		\item \textbf{2nd solution :} \textcolor{orange}{Learn the levelset.} How make that ? with a \textcolor{orange}{PINNs}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Approximation theory}
-	TO COMPLETE !
+		\begin{tabular}{c|c}
+			\textbf{Polygonal domain} \refappendix{frame:PolygonalDomain} & \textbf{Curved domain} \refappendix{frame:CurvedDomain} \\
+			\hline
+			\begin{minipage}{0.48\linewidth}
+				\flushright
+				\pgfimage[width=0.8\linewidth]{images/approximation/polygone1.png} \\
+				\flushleft
+				\pgfimage[width=0.8\linewidth]{images/approximation/polygone2.png}
+			\end{minipage} & \begin{minipage}{0.48\linewidth}
+				\textbf{Minus :} Use of a parametric curve $c(t)$. \\
+				\centering
+				\pgfimage[width=0.8\linewidth]{images/approximation/bean.png}
+				
+				\hl{A COMPLETER !}
+			\end{minipage}
+		\end{tabular}
+		
+		\newpage
+		
+		\textbf{2nd solution :} \textcolor{orange}{Learn the levelset.} \\
+		How make that ? with a \textcolor{orange}{PINNs}. \hl{REFERENCE !!}
+	
+		\begin{tcolorbox}[
+			colback=other, % Couleur de fond de la boîte
+			colframe=other, % Couleur du cadre de la boîte
+			arc=2mm, % Rayon de l'arrondi des coins
+			boxrule=0.5pt, % Épaisseur du cadre de la boîte
+			breakable, enhanced jigsaw,
+			width=\linewidth,
+			opacityback=0.1
+			]
+			
+			If we have a boundary domain $\Gamma$, the SDF is solution to the Eikonal equation:
+			
+			\begin{minipage}{\linewidth}
+				\centering
+				$\left\{\begin{aligned}
+					&||\nabla\phi(X)||=1, \; X\in\mathcal{O} \\
+					&\phi(X)=0, \; X\in\Gamma \\
+					&\nabla\phi(X)=n, \; X\in\Gamma
+				\end{aligned}\right.$
+			\end{minipage}
+		
+			with $\mathcal{O}$ a box which contains $\Omega$ completely and $n$ the exterior normal to $\Gamma$.
+		\end{tcolorbox}
+		
+		\textbf{Advantage :} \textcolor{orange}{No need for parametric curves.}
+		
+		\begin{minipage}{0.48\linewidth}
+			\centering
+			\pgfimage[width=0.6\linewidth]{images/learn_levelset/points_normals.png}
+		\end{minipage} 
+		\begin{minipage}{0.48\linewidth}
+			\ding{217} set of boundary points \\
+			\ding{217} exterior normals at $\Gamma$ \\
+			(evaluated at this points)
+		\end{minipage}
 \end{frame}
 
 \begin{frame}{Learn LevelSet \rom{1}}
-	TO COMPLETE !
+	\begin{minipage}{0.78\linewidth}
+		\vspace{5pt}
+		\textbf{Objective of the paper :} \\
+		Learn topological Skeleton (by learning SDF) \quad \refappendix{frame:NeuralSkeleton}
+	\end{minipage} \begin{minipage}{0.18\linewidth}	
+		\vspace{-30pt}
+		\hspace{70pt}\pgfimage[width=0.8\linewidth]{images/learn_levelset/skeleton_sans_background.png}
+	\end{minipage}
+	
+	\ding{217} Skeleton correspond exactly to the gradient singularity \\
+	\ding{217} Adding the following term in the loss \\
+	\begin{minipage}{0.38\linewidth}
+		\centering
+		$\int_\mathcal{O} ||\nabla||\nabla\phi(X)||(p)||dp$
+		\flushright
+		(Total Variation Regularization)
+	\end{minipage} \quad \begin{minipage}{0.58\linewidth}	
+		\vspace{-15pt}
+		\flushright
+		\pgfimage[width=0.85\linewidth]{images/learn_levelset/levelset.jpg}
+	\end{minipage}
+
+	\vspace{8pt}
+
+	\textbf{1st test :} Eikonal equation with TV Regularization \hl{REFERENCE !!} 
+	
+	\begin{minipage}{0.26\linewidth}
+		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/levelset_loss.png}
+	\end{minipage} \quad \begin{minipage}{0.70\linewidth}	
+		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/levelset.jpg}
+	\end{minipage}
 \end{frame}
 
 \begin{frame}{Learn LevelSet \rom{1}}
-	TO COMPLETE !
+	Classical PINNs :
+	
+	\begin{minipage}{0.26\linewidth}
+		\pgfimage[width=0.6\linewidth]{images/learn_levelset/tv_reg/sampling.png}
+	\end{minipage} \quad \begin{minipage}{0.70\linewidth}	
+		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/poisson.jpg}
+	\end{minipage}
+	
+	Derivatives $\Rightarrow$ we can't impose in hard boundary conditions
+	
+	\begin{center}
+		\pgfimage[width=0.8\linewidth]{images/learn_levelset/tv_reg/levelset_derivatives.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Learn LevelSet \rom{2}}
+	\textbf{2nd test :} We replace the tv term by a penalization on the laplacian of the levelset
+	\begin{equation*}
+		\int_{\mathcal{O}} |\nabla \phi|^2
+	\end{equation*}
+
 	TO COMPLETE !
+
+%	\begin{center}
+%		\pgfimage[width=0.8\linewidth]{images/learn_levelset/lap_reg/levelset.jpg}
+%	\end{center}
+%
+%	\begin{center}
+%		\pgfimage[width=0.8\linewidth]{images/learn_levelset/lap_reg/levelset_derivatives.png}
+%	\end{center}
 \end{frame}
 
 \begin{frame}{Learn LevelSet \rom{2}}
