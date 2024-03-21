@@ -1,12 +1,13 @@
 \begin{frame}{Problem considered}
 	\vspace{5pt}
     \begin{minipage}{0.7\linewidth}
-    	\textbf{Poisson problem with homogeneous Dirichlet conditions :} \\
+    	\textbf{Poisson problem with Dirichlet conditions :} \\
     	Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
+    	\vspace{-10pt}
     	\begin{equation*}
     		\left\{\begin{aligned}
-    			&-\Delta u(X) = f \quad \text{in } \Omega, \\
-    			&u(X) = g \quad \text{on } \partial \Omega
+    			&-\Delta u(X) = f(X) \quad \text{in } \Omega, \\
+    			&u(X) = g(X) \quad \text{on } \partial \Omega
     		\end{aligned}\right. \label{edp}
     	\end{equation*}
     \end{minipage}
@@ -15,16 +16,19 @@
 		\pgfimage[width=\linewidth]{images/geometries.png}
 	\end{minipage}
 	
-
-	with $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary.
+	with $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary. 
 	
-	\textbf{Standard PINNs :} We are looking for $\theta$ such that
+	For the following examples, we will consider $f(X)=1$ and $g(X)=0$.
+	
+	\vspace{5pt}
+	
+	\textbf{Standard PINNs :} We are looking for $\theta_u$ such that
 	\begin{equation*}
 		\theta_u = \argmin_{\theta} w_{r}\; J_{r}(\theta)+w_{bc}\; J_{bc}(\theta)
 	\end{equation*}
 	where $w_{r}$ and $w_{bc}$ are the respective weights associated with
 	\begin{equation*}
-		J_{r} = \int_\Omega (\Delta u+1)^2 \; \text{ and } \; J_{bc} = \int_{\partial\Omega} u^2.
+		J_{r} = \int_\Omega (\Delta u+f)^2 \; \text{ and } \; J_{bc} = \int_{\partial\Omega} (u-g)^2.
 	\end{equation*}	
 	
 	\footnotesize
@@ -37,6 +41,7 @@
 	\centering
 	\pgfimage[width=0.8\linewidth]{images/simple_geom/diapo.jpg}
 	
+	\flushleft
 	\textbf{In practice :} Not so easy ! We need to find \textcolor{orange}{how to sample in the geometry}.
 \end{frame}
 
@@ -62,6 +67,7 @@
 			\textbf{Advantages :} \\
 			\ding{217} Sample is easy in this case. \\
 			\ding{217} Allow to impose in hard the BC :
+			\vspace{-10pt}
 			\begin{equation*}
 				u_\theta(X)=\phi(X)w_\theta(X)+g(X)
 			\end{equation*}
@@ -69,17 +75,18 @@
 			\textbf{Natural LevelSet :} \\
 			Signed Distance Function (SDF)
 			
+			\vspace{5pt}
 			\textbf{Problem :} SDF is a $\mathcal{C}^0$ function  \\
 			$\Rightarrow$ its derivatives explodes \\
-			$\Rightarrow$ We \textcolor{orange}{need a regular levelset}
+			$\Rightarrow$ we \textcolor{orange}{need a regular levelset}
 		\end{minipage}
 	\end{tabular}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Construct smooth SDF}
-		\textbf{1st solution :} \textcolor{orange}{Approximation theory} \hl{REFERENCE !!}
+		\textbf{1st solution :} \textcolor{orange}{Approximation theory} \cite{sukumar_exact_2022}
 		
-		$\Delta u$ can be singular at the boundary. Sampling at $\epsilon$ to it solve the problem.
+		$\Delta\phi$ can be singular at the boundary. Sampling at $\epsilon$ to it solve the problem.
 		
 		\begin{tabular}{c|c}
 			\textbf{Polygonal domain} \refappendix{frame:PolygonalDomain} & \textbf{Curved domain} \refappendix{frame:CurvedDomain} \\
@@ -100,8 +107,8 @@
 		
 		\newpage
 		
-		\textbf{2nd solution :} \textcolor{orange}{Learn the levelset.} \\
-		How make that ? with a \textcolor{orange}{PINNs}. \hl{REFERENCE !!}
+		\textbf{2nd solution :} \textcolor{orange}{Learn the levelset.} \cite{clemot_neural_2023} \\
+		\ding{217} How make that ? with a \textcolor{orange}{PINNs}.
 	
 		\begin{tcolorbox}[
 			colback=other, % Couleur de fond de la boîte
@@ -154,59 +161,97 @@
 	\ding{217} Adding the following term in the loss \\
 	\begin{minipage}{0.38\linewidth}
 		\centering
-		$\int_\mathcal{O} ||\nabla||\nabla\phi(X)||(p)||dp$
+		$\int_\mathcal{O} ||\nabla||\nabla\phi||(p)||dp$
 		\flushright
 		(Total Variation Regularization)
 	\end{minipage} \quad \begin{minipage}{0.58\linewidth}	
-		\vspace{-15pt}
+		\vspace{-10pt}
 		\flushright
 		\pgfimage[width=0.85\linewidth]{images/learn_levelset/levelset.jpg}
 	\end{minipage}
 
 	\vspace{8pt}
 
-	\textbf{1st test :} Eikonal equation with TV Regularization \hl{REFERENCE !!} 
-	
-	\begin{minipage}{0.26\linewidth}
-		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/levelset_loss.png}
-	\end{minipage} \quad \begin{minipage}{0.70\linewidth}	
-		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/levelset.jpg}
+%	\textbf{1st test :} Eikonal equation with TV Regularization \cite{clemot_neural_2023}
+%	
+%	\begin{minipage}{0.26\linewidth}
+%		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/levelset_loss.jpg}
+%	\end{minipage} \quad \begin{minipage}{0.70\linewidth}	
+%		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/levelset.jpg}
+%	\end{minipage}
+
+	\begin{minipage}{0.65\linewidth}
+		\textbf{1st test :} Eikonal equation with TV Regularization \cite{clemot_neural_2023}
+		
+		\vspace{25pt}
+		\pgfimage[width=1.15\linewidth]{images/learn_levelset/tv_reg/levelset.jpg}
+	\end{minipage} \begin{minipage}{0.32\linewidth}	
+	\vspace{-55pt}
+		\pgfimage[width=0.8\linewidth]{images/learn_levelset/tv_reg/levelset_loss.jpg}
 	\end{minipage}
 \end{frame}
 
-\begin{frame}{Learn LevelSet \rom{1}}
-	Classical PINNs :
-	
+\begin{frame}{Learn LevelSet \rom{1}}	
 	\begin{minipage}{0.26\linewidth}
-		\pgfimage[width=0.6\linewidth]{images/learn_levelset/tv_reg/sampling.png}
-	\end{minipage} \quad \begin{minipage}{0.70\linewidth}	
-		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/poisson.jpg}
+		\textbf{Sampling :}
+		\begin{center}
+			\pgfimage[width=0.8\linewidth]{images/learn_levelset/tv_reg/sampling_with_v.jpg}
+		\end{center}
+	\end{minipage} \quad \begin{minipage}{0.70\linewidth}
+		\centering
+		\pgfimage[width=0.8\linewidth]{images/learn_levelset/tv_reg/classical_pinns.png}
+		
+		\footnotesize\flushleft\vspace{-10pt}
+		\qquad\qquad \textbf{Minus :} Costly boundary points generation.
 	\end{minipage}
 	
-	Derivatives $\Rightarrow$ we can't impose in hard boundary conditions
+	\vspace{10pt}
 	
+	\textbf{PINNs - Impose BC in hard :} Looking for $u_\theta=\phi w_\theta$.
 	\begin{center}
-		\pgfimage[width=0.8\linewidth]{images/learn_levelset/tv_reg/levelset_derivatives.png}
+		\pgfimage[width=0.7\linewidth]{images/learn_levelset/tv_reg/levelset_derivatives.png}
 	\end{center}
+	
+	\vspace{-10pt}
+	Levelset derivatives explodes.
 \end{frame}
 
 \begin{frame}{Learn LevelSet \rom{2}}
-	\textbf{2nd test :} We replace the tv term by a penalization on the laplacian of the levelset
-	\begin{equation*}
-		\int_{\mathcal{O}} |\nabla \phi|^2
-	\end{equation*}
+	\textbf{2nd test :} We replace the TV term by a penalization on the laplacian of the levelset
+%	\begin{equation*}
+%		J_{reg}=\int_{\mathcal{O}} |\Delta \phi|^2
+%	\end{equation*}
 
-	TO COMPLETE !
+	\begin{center}
+		\pgfimage[width=0.6\linewidth]{images/learn_levelset/lap_reg/levelset_reg.jpg}
+	\end{center}
 
-%	\begin{center}
-%		\pgfimage[width=0.8\linewidth]{images/learn_levelset/lap_reg/levelset.jpg}
-%	\end{center}
-%
-%	\begin{center}
-%		\pgfimage[width=0.8\linewidth]{images/learn_levelset/lap_reg/levelset_derivatives.png}
-%	\end{center}
+	\begin{minipage}{0.28\linewidth}
+		\centering
+		\textbf{Sampling :}
+		
+		\pgfimage[width=0.7\linewidth]{images/learn_levelset/lap_reg/sampling_with_v.png}
+	\end{minipage} \quad \begin{minipage}{0.68\linewidth}
+		\centering
+		\textbf{Dirichlet error on the boundary :} Looking for $u_\theta=\phi w_\theta$.
+		
+		\pgfimage[width=0.5\linewidth]{images/learn_levelset/lap_reg/dirichlet.png}
+	\end{minipage}
+
+
 \end{frame}
 
 \begin{frame}{Learn LevelSet \rom{2}}
-	TO COMPLETE !
+	\textbf{Derivatives :}
+
+	\begin{center}
+		\pgfimage[width=0.6\linewidth]{images/learn_levelset/lap_reg/levelset_derivatives.png}
+	\end{center}
+	
+	 $\Rightarrow$ \textcolor{orange}{We can impose in hard boundary conditions}
+	
+	\textbf{PINNs - Impose BC in hard :}
+	\begin{center}
+		\pgfimage[width=0.7\linewidth]{images/learn_levelset/lap_reg/poisson_with_v.png}
+	\end{center}
 \end{frame}

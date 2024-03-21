@@ -87,11 +87,11 @@
 \hypersetup{
 	colorlinks=true,
 	urlcolor=blue,
-	citecolor=blue,
+	citecolor=other,
 	linkcolor=title,
 }
 
-\title[PhiFEM]{How improve PINNs ?}
+\title[PhiFEM]{How to work with complex geometries in PINNs ?}
 %\subtitle{Macaron/Tonus retreat presentation}
 \authors[Frédérique LECOURTIER]
 \supervisors[Emmanuel FRANCK, Michel DUPREZ, Vanessa LLERAS]
@@ -201,8 +201,15 @@
 			By learning the Eikonal equation with penalisation of the levelset Laplacian
 		\end{itemize}
 		
-		\textbf{To go further :} We can combine the options (Mapping for the big domain. Level set for the hole.)
-		
+		\textbf{To go further :} We can combine the option. \\
+		(Mapping for the big domain. Level set for the hole.)
+		\begin{minipage}{0.48\linewidth}
+			\centering
+			\pgfimage[width=0.9\linewidth]{images/oreille_loss.png}
+		\end{minipage} \quad \begin{minipage}{0.48\linewidth}	
+			\centering
+			\pgfimage[width=0.9\linewidth]{images/oreille.png}
+		\end{minipage}
 		
 	\end{frame}
 	
