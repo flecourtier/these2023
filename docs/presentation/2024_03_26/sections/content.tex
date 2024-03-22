@@ -13,7 +13,7 @@
     \end{minipage}
 	\begin{minipage}{0.26\linewidth}
 		\vspace{-20pt}
-		\pgfimage[width=\linewidth]{images/geometries.png}
+		\pgfimage[width=\linewidth]{images/content/geometries.png}
 	\end{minipage}
 	
 	with $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary. 
@@ -39,7 +39,7 @@
 	\textbf{Claim on PINNs :} \textcolor{orange}{No mesh, so easy to go on complex geometry !}
 	
 	\centering
-	\pgfimage[width=0.8\linewidth]{images/simple_geom/diapo.jpg}
+	\pgfimage[width=0.8\linewidth]{images/content/simple_geom/diapo.jpg}
 	
 	\flushleft
 	\textbf{In practice :} Not so easy ! We need to find \textcolor{orange}{how to sample in the geometry}.
@@ -57,11 +57,11 @@
 			$$\Omega=\phi(\Omega_0)$$
 			
 			\centering
-			\pgfimage[width=0.95\linewidth]{images/complex_geom/mapping.jpg}
+			\pgfimage[width=0.95\linewidth]{images/content/complex_geom/mapping.jpg}
 		\end{minipage} & \begin{minipage}{0.52\linewidth}
 			\vspace{4pt}
 			\begin{center}
-				\pgfimage[width=0.6\linewidth]{images/complex_geom/levelset.png}
+				\pgfimage[width=0.6\linewidth]{images/content/complex_geom/levelset.png}
 			\end{center}
 			\vspace{-6pt}
 			\textbf{Advantages :} \\
@@ -93,15 +93,15 @@
 			\hline
 			\begin{minipage}{0.48\linewidth}
 				\flushright
-				\pgfimage[width=0.8\linewidth]{images/approximation/polygone1.png} \\
+				\pgfimage[width=0.8\linewidth]{images/content/approximation/polygone1.png} \\
 				\flushleft
-				\pgfimage[width=0.8\linewidth]{images/approximation/polygone2.png}
+				\pgfimage[width=0.8\linewidth]{images/content/approximation/polygone2.png}
 			\end{minipage} & \begin{minipage}{0.48\linewidth}
 				\textbf{Minus :} Use of a parametric curve $c(t)$. \\
 				\centering
-				\pgfimage[width=0.8\linewidth]{images/approximation/bean.png}
+				\pgfimage[width=0.7\linewidth]{images/content/approximation/bean.png}
 				
-				\hl{A COMPLETER !}
+				\pgfimage[width=\linewidth]{images/content/approximation/bean_poisson.png}
 			\end{minipage}
 		\end{tabular}
 		
@@ -138,12 +138,12 @@
 		
 		\begin{minipage}{0.48\linewidth}
 			\centering
-			\pgfimage[width=0.6\linewidth]{images/learn_levelset/points_normals.png}
+			\pgfimage[width=0.6\linewidth]{images/content/learn_levelset/points_normals.png}
 		\end{minipage} 
 		\begin{minipage}{0.48\linewidth}
 			\ding{217} set of boundary points \\
 			\ding{217} exterior normals at $\Gamma$ \\
-			(evaluated at this points)
+			(evaluated at these points)
 		\end{minipage}
 \end{frame}
 
@@ -154,7 +154,7 @@
 		Learn topological Skeleton (by learning SDF) \quad \refappendix{frame:NeuralSkeleton}
 	\end{minipage} \begin{minipage}{0.18\linewidth}	
 		\vspace{-30pt}
-		\hspace{70pt}\pgfimage[width=0.8\linewidth]{images/learn_levelset/skeleton_sans_background.png}
+		\hspace{70pt}\pgfimage[width=0.8\linewidth]{images/content/learn_levelset/skeleton_sans_background.png}
 	\end{minipage}
 	
 	\ding{217} Skeleton correspond exactly to the gradient singularity \\
@@ -167,7 +167,7 @@
 	\end{minipage} \quad \begin{minipage}{0.58\linewidth}	
 		\vspace{-10pt}
 		\flushright
-		\pgfimage[width=0.85\linewidth]{images/learn_levelset/levelset.jpg}
+		\pgfimage[width=0.85\linewidth]{images/content/learn_levelset/levelset.jpg}
 	\end{minipage}
 
 	\vspace{8pt}
@@ -175,19 +175,19 @@
 %	\textbf{1st test :} Eikonal equation with TV Regularization \cite{clemot_neural_2023}
 %	
 %	\begin{minipage}{0.26\linewidth}
-%		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/levelset_loss.jpg}
+%		\pgfimage[width=\linewidth]{images/content/learn_levelset/tv_reg/levelset_loss.jpg}
 %	\end{minipage} \quad \begin{minipage}{0.70\linewidth}	
-%		\pgfimage[width=\linewidth]{images/learn_levelset/tv_reg/levelset.jpg}
+%		\pgfimage[width=\linewidth]{images/content/learn_levelset/tv_reg/levelset.jpg}
 %	\end{minipage}
 
 	\begin{minipage}{0.65\linewidth}
 		\textbf{1st test :} Eikonal equation with TV Regularization \cite{clemot_neural_2023}
 		
 		\vspace{25pt}
-		\pgfimage[width=1.15\linewidth]{images/learn_levelset/tv_reg/levelset.jpg}
+		\pgfimage[width=1.15\linewidth]{images/content/learn_levelset/tv_reg/levelset.jpg}
 	\end{minipage} \begin{minipage}{0.32\linewidth}	
 	\vspace{-55pt}
-		\pgfimage[width=0.8\linewidth]{images/learn_levelset/tv_reg/levelset_loss.jpg}
+		\pgfimage[width=0.8\linewidth]{images/content/learn_levelset/tv_reg/levelset_loss.jpg}
 	\end{minipage}
 \end{frame}
 
@@ -195,11 +195,11 @@
 	\begin{minipage}{0.26\linewidth}
 		\textbf{Sampling :}
 		\begin{center}
-			\pgfimage[width=0.8\linewidth]{images/learn_levelset/tv_reg/sampling_with_v.jpg}
+			\pgfimage[width=0.8\linewidth]{images/content/learn_levelset/tv_reg/sampling_with_v.jpg}
 		\end{center}
 	\end{minipage} \quad \begin{minipage}{0.70\linewidth}
 		\centering
-		\pgfimage[width=0.8\linewidth]{images/learn_levelset/tv_reg/classical_pinns.png}
+		\pgfimage[width=0.8\linewidth]{images/content/learn_levelset/tv_reg/classical_pinns.png}
 		
 		\footnotesize\flushleft\vspace{-10pt}
 		\qquad\qquad \textbf{Minus :} Costly boundary points generation.
@@ -209,11 +209,11 @@
 	
 	\textbf{PINNs - Impose BC in hard :} Looking for $u_\theta=\phi w_\theta$.
 	\begin{center}
-		\pgfimage[width=0.7\linewidth]{images/learn_levelset/tv_reg/levelset_derivatives.png}
+		\pgfimage[width=0.7\linewidth]{images/content/learn_levelset/tv_reg/levelset_derivatives.png}
 	\end{center}
 	
 	\vspace{-10pt}
-	Levelset derivatives explodes.
+	Levelset derivatives explode.
 \end{frame}
 
 \begin{frame}{Learn LevelSet \rom{2}}
@@ -223,19 +223,19 @@
 %	\end{equation*}
 
 	\begin{center}
-		\pgfimage[width=0.6\linewidth]{images/learn_levelset/lap_reg/levelset_reg.jpg}
+		\pgfimage[width=0.6\linewidth]{images/content/learn_levelset/lap_reg/levelset_reg.jpg}
 	\end{center}
 
 	\begin{minipage}{0.28\linewidth}
 		\centering
 		\textbf{Sampling :}
 		
-		\pgfimage[width=0.7\linewidth]{images/learn_levelset/lap_reg/sampling_with_v.png}
+		\pgfimage[width=0.7\linewidth]{images/content/learn_levelset/lap_reg/sampling_with_v.png}
 	\end{minipage} \quad \begin{minipage}{0.68\linewidth}
 		\centering
 		\textbf{Dirichlet error on the boundary :} Looking for $u_\theta=\phi w_\theta$.
 		
-		\pgfimage[width=0.5\linewidth]{images/learn_levelset/lap_reg/dirichlet.png}
+		\pgfimage[width=0.5\linewidth]{images/content/learn_levelset/lap_reg/dirichlet.png}
 	\end{minipage}
 
 
@@ -245,13 +245,13 @@
 	\textbf{Derivatives :}
 
 	\begin{center}
-		\pgfimage[width=0.6\linewidth]{images/learn_levelset/lap_reg/levelset_derivatives.png}
+		\pgfimage[width=0.6\linewidth]{images/content/learn_levelset/lap_reg/levelset_derivatives.png}
 	\end{center}
 	
 	 $\Rightarrow$ \textcolor{orange}{We can impose in hard boundary conditions}
 	
 	\textbf{PINNs - Impose BC in hard :}
 	\begin{center}
-		\pgfimage[width=0.7\linewidth]{images/learn_levelset/lap_reg/poisson_with_v.png}
+		\pgfimage[width=0.7\linewidth]{images/content/learn_levelset/lap_reg/poisson_with_v.png}
 	\end{center}
 \end{frame}
