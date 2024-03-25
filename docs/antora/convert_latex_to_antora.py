@@ -106,7 +106,7 @@ def create_nav_file(section_files,sections):
     file_write = open(nav_file, 'w')
 
     file_write.write(":stem: latexmath\n")
-    file_write.write("* xref:main_page.adoc[PhiFEM PhD]\n")
+    file_write.write("* xref:main_page.adoc[Résultats]\n")
 
     for i,(section,subsections) in enumerate(sections.items()):    
         print(section,subsections)    
@@ -123,6 +123,7 @@ def create_nav_file(section_files,sections):
             section_file_name = "section_" + str(i)
             file_write.write("** xref:" + section_file_name + ".adoc[" + section + "]\n")
 
+    file_write.write("* xref:presentation.adoc[Slides]\n")
     file_write.close()
 
 # create all directories and files of the documentation
@@ -189,7 +190,32 @@ def create_main_page_file(section_files,sections):
     # file_write.write("\nYou can find the internship report in PDF just xref:attachment$rapport.pdf[HERE] as well as a weekly tracking of the internship xref:attachment$suivi.pdf[HERE] (in french).\n")
 
 
-    file_write.close()   
+    file_write.close()  
+
+# create the presentation page
+def create_presentation_file(presentation_name):
+    # create the nav.adoc file
+    presentation_file = page_dir + "presentation.adoc"
+    
+    date,name = [],[]
+    for key,value in presentation_name.items():
+        date.append(key)
+        name.append(value)
+    date,name = np.array(date), np.array(name)
+    index = np.argsort(date)
+    date,name = date[index],name[index]
+
+    date_fr = []
+    for d in date:
+        date_fr.append(d[-2:] + "/" + d[5:7] + "/" + d[:4])
+
+    file_write = open(presentation_file, 'w')
+    file_write.write("# Slides\n\n")
+
+    for i in range(len(date)):
+        file_write.write("* "+date_fr[i]+" : xref:attachment$presentation/" + date[i] + ".pdf[" + name[i] + "]\n")
+    
+    file_write.close() 
 
 # copy all the images of the tex report in the antora documentation
 def cp_assets(section_files):       
@@ -201,15 +227,36 @@ def cp_assets(section_files):
         section = section_file.split("/")[1]
         shutil.copytree(root_dir + source_dir + dir_name + "/images/" + section, images_dir+section)
 
-        # Cp attachments
-        if os.path.exists(attachments_dir):
-            shutil.rmtree(attachments_dir)
-        os.mkdir(attachments_dir)
-        shutil.copyfile(root_dir + "abstracts/abstracts.pdf",attachments_dir + "abstracts.pdf")
-        shutil.copyfile(root_dir + "meetings/meetings.pdf",attachments_dir + "meetings.pdf")
-        shutil.copyfile(root_dir + "to_do_list/to_do_list.pdf",attachments_dir + "to_do_list.pdf")
-        shutil.copyfile(rapport_dir + "results.pdf",attachments_dir + "results.pdf")
+    # Cp attachments
+    if os.path.exists(attachments_dir):
+        shutil.rmtree(attachments_dir)
+    os.mkdir(attachments_dir)
+    shutil.copyfile(root_dir + "abstracts/abstracts.pdf",attachments_dir + "abstracts.pdf")
+    shutil.copyfile(root_dir + "meetings/meetings.pdf",attachments_dir + "meetings.pdf")
+    shutil.copyfile(rapport_dir + "results.pdf",attachments_dir + "results.pdf")
 
+    ## Cp presentation
+    presentation_dir = root_dir + "presentation/"
+    pres_attachments_dir = attachments_dir + "presentation/"
+    if os.path.exists(pres_attachments_dir):
+        shutil.rmtree(pres_attachments_dir)
+    os.mkdir(pres_attachments_dir)
+
+    presentation_name = {}
+    for file in os.listdir(presentation_dir):
+        if file!="georgia_files":
+            pdf_to_copy = presentation_dir + file + "/presentation.pdf"
+            shutil.copyfile(pdf_to_copy,pres_attachments_dir + file + ".pdf")
+            
+            latex_file = presentation_dir + file + "/presentation.tex"
+            file_read = open(latex_file, 'r')
+            while line := file_read.readline():
+                if search_word_in_line("\\title[PhiFEM]", line):
+                    name = line.split("{")[1].split("}")[0]
+                    presentation_name[file] = name
+
+    return presentation_name
+            
 # Test if there is a refernce to a figure in the line (many configurations possibles)
 def test_fig(line):
     possible_ref = ["Figure \\ref","Figure~\\ref","Fig \\ref","Fig~\\ref","Fig.~\\ref","Fig.\\ref"]
@@ -568,13 +615,20 @@ def rm_all():
 # si il y a déjà un dossier antora, on le supprime et on copie le dossier antora_base
 # rm_all()
 section_files,section_names = get_sections()
-print(section_files)
 sections = get_subsections(section_files,section_names)
-print(sections)
+print("section_files :",section_files)
+print("section_names :",section_names)
+print("sections :",sections)
+
+
 create_nav_file(section_files,sections)
 create_nav(section_files,sections)
 create_main_page_file(section_files,sections)
-cp_assets(section_files)
+
+presentation_name = cp_assets(section_files)
+print("presentation_name :",presentation_name)
 cp_all_sections(section_files,section_names,sections)
+create_presentation_file(presentation_name)
+
 label_sections = get_label_sections(section_files)
-print(label_sections)
+print("label_sections :",label_sections)
