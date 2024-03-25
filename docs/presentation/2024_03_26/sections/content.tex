@@ -28,7 +28,7 @@
 	\end{equation*}
 	where $w_{r}$ and $w_{bc}$ are the respective weights associated with
 	\begin{equation*}
-		J_{r} = \int_\Omega (\Delta u+f)^2 \; \text{ and } \; J_{bc} = \int_{\partial\Omega} (u-g)^2.
+		J_{r} = \int_\Omega (\Delta u_\theta+f)^2 \; \text{ and } \; J_{bc} = \int_{\partial\Omega} (u_\theta-g)^2.
 	\end{equation*}	
 	
 	\footnotesize
@@ -233,7 +233,7 @@
 		\pgfimage[width=0.7\linewidth]{images/content/learn_levelset/lap_reg/sampling_with_v.png}
 	\end{minipage} \quad \begin{minipage}{0.68\linewidth}
 		\centering
-		\textbf{Dirichlet error on the boundary :} Looking for $u_\theta=\phi w_\theta$.
+		\textbf{Dirichlet error on the boundary :}
 		
 		\pgfimage[width=0.5\linewidth]{images/content/learn_levelset/lap_reg/dirichlet.png}
 	\end{minipage}
@@ -250,7 +250,7 @@
 	
 	 $\Rightarrow$ \textcolor{orange}{We can impose in hard boundary conditions}
 	
-	\textbf{PINNs - Impose BC in hard :}
+	\textbf{PINNs - Impose BC in hard :} Looking for $u_\theta=\phi w_\theta$.
 	\begin{center}
 		\pgfimage[width=0.7\linewidth]{images/content/learn_levelset/lap_reg/poisson_with_v.jpg}
 	\end{center}
