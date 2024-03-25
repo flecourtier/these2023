@@ -48,7 +48,7 @@ jobs:
         python3 -m pip install --upgrade pip
         pip install -r requirements.txt
         python3 convert_latex_to_antora.py
-      working-directory: docs/antora
+      working-directory: docs/antora/convert_latex
     - name: Commit
       run: |
         git config --global user.email "lecourtier.frederique@gmail.com"
