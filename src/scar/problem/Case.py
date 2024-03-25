@@ -21,19 +21,20 @@ class Case:
         pde_class_name = dict_config["pde"]
         assert pde_class_name in "Poisson2D"
 
-        # if sdf_class_name != "SDCircle":
-        #     assert geom_class_name == "Circle"
-
-        # if geom_class_name != "Circle":
-        #     assert problem_class_name == "UnknownSolForMVP"
-
         if isinstance(sdf_class,dict):
             sdf_class_name = sdf_class["type"]
             assert sdf_class_name in {"SDEikonal","SDEikonalReg","SDEikonalLap"}
             assert problem_class_name == "ConstantForce"
             self.form_config = sdf_class["config"]
-        else:
-            sdf_class_name = sdf_class
+        else:     
+            if "SDMVP" in sdf_class:       
+                if sdf_class == "SDMVP":
+                    p = 1
+                else:
+                    p = int(sdf_class.split("SDMVP")[1])
+                sdf_class_name = "SDMVP"
+            else:
+                sdf_class_name = sdf_class
 
         geom_class = get_class(geom_class_name,Geometry2D)
         sdf_class = get_class(sdf_class_name,SDFunction)
@@ -46,16 +47,21 @@ class Case:
         if sdf_class_name in {"SDEikonal","SDEikonalReg","SDEikonalLap"}:
             self.sd_function = sdf_class(self.form,self.form_config,threshold=threshold)
             form_config = "form_"+str(self.form_config)+"/"
+        elif sdf_class_name == "SDMVP":
+            if p != 1:  
+                sdf_class_name = "SDMVP"+str(p)
+            self.sd_function = SDFunction.SDMVP(self.form,p=p,threshold=threshold)
+            form_config = ""
         else:
             self.sd_function = sdf_class(self.form,threshold=threshold)
             form_config = ""
         self.problem = problem_class(self.form)
         self.bound_box = self.sd_function.bound_box
-        self.xdomain = domain.SignedDistanceBasedDomain(2, self.bound_box, self.sd_function)
+        self.xdomain = domain.Domain(2,domain.SignedDistanceBasedDomain(2, self.bound_box, self.sd_function))
         self.pde = pde_class(self.xdomain, self.problem)
 
         self.dir_name = "networks/"+pde_class_name+"/"+geom_class_name+"/"+sdf_class_name+"/"+problem_class_name+"/"+form_config+str(threshold)+"/"
-        
+
         # corr
         self.corr_type = dict_config["correction"]
         assert self.corr_type in ["add","mult"]

@@ -51,7 +51,7 @@ def run_Poisson2D(cas, num_config, dict, save_sampling = False, save_phi=False, 
     ###
 
     if save_sampling:
-        bornes = pde.space_domain.surrounding_domain.bound
+        bornes = pde.space_domain.large_domain.surrounding_domain.bound
         
         data_inside = sampler.sampling(dict["n_collocations"])[0].cpu().detach().numpy()
         plt.figure(figsize=(5,5))
@@ -60,12 +60,13 @@ def run_Poisson2D(cas, num_config, dict, save_sampling = False, save_phi=False, 
         plt.savefig(dir_name / "models" / ("sampling_"+str(num_config)+"_diapo.png"),dpi=500)
 
     if save_phi:
-        data_inside = sampler.sampling(10000)[0]
+        data_inside = sampler.sampling(50000)[0]
         phi_inside = cas.sd_function.sdf(data_inside)[:,0].detach().cpu().numpy()
         data_inside = data_inside.detach().cpu().numpy()
 
         plt.figure(figsize=(10,10))
-        plt.tricontourf(data_inside[:,0],data_inside[:,1],phi_inside,"o",levels=100)#,cmap="hot")
+        plt.scatter(data_inside[:,0],data_inside[:,1],c=phi_inside)
+        # plt.tricontourf(data_inside[:,0],data_inside[:,1],phi_inside,"o",levels=100)#,cmap="hot")
         plt.title("phi")
         plt.colorbar()
 
@@ -128,7 +129,9 @@ def run_Poisson2D(cas, num_config, dict, save_sampling = False, save_phi=False, 
     # derivees_path = dir_name / "solutions" / (name+"_first.png")
     # derivees2_path = dir_name / "solutions" / (name+"_second.png")
     # phi_path = dir_name / "solutions" / (name+"_phi.png")
+    
     plot_solution(trainer,fig_path)
+    
     # plot_derivatives(trainer,derivees_path,derivees2_path,phi_path)
 
     return trainer

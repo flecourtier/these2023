@@ -64,7 +64,7 @@ class Poisson2D(pdes.AbstractPDEx):
     
     def post_processing(self, x, mu, w):
         x1, x2 = self.get_coordinates(x)
-        mul = self.space_domain.sdf(x)
+        mul = self.space_domain.large_domain.sdf(x)
         
         X = torch.stack([x1,x2])
         alpha = self.get_parameters(mu)

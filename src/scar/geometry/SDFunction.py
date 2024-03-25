@@ -61,43 +61,43 @@ class SDCircle(domain.SignedDistance):
         return self.phi(None,xy)<0
 
 class SDMVP(domain.SignedDistance):
-    def __init__(self, form : ParametricCurves, threshold: float = 0.0):
+    def __init__(self, form : ParametricCurves, p = 1, threshold: float = 0.0):
         assert isinstance(form,ParametricCurves)
         super().__init__(2, threshold)
         self.form = form
         self.bound_box = [[self.form.bord_a,self.form.bord_b],[self.form.bord_a2,self.form.bord_b2]]
+        # self.p = 1
+        self.p = p
 
     def prod_scal(self,X,Y):
         return X[:,:,0]*Y[:,0]+X[:,:,1]*Y[:,1]
 
     def rect_method(self,f,a,b,N):
         t = np.linspace(a,b,N)
-        dt = t[1]-t[0]
-        val = torch.sum(f(t),dim=1)*dt
+        val = 1.0/(N-1)*torch.sum(f(t)[:,:-1],dim=1)
         return val
 
-    def W_p(self,x,p=1):
+    def W_p(self,x):
         def W_p_t(tab_t):
             c_t = self.form.c(tab_t).to(device)
-            c_prime_rot_t = self.form.c_prime_rot(tab_t).to(device)
-
+            c_prime_rot_t = self.form.c_prime_rot(tab_t,theta=-np.pi/2).to(device)
             diff = torch.transpose(c_t,0,1)-x[:, None, :]
             num = self.prod_scal(diff,torch.transpose(c_prime_rot_t,0,1))
-            den = torch.sqrt(torch.sum(diff**2,dim=2))**(2+p)
-
+            den = torch.linalg.vector_norm(diff,ord=2,dim=2)**(2+self.p)
             return num/den
-        
+
         # intégration numérique
         N = 1000
-        val = self.rect_method(W_p_t,0,1,N)
+        # N=10
+        val = self.rect_method(W_p_t,0.0,1.0,N)
 
         return val
 
-    def sdf(self,x,p=1):
-        val = 1./self.W_p(x,p)
-        val[np.isnan(val.cpu().detach().numpy())] = 0
-        return (val**(1./p))[:,None]
-
+    def sdf(self,x):
+        val = 1./self.W_p(x)
+        val[np.isnan(val.cpu().detach().numpy())] = 0.0
+        return -(val**(1/self.p))[:,None]
+    
 class SDEikonal(domain.SignedDistance):
     def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
         super().__init__(2, threshold)
