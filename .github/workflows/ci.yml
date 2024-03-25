@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'docs/**' # Déclencher seulement si des changements sont faits dans le répertoire "docs"
-
+      - '.github/workflows/ci.yml' # Déclencher seulement si des changements sont faits dans le fichier de workflow
 
 jobs:
   activate:
