@@ -30,6 +30,7 @@ meeting.*
 presentation.*
 !presentation.tex
 !presentation.pdf
+!presentation.adoc
 
 docs/presentation/2024_02_06-07/explications/explications.*
 !docs/presentation/2024_02_06-07/explications/explications.tex
