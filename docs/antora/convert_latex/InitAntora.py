@@ -145,7 +145,7 @@ def create_presentation_file(presentation_name):
         date.append(key)
         name.append(value)
     date,name = np.array(date), np.array(name)
-    index = np.argsort(date)
+    index = np.argsort(date)[::-1]
     date,name = date[index],name[index]
 
     date_fr = []
