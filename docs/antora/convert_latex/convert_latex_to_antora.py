@@ -9,8 +9,10 @@ from WriteAntora import *
 But : Créer la documentation antora complète
 """
 
-current_dir = Path(__file__).parent
-root_dir = str(current_dir.parent.parent) + "/"
+# current_dir = Path(__file__).parent
+# root_dir = str(current_dir.parent.parent) + "/"
+
+root_dir, result_dir, page_dir, images_dir, attachments_dir = get_dir()
 
 nav_file = create_nav_file()
 
@@ -22,7 +24,7 @@ nav_file = create_nav_file()
 # Create Results
 ####
 
-nav_file.write("\n.Résultats\n")
+nav_file.write("\n.Rapport\n")
 
 # ReadLatex
 
@@ -41,7 +43,6 @@ for i in range(len(section_files)):
     new_section_files.append(section_file_name)
 write_in_nav_file(nav_file,new_section_files,sections,level=1)
 create_nav(section_files,sections,"results/")
-create_main_page_file(section_files,sections)
 
 cp_assets(section_files,rapport_dir)
 cp_all_sections(section_files,section_names,sections,rapport_dir,"results/")
@@ -57,7 +58,7 @@ cp_all_sections(section_files,section_names,sections,rapport_dir,"results/")
 # Create Slides
 ####
 
-nav_file.write("\n.Contenus supplémetaires\n")
+nav_file.write("\n.Contenus supplémentaires\n")
 presentation_name = cp_slides()
 create_presentation_file(presentation_name)
 nav_file.write("* xref:slides.adoc[Mes slides]\n")
@@ -74,6 +75,15 @@ sections = get_subsections(section_files,section_names,abstract_dir)
 
 cp_all_sections(section_files,section_names,sections,abstract_dir,"abstracts/")
 section_files,section_names,sections = group_by_months(section_files,section_names,sections,"abstracts/")
+create_abstract_file(section_files,section_names)
 
 nav_file.write("* xref:abstracts.adoc[Résumés hebdomadaires]\n")
 write_in_nav_file(nav_file,section_files,sections,level=2)
+
+#####
+# Finish
+#####
+
+nav_file.close()
+nav_filename = result_dir + "nav.adoc"
+create_main_page_file(nav_filename)

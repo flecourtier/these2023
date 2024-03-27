@@ -78,7 +78,6 @@ def cp_assets(section_files,rapport_dir):
                 os.remove(attachments_dir + file)
     # os.mkdir(attachments_dir)
     shutil.copyfile(root_dir + "abstracts/abstracts.pdf",attachments_dir + "abstracts.pdf")
-    shutil.copyfile(root_dir + "meetings/meetings.pdf",attachments_dir + "meetings.pdf")
     shutil.copyfile(rapport_dir + "results.pdf",attachments_dir + "results.pdf")
 
 # create the nav.adoc file
@@ -88,7 +87,7 @@ def create_nav_file():
     file_write = open(nav_file, 'w')
     file_write.write(":stem: latexmath\n")
     
-    file_write.write("\n* xref:main_page.adoc[Présentation]\n")
+    file_write.write("\n* xref:main_page.adoc[Sommaire]\n")
     
     # file_write.close()
     return file_write
@@ -113,36 +112,40 @@ def write_in_nav_file(file_write,section_files,sections,level=1):
     # file_write.close()
 
 # create the main page of the documentation
-def create_main_page_file(section_files,sections):
-    # create the nav.adoc file
+def create_main_page_file(nav_filename):
+    nav_file = open(nav_filename, 'r')
+    # create the main_page.adoc file
     main_page_file = page_dir + "main_page.adoc"
     file_write = open(main_page_file, 'w')
 
-    file_write.write("# Phi-FEM Project\n\n")
+    file_write.write("# Sommaire\n\n")
+    intro = "Après un stage dans l'équipe INRIA MIMESIS dans le cadre de mon master (Master CSMI à l'Université de Strasbourg), j'ai rejoint l'équipe en tant que doctorante en octobre 2023 sous la direction d'Emmanuel Franck, Michel Duprez et Vanessa Lleras. L'objectif de ce projet est le *\"Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à la création de jumeaux chirurgicaux numériques\"*.\n\n"
+    file_write.write(intro)
 
-    file_write.write("A compléter !")
+    # Résultats
+    file_write.write("== Rapport\n\n")
+    file_write.write("Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$results.pdf[PDF]) :\n\n")
+    
+    write_results = False
+    while line := nav_file.readline():
+        if search_word_in_line(".Contenus supplémentaires", line):
+            break
+        if search_word_in_line(".Rapport", line):
+            write_results = True
+        elif write_results:
+            file_write.write(line)
+        
 
-    # intro = "Après un stage dans l'équipe INRIA MIMESIS dans le cadre de mon master (Master CSMI à l'Université de Strasbourg), j'ai rejoint l'équipe en tant que doctorante en octobre 2023 sous la direction d'Emmanuel Franck, Michel Duprez et Vanessa Lleras. L'objectif de ce projet est le *\"Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à la création de jumeaux chirurgicaux numériques\"*.\n\n"
-
-    # attach = "Vous pouvez trouver les contenus supplémentaires suivants:\n\n* un xref:attachment$abstracts.pdf[résumé hebdomadaire]\n* des xref:attachment$meetings.pdf[préparations aux meetings] (avec les résultats à présenter)\n* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine\n\n"
-
-    # file_write.write(intro)
-
-    # file_write.write("== Contenus supplémentaires\n\n")
-
+    # Contenus supplémentaires
+    file_write.write("\n== Contenus supplémentaires\n\n")
     # file_write.write(attach)
-
-    # file_write.write("== Résultats\n\n")
-
-    # file_write.write("Vous trouverez xref:attachment$results.pdf[ICI] les résultats obtenus sous le format PDF.\n\n")
-
-    # for i,(section,subsections) in enumerate(sections.items()):        
-    #     if section_files[i]!="":
-    #         section_file_name = section_files[i].split("/")[1]
-    #         file_write.write("* xref:" + section_file_name + ".adoc[" + section + "]\n")
-    #     else:
-    #         section_file_name = "section_" + str(i)
-    #         file_write.write("* xref:" + section_file_name + ".adoc[" + section + "]\n")
+    file_write.write("Vous pouvez trouver les contenus supplémentaires suivants:\n\n")
+    file_write.write("* différentes xref:slides.adoc[présentations]\n\n")
+    file_write.write("* des xref:abstracts.adoc[résumés hebdomadaires] (au xref:attachment$abstracts.pdf[format PDF])\n\n")
+    
+    file_write.write("Vous trouverez également:\n\n")
+    file_write.write("* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine\n\n")
+    file_write.write("* une documentation du code (à rajouter)\n\n")
 
     file_write.close()  
 
@@ -172,26 +175,16 @@ def create_presentation_file(presentation_name):
     file_write.close() 
 
 # create the presentation page
-def create_abstract_file(presentation_name):
+def create_abstract_file(section_files,section_names):
     # create the nav.adoc file
-    presentation_file = page_dir + "slides.adoc"
-    
-    date,name = [],[]
-    for key,value in presentation_name.items():
-        date.append(key)
-        name.append(value)
-    date,name = np.array(date), np.array(name)
-    index = np.argsort(date)[::-1]
-    date,name = date[index],name[index]
+    abstract_file = page_dir + "abstracts.adoc"
 
-    date_fr = []
-    for d in date:
-        date_fr.append(d[-2:] + "/" + d[5:7] + "/" + d[:4])
+    file_write = open(abstract_file, 'w')
+    file_write.write("# Résumés hebdomadaires\n\n")
+    file_write.write("Vous trouverez ici des résumés des travaux effectués chaque semaine :\n\n")
 
-    file_write = open(presentation_file, 'w')
-    file_write.write("# Slides\n\n")
+    for i in range(len(section_files)):
+        section_file_name = section_files[i]
+        file_write.write("* xref:" + section_file_name + ".adoc[" + section_names[i] + "]\n")
 
-    for i in range(len(date)):
-        file_write.write("* "+date_fr[i]+" : xref:attachment$presentation/" + date[i] + ".pdf[" + name[i] + "]\n")
-    
     file_write.close() 
