@@ -1,3 +1,27 @@
-# Phi-FEM Project
+# Sommaire
 
-A compléter !
+Après un stage dans l'équipe INRIA MIMESIS dans le cadre de mon master (Master CSMI à l'Université de Strasbourg), j'ai rejoint l'équipe en tant que doctorante en octobre 2023 sous la direction d'Emmanuel Franck, Michel Duprez et Vanessa Lleras. L'objectif de ce projet est le *"Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à la création de jumeaux chirurgicaux numériques"*.
+
+== Rapport
+
+Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$results.pdf[PDF]) :
+
+* xref:results/week_4.adoc[Week 4 : 23/10/2023 - 27/10/2023]
+** xref:results/week_4/subsec_0.adoc[Reproduction résultats - Article 2104.08426]
+** xref:results/week_4/subsec_1.adoc[Entraînement du PINNs à apprendre une solution unique]
+
+
+== Contenus supplémentaires
+
+Vous pouvez trouver les contenus supplémentaires suivants:
+
+* différentes xref:slides.adoc[présentations]
+
+* des xref:abstracts.adoc[résumés hebdomadaires] (au xref:attachment$abstracts.pdf[format PDF])
+
+Vous trouverez également:
+
+* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine
+
+* une documentation du code (à rajouter)
+
