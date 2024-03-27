@@ -1,6 +1,18 @@
 :stem: latexmath
-* xref:main_page.adoc[Résultats]
-** xref:week_4.adoc[Week 4 : 23/10/2023 - 27/10/2023]
-*** xref:week_4/subsec_0.adoc[Reproduction résultats - Article 2104.08426]
-*** xref:week_4/subsec_1.adoc[Entraînement du PINNs à apprendre une solution unique]
-* xref:presentation.adoc[Slides]
+
+* xref:main_page.adoc[Présentation]
+
+.Résultats
+* xref:results/week_4.adoc[Week 4 : 23/10/2023 - 27/10/2023]
+** xref:results/week_4/subsec_0.adoc[Reproduction résultats - Article 2104.08426]
+** xref:results/week_4/subsec_1.adoc[Entraînement du PINNs à apprendre une solution unique]
+
+.Contenus supplémetaires
+* xref:slides.adoc[Mes slides]
+* xref:abstracts.adoc[Résumés hebdomadaires]
+** xref:abstracts/2023_10.adoc[Octobre 2023]
+** xref:abstracts/2023_11.adoc[Novembre 2023]
+** xref:abstracts/2023_12.adoc[Décembre 2023]
+** xref:abstracts/2024_1.adoc[Janvier 2024]
+** xref:abstracts/2024_2.adoc[Février 2024]
+** xref:abstracts/2024_3.adoc[Mars 2024]

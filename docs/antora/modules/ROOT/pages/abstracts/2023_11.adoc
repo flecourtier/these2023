@@ -1,0 +1,95 @@
+= Novembre - 2023
+
+== Week 6 : 06/11/2023 - 10/11/2023
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Emmanuel + Vanessa)
+*  _Mardi matin_ - Réunion d'équipe stem:[\rightarrow] NON
+*  _Mercredi après-midi_ - Soutenance de Thèse d'Alban
+*  _Vendredi matin_ - TP d'Informatique L2S3
+
+*Fait durant la semaine :*
+
+*  projection solution stem:[\phi]-FEM sur stem:[\Omega]
+*  calcul des dérivées premières et secondes selon x et y, avec PyTorch et FEniCS sur stem:[\Omega] et sur stem:[\Omega_h]
+*  modification du degré choisi sur stem:[u_{ex}] pou les calculs d'erreurs
+
+== Week 7 : 13/11/2023 - 17/11/2023
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Emmanuel + Vanessa)
+*  _Mardi matin_ - Réunion d'équipe - Présentation de Valentina
+*  _Mardi après-midi_ - Réunion (Michel)
+*  _Jeudi après-midi_ - Formation Fidle Seq 1
+*  _Vendredi matin_ - TP d'Informatique L2S3
+*  _Vendredi après-midi_ - CC1 d'Informatique L2S3
+
+*Fait durant la semaine :*
+
+*  amélioration de la CI (non fonctionnelle pour le moment)
+*  Mercredi : choix - pc portable bureau 
+*  Début d'une tentative pour la reproduction des résultats obtenus pendant le stage sur la géométrie du carré stem:[[0,1]] 
+
+*A faire :*
+
+*  plusieurs tests dont on a parlé avec Michel et Emmanuel pendant les réunions
+*  retrouver résultats du stage !
+
+== Week 8 : 20/11/2023 - 24/11/2023
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Emmanuel + Michel)
+*  _Mardi matin_ - Réunion d'équipe - Présentation de Robin
+*  _Jeudi matin_ - Réunion ScimBa
+*  _Jeudi après-midi_ - Formation Fidle Seq 2
+*  _Vendredi matin_ - TP d'Informatique L2S3
+*  _Vendredi après-midi_ - Absente (départ en Suisse)
+
+*Fait durant la semaine :*
+
+*  rangement du code dans le but de simplifier le dossier avec les résultats
+*  tentative de reproduction du cas test du stage
+*  début de documentation du code (docstring python)
+
+*A faire :*
+
+*  continuer à trier le code (et le documenter)
+*  faire les différents tests proposés dans les réunions (en particulier le test avec l'autre solution analytique)
+
+== Week 9 : 27/11/2023 - 01/12/2023
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi_ - Journée d'intégration Inria - Présentations :
+
+*  Victor Michel-Dansac, chercheur dans l'équipe Tonus "Sur la simulation des tsunamis et l'apprentissage"
+*  Cécile Pierrot, chargée de recherche dans l'équipe Caramba : "La lettre chiffrée de Charles Quint"
+*  Vincent Loechner, maître de conférence dans l'équipe Camus " MICROCARD: Numerical modeling of cardiac electrophysiology at the cellular scale"
+*  Christophe Vuillot, chargé de recherche dans l'équipe Mocqua : "Comment faire un ordinateur quantique"
+*  Valentina Scarponi, doctorante dans l'équipe Mimesis: "Insertion de catheter par réalité augmentée à l'aide de fibres optiques"
+
+*  _Mardi matin_ - Réunion d'équipe - Présentation de Boyang
+*  _Mercredi matin_ - Réunion (Emmanuel + Michel)
+*  _Mercredi après-midi_ - Réunion (Stéphane + Michel + Nicola + Pablo + Killian)
+*  _Jeudi après-midi_ - Formation Fidle Seq 3
+*  _Vendredi matin_ - TP d'Informatique L2S3
+
+*Fait durant la semaine :*
+
+*  rangement du code (correction et dérivées)
+*  lancement de modèle sur le carré
+*  lancement du modèle sur le cercle avec une nouvelle solution (plus gentille)
+*  considération d'une nouvelle géométrie - géométrie aléatoire (en utilisant le code partagé par Killian)
+*  début des diapos pour la présentation du 12/12/2023 (à la réunion d'équipe)
+
+*A faire :*
+
+*  Continuer la présentation !
+

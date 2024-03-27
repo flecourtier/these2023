@@ -1,0 +1,76 @@
+= Février - 2024
+
+== Week 19 : 05/02/2024 - 09/02/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion présentation retraite Macaron/Tonus (Emmanuel + Michel + Killian)
+*  _Mardi-Mercredi_ - Retraite Macaron/Tonus
+*  _Jeudi après-midi_ - Formation Fidle Seq 9
+
+*Fait durant la semaine :*
+
+*  Fin présentation pour la retraite Macaron/Tonus
+*  Début Lecture article "Neural skeleton: Implicit neural representation away from the surface" (hal-04159959)
+*  Clonage du github et lancement de l'example sur le cube (+ test avec une sphère)
+*  Début préparation TP1 - L3S6 Santé et MA
+
+*A faire :*
+
+*  Commencer implémentation Scimba pour apprentissage SDF
+
+== Week 20 : 12/02/2024 - 16/02/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Mardi matin_ - Visite PDG Inria (Bruno Sportisse)
+*  _Jeudi après-midi_ - Formation Fidle Seq 10
+*  _Vendredi après-midi_ - TP1 (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Fin Lecture article "Neural skeleton: Implicit neural representation away from the surface" (hal-04159959)
+*  Implémentation Scimba pour apprentissage SDF (sur cercle)
+*  Rédaction document "Que fait Fred" (perso)
+*  Préparation TP1 - L3S6 Santé et MA
+
+*A faire :*
+
+*  Comprendre problème apprentissage (surtout avec TV)
+*  Lancement sur d'autres formes que le cercle (bean, pumpkin...)
+*  Rangement github
+
+== Week 21 : 19/02/2024 - 23/02/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Emmanuel + Michel)
+*  _Mardi matin_ - Réunion d'équipe - Présentation de Killian
+*  _Vendredi après-midi_ - TP2 géométrie (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Réglage des problèmes d'apprentissage (SDF - Eikonal et TV)
+*  Lancement de diverses entraînement sur des formes variées - Aucune SDF n'est satisfaisante pour être injecter dans Poisson
+*  Préparation TP2 - L3S6 Santé et MA
+
+== Week 22 : 26/02/2024 - 01/03/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Emmanuel + Michel + Vanessa)
+*  _Mardi matin_ - Réunion d'équipe
+*  _Vendredi après-midi_ - CC1 + Suite TP2 géométrie (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Rédaction document résultats (SDF - Poisson avec f=1 / Eikonal "régularisée")
+*  SDF - Poisson : Résultats très étranges (ne fit pas avec le bord du domaine)
+*  Lancement de diverses entraînement sur des formes variées - Aucune SDF n'est satisfaisante pour être injecter dans Poisson
+*  Premier test (SDF - Eikonal et Laplacien)
+*  Préparation CC1 - L3S6 MA
+

@@ -1,0 +1,153 @@
+:stem: latexmath
+:xrefstyle: short
+= Entraînement du PINNs à apprendre une solution unique
+
+== Problème considéré
+
+*EDP :* On considère le problème de Poisson avec condition de Dirichlet homogène (stem:[g=0]), définie par
+
+Trouver stem:[u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)] tel que
+[stem]
+++++
+\left\{
+\begin{aligned}
+-\Delta u &= f, \; &&\text{dans } \; \Omega, \\
+u&=g, \; &&\text{sur } \; \partial\Omega,
+\end{aligned}
+\right. \tag{stem:[\mathcal{P}]} \label{pb_initial}
+++++
+avec stem:[\Delta] l'opérateur de Laplace.
+
+*Géométrie :* On considère stem:[\Omega] comme étant un cercle de rayon stem:[r] et de centre stem:[(x_0,y_0)]. 
+
+Pour simplifier, on va considérer que stem:[\Omega] est entièrement contenu dans un carré stem:[\mathcal{O}] (<<geom_circle>>). 
+
+[cols="a,a"]
+|===
+|[[geom_circle]]
+.Domaine considéré.
+image::week_4/training/geom_circle.png[width=210.0,height=168.0]
+|On considère la solution analytique stem:[u_{ex}], définie par
+[stem]
+++++
+u_{ex}(x,y)=S\times\sin\left(\frac{1}{r^2}\pi((x-x_0)^2+(y-y_0)^2)\right)
+++++
+
+Ce qui nous fournit le terme source stem:[f], définie par
+[stem]
+++++
+\begin{aligned}
+f(x,y)=\frac{4}{r^4}\pi^2&S((x-x_0)^2+(y-y_0)^2)\sin\left(\frac{1}{r^2}\pi((x-x_0)^2+(y-y_0)^2)\right) \\
+&-\frac{4}{r^2}\pi S \cos\left(\frac{1}{r^2}\pi((x-x_0)^2+(y-y_0)^2)\right)
+\end{aligned}
+++++
+
+|===
+
+[NOTE]
+====
+On voit que sur le cercle, le problème est bien homogène.
+
+De plus, on notera qu'un choix simple peut être de prendre le carré stem:[[x_0-r-\epsilon,x_0+r+\epsilon]\times[y_0-r-\epsilon,y_0+r+\epsilon]] où stem:[\epsilon>0] est un paramètre fixé dans le but que stem:[\Omega] soit entièrement compris dans stem:[\mathcal{O}].
+====
+
+== Entraînement du PINNs
+
+On fixe stem:[r=\sqrt{2}/4], stem:[(x_0,y_0)=(0.5,0.5)] et stem:[S=0.5] et on considère ici que l'on souhaite entraîner un PINNs à apprendre cette solution. On utilisera l'implémentation développé dans le module ScimBA\footnote{\url{https://sciml.gitlabpages.inria.fr/scimba/}}. 
+
+On notera que l'article 2104.08426 présente comment imposer les conditions au bord de manière exacte. C'est pourquoi, on considérera deux cas :
+
+*  on apprend directement la solution stem:[u]. La loss totale regroupe alors la loss sur le résidu et la loss sur le bord.
+*  on apprend stem:[w] tel que stem:[u=\phi w] avec stem:[\phi] notre fonction levelset. La loss ne contient alors que la loss sur le résidu. 
+
+Ainsi, une première étape a été de rajouter, dans l'implémentation de ScimBa, la possibilité de définir un domaine à partir d'une fonction levelset. Ainsi pour obtenir un sampling de points à l'intérieur de stem:[\Omega], il suffit de générer un échantillon de point sur le carré stem:[\mathcal{O}] et de ne garder que les points tels que stem:[\phi(x,y)<0]. Pour générer un échantillon de point sur le bord du domaine stem:[\Omega], on a fait le choix pour l'instant de prendre les points tels que stem:[|\phi(x,y)|<\epsilon] avec stem:[\epsilon=1e-5] (<<sampling_0>>).
+
+[[sampling_0]]
+.Sampling à l'intérieur et au bord du cercle considéré.
+image::week_4/training/sampling_0.png[width=150.0,height=120.0]
+
+
+[NOTE]
+====
+Pour le sampling du bord, c'est un choix qui ne sera pas conserver, il faudra trouver une solution plus rapide-précise que celle-ci.
+====
+
+On peut alors entraîner le PINNs à apprendre notre solution. On choisira la configuration suivante :
+[[config_0]]
+.Paramètres d'entraînement considéré pour le PINNs.
+image::week_4/training/config_0.png[width=600.0,height=480.0]
+
+On va alors entraîner un modèle à apprendre stem:[u] (<<model_0>>) et un autre à apprendre stem:[w] (<<model_0_exact_bc>>) avec ces mêmes paramètres dans le but de comparer les résultats.
+
+[cols="a,a"]
+|===
+|[[model_0]]
+.Fin d'entraînement - Modèle sur stem:[u].
+image::week_4/training/model_0.png[width=300.0,height=240.0]
+|[[model_0_exact_bc]]
+.Fin d'entraînement - Modèle sur stem:[w].
+image::week_4/training/model_0_exact_bc.png[width=300.0,height=240.0]
+
+|===
+
+
+[NOTE]
+====
+Il semblerait que le modèle sur stem:[w] soit 10 fois plus précis en terme d'erreur.
+
+De plus, on remarque bien, sur la carte d'erreur, sur le modèle sur stem:[u] a des erreurs au bord, ce qui risque de poser problème dans la correction. 
+====
+
+== Correction sur les prédictions du PINNs
+
+On note stem:[\tilde{\phi}] la prédiction d'un des PINNs précédent. On ne va considérer ici que la correction par addition, on pose alors
+[stem]
+++++
+\tilde{u}=\tilde{\phi}+\tilde{C}
+++++
+et on cherche à trouver stem:[\tilde{C}: \Omega \rightarrow \mathbb{R}^d] solution du problème
+[stem]
+++++
+\left\{\begin{aligned}
+-\Delta \tilde{u}&=f, \; &&\text{on } \Omega, \\
+\tilde{u}&=g, \; &&\text{in } \Gamma.
+\end{aligned}\right.
+++++
+avec stem:[g=0] dans le cas considéré.
+On cherche alors à trouver stem:[\tilde{C}: \Omega \rightarrow \mathbb{R}^d] solution du problème
+[stem]
+++++
+\left\{\begin{aligned}
+-\Delta \tilde{C}&=\tilde{f}, \; &&\text{on } \Omega, \\
+\tilde{C}&=0, \; &&\text{in } \Gamma.
+\end{aligned}\right. %\tag{stem:[\mathcal{C}_{+}]}
+++++
+avec stem:[\tilde{f}=f+\Delta\tilde{\phi}].
+
+On cherche alors à tester la correction sur les deux modèles précédents (celui où on apprend stem:[u] et celui où on apprend stem:[w]). On testera l'utilisation de FEM et de stem:[\phi]-FEM dans les deux cas.
+
+*Résultats avec le modèle sur stem:[u] :*
+
+[cols="a,a"]
+|===
+|[[corr_fem_0]]
+.Correction avec FEM - Modèle sur stem:[u].
+image::week_4/corr/corr_fem_0.png[width=300.0,height=240.0]
+|[[corr_phifem_0]]
+.Correction avec stem:[\phi]-FEM - Modèle sur stem:[u].
+image::week_4/corr/corr_phifem_0.png[width=300.0,height=240.0]
+
+|===
+
+*Résultats avec le modèle sur stem:[w] :*
+
+[cols="a,a"]
+|===
+|[[corr_fem_0_exact_bc]]
+.Correction avec FEM - Modèle sur stem:[w].
+image::week_4/corr/corr_fem_0_exact_bc.png[width=300.0,height=240.0]
+|[[corr_phifem_0_exact_bc]]
+.Correction avec stem:[\phi]-FEM - Modèle sur stem:[w].
+image::week_4/corr/corr_phifem_0_exact_bc.png[width=300.0,height=240.0]
+
+|===

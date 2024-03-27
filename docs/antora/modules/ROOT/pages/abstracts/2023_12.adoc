@@ -1,0 +1,70 @@
+= Décembre - 2023
+
+== Week 10 : 04/12/2023 - 08/12/2023
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Michel ; recap à Emmanuel par mail)
+*  _Mardi matin_ - Réunion d'équipe - Présentation de Vincent
+*  _Jeudi_ - Séminaire d'équipe (lecture d'articles et présentations) + Soirée SpeedPark
+*  _jeudi après-midi_ - Formation Fidle Seq 4 stem:[\rightarrow] manquée
+*  _Vendredi matin_ - TP d'Informatique L2S3
+*  _Vendredi après-midi_ - Suite Séminaire d'équipe (présentations + discussion site Mimesis avec Robin)
+
+*Fait durant la semaine :*
+
+*  Présentation pour le 12/12/2023
+*  Courbes temps/erreur
+
+*A faire :*
+
+*  Finir la présentation pour le 12/12/2023 !
+
+== Week 11 : 11/12/2023 - 15/12/2023
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Emmanuel + Michel + Vanessa) stem:[\rightarrow] Discussion sur la présentation
+*  _Mardi matin_ - Réunion d'équipe stem:[\rightarrow] Ma Présentation
+*  _Mercredi après-midi_ - Surveillance CC2 (Info L2 S3)
+*  _Vendredi après-midi_ - Formation sur l'Intégrité Scientifique OBLIGATOIRE
+
+*Fait durant la semaine :*
+
+*  Début de semaine : Fin de la présentation à faire mardi
+*  Mercredi - réception du nouveau PC stem:[\Rightarrow] rangement du bureau + installation Pytorch, FEniCS...
+*  Comparaison courbes de convergence - Fonction Distance signée comme levelset et parabole (pour le cercle)
+
+*A faire :*
+
+*  Continuer les installations !
+*  Rattraper tous les trucs administratifs (Fidle, MOOC, correction CCs...)
+*  Test convergence (SD vs parabole)
+
+== Week 12 : 18/12/2023 - 22/12/2023
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Emmanuel + Michel + Vanessa + Killian + Stéphane)
+*  _Mardi matin_ - Réunion d'équipe
+*  _Mardi après-midi_ - Préparation de la soirée de Noël
+*  _Vendredi_ - Absente (car MALADE) stem:[\rightarrow] Télétravail (installation environnement pytorch+fenics)
+
+*Fait durant la semaine :*
+
+*  Rangement de code (pour pouvoir créer une branche et utiliser la nouvelle version de ScimBa)
+*  Installation - PC Portable
+*  Correction CC2 (Info L2 S3)
+
+*A faire :*
+
+*  Continuer les installations !
+*  Rattraper tous les trucs administratifs (Fidle, MOOC...)
+
+== Week 13 : 25/12/2023 - 29/12/2023
+:stem: latexmath
+:xrefstyle: short
+\textcolor{red}{Vacances de Noël !}
