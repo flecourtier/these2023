@@ -2,8 +2,7 @@ from utils import *
 
 # read "rapport.tex" and return the list of the files of the sections (e.g. "sections/section_1")
 # for section which are no input, we juste create an empty section
-def get_sections(rapport_dir):
-    rapport_file = rapport_dir + "results.tex"
+def get_sections(rapport_file):
     file_read = open(rapport_file, 'r')
 
     # we start by complete sections

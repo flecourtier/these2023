@@ -1,3 +1,8 @@
+import os
+from datetime import date,timedelta
+import numpy as np
+import locale
+
 from utils import *
 from ReadLatex import get_label_sections
 
@@ -5,12 +10,16 @@ check_while = False
 
 root_dir, result_dir, page_dir, images_dir, attachments_dir = get_dir()
 
-def cp_section(section_file,section_name,subsections,label_sections,rapport_dir):
-    file_read = open(rapport_dir + section_file + ".tex", 'r')
+def cp_section(section_file,section_name,subsections,label_sections,read_dir,write_dir):
+    file_read = open(read_dir + section_file + ".tex", 'r')
     
     name_section_file = section_file.split("/")[1]
-    file_write = open(page_dir + name_section_file + ".adoc", 'w')
-    
+
+    if not os.path.exists(page_dir + write_dir):
+        os.makedirs(page_dir + write_dir)
+
+    file_write = open(page_dir + write_dir + name_section_file + ".adoc", 'w')
+
     num_subsection = -1
     subsection_file = None
     first_minipage=True
@@ -40,11 +49,12 @@ def cp_section(section_file,section_name,subsections,label_sections,rapport_dir)
                 file_write.write("\n---\n")
                 file_write.write("The features include\n\n")
                 section_file_name = section_file.split("/")[1]
+                section_file_name = write_dir + section_file_name
                 for i,subsection_ in enumerate(subsections):
                     file_write.write("** xref:" + section_file_name + "/subsec_"+ str(i) + ".adoc[" + subsection_ + "]\n\n")
 
             subsection_file = "subsec_" + str(num_subsection) + ".adoc"
-            file_write = open(page_dir + name_section_file + "/" + subsection_file, 'w')
+            file_write = open(page_dir + write_dir + name_section_file + "/" + subsection_file, 'w')
 
             subsection = line.split("{")[1].split("}")[0]
             subsection = test_latex_title(subsection)
@@ -67,7 +77,7 @@ def cp_section(section_file,section_name,subsections,label_sections,rapport_dir)
                         file_write.write("** xref:" + section_file_name + "/subsec_"+ str(num_subsection) + "_subsubsec_" + str(i) + ".adoc[" + subsubsection_ + "]\n\n")
 
                 subsubsection_file = "subsec_" + str(num_subsection) + "_subsubsec_" + str(num_subsubsection) + ".adoc"
-                file_write = open(page_dir + name_section_file + "/" + subsubsection_file, 'w')
+                file_write = open(page_dir + write_dir + name_section_file + "/" + subsubsection_file, 'w')
                 file_write.write(":stem: latexmath\n")
                 file_write.write(":xrefstyle: short\n")
                 line = "= " + name_subsubsection + "\n"
@@ -274,18 +284,62 @@ def cp_section(section_file,section_name,subsections,label_sections,rapport_dir)
             if line[0]!="%":
                 file_write.write(line)
     
-def cp_all_sections(section_files,section_names,sections,rapport_dir):
-    label_sections = get_label_sections(section_files,sections,rapport_dir)
+def cp_all_sections(section_files,section_names,sections,read_dir,write_dir):
+    label_sections = get_label_sections(section_files,sections,read_dir)
     for i in range(len(section_files)):
         subsections = sections[section_names[i]]        
-        # if section_files[i]!="":
-        print(section_files[i])
-        print(sections)
-        print(label_sections)
-        cp_section(section_files[i],section_names[i],subsections,label_sections,rapport_dir)
-        # else:
-        #     section_file_name = "section_" + str(i)
-        #     file_write = open(page_dir + section_file_name + ".adoc", 'w')
-        #     file_write.write("= " + section + "\n\n")
-        #     file_write.write("#TO COMPLETE !#\n")
-        #     file_write.close()
+        cp_section(section_files[i],section_names[i],subsections,label_sections,read_dir,write_dir)
+
+def group_by_months(section_files,section_names,sections,write_dir):
+    locale.setlocale(locale.LC_TIME, "fr_FR")
+
+    def get_values():
+        monday = date(2023, 10, 2)
+        friday = monday + timedelta(days=4)
+        week = timedelta(days=7) # 7 days 
+
+        today = date.today()
+        delta = today - monday
+        current_week_num = int(np.ceil((delta.days+1) / 7))
+
+        return monday, friday, week, current_week_num
+    
+    monday, friday, week, current_week_num = get_values()
+    previous_month = monday.month
+
+    new_section_files = []
+    new_section_names = []
+    new_sections = {}
+    for i in range(1,current_week_num+1):
+        current_month = monday.month
+        current_year = monday.year
+
+        file_read = open(page_dir + write_dir + "week_" + str(i) + ".adoc", 'r')
+
+        if i==1 or previous_month!=current_month:
+            file_write = open(page_dir + write_dir + str(current_year) + "_" + str(current_month) + ".adoc", 'w')
+
+            name_month = monday.strftime("%B")
+            name_month = name_month[0].upper() + name_month[1:]
+            title = "= " + name_month + " - " + str(current_year) + "\n"
+            file_write.write(title+"\n")
+
+            new_section_files.append(write_dir + str(current_year) + "_" + str(current_month))
+            new_section_names.append(name_month + " " + str(current_year))
+            new_sections[name_month + " " + str(current_year)] = {}
+
+        subtitle = "== Week " + str(i) + " : " + monday.strftime("%d/%m/%Y") + " - " + friday.strftime("%d/%m/%Y") + "\n"
+        file_write.write(subtitle)
+
+        while line := file_read.readline():
+            if line[0]!="=":
+                file_write.write(line)
+
+        os.remove(page_dir + write_dir + "week_" + str(i) + ".adoc")
+            
+        previous_month = current_month
+            
+        monday+=week
+        friday+=week
+
+    return new_section_files,new_section_names,new_sections

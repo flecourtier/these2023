@@ -42,7 +42,7 @@ def run_abstracts():
     abstracts_repo = "weeks/"
     liste = []
     for i in range(1,current_week_num+1):
-        asbtract_filename = abstracts_repo+"week_"+str(i)+".tex"
+        asbtract_filename = abstracts_repo+"week_"+str(i)
 
         monday_str = monday.strftime("%d/%m/%Y")
         friday_str = friday.strftime("%d/%m/%Y")
@@ -50,7 +50,7 @@ def run_abstracts():
         week_title = "Week "+str(i)+" : "+monday_str+" - "+friday_str
         file_write.write('\n\t\\section{'+week_title+'}\n')
 
-        if os.path.exists(current_dir+asbtract_filename):
+        if os.path.exists(current_dir+asbtract_filename+".tex"):
             liste.append(i)
             file_write.write('\t\input{'+asbtract_filename+'}\n')
             
