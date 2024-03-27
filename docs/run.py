@@ -96,5 +96,34 @@ def run_results():
 
     file_write.write('\end{document}')
 
+def run_report():
+    monday, friday, week, current_week_num = get_values()
+
+    print("### Report ###")
+    current_dir = "report/"
+    results_file = current_dir+"report.tex"
+    if os.path.exists(results_file):
+        os.remove(results_file)
+
+    to_include = current_dir+"include.txt"
+    shutil.copyfile(to_include, results_file)
+    file_write = open(results_file,"a")
+    title = "Report : Week 1 - Week "+str(current_week_num)
+    write_entete(file_write, title, True)
+
+    for subdir in os.listdir(current_dir):
+        if os.path.isdir(current_dir+subdir) and subdir[-1] != "_":
+            chapter_name = subdir[0].upper()+subdir[1:]
+            file_write.write('\n\t\\chapter{'+chapter_name+'}\n')
+            results_repo = subdir+"/"+"sections/"
+            for section in os.listdir(current_dir+results_repo+"/"):
+                section_name = section.replace(".tex","")
+                file_write.write('\t\\newpage\n')
+                file_write.write('\t\input{'+results_repo+section_name+'}\n')
+
+            # print(liste)
+
+    file_write.write('\end{document}')
+
 run_abstracts()
-run_results()
+run_report()

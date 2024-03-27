@@ -1,4 +1,4 @@
-\documentclass[french]{article}
+\documentclass[french]{report}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
@@ -81,15 +81,3 @@
 \usepackage{fontawesome}
 
 \usepackage{lipsum}
-
-\begin{document}
-	LECOURTIER Frédérique \hfill \today
-	\begin{center}
-		\Large\textbf{{Results : Week 1 - Week 26}}
-	\end{center}
-	\tableofcontents
-	\newpage
-
-	\section{Week 4 : 23/10/2023 - 27/10/2023}
-	\input{weeks/week_4}
-\end{document}
