@@ -1,7 +1,6 @@
 import os
 from datetime import date,timedelta
 import numpy as np
-import locale
 
 from utils import *
 from ReadLatex import get_label_sections
@@ -291,7 +290,14 @@ def cp_all_sections(section_files,section_names,sections,read_dir,write_dir):
         cp_section(section_files[i],section_names[i],subsections,label_sections,read_dir,write_dir)
 
 def group_by_months(section_files,section_names,sections,write_dir):
-    locale.setlocale(locale.LC_TIME, "fr_FR")
+    # locale.setlocale(locale.LC_TIME, "fr_FR")
+
+    def trad_month(en_month):
+        fr_months = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"]
+        en_months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+        for i in range(len(en_months)):
+            if en_month==en_months[i]:
+                return fr_months[i]
 
     def get_values():
         monday = date(2023, 10, 2)
@@ -320,6 +326,7 @@ def group_by_months(section_files,section_names,sections,write_dir):
             file_write = open(page_dir + write_dir + str(current_year) + "_" + str(current_month) + ".adoc", 'w')
 
             name_month = monday.strftime("%B")
+            name_month = trad_month(name_month)
             name_month = name_month[0].upper() + name_month[1:]
             title = "= " + name_month + " - " + str(current_year) + "\n"
             file_write.write(title+"\n")

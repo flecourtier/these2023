@@ -89,8 +89,6 @@ def create_nav_file():
     file_write.write(":stem: latexmath\n")
     
     file_write.write("\n* xref:main_page.adoc[Présentation]\n")
-
-    file_write.write("\n.Contenus supplémetaires\n")
     
     # file_write.close()
     return file_write
