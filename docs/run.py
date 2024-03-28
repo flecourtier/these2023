@@ -81,7 +81,10 @@ def run_report():
             file_write.write('\n\t\\chapter{'+chapter_name+'}\n')
             results_repo = subdir+"/"+"sections/"
 
-            for section in os.listdir(current_dir+results_repo):
+            list_section = os.listdir(current_dir+results_repo)
+            list_section.sort()
+            print(list_section)
+            for section in list_section:
                 section_name = section.replace(".tex","")
                 file_write.write('\t\\newpage\n')
                 file_write.write('\t\input{'+results_repo+section_name+'}\n')
@@ -109,7 +112,10 @@ def run_chapter_report():
             write_entete(file_write, title, True)
 
             results_repo = "sections/"
-            for section in os.listdir(chapter_dir+results_repo+"/"):
+            list_section = os.listdir(chapter_dir+results_repo+"/")
+            list_section.sort()
+            print(list_section)
+            for section in list_section:
                 section_name = section.replace(".tex","")
                 file_write.write('\t\\newpage\n')
                 file_write.write('\t\input{'+results_repo+section_name+'}\n')
