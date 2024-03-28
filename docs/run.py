@@ -72,8 +72,10 @@ def run_report():
     to_include = current_dir+"include.txt"
     shutil.copyfile(to_include, results_file)
     file_write = open(results_file,"a")
-    title = "Rapport : Semaine 1 - Semaine "+str(current_week_num)
-    write_entete(file_write, title, True)
+
+    file_write.write('\n\\begin{document}\n')
+    file_write.write('\n\t\input{titlepage}\n')
+    file_write.write('\t\\tableofcontents\n')
 
     for subdir in os.listdir(current_dir):
         if os.path.isdir(current_dir+subdir) and subdir[-1] != "_":
