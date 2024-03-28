@@ -1,0 +1,4 @@
+:stem: latexmath
+:xrefstyle: short
+= Domaine applicatif
+\section{Domaine applicatif}

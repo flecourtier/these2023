@@ -4,11 +4,15 @@ Après un stage dans l'équipe INRIA MIMESIS dans le cadre de mon master (Master
 
 == Rapport
 
-Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$results.pdf[PDF]) :
+Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$report.pdf[PDF]) :
 
-* xref:results/week_4.adoc[Week 4 : 23/10/2023 - 27/10/2023]
-** xref:results/week_4/subsec_0.adoc[Reproduction résultats - Article 2104.08426]
-** xref:results/week_4/subsec_1.adoc[Entraînement du PINNs à apprendre une solution unique]
+=== Introduction
+* xref:introduction/contrib.adoc[Ma contribution]
+* xref:introduction/application.adoc[Domaine applicatif]
+
+=== Levelset
+* xref:levelset/learning.adoc[Apprentissage]
+* xref:levelset/maths_theory.adoc[Théorie d'approximation]
 
 
 == Contenus supplémentaires
@@ -17,7 +21,7 @@ Vous pouvez trouver les contenus supplémentaires suivants:
 
 * différentes xref:slides.adoc[présentations]
 
-* des xref:abstracts.adoc[résumés hebdomadaires] (au xref:attachment$abstracts.pdf[format PDF])
+* des xref:abstracts.adoc[résumés hebdomadaires] (au format xref:attachment$abstracts.pdf[PDF])
 
 Vous trouverez également:
 

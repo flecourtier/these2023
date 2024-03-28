@@ -2,10 +2,13 @@
 
 * xref:main_page.adoc[Sommaire]
 
-.Rapport
-* xref:results/week_4.adoc[Week 4 : 23/10/2023 - 27/10/2023]
-** xref:results/week_4/subsec_0.adoc[Reproduction résultats - Article 2104.08426]
-** xref:results/week_4/subsec_1.adoc[Entraînement du PINNs à apprendre une solution unique]
+.Introduction
+* xref:introduction/contrib.adoc[Ma contribution]
+* xref:introduction/application.adoc[Domaine applicatif]
+
+.Levelset
+* xref:levelset/learning.adoc[Apprentissage]
+* xref:levelset/maths_theory.adoc[Théorie d'approximation]
 
 .Contenus supplémentaires
 * xref:slides.adoc[Mes slides]

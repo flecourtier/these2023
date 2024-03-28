@@ -1,0 +1,4 @@
+:stem: latexmath
+:xrefstyle: short
+= Théorie d'approximation
+\section{Théorie d'approximation}

@@ -1,0 +1,4 @@
+:stem: latexmath
+:xrefstyle: short
+= Apprentissage
+\section{Apprentissage}
