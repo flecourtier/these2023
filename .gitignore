@@ -1,31 +1,17 @@
 .ipynb_checkpoints/
 __pycache__/
 
-
-
-docs/to_do_list/to_do_list.*
-!docs/to_do_list/to_do_list.tex
-!docs/to_do_list/to_do_list.pdf
-
 docs/abstracts/abstracts.*
 !docs/abstracts/abstracts.tex
 !docs/abstracts/abstracts.pdf
 
-docs/results/results.*
-!docs/results/results.tex
-!docs/results/results.pdf
+results.*
+results.tex
+results.pdf
 
-docs/results/eikonal/results.*
-!docs/results/eikonal/results.tex
-!docs/results/eikonal/results.pdf
-
-docs/meetings/meetings.*
-!docs/meetings/meetings.tex
-!docs/meetings/meetings.pdf
-
-meeting.*
-!meeting.tex
-!meeting.pdf
+report.*
+report.tex
+report.pdf
 
 presentation.*
 !presentation.tex
