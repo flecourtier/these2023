@@ -92,19 +92,25 @@
   </li>
   <li class="nav-item" data-depth="0">
     <button class="nav-item-toggle"></button>
-    <span class="nav-text">Rapport</span>
+    <span class="nav-text">Introduction</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../results/week_4.html">Week 4 : 23/10/2023 - 27/10/2023</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../results/week_4/subsec_0.html">Reproduction résultats - Article 2104.08426</a>
+    <a class="nav-link" href="../introduction/contrib.html">Ma contribution</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../results/week_4/subsec_1.html">Entraînement du PINNs à apprendre une solution unique</a>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/application.html">Domaine applicatif</a>
   </li>
 </ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Levelset</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../levelset/learning.html">Apprentissage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../levelset/maths_theory.html">Théorie d&#8217;approximation</a>
   </li>
 </ul>
   </li>
@@ -262,9 +268,9 @@ u&amp;=g, \; &amp;&amp;\text{sur } \; \partial\Omega,
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div class="content"><div id="geom_circle" class="imageblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div id="geom_circle" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/training/geom_circle.png" alt="geom circle" width="210.0" height="168.0">
+<img src="week_4/training/geom_circle.png" alt="geom circle" width="210.0" height="168.0">
 </div>
 <div class="title">Figure 1. Domaine considéré.</div>
 </div></div></td>
@@ -331,9 +337,9 @@ f(x,y)=\frac{4}{r^4}\pi^2&amp;S((x-x_0)^2+(y-y_0)^2)\sin\left(\frac{1}{r^2}\pi((
 <div class="paragraph">
 <p>Ainsi, une première étape a été de rajouter, dans l&#8217;implémentation de ScimBa, la possibilité de définir un domaine à partir d&#8217;une fonction levelset. Ainsi pour obtenir un sampling de points à l&#8217;intérieur de \(\Omega\), il suffit de générer un échantillon de point sur le carré \(\mathcal{O}\) et de ne garder que les points tels que \(\phi(x,y)&lt;0\). Pour générer un échantillon de point sur le bord du domaine \(\Omega\), on a fait le choix pour l&#8217;instant de prendre les points tels que \(|\phi(x,y)|&lt;\epsilon\) avec \(\epsilon=1e-5\) (<a href="#sampling_0">Figure 2</a>).</p>
 </div>
-<div id="sampling_0" class="imageblock">
+<div id="sampling_0" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/training/sampling_0.png" alt="sampling 0" width="150.0" height="120.0">
+<img src="week_4/training/sampling_0.png" alt="sampling 0" width="150.0" height="120.0">
 </div>
 <div class="title">Figure 2. Sampling à l&#8217;intérieur et au bord du cercle considéré.</div>
 </div>
@@ -354,9 +360,9 @@ f(x,y)=\frac{4}{r^4}\pi^2&amp;S((x-x_0)^2+(y-y_0)^2)\sin\left(\frac{1}{r^2}\pi((
 <div class="paragraph">
 <p>On peut alors entraîner le PINNs à apprendre notre solution. On choisira la configuration suivante :</p>
 </div>
-<div id="config_0" class="imageblock">
+<div id="config_0" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/training/config_0.png" alt="config 0" width="600.0" height="480.0">
+<img src="week_4/training/config_0.png" alt="config 0" width="600.0" height="480.0">
 </div>
 <div class="title">Figure 3. Paramètres d&#8217;entraînement considéré pour le PINNs.</div>
 </div>
@@ -370,15 +376,15 @@ f(x,y)=\frac{4}{r^4}\pi^2&amp;S((x-x_0)^2+(y-y_0)^2)\sin\left(\frac{1}{r^2}\pi((
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div class="content"><div id="model_0" class="imageblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div id="model_0" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/training/model_0.png" alt="model 0" width="300.0" height="240.0">
+<img src="week_4/training/model_0.png" alt="model 0" width="300.0" height="240.0">
 </div>
 <div class="title">Figure 4. Fin d&#8217;entraînement - Modèle sur \(u\).</div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div id="model_0_exact_bc" class="imageblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div id="model_0_exact_bc" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/training/model_0_exact_bc.png" alt="model 0 exact bc" width="300.0" height="240.0">
+<img src="week_4/training/model_0_exact_bc.png" alt="model 0 exact bc" width="300.0" height="240.0">
 </div>
 <div class="title">Figure 5. Fin d&#8217;entraînement - Modèle sur \(w\).</div>
 </div></div></td>
@@ -454,15 +460,15 @@ On cherche alors à trouver \(\tilde{C}: \Omega \rightarrow \mathbb{R}^d\) solut
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div class="content"><div id="corr_fem_0" class="imageblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div id="corr_fem_0" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/corr/corr_fem_0.png" alt="corr fem 0" width="300.0" height="240.0">
+<img src="week_4/corr/corr_fem_0.png" alt="corr fem 0" width="300.0" height="240.0">
 </div>
 <div class="title">Figure 6. Correction avec FEM - Modèle sur \(u\).</div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div id="corr_phifem_0" class="imageblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div id="corr_phifem_0" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/corr/corr_phifem_0.png" alt="corr phifem 0" width="300.0" height="240.0">
+<img src="week_4/corr/corr_phifem_0.png" alt="corr phifem 0" width="300.0" height="240.0">
 </div>
 <div class="title">Figure 7. Correction avec \(\phi\)-FEM - Modèle sur \(u\).</div>
 </div></div></td>
@@ -479,15 +485,15 @@ On cherche alors à trouver \(\tilde{C}: \Omega \rightarrow \mathbb{R}^d\) solut
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div class="content"><div id="corr_fem_0_exact_bc" class="imageblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div id="corr_fem_0_exact_bc" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/corr/corr_fem_0_exact_bc.png" alt="corr fem 0 exact bc" width="300.0" height="240.0">
+<img src="week_4/corr/corr_fem_0_exact_bc.png" alt="corr fem 0 exact bc" width="300.0" height="240.0">
 </div>
 <div class="title">Figure 8. Correction avec FEM - Modèle sur \(w\).</div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div id="corr_phifem_0_exact_bc" class="imageblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div id="corr_phifem_0_exact_bc" class="imageblock unresolved">
 <div class="content">
-<img src="../_images/week_4/corr/corr_phifem_0_exact_bc.png" alt="corr phifem 0 exact bc" width="300.0" height="240.0">
+<img src="week_4/corr/corr_phifem_0_exact_bc.png" alt="corr phifem 0 exact bc" width="300.0" height="240.0">
 </div>
 <div class="title">Figure 9. Correction avec \(\phi\)-FEM - Modèle sur \(w\).</div>
 </div></div></td>
