@@ -17,38 +17,50 @@ root_dir, result_dir, page_dir, images_dir, attachments_dir = get_dir()
 nav_file = create_nav_file()
 
 #############
-# Resultats #
+# Report #
 #############
 
 ####
 # Create Results
 ####
 
-nav_file.write("\n.Rapport\n")
+rapport_dir = root_dir + "report/"
 
-# ReadLatex
+for subdir in os.listdir(rapport_dir):
+    chapter_dir = rapport_dir + subdir + "/"
+    if os.path.isdir(rapport_dir + subdir) and subdir[-1] != "_":
+        chapter_name = subdir[0].upper() + subdir[1:]
+        print("## "+chapter_name)
 
-rapport_dir = root_dir + "results/"
-rapport_file = rapport_dir + "results.tex"
+        rapport_file = chapter_dir + "report.tex"
+        nav_file.write("\n."+chapter_name+"\n")
 
-section_files,section_names = get_sections(rapport_file)
-sections = get_subsections(section_files,section_names,rapport_dir)
+        # ReadLatex
 
-# InitAntora
+        section_files,section_names = get_sections(rapport_file)
+        sections,section_names = get_subsections(section_files,section_names,chapter_dir)
 
-new_section_files = []
-for i in range(len(section_files)):
-    section_file_name = section_files[i].split("/")[1]
-    section_file_name = "results/" + section_file_name
-    new_section_files.append(section_file_name)
-write_in_nav_file(nav_file,new_section_files,sections,level=1)
-create_nav(section_files,sections,"results/")
+        print("section_files :",section_files)
+        print("section_names :",section_names)
+        print("sections :",sections)
 
-cp_assets(section_files,rapport_dir)
-cp_all_sections(section_files,section_names,sections,rapport_dir,"results/")
+        # InitAntora
 
-# label_sections = get_label_sections(section_files)
-# print("label_sections :",label_sections)
+        new_section_files = []
+        for i in range(len(section_files)):
+            section_file_name = section_files[i].split("/")[1]
+            section_file_name = subdir + "/" + section_file_name
+            new_section_files.append(section_file_name)
+        write_in_nav_file(nav_file,new_section_files,sections,level=1)
+        create_nav(section_files,sections,subdir+"/")
+
+        cp_assets(new_section_files,chapter_dir)
+        cp_all_sections(section_files,section_names,sections,chapter_dir,subdir+"/")
+
+        # # label_sections = get_label_sections(section_files)
+        # # print("label_sections :",label_sections)
+
+shutil.copyfile(rapport_dir + "report.pdf",attachments_dir + "report.pdf")
 
 ############################
 # Contenus supplémentaires #
@@ -71,7 +83,7 @@ abstract_dir = root_dir + "abstracts/"
 abstract_file = abstract_dir + "abstracts.tex"
 
 section_files,section_names = get_sections(abstract_file)
-sections = get_subsections(section_files,section_names,abstract_dir)
+sections,section_names = get_subsections(section_files,section_names,abstract_dir)
 
 cp_all_sections(section_files,section_names,sections,abstract_dir,"abstracts/")
 section_files,section_names,sections = group_by_months(section_files,section_names,sections,"abstracts/")

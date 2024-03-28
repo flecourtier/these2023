@@ -16,6 +16,7 @@ def get_sections(rapport_file):
         if search_word_in_line("\input", line):
             key = line.split("{")[1].split("}")[0]
             section_files.append(key)
+            sections_name.append("")
 
     return section_files,sections_name
 
@@ -33,13 +34,16 @@ def get_subsections(section_files,sections_name,rapport_dir):
     sections = {}
     for (i,section_file) in enumerate(section_files):
         section_name = sections_name[i]
-        # if section_file!="":
+
         file_read = open(rapport_dir + section_file + ".tex", 'r')
         subsections = {}
         add_subsubsections = test_paragraph(section_file)
         while line := file_read.readline():
-            # if search_word_in_line("\section", line):
-            #     pass
+            if search_word_in_line("\section", line):
+                assert section_name == ""
+                section_name = line.split("{")[1].split("}")[0]
+                section_name = test_latex_title(section_name)
+                sections_name[i] = section_name
             if search_word_in_line("\subsection", line):
                 subsection = line.split("{")[1].split("}")[0]
                 subsection = test_latex_title(subsection)
@@ -51,12 +55,8 @@ def get_subsections(section_files,sections_name,rapport_dir):
                     subsections[subsection].append(subsubsection)
                 
         sections[section_name] = subsections
-        # else:
-        #     key = empty_sections.pop(0)
-        #     key = test_latex_title(key)
-        #     sections[key] = None
 
-    return sections
+    return sections,sections_name
 
 # create a dict which contains all the label of sections, subsections and subsubsections
 def get_label_sections(section_files,sections,rapport_dir):

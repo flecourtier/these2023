@@ -60,42 +60,6 @@ def run_abstracts():
 
     file_write.write('\end{document}')
 
-def run_results():
-    monday, friday, week, current_week_num = get_values()
-
-    print("### Results ###")
-    current_dir = "results/"
-    results_file = current_dir+"results.tex"
-    if os.path.exists(results_file):
-        os.remove(results_file)
-
-    to_include = current_dir+"include.txt"
-    shutil.copyfile(to_include, results_file)
-    file_write = open(results_file,"a")
-    title = "Results : Week 1 - Week "+str(current_week_num)
-    write_entete(file_write, title, True)
-
-    results_repo = "weeks/"
-    liste = []
-    for i in range(1,current_week_num+1):
-        results_filename = results_repo+"week_"+str(i)
-
-        monday_str = monday.strftime("%d/%m/%Y")
-        friday_str = friday.strftime("%d/%m/%Y")
-
-        if os.path.exists(current_dir+results_filename+".tex"):
-            liste.append(i)
-            file_write.write('\t\\newpage\n')
-            week_title = "Week "+str(i)+" : "+monday_str+" - "+friday_str
-            file_write.write('\n\t\\section{'+week_title+'}\n')
-            file_write.write('\t\input{'+results_filename+'}\n')
-
-        monday+=week
-        friday+=week
-    print(liste)
-
-    file_write.write('\end{document}')
-
 def run_report():
     monday, friday, week, current_week_num = get_values()
 
@@ -108,7 +72,7 @@ def run_report():
     to_include = current_dir+"include.txt"
     shutil.copyfile(to_include, results_file)
     file_write = open(results_file,"a")
-    title = "Report : Week 1 - Week "+str(current_week_num)
+    title = "Rapport : Semaine 1 - Semaine "+str(current_week_num)
     write_entete(file_write, title, True)
 
     for subdir in os.listdir(current_dir):
@@ -127,8 +91,6 @@ def run_report():
     file_write.write('\end{document}')
 
 def run_chapter_report():
-    monday, friday, week, current_week_num = get_values()
-
     print("### Chapter ###")
     current_dir = "report/"
     to_include = current_dir+"include_chapter.txt"

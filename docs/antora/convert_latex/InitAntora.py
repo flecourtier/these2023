@@ -67,7 +67,8 @@ def cp_assets(section_files,rapport_dir):
             shutil.rmtree(images_dir)
         dir_name = section_file.split("/")[0]
         section = section_file.split("/")[1]
-        shutil.copytree(rapport_dir + dir_name + "/images/" + section, images_dir+section)
+        if os.path.exists(rapport_dir + dir_name + "/images/" + section):
+            shutil.copytree(rapport_dir + dir_name + "/images/" + section, images_dir+section)
 
     # Cp attachments
     if os.path.exists(attachments_dir):
@@ -78,7 +79,7 @@ def cp_assets(section_files,rapport_dir):
                 os.remove(attachments_dir + file)
     # os.mkdir(attachments_dir)
     shutil.copyfile(root_dir + "abstracts/abstracts.pdf",attachments_dir + "abstracts.pdf")
-    shutil.copyfile(rapport_dir + "results.pdf",attachments_dir + "results.pdf")
+    
 
 # create the nav.adoc file
 def create_nav_file():
@@ -124,13 +125,14 @@ def create_main_page_file(nav_filename):
 
     # Résultats
     file_write.write("== Rapport\n\n")
-    file_write.write("Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$results.pdf[PDF]) :\n\n")
+    file_write.write("Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$report.pdf[PDF]) :\n\n")
     
     write_results = False
     while line := nav_file.readline():
         if search_word_in_line(".Contenus supplémentaires", line):
             break
-        if search_word_in_line(".Rapport", line):
+        if line[0]==".":
+            file_write.write("=== " + line[1:])
             write_results = True
         elif write_results:
             file_write.write(line)
@@ -141,7 +143,7 @@ def create_main_page_file(nav_filename):
     # file_write.write(attach)
     file_write.write("Vous pouvez trouver les contenus supplémentaires suivants:\n\n")
     file_write.write("* différentes xref:slides.adoc[présentations]\n\n")
-    file_write.write("* des xref:abstracts.adoc[résumés hebdomadaires] (au xref:attachment$abstracts.pdf[format PDF])\n\n")
+    file_write.write("* des xref:abstracts.adoc[résumés hebdomadaires] (au format xref:attachment$abstracts.pdf[PDF])\n\n")
     
     file_write.write("Vous trouverez également:\n\n")
     file_write.write("* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine\n\n")

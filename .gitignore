@@ -10,8 +10,8 @@ results.tex
 results.pdf
 
 report.*
-report.tex
-report.pdf
+!report.tex
+!report.pdf
 
 presentation.*
 !presentation.tex
