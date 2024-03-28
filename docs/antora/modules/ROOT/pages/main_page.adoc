@@ -7,12 +7,12 @@ Après un stage dans l'équipe INRIA MIMESIS dans le cadre de mon master (Master
 Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$report.pdf[PDF]) :
 
 === Introduction
-* xref:introduction/contrib.adoc[Ma contribution]
-* xref:introduction/application.adoc[Domaine applicatif]
+* xref:introduction/1_application.adoc[Domaine applicatif]
+* xref:introduction/2_contrib.adoc[Ma contribution]
 
 === Levelset
-* xref:levelset/learning.adoc[Apprentissage]
-* xref:levelset/maths_theory.adoc[Théorie d'approximation]
+* xref:levelset/1_maths_theory.adoc[Théorie d'approximation]
+* xref:levelset/2_learning.adoc[Apprentissage]
 
 
 == Contenus supplémentaires

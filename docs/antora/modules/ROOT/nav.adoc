@@ -3,12 +3,12 @@
 * xref:main_page.adoc[Sommaire]
 
 .Introduction
-* xref:introduction/contrib.adoc[Ma contribution]
-* xref:introduction/application.adoc[Domaine applicatif]
+* xref:introduction/1_application.adoc[Domaine applicatif]
+* xref:introduction/2_contrib.adoc[Ma contribution]
 
 .Levelset
-* xref:levelset/learning.adoc[Apprentissage]
-* xref:levelset/maths_theory.adoc[Théorie d'approximation]
+* xref:levelset/1_maths_theory.adoc[Théorie d'approximation]
+* xref:levelset/2_learning.adoc[Apprentissage]
 
 .Contenus supplémentaires
 * xref:slides.adoc[Mes slides]
