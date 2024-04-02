@@ -1,5 +1,0 @@
-# Slides
-
-* 26/03/2024 : xref:attachment$presentation/2024_03_26.pdf[How to work with complex geometries in PINNs ?]
-* 06/02/2024 : xref:attachment$presentation/2024_02_06.pdf[Mesh-based methods and physically informed learning]
-* 12/12/2023 : xref:attachment$presentation/2023_12_12.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
