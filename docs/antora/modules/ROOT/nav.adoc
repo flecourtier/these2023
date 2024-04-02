@@ -1,0 +1,22 @@
+:stem: latexmath
+
+* xref:main_page.adoc[Sommaire]
+
+.Introduction
+* xref:introduction/1_application.adoc[Domaine applicatif]
+* xref:introduction/2_contrib.adoc[Ma contribution]
+
+.Levelset
+* xref:levelset/1_maths_theory.adoc[Théorie d'approximation]
+* xref:levelset/2_learning.adoc[Apprentissage]
+
+.Contenus supplémentaires
+* xref:slides.adoc[Mes slides]
+* xref:abstracts.adoc[Résumés hebdomadaires]
+** xref:abstracts/2023_10.adoc[Octobre 2023]
+** xref:abstracts/2023_11.adoc[Novembre 2023]
+** xref:abstracts/2023_12.adoc[Décembre 2023]
+** xref:abstracts/2024_1.adoc[Janvier 2024]
+** xref:abstracts/2024_2.adoc[Février 2024]
+** xref:abstracts/2024_3.adoc[Mars 2024]
+** xref:abstracts/2024_4.adoc[Avril 2024]

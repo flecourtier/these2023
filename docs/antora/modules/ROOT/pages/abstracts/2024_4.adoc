@@ -1,0 +1,20 @@
+= Avril - 2024
+
+== Week 27 : 01/04/2024 - 05/04/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi_ - Férié
+*  _Jeudi matin_ - Réunion thèse en visio (Michel)
+*  _Jeudi après-midi_ - Discussion Merge SCimBa à l'UFR (Emmanuel)
+*  _Jeudi après-midi_ - Formation Fidle Seq 15
+
+*Fait durant la semaine :*
+
+*  
+
+*A faire :*
+
+*  
+

@@ -1,0 +1,93 @@
+= Mars - 2024
+
+== Week 23 : 04/03/2024 - 08/03/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Lundi après-midi_ - Réunion (Michel + Vanessa)
+*  _Mercredi matin_ - Réunion UFR (Emmanuel + Michel + Vanessa)
+*  _Jeudi après-midi_ - Formation Fidle Seq 11
+*  _Jeudi + Vendredi_ - Congés
+
+*Fait durant la semaine :*
+
+*  Test Séparation loss Diriclet et Neumann + Pénalisation forte sur Dirichlet
+*  Test Correction (SDF - Eikonal et Laplacien)
+*  Rédaction d'un document avec tous les résultats obtenus (SDF - Eikonal et Laplacien)
+*  Mercredi après-midi - Début Correction CC1 - L3S6 MA
+
+*A faire :*
+
+*  Construction maillage FEM à partir de SDF (pas polygone "exacte")
+*  Interpolation de la solution sur maillage sur-raffinée pour le calcul d'erreur
+*  Finir correction CC1 - L3S6 MA
+
+== Week 24 : 11/03/2024 - 15/03/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Mardi matin_ - Réunion d'équipe
+*  _Jeudi matin_ - Réunion (Emmanuel + Michel + Vanessa)
+*  _Jeudi après-midi_ - Formation Fidle Seq 12
+*  _Vendredi après-midi_ - TP2 Signal (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Fin Correction CC1 + Préparation correction exam
+*  Construction d'un maillage standard à partir de la levelset apprise (https://github.com/KVuillemot/PhiFEM_and_FNO/blob/main/install_and_use_mmg.md [Github Killian])
+*  Interpolation solution sur maillage sur-raffinée
+*  Préparation TP2 exo Signal - L3S6 MA
+
+*A faire :*
+
+*  Push tout sur Scimba avec exemple
+*  Tester EikonalLap sur points construits à partir de l'image binaire (code Killian)
+*  Tester classifieur pour apprentissag levelset à partir d'image binaire
+
+== Week 25 : 18/03/2024 - 22/03/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Mardi matin_ - Réunion d'équipe
+*  _Jeudi matin_ - Réunion présentation (Emmanuel + Michel)
+*  _Jeudi après-midi_ - Formation Fidle Seq 13 stem:[\rightarrow] loupé
+*  _Vendredi après-midi_ - TP3 Maillage (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Préparation de la présentation \textcolor{red}{stem:[\rightarrow] 26/03/2024}
+*  Résolution problème MVP
+*  Lancement de différents tests pour la présentation
+*  Préparation TP3 exo Maillage - L3S6 MA
+
+*A faire :*
+
+*  Push scimba (exemple + test)
+*  Mettre à jour résultat github
+
+== Week 26 : 25/03/2024 - 29/03/2024
+:stem: latexmath
+:xrefstyle: short
+*Réunions :*
+
+*  _Mardi matin_ - Présentation
+*  _Mardi matin_ - Réunion d'équipe
+*  _Mardi après-midi_ - Formation "Enseigner et apprendre (public : mission d'enseignement)"
+*  _Jeudi matin_ - Visio sur les PINNs (Emmanuel + Victor)
+*  _Jeudi après-midi_ - Formation Fidle Seq 14
+*  _Vendredi_ - Férié
+
+*Fait durant la semaine :*
+
+*  Entrainement et Finition de la présentation
+*  Mise à jour code CI rapport (avec Antora)
+
+*A faire :*
+
+*  Commencer la rédaction pour le rapport !
+*  Préparer formation Zotero
+*  Préparer CC2 stem:[\rightarrow] 05/04/2024
+

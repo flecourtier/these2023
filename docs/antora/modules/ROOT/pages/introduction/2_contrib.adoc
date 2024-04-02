@@ -1,0 +1,4 @@
+:stem: latexmath
+:xrefstyle: short
+= Ma contribution
+\section{Ma contribution}

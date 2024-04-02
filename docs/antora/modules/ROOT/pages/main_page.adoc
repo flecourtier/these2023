@@ -1,0 +1,31 @@
+# Sommaire
+
+Après un stage dans l'équipe INRIA MIMESIS dans le cadre de mon master (Master CSMI à l'Université de Strasbourg), j'ai rejoint l'équipe en tant que doctorante en octobre 2023 sous la direction d'Emmanuel Franck, Michel Duprez et Vanessa Lleras. L'objectif de ce projet est le *"Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à la création de jumeaux chirurgicaux numériques"*.
+
+== Rapport
+
+Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$report.pdf[PDF]) :
+
+=== Introduction
+* xref:introduction/1_application.adoc[Domaine applicatif]
+* xref:introduction/2_contrib.adoc[Ma contribution]
+
+=== Levelset
+* xref:levelset/1_maths_theory.adoc[Théorie d'approximation]
+* xref:levelset/2_learning.adoc[Apprentissage]
+
+
+== Contenus supplémentaires
+
+Vous pouvez trouver les contenus supplémentaires suivants:
+
+* différentes xref:slides.adoc[présentations]
+
+* des xref:abstracts.adoc[résumés hebdomadaires] (au format xref:attachment$abstracts.pdf[PDF])
+
+Vous trouverez également:
+
+* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine
+
+* une documentation du code (à rajouter)
+
