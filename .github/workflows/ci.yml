@@ -68,15 +68,15 @@ jobs:
       run: echo https://$GITHUB_OAUTH:@github.com > $HOME/.git-credentials
       env:
         GITHUB_OAUTH: ${{ secrets.DOCS_GITHUB_KEY }}
+    - name : Remove previous Deploy
+      run: |
+        rm -rf public
+      working-directory: docs/antora
     - name: Build
       run: |
         python3 -m pip install --upgrade pip
         npm install
         npm run antora
-      working-directory: docs/antora
-    - name : Remove previous Deploy
-      run: |
-        rm -rf public
       working-directory: docs/antora
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4.4.1
