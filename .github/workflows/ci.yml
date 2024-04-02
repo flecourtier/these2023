@@ -74,6 +74,10 @@ jobs:
         npm install
         npm run antora
       working-directory: docs/antora
+    - name : Remove previous Deploy
+      run: |
+        rm -rf public
+      working-directory: docs/antora
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4.4.1
       with:
