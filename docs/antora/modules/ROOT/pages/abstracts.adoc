@@ -8,3 +8,4 @@ Vous trouverez ici des résumés des travaux effectués chaque semaine :
 * xref:abstracts/2024_1.adoc[Janvier 2024]
 * xref:abstracts/2024_2.adoc[Février 2024]
 * xref:abstracts/2024_3.adoc[Mars 2024]
+* xref:abstracts/2024_4.adoc[Avril 2024]

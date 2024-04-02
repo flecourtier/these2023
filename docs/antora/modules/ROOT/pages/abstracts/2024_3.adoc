@@ -76,15 +76,18 @@
 *  _Mardi matin_ - Présentation
 *  _Mardi matin_ - Réunion d'équipe
 *  _Mardi après-midi_ - Formation "Enseigner et apprendre (public : mission d'enseignement)"
-*  _Jeudi matin_ - Réunion présentation (Emmanuel + Michel)
+*  _Jeudi matin_ - Visio sur les PINNs (Emmanuel + Victor)
 *  _Jeudi après-midi_ - Formation Fidle Seq 14
-*  _Vendredi après-midi_ - Férié
+*  _Vendredi_ - Férié
 
 *Fait durant la semaine :*
 
-*  
+*  Entrainement et Finition de la présentation
+*  Mise à jour code CI rapport (avec Antora)
 
 *A faire :*
 
-*  
+*  Commencer la rédaction pour le rapport !
+*  Préparer formation Zotero
+*  Préparer CC2 stem:[\rightarrow] 05/04/2024
 
