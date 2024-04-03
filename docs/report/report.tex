@@ -82,6 +82,9 @@
 
 \usepackage{lipsum}
 
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+
 % Titlepage
 \newcommand{\reporttitle}{Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à la création de jumeaux chirurgicaux numériques}
 \newcommand{\reportauthorOne}{Frédérique Lecourtier}
@@ -95,6 +98,17 @@
 	\input{titlepage}
 	\tableofcontents
 
+	\chapter{Levelset}
+	\newpage
+	\graphicspath{{levelset/images/1_introduction}}
+	\input{levelset/sections/1_introduction}
+	\newpage
+	\graphicspath{{levelset/images/2_maths_theory}}
+	\input{levelset/sections/2_maths_theory}
+	\newpage
+	\graphicspath{{levelset/images/3_learning}}
+	\input{levelset/sections/3_learning}
+
 	\chapter{Introduction}
 	\newpage
 	\graphicspath{{introduction/images/1_application}}
@@ -102,12 +116,4 @@
 	\newpage
 	\graphicspath{{introduction/images/2_contrib}}
 	\input{introduction/sections/2_contrib}
-
-	\chapter{Levelset}
-	\newpage
-	\graphicspath{{levelset/images/1_maths_theory}}
-	\input{levelset/sections/1_maths_theory}
-	\newpage
-	\graphicspath{{levelset/images/2_learning}}
-	\input{levelset/sections/2_learning}
 \end{document}

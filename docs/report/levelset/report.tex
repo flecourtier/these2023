@@ -82,6 +82,8 @@
 
 \usepackage{lipsum}
 
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
 \begin{document}
 	LECOURTIER Frédérique \hfill \today
 	\begin{center}
@@ -89,9 +91,12 @@
 	\end{center}
 	\tableofcontents
 	\newpage
-	\graphicspath{{images/1_maths_theory}}
-	\input{sections/1_maths_theory}
+	\graphicspath{{images/1_introduction}}
+	\input{sections/1_introduction}
 	\newpage
-	\graphicspath{{images/2_learning}}
-	\input{sections/2_learning}
+	\graphicspath{{images/2_maths_theory}}
+	\input{sections/2_maths_theory}
+	\newpage
+	\graphicspath{{images/3_learning}}
+	\input{sections/3_learning}
 \end{document}

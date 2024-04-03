@@ -1,0 +1,95 @@
+:stem: latexmath
+:xrefstyle: short
+= Introduction
+:sectiondir: levelset/1_introduction/
+
+On se place ici dans le contexte de la résolution d'EDP par des méthodes types PINNs. 
+
+On cherche dans un premier temps à se concentrer sur le problème de Poisson avec conditions de Dirichlet défini par
+
+[stem]
+++++
+\left\{\begin{aligned}
+&-\Delta u(X) = f(X) \quad \text{dans } \Omega, \\
+&u(X) = g(X) \quad \text{sur } \partial \Omega
+\end{aligned}\right.
+++++
+
+La méthode PINNs standard consiste alors à chercher stem:[\theta_u] tel que
+[stem]
+++++
+\theta_u = \argmin_{\theta} w_{r}\; J_{r}(\theta)+w_{bc}\; J_{bc}(\theta)
+++++
+où stem:[w_{r}] et stem:[w_{bc}] sont les poids respectifs associés à
+[stem]
+++++
+J_{r} = \int_\Omega (\Delta u_\theta+f)^2 \; \text{ et } \; J_{bc} = \int_{\partial\Omega} (u_\theta-g)^2.
+++++
+
+
+[NOTE]
+====
+En pratique, on utilise une méthode de Monte-Carlo pour discrétiser les fonctions de coût par des processus aléatoires.
+====
+
+Dans ce contexte, l'idée reçue sur les PINNs est la suivante : 
+
+\begin{center}
+*Comme il n'y a pas de maillage, c'est très facile de passer à des géométries complexes !*
+\end{center}
+
+Sauf que en pratique ce n'est pas si simple, en fait on va devoir trouver comment sampler (échantillonner) à l'intérieur de stem:[\Omega].
+
+Dans le cas des géométries simples, on peut facilement trouver des méthodes permettant de sampler dans notre géométrie, c'est-à-dire récupérer un ensemble de points à l'intérieur de celle-ci.
+
+.Représentation de formes simples.
+image::{sectiondir}simple_geom.jpg[width=360.0,height=288.0]
+
+Comme on se place dans le contexte présenté en Section \hl{rajouter REF}, on considère des formes qui peuvent être beaucoup plus compliquée et on se heurte à un premier problème qui consiste à trouver comment sampler à l'intérieur de géométrie plus complexe.
+
+On regroupe alors ce problème en deux approches principales : sampling par mapping ou sampling par levelset.
+
+
+*  *Mapping :* Dans cette première approche, on considère un domaine simple stem:[\Omega_0], facile à sampler tel qu'un cercle. Cette méthode consiste à trouver une transformation stem:[\phi] tel que
+[stem]
+++++
+\Omega = \phi(\Omega_0)
+++++
+où stem:[\Omega] est la géométrie cible.
+.Représentation d'un sampling par mapping.
+image::{sectiondir}complex_geom_mapping.jpg[width=240.0,height=192.0]
+
+*  *Levelset :* Dans cette seconde approche, on cherche à trouver une fonction levelset permettant de décrire notre géométrie.
+.Définition d'une fonction LevelSet.
+image::{sectiondir}complex_geom_levelset.png[width=180.0,height=144.0]
+Cette fonction est définie comme étant nulle sur le bord de notre domaine, strictement négative à l'intérieur et strictement positive à l'extérieur. Ainsi déterminer un sampling à l'intérieur de stem:[\Omega] revient seulement à déterminer des points tel que stem:[\phi] soit strictement négative.
+
+
+Dans le travail fait ici, on ne s'intéressera en fait que l'approche par LevelSet pour les raisons suivantes :
+
+*  Dans notre contexte, on cherche à utiliser une méthode qui est en développement dans l'équipe Mimesis. Cette méthode appelée stem:[\phi]-FEM (Section \hl{Rajouter ref}) est une méthode élément finie  non-conforme qui nécessite l'utilisation d'une fonction LevelSet. Ainsi, cette fonction Levelset sera utilisée pour sampler le domaine mais également dans la méthode stem:[\phi]-FEM pour corriger et certifier les predcitions du PINNs.
+*  Ensuite, on s'est basé sur un papier \hl{Rajouter ref} qui permet d'imposer en dure les conditions au bord dans le PINNs en écrivant notre solution sous la forme
+[stem]
+++++
+u_\theta(X)=\phi(X)w_\theta(X)+g(X)
+++++
+Ce papier semblait donner dans certains cas de meilleurs résultats qu'avec des PINNs standard.
+
+[NOTE]
+====
+Ils présentent également des façons d'imposer des conditions de Neumann et de Robin mais on ne considérera ici qu le cas des conditions de Dirichlet.
+====
+
+Ainsi, on utilisera la fonction levelset pour générer un sampling dans notre géométrie, pour imposer les conditions en dure dans le PINNs mais également pour corriger et certifier les prédictions du PINNs en utilisant la méthode stem:[\phi]-FEM.
+
+
+[NOTE]
+====
+Une fonction levelset naturelle est la Fonction Distance Signée. Cette fonction est totalement utilisable pour générer un sampling dans notre domaine. Cependant dans l'approche où on impose les conditions en dure, ses dérivées explosent trop pour obtenir des résultats satisfaisant. On se heurte alors au problème : Comment construire une fonction levelset suffisamment régulière pour pouvoir être utilisé pour imposer les conditions en dure ?
+====
+
+On cherche à présent à déterminer comment obtenir une fonction levelset pour des géométrie complexes. On distinguera alors deux approches :
+
+*  Dans la première, on reprend le papier où sont imposés les conditions en dure et on utilise les théories d'approximation qui y sont proposées (Section \hl{rajouter REF}).
+*  Dans la seconde, on utilise une approche par apprentissage basé sur un second papier \hl{Rajouiter REF} (Section \hl{rajouter REF}).
+
