@@ -1,1 +1,35 @@
-\section{Domaine applicatif}
+\section{Domaine applicatif} \label{intro_appli}
+\graphicspath{{introduction/images/1_application}}
+
+L'équipe de recherche MIMESIS travaille sur un ensemble de défis dans le but de créer des jumeaux numériques en temps réel d'un organe. Leurs principaux domaines d'application sont la formation chirurgicale et le guidage chirurgical lors d'interventions complexes. Leurs principaux objectifs cliniques sont la chirurgie hépatique, la chirurgie pulmonaire et la Neuro-stimulation. 
+
+Dans mon cas, je travaille sur le sujet intitulé : \textbf{« Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à créer des jumeaux chirurgicaux numériques »}. Pour fair simple, l'idée est de simuler numériquement en temps réel certains comportements physiques qui peuvent avoir lieu pendant une intervention chirurgicale. 
+
+\begin{minipage}{0.38\linewidth}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth]{foie.png}
+		\caption{Représentation d'un foie.}
+	\end{figure}
+\end{minipage}
+\begin{minipage}{0.58\linewidth}
+	Le terme « jumeaux chirurgicaux numériques » désigne en fait la modélisation numérique d’un organe (en particulier le foie). Mon travail ne consiste pas à modéliser ces organes numériquement, mais à développer de nouvelles méthodes pour simuler, le plus rapidement possible, certains phénomènes physiques appliqués à l’organe en question. Un exemple d'un de ces phénomènes physiques pourraient être les déformations de l’organe si le chirurgien applique une pression à un endroit précis. La modélisation aura alors pour objectif de simuler quelle forme prendra le foie à partir, par exemple, de la force appliquée et de l’endroit où le chirurgien appuie. 	
+\end{minipage}
+
+\begin{minipage}{0.58\linewidth}
+	Un exemple plus simple et assez classique de ce type de phénomène est le cas d’un ressort. Imaginons que l’on possède un ressort à son état normal.
+	\begin{enumerate}[label=\textbullet]
+		\item En appuyant sur le ressort, on applique une certaine force sur le ressort en haut et en bas et on force le ressort à se déformer, en se resserrant.
+		\item En tirant sur le ressort, on applique une force inverse sur celui-ci et on le force à se déformer, en s’étirant cette fois-ci.
+	\end{enumerate}
+	Dans le contexte d'un organe, l’idée (très simplifiée ici) est en principe la même (excepté qu’un foie n’aura pas les mêmes propriétés physiques qu’un ressort).
+\end{minipage}
+\begin{minipage}{0.38\linewidth}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.6\linewidth]{ressort.png}
+		\caption{Déformation d'un ressort.}
+	\end{figure}
+\end{minipage}
+
+En pratique, ces phénomènes physiques sont décrits par des équations mathématiques qui peuvent être assez complexes à résoudre. Les équations qui décrivent ces phénomènes sont déjà connus et un ensemble de méthodes numériques visant à les résoudre ont déjà été développées au cours des années précédentes. La complexité là-dedans réside dans la rapidité d’exécution des simulations, en rappelant qu’encore une fois l’objectif est que ces modélisations soient utilisables en temps réel, c’est-à-dire assez rapide pour être applicable pendant une intervention chirurgicale.

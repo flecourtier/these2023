@@ -30,15 +30,17 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
     file_write.write(":xrefstyle: short\n")
     file_write.write("= " + section + "\n")
 
+    graphicspath = ""
+    find_caption = False
     while line := file_read.readline():
-        # if search_word_in_line("\section", line):
-        #     section = line.split("{")[1].split("}")[0]
-        #     section = test_latex_title(section)
-        #     subsections = sections[section]
-        #     file_write.write(":stem: latexmath\n")
-        #     file_write.write(":xrefstyle: short\n")
-        #     file_write.write("= " + section + "\n")
-        #     line = ""
+        if search_word_in_line("\section", line):
+            # section = line.split("{")[1].split("}")[0]
+            # section = test_latex_title(section)
+            # subsections = sections[section]
+            # file_write.write(":stem: latexmath\n")
+            # file_write.write(":xrefstyle: short\n")
+            # file_write.write("= " + section + "\n")
+            line = ""
 
         if search_word_in_line("\subsection", line):
             num_subsection += 1
@@ -89,7 +91,10 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
             line = "== " + name_paragraph + "\n"
 
         if search_word_in_line("\graphicspath", line):
-            line = ":imagesdir: \{moduledir\}/assets/" + line.split("{")[2].split("}")[0] + "\n"
+            graphicspath = line.split("{")[2].split("}")[0]
+            graphicspath = graphicspath.replace("images/","")
+            print("ICI",graphicspath)
+            line = ":sectiondir: " + graphicspath + "/\n"
 
         if search_word_in_line("\modif", line):
             sentence = line.split("\modif")[1].split("{")[1].split("}")[0]
@@ -115,7 +120,8 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
                 line = file_read.readline()
                 if search_word_in_line("\includegraphics", line):
                     image_name = line.split("{")[1].split("}")[0]
-                    image_name = image_name[1:-1]   
+                    if image_name[0]=="\"":
+                        image_name = image_name[1:-1]   
 
                     linewidth = line.split("width=")[1].split("\\linewidth")[0]
                     if linewidth=="":
@@ -126,6 +132,7 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
                     height = minipage_width * linewidth * 480
 
                 if search_word_in_line("\caption", line):
+                    find_caption = True
                     count = line.count("{")
                     if count>=3:
                         while line[0]=="\t":
@@ -138,8 +145,13 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
                 if search_word_in_line("\label", line):
                     label = line.split("{")[1].split("}")[0]
                     file_write.write("[["+label+"]]\n")
+            if not find_caption:
+                line = ""
+            else:
+                line = "."+caption+"\n"
             minipage_width = 1.
-            line = "."+caption+"\nimage::" + name_section_file + "/" + image_name + "[width="+str(width)+",height="+str(height)+"]\n"
+            line += "image::{sectiondir}" + image_name + "[width="+str(width)+",height="+str(height)+"]\n"
+            find_caption = False
 
         if search_word_in_line("\\begin{minipage}", line):
             minipage_width = 0.5

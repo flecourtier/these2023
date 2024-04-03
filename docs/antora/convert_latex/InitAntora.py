@@ -62,13 +62,13 @@ def cp_slides():
 # copy all the images of the tex report in the antora documentation
 def cp_assets(section_files,rapport_dir):
     for i,section_file in enumerate(section_files):
-        # Cp images
-        if os.path.exists(images_dir):
-            shutil.rmtree(images_dir)
-        dir_name = section_file.split("/")[0]
         section = section_file.split("/")[1]
-        if os.path.exists(rapport_dir + dir_name + "/images/" + section):
-            shutil.copytree(rapport_dir + dir_name + "/images/" + section, images_dir+section)
+        dir_name = section_file.split("/")[0]+"/"
+        if os.path.exists(images_dir+dir_name+section):
+            shutil.rmtree(images_dir+dir_name+section)
+        # Cp images
+        if os.path.exists(rapport_dir + "images/" + section):
+            shutil.copytree(rapport_dir + "images/" + section, images_dir+dir_name+section)
 
     # Cp attachments
     if os.path.exists(attachments_dir):
