@@ -81,3 +81,6 @@
 \usepackage{fontawesome}
 
 \usepackage{lipsum}
+
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}

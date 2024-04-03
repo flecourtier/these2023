@@ -82,6 +82,9 @@
 
 \usepackage{lipsum}
 
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+
 % Titlepage
 \newcommand{\reporttitle}{Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à la création de jumeaux chirurgicaux numériques}
 \newcommand{\reportauthorOne}{Frédérique Lecourtier}
