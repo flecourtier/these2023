@@ -89,6 +89,8 @@ def run_report():
             for section in list_section:
                 section_name = section.replace(".tex","")
                 file_write.write('\t\\newpage\n')
+                images_dir = subdir+"/images/"+section_name
+                file_write.write('\t\\graphicspath{{'+images_dir+'}}\n')
                 file_write.write('\t\input{'+results_repo+section_name+'}\n')
 
             # print(liste)
@@ -120,6 +122,8 @@ def run_chapter_report():
             for section in list_section:
                 section_name = section.replace(".tex","")
                 file_write.write('\t\\newpage\n')
+                images_dir = "images/"+section_name
+                file_write.write('\t\\graphicspath{{'+images_dir+'}}\n')
                 file_write.write('\t\input{'+results_repo+section_name+'}\n')
 
             file_write.write('\end{document}')
