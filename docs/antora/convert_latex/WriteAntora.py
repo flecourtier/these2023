@@ -29,8 +29,10 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
     file_write.write(":stem: latexmath\n")
     file_write.write(":xrefstyle: short\n")
     file_write.write("= " + section + "\n")
+    graphicspath = read_dir.split("/")[-2] + "/" + section_file.split("/")[1]
+    file_write.write(":sectiondir: " + graphicspath + "/\n")
 
-    graphicspath = ""
+    # graphicspath = ""
     find_caption = False
     while line := file_read.readline():
         if search_word_in_line("\section", line):
@@ -90,11 +92,11 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
             name_paragraph = test_latex_title(name_paragraph)
             line = "== " + name_paragraph + "\n"
 
-        if search_word_in_line("\graphicspath", line):
-            graphicspath = line.split("{")[2].split("}")[0]
-            graphicspath = graphicspath.replace("images/","")
-            print("ICI",graphicspath)
-            line = ":sectiondir: " + graphicspath + "/\n"
+        # if search_word_in_line("\graphicspath", line):
+        #     graphicspath = line.split("{")[2].split("}")[0]
+        #     graphicspath = graphicspath.replace("images/","")
+        #     print("ICI",graphicspath)
+        #     line = ":sectiondir: " + graphicspath + "/\n"
 
         if search_word_in_line("\modif", line):
             sentence = line.split("\modif")[1].split("{")[1].split("}")[0]
