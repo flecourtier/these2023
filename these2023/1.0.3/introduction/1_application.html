@@ -237,7 +237,66 @@ title="Fullscreen mode"
 
 <article class="doc">
 <h1 class="page">Domaine applicatif</h1>
-
+<div class="paragraph">
+<p>L&#8217;équipe de recherche MIMESIS travaille sur un ensemble de défis dans le but de créer des jumeaux numériques en temps réel d&#8217;un organe. Leurs principaux domaines d&#8217;application sont la formation chirurgicale et le guidage chirurgical lors d&#8217;interventions complexes. Leurs principaux objectifs cliniques sont la chirurgie hépatique, la chirurgie pulmonaire et la Neuro-stimulation.</p>
+</div>
+<div class="paragraph">
+<p>Dans mon cas, je travaille sur le sujet intitulé : <strong>« Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à créer des jumeaux chirurgicaux numériques »</strong>. Pour fair simple, l&#8217;idée est de simuler numériquement en temps réel certains comportements physiques qui peuvent avoir lieu pendant une intervention chirurgicale.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock unresolved">
+<div class="content">
+<img src="{sectiondir}foie.png" alt="{sectiondir}foie" width="300.0" height="240.0">
+</div>
+<div class="title">Figure 1. Représentation d&#8217;un foie.</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Le terme « jumeaux chirurgicaux numériques » désigne en fait la modélisation numérique d’un organe (en particulier le foie). Mon travail ne consiste pas à modéliser ces organes numériquement, mais à développer de nouvelles méthodes pour simuler, le plus rapidement possible, certains phénomènes physiques appliqués à l’organe en question. Un exemple d&#8217;un de ces phénomènes physiques pourraient être les déformations de l’organe si le chirurgien applique une pression à un endroit précis. La modélisation aura alors pour objectif de simuler quelle forme prendra le foie à partir, par exemple, de la force appliquée et de l’endroit où le chirurgien appuie.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>Un exemple plus simple et assez classique de ce type de phénomène est le cas d’un ressort. Imaginons que l’on possède un ressort à son état normal.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>En appuyant sur le ressort, on applique une certaine force sur le ressort en haut et en bas et on force le ressort à se déformer, en se resserrant.</p>
+</li>
+<li>
+<p>En tirant sur le ressort, on applique une force inverse sur celui-ci et on le force à se déformer, en s’étirant cette fois-ci.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Dans le contexte d&#8217;un organe, l’idée (très simplifiée ici) est en principe la même (excepté qu’un foie n’aura pas les mêmes propriétés physiques qu’un ressort).</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock unresolved">
+<div class="content">
+<img src="{sectiondir}ressort.png" alt="{sectiondir}ressort" width="180.0" height="144.0">
+</div>
+<div class="title">Figure 2. Déformation d&#8217;un ressort.</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>En pratique, ces phénomènes physiques sont décrits par des équations mathématiques qui peuvent être assez complexes à résoudre. Les équations qui décrivent ces phénomènes sont déjà connus et un ensemble de méthodes numériques visant à les résoudre ont déjà été développées au cours des années précédentes. La complexité là-dedans réside dans la rapidité d’exécution des simulations, en rappelant qu’encore une fois l’objectif est que ces modélisations soient utilisables en temps réel, c’est-à-dire assez rapide pour être applicable pendant une intervention chirurgicale.</p>
+</div>
 </article>
   </div>
 </main>
