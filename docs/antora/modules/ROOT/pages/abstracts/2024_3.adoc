@@ -3,6 +3,7 @@
 == Week 23 : 04/03/2024 - 08/03/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_23/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Michel + Vanessa)
@@ -26,6 +27,7 @@
 == Week 24 : 11/03/2024 - 15/03/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_24/
 *Réunions :*
 
 *  _Mardi matin_ - Réunion d'équipe
@@ -49,6 +51,7 @@
 == Week 25 : 18/03/2024 - 22/03/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_25/
 *Réunions :*
 
 *  _Mardi matin_ - Réunion d'équipe
@@ -71,6 +74,7 @@
 == Week 26 : 25/03/2024 - 29/03/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_26/
 *Réunions :*
 
 *  _Mardi matin_ - Présentation

@@ -3,6 +3,7 @@
 == Week 1 : 02/10/2023 - 06/10/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_1/
 *Réunions :*
 
 *  _Lundi matin_ -  Présentation de Hugo Talbot sur la méthodes des éléments finis
@@ -25,6 +26,7 @@
 == Week 2 : 09/10/2023 - 13/10/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_2/
 *Réunions :*
 
 *  _Mardi matin_ -  Réunion d'équipe - Présentation de Pablo
@@ -53,6 +55,7 @@
 == Week 3 : 16/10/2023 - 20/10/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_3/
 *Réunions :*
 
 *  _Mardi matin_ -  Réunion d'équipe - Tour de table
@@ -78,6 +81,7 @@
 == Week 4 : 23/10/2023 - 27/10/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_4/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Michel + Vanessa)
@@ -103,6 +107,7 @@
 == Week 5 : 30/10/2023 - 03/11/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_5/
 (ABSENTE du Lundi au Mercredi car Malade)
 
 *Réunions :*

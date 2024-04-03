@@ -3,6 +3,7 @@
 == Week 27 : 01/04/2024 - 05/04/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_27/
 *Réunions :*
 
 *  _Lundi_ - Férié

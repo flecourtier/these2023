@@ -3,6 +3,7 @@
 == Week 19 : 05/02/2024 - 09/02/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_19/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion présentation retraite Macaron/Tonus (Emmanuel + Michel + Killian)
@@ -23,6 +24,7 @@
 == Week 20 : 12/02/2024 - 16/02/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_20/
 *Réunions :*
 
 *  _Mardi matin_ - Visite PDG Inria (Bruno Sportisse)
@@ -45,6 +47,7 @@
 == Week 21 : 19/02/2024 - 23/02/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_21/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Emmanuel + Michel)
@@ -60,6 +63,7 @@
 == Week 22 : 26/02/2024 - 01/03/2024
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_22/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Emmanuel + Michel + Vanessa)

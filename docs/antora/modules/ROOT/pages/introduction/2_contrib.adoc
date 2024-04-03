@@ -1,6 +1,7 @@
 :stem: latexmath
 :xrefstyle: short
 = Ma contribution
+:sectiondir: introduction/2_contrib/
 
 Comme je l’expliquais précédemment, mon objectif est de développer une méthode pour résoudre des Équations aux Dérivées Partielles (EDP) le plus rapidement possible, méthode qui va combiner deux types de méthodes déjà connues : les méthodes appelées FEM (pour Finites Elemnts Methods) et des approches avec des réseaux de neurones (méthodes plus récentes dans le domaine de l’Intelligence Artificielle).
 

@@ -3,6 +3,7 @@
 == Week 10 : 04/12/2023 - 08/12/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_10/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Michel ; recap à Emmanuel par mail)
@@ -24,6 +25,7 @@
 == Week 11 : 11/12/2023 - 15/12/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_11/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Emmanuel + Michel + Vanessa) stem:[\rightarrow] Discussion sur la présentation
@@ -46,6 +48,7 @@
 == Week 12 : 18/12/2023 - 22/12/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_12/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Emmanuel + Michel + Vanessa + Killian + Stéphane)
@@ -67,4 +70,5 @@
 == Week 13 : 25/12/2023 - 29/12/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_13/
 \textcolor{red}{Vacances de Noël !}

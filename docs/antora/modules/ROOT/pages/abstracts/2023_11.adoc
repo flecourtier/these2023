@@ -3,6 +3,7 @@
 == Week 6 : 06/11/2023 - 10/11/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_6/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Emmanuel + Vanessa)
@@ -19,6 +20,7 @@
 == Week 7 : 13/11/2023 - 17/11/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_7/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Emmanuel + Vanessa)
@@ -42,6 +44,7 @@
 == Week 8 : 20/11/2023 - 24/11/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_8/
 *Réunions :*
 
 *  _Lundi après-midi_ - Réunion (Emmanuel + Michel)
@@ -65,6 +68,7 @@
 == Week 9 : 27/11/2023 - 01/12/2023
 :stem: latexmath
 :xrefstyle: short
+:sectiondir: abstracts/week_9/
 *Réunions :*
 
 *  _Lundi_ - Journée d'intégration Inria - Présentations :

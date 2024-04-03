@@ -1,6 +1,7 @@
 :stem: latexmath
 :xrefstyle: short
 = Domaine applicatif
+:sectiondir: introduction/1_application/
 
 L'équipe de recherche MIMESIS travaille sur un ensemble de défis dans le but de créer des jumeaux numériques en temps réel d'un organe. Leurs principaux domaines d'application sont la formation chirurgicale et le guidage chirurgical lors d'interventions complexes. Leurs principaux objectifs cliniques sont la chirurgie hépatique, la chirurgie pulmonaire et la Neuro-stimulation. 
 
