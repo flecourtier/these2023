@@ -29,7 +29,7 @@ rapport_dir = root_dir + "report/"
 for subdir in os.listdir(rapport_dir):
     chapter_dir = rapport_dir + subdir + "/"
     if os.path.isdir(rapport_dir + subdir) and subdir[-1] != "_":
-        chapter_name = subdir[0].upper() + subdir[1:]
+        chapter_name = subdir[2].upper() + subdir[3:]
         print("## "+chapter_name)
 
         rapport_file = chapter_dir + "report.tex"

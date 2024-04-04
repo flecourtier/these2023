@@ -150,7 +150,7 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
             if not find_caption:
                 line = ""
             else:
-                line = "."+caption+"\n"
+                line = "\n."+caption+"\n"
             minipage_width = 1.
             line += "image::{sectiondir}" + image_name + "[width="+str(width)+",height="+str(height)+"]\n"
             find_caption = False
@@ -171,7 +171,7 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
                 line="" 
 
         if search_word_in_line("\\begin{equation", line):
-            line = "[stem]\n++++\n"
+            line = "\n[stem]\n++++\n"
         
         if search_word_in_line("\end{equation", line):
             line = "++++\n"
@@ -289,6 +289,10 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
 
         if search_word_in_line("\\end{Example}",line):
             line = "\n---\n"
+
+        while search_word_in_line("\\hl",line):
+            sentence = line.split("{")[1].split("}")[0]
+            line = line.replace("\\hl{"+sentence+"}","#"+sentence+"#")
 
         if line!="":
             while line[0]=="\t":

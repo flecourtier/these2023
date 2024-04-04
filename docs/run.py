@@ -77,9 +77,14 @@ def run_report():
     file_write.write('\n\t\input{titlepage}\n')
     file_write.write('\t\\tableofcontents\n')
 
+    subdir_list = []
     for subdir in os.listdir(current_dir):
         if os.path.isdir(current_dir+subdir) and subdir[-1] != "_":
-            chapter_name = subdir[0].upper()+subdir[1:]
+            subdir_list.append(subdir)
+
+    subdir_list.sort()
+    for subdir in subdir_list: 
+            chapter_name = subdir[2].upper()+subdir[3:]
             file_write.write('\n\t\\chapter{'+chapter_name+'}\n')
             results_repo = subdir+"/"+"sections/"
 

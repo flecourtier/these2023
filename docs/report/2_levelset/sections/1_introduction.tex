@@ -13,7 +13,7 @@ On cherche dans un premier temps à se concentrer sur le problème de Poisson av
 
 La méthode PINNs standard consiste alors à chercher $\theta_u$ tel que
 \begin{equation*}
-	\theta_u = \argmin_{\theta} w_{r}\; J_{r}(\theta)+w_{bc}\; J_{bc}(\theta)
+	\theta_u = \arg\min_{\theta} w_{r}\; J_{r}(\theta)+w_{bc}\; J_{bc}(\theta)
 \end{equation*}
 où $w_{r}$ et $w_{bc}$ sont les poids respectifs associés à
 \begin{equation*}
@@ -26,9 +26,7 @@ où $w_{r}$ et $w_{bc}$ sont les poids respectifs associés à
 
 Dans ce contexte, l'idée reçue sur les PINNs est la suivante : 
 
-\begin{center}
-	\textbf{Comme il n'y a pas de maillage, c'est très facile de passer à des géométries complexes !}
-\end{center}
+\textbf{Comme il n'y a pas de maillage, c'est très facile de passer à des géométries complexes !}
 
 Sauf que en pratique ce n'est pas si simple, en fait on va devoir trouver comment sampler (échantillonner) à l'intérieur de $\Omega$.
 
