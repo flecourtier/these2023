@@ -1,4 +1,0 @@
-:stem: latexmath
-:xrefstyle: short
-= Théorie d'approximation
-:sectiondir: 2_levelset/2_maths_theory/

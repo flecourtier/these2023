@@ -1,4 +1,0 @@
-:stem: latexmath
-:xrefstyle: short
-= Apprentissage
-:sectiondir: 2_levelset/3_learning/
