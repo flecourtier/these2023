@@ -65,6 +65,7 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
             file_write.write(":stem: latexmath\n")
             file_write.write(":xrefstyle: short\n")
             file_write.write("= " + subsection + "\n")
+            file_write.write(":sectiondir: " + graphicspath + "/\n")
             line=""
         
         if search_word_in_line("\subsubsection", line):
@@ -136,7 +137,12 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
                 if search_word_in_line("\caption", line):
                     find_caption = True
                     count = line.count("{")
-                    if count>=3:
+                    # if count>=3:
+                    #     print("ici")
+                    #     while line[0]=="\t":
+                    #         line = line[1:]
+                    #     caption = line.replace("\captionof{figure}{","")[:-2]+"\n"
+                    if count==2:
                         while line[0]=="\t":
                             line = line[1:]
                         caption = line.replace("\captionof{figure}{","")[:-2]+"\n"

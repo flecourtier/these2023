@@ -33,6 +33,9 @@
 
 \usepackage{amsthm}
 \newtheorem*{Rem}{Remarque}
+\newtheorem{Prop}{Proposition}[section]
+\newtheorem{Def}{Definition}[section]
+\newtheorem*{Example}{Example}
 
 \newenvironment{conclusion}[1]{%
 	\begin{center}\normalfont\textbf{Conclusion}\end{center}
@@ -81,22 +84,19 @@
 \usepackage{fontawesome}
 
 \usepackage{lipsum}
-
-\DeclareMathOperator*{\argmax}{argmax}
-\DeclareMathOperator*{\argmin}{argmin}
 \begin{document}
 	LECOURTIER Frédérique \hfill \today
 	\begin{center}
-		\Large\textbf{{Levelset}}
+		\Large\textbf{{FEMs}}
 	\end{center}
 	\tableofcontents
 	\newpage
-	\graphicspath{{images/1_introduction}}
-	\input{sections/1_introduction}
+	\graphicspath{{images/1_intro}}
+	\input{sections/1_intro}
 	\newpage
-	\graphicspath{{images/2_maths_theory}}
-	\input{sections/2_maths_theory}
+	\graphicspath{{images/2_FEM}}
+	\input{sections/2_FEM}
 	\newpage
-	\graphicspath{{images/3_learning}}
-	\input{sections/3_learning}
+	\graphicspath{{images/3_phiFEM}}
+	\input{sections/3_phiFEM}
 \end{document}

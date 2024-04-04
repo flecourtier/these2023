@@ -1,0 +1,248 @@
+\section{$\phi$-FEM} \label{FEMs.PhiFEM}
+
+In this section, we will present the $\phi$-FEM method. We will first present fictitious domain methods (Section \ref{FEMs.PhiFEM.pinciple}). Next, we will give a general presentation of the method with a description of the spaces required (Section \ref{FEMs.PhiFEM.Pres}), followed by a description of the $\phi$-FEM direct method (Section \ref{FEMs.PhiFEM.direct_method}) and a description of the $\phi$-FEM dual method (Section \ref{FEMs.PhiFEM.dual_method}). Finally, we will give some details on the stabilization terms 
+(Section \ref{FEMs.PhiFEM.stab}).
+
+\subsection{Fictitious domain methods} \label{FEMs.PhiFEM.pinciple}
+
+The method we are interested in, called the $\phi$-FEM method, is a fictitious domain method, i.e. it does not require a mesh conforming to the real boundary. In the context of augmented surgery, fictitious domain methods presents a considerable advantage in comparison to standard FEM approaches. During real-time simulation, the geometry (in our specific context, an organ such as the liver, for example) can deform over time. Methods such as standard FEM, which requires a mesh fitted to the boundary, necessitate a complete remeshing of the geometry at each time step (Figure \ref{mesh_fem}). Unlike this type of method, fictitious domain methods requires only the generation of a single mesh : the mesh of a fictitious domain containing the entire geometry (Figure \ref{mesh_phifem}). 
+
+\begin{minipage}{0.52\linewidth}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5\linewidth]{"mesh_fem.png"}
+		\captionof{figure}{Standard FEM mesh example.}
+		\label{mesh_fem}
+	\end{figure}
+\end{minipage} $\qquad$
+\begin{minipage}{0.44\linewidth}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.65\linewidth]{"mesh_phifem.png"}
+		\captionof{figure}{Fictitious domain methods mesh example.}
+		\label{mesh_phifem}
+	\end{figure}
+\end{minipage}
+
+\textbf{Application to the $\phi$-FEM method :}
+
+In the case of the $\phi$-FEM Method, as the boundary of the geometry is represented by a level-set function $\phi$, only this function will change over time, which is a real time-saver.
+
+For the purposes of this internship, the geometries considered are not organs (such as the liver), because these are complex geometries. We are considering simpler geometries such as circles or squares. 
+
+It is also important to note that the $\phi$-FEM method has a considerable advantage: by constructing a fictitious mesh around the domain, we can generate a Cartesian mesh. This type of mesh can easily be represented by matrices, in the same way as images, hence the possibility of teaching these $\phi$-FEM solutions to an FNO who generally works on images. A paper in progress presents results with the combination of $\phi$-FEM and an FNO on more complex geometries, notably ellipses.
+
+\subsection{General presentation of the $\phi$-FEM method} \label{FEMs.PhiFEM.Pres}
+
+In this section, we will present the $\phi$-FEM method. We consider the case of the Poisson problem with homogeneous Dirichlet boundary conditions \cite{duprez_phi-fem_2020}. 
+\begin{equation}
+	\left\{
+	\begin{aligned}
+		-\Delta u &= f, \; &&\text{in } \; \Omega, \\
+		u&=g, \; &&\text{on } \; \partial\Omega,
+	\end{aligned}
+	\right.
+	\label{eq.Poisson}
+\end{equation}
+where the domain $\Omega$ and its boundary $\Gamma$ are given by a level-set function $\phi$ such that
+\begin{equation*}
+	\Omega=\{\phi < 0\} \quad \text{and} \quad \Gamma=\{\phi = 0\}.
+\end{equation*}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.37\linewidth]{"PhiFEM_level_set.png"}
+	\captionof{figure}{Definition of the level-set function.}
+	\label{space1}
+\end{figure}
+
+\begin{Rem}
+	For more details on mesh assumptions, convergence results and finite element matrix condition number, please refer to \cite{duprez_phi-fem_2020}. $\phi$-FEM schemes for the Poisson problem with Neumann or mixed (Dirichlet and Neumann) conditions are presented in \cite{duprez_new_2023,cotin_phi-fem_nodate}. The $\phi$-FEM scheme can also be found for other PDEs, including linear elasticity \cite[Chapter~2]{cotin_phi-fem_nodate}, the heat equation \cite[Chapter~5]{cotin_phi-fem_nodate} and the Stokes problem \cite{duprez_phi-fem_2023}.
+\end{Rem}
+
+\begin{Example}
+	If $\; \Omega$ is a circle of center $A$ of coordinates $(x_A,y_A)$ and radius $r$, a level-set function can be defined by
+	\begin{equation*}
+		\phi(x,y)=-r^2+(x-x_A)^2+(y-y_A)^2.
+	\end{equation*}
+	If $\; \Omega$ is an ellipse with center $A$ of coordinates $(x_A,y_A)$ and parameters $(a,b)$, a level-set function can be defined by
+	\begin{equation*}
+		\phi(x,y)=-1+\frac{(x-x_A)^2}{a^2}+\frac{(y-y_A)^2}{b^2}.
+	\end{equation*}
+\end{Example}
+
+We assume that $\Omega$ is inside a domain $\mathcal{O}$ and we introduce a simple quasi-uniform mesh $\mathcal{T}_h^\mathcal{O}$ on $\mathcal{O}$ (Figure \ref{space2}).
+ 
+We introduce now an approximation $\phi_h\in V_{h,\mathcal{O}}^{(l)}$ of $\phi$ given by $\phi_h=I_{h,\mathcal{O}}^{(l)}(\phi)$ where $I_{h,\mathcal{O}}^{(l)}$ is the standard Lagrange interpolation operator on
+\begin{equation*}
+	V_{h,\mathcal{O}}^{(l)}=\left\{v_h\in H^1(\mathcal{O}):v_{h|_T}\in\mathbb{P}_l(T) \;  \forall T\in\mathcal{T}_h^\mathcal{O}\right\}
+\end{equation*}
+and we denote by $\Gamma_h=\{\phi_h=0\}$, the approximate boundary of $\Gamma$ (Figure \ref{space3}).
+
+We will consider $\mathcal{T}_h$ a sub-mesh of $\mathcal{T}_h^\mathcal{O}$ obtained by removing the elements located entirely outside $\Omega$ (Figure \ref{space3}). To be more specific, $\mathcal{T}_h$ is defined by
+\begin{equation*}
+	\mathcal{T}_h=\left\{T\in \mathcal{T}_h^\mathcal{O}:T\cap\{\phi_h<0\}\ne\emptyset\right\}.
+\end{equation*}
+We denote by $\Omega_h$ the domain covered by the $\mathcal{T}_h$ mesh ($\Omega_h$ will be slightly larger than $\Omega$) and $\partial\Omega_h$ its boundary (Figure \ref{space3}). The domain $\Omega_h$ is defined by
+\begin{equation*}
+	\Omega_h=\left(\cup_{T\in\mathcal{T}_h}T\right)^O.
+\end{equation*}
+
+\begin{minipage}{0.52\linewidth}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\linewidth]{"PhiFEM_domain.png"}
+		\captionof{figure}{Fictitious domain.}
+		\label{space2}
+	\end{figure}
+\end{minipage} $\qquad$
+\begin{minipage}{0.44\linewidth}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth]{"PhiFEM_domain_considered.png"}
+		\captionof{figure}{Domain considered.}
+		\label{space3}
+	\end{figure}
+\end{minipage}
+
+Now, we can introduce $\mathcal{T}_h^\Gamma\subset \mathcal{T}_h$ (Figure \ref{space4}) which contains the mesh elements cut by the
+approximate boundary $\Gamma_h = \{\phi_h=0\}$, i.e. 
+\begin{equation*}
+	\mathcal{T}_h^\Gamma=\left\{T\in \mathcal{T}_h:T\cap\Gamma_h\ne\emptyset\right\},
+\end{equation*}
+and $\mathcal{F}_h^\Gamma$ (Figure \ref{space5}) which collects the interior facets of the mesh $\mathcal{T}_h$ either cut by $\Gamma_h$ or belonging to a cut mesh element
+\begin{equation*}
+	\mathcal{F}_h^\Gamma=\left\{E\;(\text{an internal facet of } \mathcal{T}_h) \text{ such that } \exists T\in \mathcal{T}_h:T\cap\Gamma_h\ne\emptyset \text{ and } E\in\partial T\right\}.
+\end{equation*}
+We denote by $\Omega_h^\Gamma$ the domain covered by the $\mathcal{T}_h^\Gamma$ mesh (Figure \ref{space4}) and also defined by
+\begin{equation*}
+	\Omega_h^\Gamma=\left(\cup_{T\in\mathcal{T}_h^\Gamma}T\right)^O.
+\end{equation*}
+
+\begin{minipage}{0.48\linewidth}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.9\linewidth]{"PhiFEM_boundary_cells.png"}
+		\captionof{figure}{Boundary cells.}
+		\label{space4}
+	\end{figure}
+\end{minipage} $\qquad$
+\begin{minipage}{0.48\linewidth}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.9\linewidth]{"PhiFEM_boundary_edges.png"}
+		\captionof{figure}{Boundary edges.}
+		\label{space5}
+	\end{figure}
+\end{minipage}
+
+\subsection{Description of the $\phi$-FEM direct method} \label{FEMs.PhiFEM.direct_method}
+
+As with standard FEM, the general idea behind $\phi$-FEM is to find a weak solution (i.e. a solution to the variational problem) to the considered problem (\ref{eq.Poisson}). The main difference lies in the spaces considered. In fact, we are no longer looking to solve the problem on $\Omega$ (of boundary $\Gamma$) but on $\Omega_h$ (of boundary $\partial\Omega_h$). Since our boundary conditions are defined on $\Gamma$, we don't have a direct condition on the $\partial\Omega_h$ boundary, so we will have to add terms to the variational formulation of the problem, called stabilization terms.
+
+Let's first consider the homogeneous case, then assuming that the source term $f$ is currently well-defined on $\Omega_h$ and that the solution $u$ can be extended on $\Omega_h$ such that $-\Delta u=f$ on $\Omega_h$, we can introduce a new unknown $w\in H^1(\Omega_h)$ such that $u=\phi w$ and the boundary condition on $\Gamma$ is satisfied (since $\phi=0$ on $\Gamma$). After an integration by parts, we have
+\begin{equation*}
+	\int_{\Omega_h}\nabla(\phi w)\cdot\nabla(\phi v)-\int_{\partial\Omega_h}\frac{\partial}{\partial n}(\phi w)\phi v=\int_{\Omega_h} f\phi v,\quad \forall v\in H^1(\Omega_h).
+\end{equation*}
+\begin{Rem}
+	Note that $\Omega_h$ is constructed using $\phi_h$ and therefore implicitly depends on $\phi$.
+\end{Rem}
+Given an approximation $\phi_h$ of $\phi$ on the mesh $\mathcal{T}_h$, as defined in Section \ref{FEMs.PhiFEM.Pres}, and a finite element space $V_h$ on $\mathcal{T}_h$, we can then search for $w_h\in V_h$ such that
+\begin{equation*}
+	a_h(w_h,v_h)=l_h(v_h), \quad \forall v_h\in V_h.
+\end{equation*}
+
+The bilinear form $a_h$ and the linear form $l_h$ are defined by
+\begin{equation*}
+	a_h(w,v)=\int_{\Omega_h} \nabla (\phi_h w) \cdot \nabla (\phi_h v) - \int_{\partial\Omega_h} \frac{\partial}{\partial n}(\phi_h w)\phi_h v+G_h(w,v)
+\end{equation*}
+and
+\begin{equation*}
+	l_h(v)=\int_{\Omega_h} f \phi_h v + G_h^{rhs}(v)
+\end{equation*}
+with
+\begin{equation*}
+G_h(w,v)=\sigma h\sum_{E\in\mathcal{F}_h^\Gamma} \int_E \left[\frac{\partial}{\partial n}(\phi_h w)\right] \left[\frac{\partial}{\partial n}(\phi_h v)\right]+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} \Delta(\phi_h w)\Delta(\phi_h v)
+\end{equation*}
+and
+\begin{equation*}
+G_h^{rhs}(v)=-\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} f \Delta(\phi_h v).
+\end{equation*}
+with $\sigma$ an independent parameter of h, which we'll call the stabilization parameter.
+
+We can consider the finite element space $V_h=V_h^{(k)}$ with
+\begin{equation*}
+	V_h^{(k)}=\left\{v_h\in H^1(\Omega_h):v_{h|_T}\in\mathbb{P}_k(T) \;  \forall T\in\mathcal{T}_h\right\}.
+\end{equation*}
+
+\begin{Rem}
+	Note that $[\;\cdot\;]$ is the jump on the interface $E$ defined by
+	\begin{equation*}
+		\left[\frac{\partial}{\partial n}(\phi_h w)\right]=\nabla(\phi_h w)^+\cdot n - \nabla(\phi_h w)^-\cdot n
+	\end{equation*}
+with $n$ is the unit normal vector outside $E$.
+\end{Rem}
+
+In the case of a non-homogeneous Dirichlet condition, we want to impose $u=g$ on $\Gamma$. With the direct method, we must suppose that $g$ is currently given over the entire $\Omega_h$ and not just over $\Gamma$. We can then write the solution $u$ as
+\begin{equation*}
+	u=\phi w +g, \; \text{on } \Omega_h.
+\end{equation*}
+It can then be injected into the weak formulation of the homogeneous problem and we can then search for $w_h$ on $\Omega_h$ such that
+\begin{align*}
+	\int_{\Omega_h}\nabla(\phi_h w_h)\nabla(\phi_h v_h)-\int_{\partial\Omega_h}&\frac{\partial}{\partial n}(\phi_h w_h)\phi_h v_h+G_h(w_h,v_h)=\int_{\Omega_h}f\phi_h v_h \\
+	&-\int_{\Omega_h}\nabla g\nabla(\phi_h v_h)+\int_{\partial\Omega_h}\frac{\partial g}{\partial n}\phi_h v_h+G_h^{rhs}(v_h), \; \forall v_h\in \Omega_h
+\end{align*}
+with
+\begin{equation*}
+	G_h(w,v)=\sigma h\sum_{E\in\mathcal{F}_h^\Gamma}\int_E\left[\frac{\partial}{\partial n}(\phi_h w)\right]\left[\frac{\partial}{\partial n}(\phi_h v)\right]+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T \Delta(\phi_h w)\Delta(\phi_h v)
+\end{equation*}
+and
+\begin{equation*}
+	G_h^{rhs}(v)=-\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T f\Delta(\phi_h v)-\sigma h\sum_{E\in\mathcal{F}_h^\Gamma}\int_E\left[\frac{\partial g}{\partial n}\right]\left[\frac{\partial}{\partial n}(\phi_h v)\right]-\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T \Delta g\Delta(\phi_h v)
+\end{equation*}
+
+\subsection{Description of the $\phi$-FEM dual method} \label{FEMs.PhiFEM.dual_method}
+
+The idea here is the same as for the direct method, but with the dual method, we assume that $g$ is defined on $\Omega_h^\Gamma$ and not on $\Omega_h$. We then introduce a new unknown $p$ on $\Omega_h^\Gamma$ in addition to the unknown $u$ on $\Omega_h$ and so we aim to impose
+\begin{equation*}
+	u=\phi p+g, \; \text{on } \Omega_h^\Gamma.
+\end{equation*}
+So we look for $u$ on $\Omega_h$ and $p$ on $\Omega_h^\Gamma$ such that
+\begin{align*}
+	\int_{\Omega_h}\nabla u\nabla v-\int_{\partial\Omega_h}\frac{\partial u}{\partial n} v + \frac{\gamma}{h^2} \sum_{T\in\mathcal{T}_h^\Gamma}\int_T &\left(u-\frac{1}{h}\phi p\right)\left(v-\frac{1}{h}\phi q\right) + G_h(u,v) = \int_{\Omega_h}fv \\
+	&+ \frac{\gamma}{h^2} \sum_{T\in\mathcal{T}_h^\Gamma}\int_T g\left(v-\frac{1}{h}\phi q\right) + G_h^{rhs}(v), \; \forall v \; \text{on } \Omega_h, \; q \; \text{on } \Omega_h^\Gamma.
+\end{align*}
+with $\gamma$ an other positive stabilization parameter,
+\begin{equation*}
+	G_h(u,v)=\sigma h\sum_{E\in\mathcal{F}_h^\Gamma}\int_E\left[\frac{\partial u}{\partial n}\right]\left[\frac{\partial v}{\partial n}\right]+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T \Delta u\Delta v
+\end{equation*}
+and
+\begin{equation*}
+	G_h^{rhs}(v)=-\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T f\Delta v.
+\end{equation*}
+\begin{Rem}
+	The factors $\frac{1}{h}$ and $\frac{1}{h^2}$ control the condition number of the finite element matrix. For more details, please refer to the article \cite{duprez_new_2023}.
+\end{Rem}
+\begin{Rem}
+	In the context of this internship, we won't be concerned with the choice of stabilization parameters $\sigma$ and $\gamma$. We'll always take $\sigma=20$ and $\gamma=1$, but it's important to note that they can have a significant influence on the results.
+\end{Rem}
+
+\subsection{Some details on the stabilization terms} \label{FEMs.PhiFEM.stab}  
+
+In this section, we will give some informations on stabilization terms. As introduced previously, the stabilization terms are intended to reduce the errors created by the "fictitious" boundary, but they also have the effect of ensuring the correct condition number of the finite element matrix and permitting to restore the coercivity of the bilinear scheme.                                                                                      
+
+The first term of $G_h(w,v)$ defined by
+\begin{equation*}
+	\sigma h\sum_{E\in\mathcal{F}_h^\Gamma} \int_E \left[\frac{\partial}{\partial n}(\phi_h w)\right] \left[\frac{\partial}{\partial n}(\phi_h v)\right]
+\end{equation*}
+is a first-order stabilization term. This stabilization term is based on \cite{burman_ghost_2010}. It also ensures the continuity of the solution by penalizing gradient jumps.
+
+By subtracting $G_h^{rhs}(v)$ from the second term of $G_h(w,v)$, i.e.
+\begin{equation*}
+	\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} \Delta(\phi_h w)\Delta(\phi_h v)+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} f \Delta(\phi_h v),
+\end{equation*}
+which can be rewritten as
+\begin{equation*}
+	\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} \left(\Delta(\phi_h w)+f\right)\Delta(\phi_h v),
+\end{equation*}
+we recognize the strong formulation of the Poisson problem. This second-order stabilization term penalizes the scheme by requiring the solution to verify the strong form on $\Omega_h^\Gamma$. In fact, this term cancels out if $\phi_h w$ is the exact solution of the Poisson problem under consideration.
