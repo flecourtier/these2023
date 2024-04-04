@@ -109,7 +109,7 @@ def run_chapter_report():
     
     for subdir in os.listdir(current_dir):
         if os.path.isdir(current_dir+subdir) and subdir[-1] != "_":
-            title = subdir[0].upper()+subdir[1:]
+            title = subdir[2].upper()+subdir[3:]
             print("## "+title)
             chapter_dir = current_dir+subdir+"/"
             results_file = chapter_dir+"report.tex"
