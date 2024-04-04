@@ -1,0 +1,22 @@
+:stem: latexmath
+:xrefstyle: short
+= stem:[\phi]-FEM
+:sectiondir: 2_FEMs/3_phiFEM/
+
+In this section, we will present the stem:[\phi]-FEM method. We will first present fictitious domain methods (xref:3_phiFEM/subsec_0.adoc[Section "Fictitious domain methods"]). Next, we will give a general presentation of the method with a description of the spaces required (xref:3_phiFEM/subsec_1.adoc[Section "General presentation of the stem:[\phi]-FEM method"]), followed by a description of the stem:[\phi]-FEM direct method (xref:3_phiFEM/subsec_2.adoc[Section "Description of the stem:[\phi]-FEM direct method"]) and a description of the stem:[\phi]-FEM dual method (xref:3_phiFEM/subsec_3.adoc[Section "Description of the stem:[\phi]-FEM dual method"]). Finally, we will give some details on the stabilization terms 
+(xref:3_phiFEM/subsec_4.adoc[Section "Some details on the stabilization terms"]).
+
+
+---
+The features include
+
+** xref:2_FEMs/3_phiFEM/subsec_0.adoc[Fictitious domain methods]
+
+** xref:2_FEMs/3_phiFEM/subsec_1.adoc[General presentation of the stem:[\phi]-FEM method]
+
+** xref:2_FEMs/3_phiFEM/subsec_2.adoc[Description of the stem:[\phi]-FEM direct method]
+
+** xref:2_FEMs/3_phiFEM/subsec_3.adoc[Description of the stem:[\phi]-FEM dual method]
+
+** xref:2_FEMs/3_phiFEM/subsec_4.adoc[Some details on the stabilization terms]
+

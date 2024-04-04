@@ -1,4 +1,4 @@
-\documentclass[french]{report}
+\documentclass[french]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
@@ -84,47 +84,19 @@
 \usepackage{fontawesome}
 
 \usepackage{lipsum}
-
-% Titlepage
-\newcommand{\reporttitle}{Développement de méthodes hybrides éléments finis/réseaux neuronaux pour aider à la création de jumeaux chirurgicaux numériques}
-\newcommand{\reportauthorOne}{Frédérique Lecourtier}
-\newcommand{\reportsupervisorOne}{Michel Duprez}
-\newcommand{\reportsupervisorTwo}{Emmanuel Franck}
-\newcommand{\reportsupervisorThree}{Vanessa Lleras}
-\newcommand{\reporttype}{Coursework}
-
 \begin{document}
-
-	\input{titlepage}
+	LECOURTIER Frédérique \hfill \today
+	\begin{center}
+		\Large\textbf{{Levelset}}
+	\end{center}
 	\tableofcontents
-
-	\chapter{Introduction}
 	\newpage
-	\graphicspath{{1_introduction/images/1_application}}
-	\input{1_introduction/sections/1_application}
+	\graphicspath{{images/1_introduction}}
+	\input{sections/1_introduction}
 	\newpage
-	\graphicspath{{1_introduction/images/2_contrib}}
-	\input{1_introduction/sections/2_contrib}
-
-	\chapter{FEMs}
+	\graphicspath{{images/2_maths_theory}}
+	\input{sections/2_maths_theory}
 	\newpage
-	\graphicspath{{2_FEMs/images/1_intro}}
-	\input{2_FEMs/sections/1_intro}
-	\newpage
-	\graphicspath{{2_FEMs/images/2_FEM}}
-	\input{2_FEMs/sections/2_FEM}
-	\newpage
-	\graphicspath{{2_FEMs/images/3_phiFEM}}
-	\input{2_FEMs/sections/3_phiFEM}
-
-	\chapter{Levelset}
-	\newpage
-	\graphicspath{{3_levelset/images/1_introduction}}
-	\input{3_levelset/sections/1_introduction}
-	\newpage
-	\graphicspath{{3_levelset/images/2_maths_theory}}
-	\input{3_levelset/sections/2_maths_theory}
-	\newpage
-	\graphicspath{{3_levelset/images/3_learning}}
-	\input{3_levelset/sections/3_learning}
+	\graphicspath{{images/3_learning}}
+	\input{sections/3_learning}
 \end{document}

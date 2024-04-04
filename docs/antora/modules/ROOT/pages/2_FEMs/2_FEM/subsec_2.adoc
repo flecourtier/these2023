@@ -1,0 +1,265 @@
+:stem: latexmath
+:xrefstyle: short
+= Some details on FEM
+:sectiondir: 2_FEMs/2_FEM/
+
+After having seen the general principle of FEM, it remains to define the stem:[V_h] spaces and the stem:[\{\varphi_i\}] basis functions.
+
+
+[NOTE]
+====
+The choice of stem:[V_h] space is fundamental to have an efficient method that gives a good approximation stem:[u_h] of stem:[u]. In particular, the choice of the stem:[\{\varphi_i\}] basis of stem:[V_h] influences the structure of the stem:[A] matrix in terms of its sparsity and its condition number but also affects the quality of the approximation.
+====
+
+To do this, we'll need several notions, which will be detailed in the following sections. First, we'll need to generate a *mesh* of our stem:[\Omega] domain. This will enable us to solve the PDE discretely at selected points. This is where the notion of *finite Lagrange elements* comes in. The properties of these elements, particularly in terms of their *affine family of finite elements*, is a key point of the method, which will enable us to bring each element of the mesh back to a *reference element* by using a *geometric transformation*. To describe these steps, we'll need to know 2 basic concepts: the *unisolvence* principle and the definitions of the *polynomial spaces* used (stem:[\mathbb{P}_k] and stem:[\mathbb{Q}_k]).
+
+== Unisolvance
+
+
+[]
+====
+*Definition.*
+Let stem:[\Sigma=\{a_1,\dots,a_N\}] be a set of stem:[N] distinct points of stem:[\mathbb{R}^n]. Let stem:[P] be a finite-dimensional vector space of stem:[\mathbb{R}^n] functions taking values in stem:[\mathbb{R}]. We say that stem:[\Sigma] is stem:[P]-unisolvent if and only if for all real stem:[\alpha_1,\dots,\alpha_N], there exists a unique element stem:[p] of stem:[P] such that stem:[p(a_i)=\alpha_i,i=1,\dots,N]. 
+This means that the function
+[stem]
+++++
+\begin{aligned}
+L \; : \; P &\rightarrow \mathbb{R}^N \\
+p &\mapsto(p(a_1),\dots,p(a_N))
+\end{aligned}
+++++
+is bijective.
+====
+
+
+[NOTE]
+====
+In practice, to show that stem:[\Sigma] is stem:[P]-unisolvent, we simply check that stem:[\dim P= \text{card } (\Sigma)] and then prove the injectivity or surjectivity of stem:[L]. The injectivity of stem:[L] is demonstrated by showing that the only function of stem:[P] that annuls on all points of stem:[\Sigma] is the null function. The surjectivity of stem:[L] is shown by identifying a family stem:[p_1,\dots,p_N] of elements of stem:[P] such that stem:[p_i(a_j)=\delta_{ij}]. Given real stem:[\alpha_1,\dots,\alpha_N], the function stem:[p=\sum_{i=1}^N\alpha_i p_i] then verifies stem:[p(a_j)=\alpha_j,j=1\dots,N]. 
+====
+
+
+[NOTE]
+====
+We call local basis functions of element stem:[K] the stem:[N] functions stem:[p_1,\dots,p_N] of stem:[P] such that
+
+[stem]
+++++
+p_i(a_j)=\delta_{ij},\quad 1\le i,j\le N
+++++
+====
+
+== Polynomial space
+
+Let stem:[\mathbb{P}_k] be the vector space of polynomials of total degree less than or equal to stem:[k].
+
+
+*  In stem:[\mathbb{R}] : stem:[\mathbb{P}_k=\text{Vect}\{1,X,\dots,X^k\}] and stem:[\dim\mathbb{P}_k=k+1] 
+*  In stem:[\mathbb{R}^2] : stem:[\mathbb{P}_k=\text{Vect}\{X^iY^j,0\le i+j\le k\}] and stem:[\dim\mathbb{P}_k=\frac{(k+1)(k+2)}{2}]
+*  In stem:[\mathbb{R}^3] : stem:[\mathbb{P}_k=\text{Vect}\{1,X^iY^jZ^l,0\le i+j+l\le k\}] and stem:[\dim\mathbb{P}_k=\frac{(k+1)(k+2)(k+3)}{6}]
+
+
+Let stem:[\mathbb{Q}_k] be the vector space of polynomials of degree less than or equal to stem:[k] with respect to each variable.
+
+
+*  In stem:[\mathbb{R}] : stem:[\mathbb{Q}_k=\mathbb{P}_k]. 
+*  In stem:[\mathbb{R}^2] : stem:[\mathbb{Q}_k=\text{Vect}\{X^iY^j,0\le i,j\le k\}] and stem:[\dim\mathbb{Q}_k=(k+1)^2]
+*  In stem:[\mathbb{R}^3] : stem:[\mathbb{Q}_k=\text{Vect}\{1,X^iY^jZ^l,0\le i,j,l\le k\}] and stem:[\dim\mathbb{Q}_k=(k+1)^3]
+
+
+
+[NOTE]
+====
+In practice, we will use the stem:[\mathbb{P}^k] family for triangles/tetrahedra and stem:[\mathbb{Q}_k] for quadrilaterals.
+====
+
+== Finite Lagrange Element
+
+The most classic and simplest type of finite element is the Lagrange finite element.
+
+
+[]
+====
+*Definition (Lagrange Finite Element).*
+A finite Lagrange element is a triplet stem:[(K,\Sigma,P)] such that 
+
+*  stem:[K] is a geometric element of stem:[\mathbb{R}^n] (stem:[n=1,2] or stem:[3]), compact, connected and of non-empty interior.
+*  stem:[\Sigma=\{a_1,\dots,a_N\}] is a finite set of stem:[N] distinct points of stem:[K].
+*  stem:[P] is a finite-dimensional vector space of real functions defined on stem:[K] and such that stem:[\Sigma] is stem:[P]-unisolvent (so stem:[\dim P=N]).
+
+====
+
+
+---
+*Example.*
+Let stem:[K] be the segment stem:[[a_1,a_2]]. Let's show that stem:[\Sigma=\{a_1,a_2\}] is stem:[P]-unisolvent for stem:[P=\mathbb{P}^1]. Since stem:[\{1,x\}] is a base of stem:[\;\mathbb{P}^1], we have stem:[\dim P = \text{card } \Sigma = 2]. 
+
+Moreover, we can write stem:[p_i=\alpha_i x+\beta_i, i=1,2]. Thus
+
+[stem]
+++++
+\left\{\begin{aligned}
+&p_1(a_1)=1 \\
+&p_1(a_2)=0
+\end{aligned}\right. \quad \iff	\quad
+\left\{\begin{aligned}
+&\alpha_1 a_1+\beta_1=1 \\
+&\alpha_1 a_2+\beta_1=0
+\end{aligned}\right. \quad \iff \quad
+\left\{\begin{aligned}
+&\alpha_1 = \frac{1}{a_1-a_2} \\
+&\beta_1 = -\frac{a_2}{a_1-a_2}
+\end{aligned}\right.
+++++
+and
+
+[stem]
+++++
+\left\{\begin{aligned}
+&p_2(a_1)=0 \\
+&p_2(a_2)=1
+\end{aligned}\right. \quad \iff	\quad
+\left\{\begin{aligned}
+&\alpha_2 a_1+\beta_2=0 \\
+&\alpha_2 a_2+\beta_2=1
+\end{aligned}\right. \quad \iff \quad
+\left\{\begin{aligned}
+&\alpha_1 = \frac{1}{a_2-a_1} \\
+&\beta_1 = -\frac{a_1}{a_2-a_1}
+\end{aligned}\right.
+++++
+Thus
+
+[stem]
+++++
+p_1(x)=\frac{x-a_2}{a_1-a_2} \quad \text{and} \quad p_2(x)=\frac{x-a_1}{a_2-a_1}
+++++
+We deduce the surjectivity of stem:[L] and stem:[\Sigma] is stem:[\mathbb{P}^1]-unisolvent. 
+
+Thus stem:[(K,\Sigma,P)] is a Lagrange Finite Element.
+
+---
+
+
+[]
+====
+*Definition.*
+Two finite elements stem:[(\hat{K},\hat{\Sigma},\hat{P})] and stem:[(K,\Sigma,P)] are affine-equivalent if and only if there exists an irreversible affine function stem:[F] such that
+
+*  stem:[K=F(\hat{K})]
+*  stem:[a_i=F(\hat{a_i}),i=1,\dots,N] 
+*  stem:[P=\{\hat{p}\circ F^{-1},\hat{p}\in\hat{P}\}].
+
+We then call an *affine family of finite elements* a family of finite elements, all affine-equivalent to the same element stem:[(\hat{K},\hat{\Sigma},\hat{P})], called the *reference element*.
+====
+
+
+[NOTE]
+====
+Let stem:[(\hat{K},\hat{\Sigma},\hat{P})] and stem:[(K,\Sigma,P)] be two affine-equivalent finite elements, via an stem:[F] transformation. Let stem:[\hat{p_i}] be the local basis functions on stem:[\hat{K}]. Then the local basis functions on stem:[K] are stem:[p_i=\hat{p_i}\circ F^{-1}].
+====
+
+
+[NOTE]
+====
+In practice, working with an affine family of finite elements means that all integral calculations can be reduced to calculations on the reference element. 
+
+The reference elements in 1D, 2D triangular and 3D tetrahedral are :
+
+.Example of reference Elements.
+
+image::{sectiondir}FEM_reference_element.png[width=420.0,height=336.0]
+====
+
+== Mesh
+
+In 1D, the construction of a mesh consists in creating a subdivision of the interval stem:[[a,b]]. We can extend this definition in 2D and 3D by considering that a mesh is formed by a family of elements stem:[\mathcal{T}_h = \left\{K_1,\dots,K_{N_e}\right\}] (see <<triangle_mesh>>) where stem:[N_e] is the number of elements. 
+
+In 2D, these elements can be triangles or rectangles. In 3D, they can be tetrahedrons, parallelepipeds or prisms.
+
+[[triangle_mesh]]
+
+.Example of a triangular mesh on a circles.
+
+image::{sectiondir}FEM_triangle_mesh.png[width=120.0,height=96.0]
+
+
+[NOTE]
+====
+Note that it's important to have a certain geometric quality in the mesh, as this can influence the accuracy of the approximation. For example, if we're using triangles as 2D elements, it's preferable that all the elements in the mesh are not too flattened.
+====
+
+== Construction of stem:[V_h] space
+
+*Geometric transformation :*
+A mesh is generated by
+
+*  A reference element noted stem:[\hat{K}].
+*  A family of geometric transformations mapping stem:[\hat{K}] to the elements stem:[K_1,\dots,K_{N_e}]. Thus, for a cell stem:[K\in\mathcal{T}_h], we denote stem:[T_K] the geometric transformation mapping stem:[\hat{K}] to stem:[K] :
+
+[stem]
+++++
+T_K : \hat{K}\rightarrow K
+++++
+
+
+[[trans_geo]]
+
+.Geometric transformation applied to a triangle.
+
+image::{sectiondir}FEM_geometric_trans.png[width=240.0,height=192.0]
+
+Let stem:[(\hat{K},\hat{\Sigma},\hat{P})] be the finite reference element with 
+
+*  the degrees of freedom of the reference element stem:[\hat{K}] : stem:[\hat{\Sigma}=\{\hat{a}_1,\dots,\hat{a}_{n_f}\}] with stem:[n_f] the number of degrees of freedom.
+*  the local basis functions of stem:[\hat{K}]: stem:[\{\hat{\psi}_1,\dots,\hat{\psi}_{n_f}\}] (also called form functions)
+
+
+So for each stem:[K\in\mathcal{T}_h], we consider a tuple stem:[\{a_{K,1},\dots,a_{K,n_f}\}] (degrees of freedom) and the associated geometric transformation is defined by :
+
+[stem]
+++++
+T_K : \hat{x}\mapsto\sum_{i=1}^{n_f}a_{K,i}\hat{\psi}_i(\hat{x})
+++++
+
+In particular, we have
+
+[stem]
+++++
+T_K(\hat{a_i})=a_{K,i}, \quad i=1,\dots,n_f
+++++
+
+
+[NOTE]
+====
+In particular, if the form functions are affine, the geometric transformations will be too. This is an interesting property, as the gradient of these geometric transformations will be constant.
+====
+
+
+[NOTE]
+====
+In the following, we will assume that these transformations are stem:[C^1]-diffeomorphisms (i.e. the transformation and its inverse are stem:[C^1] and bijective).
+====
+
+*Construction of the basis stem:[(\varphi_i)] of stem:[V_h] :*
+
+For each stem:[K\in\mathcal{T}_h], let stem:[(K,\Sigma,P)] be an finite element with 
+
+*  the degrees of freedom of the element stem:[K] : stem:[\Sigma=\{a_{K,i}=T_K(\hat{a}_i), i=1,\dots,n_f\}]
+*  the local basis functions of stem:[K]: stem:[\{\psi_{K,i}=\hat{\psi}_i\circ T_K^{-1}, i=1,\dots,n_f\}] (because stem:[(\hat{K},\hat{\Sigma},\hat{P})] and stem:[(K,\Sigma,P)] are affine-equivalent).
+
+
+By noting stem:[\{a_1,\dots,a_{N_f}\}=\bigcup_{K\in\mathcal{T}_h}\{a_{K,1},\dots,a_{K,n_f}\}] with stem:[N_f] the total number of degrees of freedom (over all the geometry), we have
+
+[stem]
+++++
+\forall j\in\{1,\dots,N_f\}, \quad {\varphi_j}_{|K}=\psi_{K,a_{K,j}}
+++++
+
+The stem:[\phi_j] functions are then in the space of piece-wise affine continuous functions, defined by
+
+[stem]
+++++
+P_{C,h}^k=\{v_h\in C^0(\bar{\Omega}), \forall K\in\mathcal{T}_h, {v_h}_{|K}\in\mathbb{P}_k\}\subset H^1(\Omega)
+++++
+In fact, the functions stem:[\{\varphi_1,\dots,\varphi_{N_f}\}] form a basis of stem:[P_{C,h}^k] and so we can choose stem:[V_h=P_{C,h}^k].
+

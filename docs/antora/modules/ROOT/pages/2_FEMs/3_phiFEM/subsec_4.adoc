@@ -1,0 +1,28 @@
+:stem: latexmath
+:xrefstyle: short
+= Some details on the stabilization terms
+:sectiondir: 2_FEMs/3_phiFEM/
+
+In this section, we will give some informations on stabilization terms. As introduced previously, the stabilization terms are intended to reduce the errors created by the "fictitious" boundary, but they also have the effect of ensuring the correct condition number of the finite element matrix and permitting to restore the coercivity of the bilinear scheme.                                                                                      
+
+The first term of stem:[G_h(w,v)] defined by
+
+[stem]
+++++
+\sigma h\sum_{E\in\mathcal{F}_h^\Gamma} \int_E \left[\frac{\partial}{\partial n}(\phi_h w)\right] \left[\frac{\partial}{\partial n}(\phi_h v)\right]
+++++
+is a first-order stabilization term. This stabilization term is based on \cite{burman_ghost_2010}. It also ensures the continuity of the solution by penalizing gradient jumps.
+
+By subtracting stem:[G_h^{rhs}(v)] from the second term of stem:[G_h(w,v)], i.e.
+
+[stem]
+++++
+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} \Delta(\phi_h w)\Delta(\phi_h v)+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} f \Delta(\phi_h v),
+++++
+which can be rewritten as
+
+[stem]
+++++
+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} \left(\Delta(\phi_h w)+f\right)\Delta(\phi_h v),
+++++
+we recognize the strong formulation of the Poisson problem. This second-order stabilization term penalizes the scheme by requiring the solution to verify the strong form on stem:[\Omega_h^\Gamma]. In fact, this term cancels out if stem:[\phi_h w] is the exact solution of the Poisson problem under consideration.

@@ -1,0 +1,97 @@
+:stem: latexmath
+:xrefstyle: short
+= Description of the stem:[\phi]-FEM direct method
+:sectiondir: 2_FEMs/3_phiFEM/
+
+As with standard FEM, the general idea behind stem:[\phi]-FEM is to find a weak solution (i.e. a solution to the variational problem) to the considered problem (\ref{eq.Poisson}). The main difference lies in the spaces considered. In fact, we are no longer looking to solve the problem on stem:[\Omega] (of boundary stem:[\Gamma]) but on stem:[\Omega_h] (of boundary stem:[\partial\Omega_h]). Since our boundary conditions are defined on stem:[\Gamma], we don't have a direct condition on the stem:[\partial\Omega_h] boundary, so we will have to add terms to the variational formulation of the problem, called stabilization terms.
+
+Let's first consider the homogeneous case, then assuming that the source term stem:[f] is currently well-defined on stem:[\Omega_h] and that the solution stem:[u] can be extended on stem:[\Omega_h] such that stem:[-\Delta u=f] on stem:[\Omega_h], we can introduce a new unknown stem:[w\in H^1(\Omega_h)] such that stem:[u=\phi w] and the boundary condition on stem:[\Gamma] is satisfied (since stem:[\phi=0] on stem:[\Gamma]). After an integration by parts, we have
+
+[stem]
+++++
+\int_{\Omega_h}\nabla(\phi w)\cdot\nabla(\phi v)-\int_{\partial\Omega_h}\frac{\partial}{\partial n}(\phi w)\phi v=\int_{\Omega_h} f\phi v,\quad \forall v\in H^1(\Omega_h).
+++++
+
+[NOTE]
+====
+Note that stem:[\Omega_h] is constructed using stem:[\phi_h] and therefore implicitly depends on stem:[\phi].
+====
+Given an approximation stem:[\phi_h] of stem:[\phi] on the mesh stem:[\mathcal{T}_h], as defined in xref:3_phiFEM/subsec_1.adoc[Section "General presentation of the stem:[\phi]-FEM method"], and a finite element space stem:[V_h] on stem:[\mathcal{T}_h], we can then search for stem:[w_h\in V_h] such that
+
+[stem]
+++++
+a_h(w_h,v_h)=l_h(v_h), \quad \forall v_h\in V_h.
+++++
+
+The bilinear form stem:[a_h] and the linear form stem:[l_h] are defined by
+
+[stem]
+++++
+a_h(w,v)=\int_{\Omega_h} \nabla (\phi_h w) \cdot \nabla (\phi_h v) - \int_{\partial\Omega_h} \frac{\partial}{\partial n}(\phi_h w)\phi_h v+G_h(w,v)
+++++
+and
+
+[stem]
+++++
+l_h(v)=\int_{\Omega_h} f \phi_h v + G_h^{rhs}(v)
+++++
+with
+
+[stem]
+++++
+G_h(w,v)=\sigma h\sum_{E\in\mathcal{F}_h^\Gamma} \int_E \left[\frac{\partial}{\partial n}(\phi_h w)\right] \left[\frac{\partial}{\partial n}(\phi_h v)\right]+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} \Delta(\phi_h w)\Delta(\phi_h v)
+++++
+and
+
+[stem]
+++++
+G_h^{rhs}(v)=-\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma} \int_{T} f \Delta(\phi_h v).
+++++
+with stem:[\sigma] an independent parameter of h, which we'll call the stabilization parameter.
+
+We can consider the finite element space stem:[V_h=V_h^{(k)}] with
+
+[stem]
+++++
+V_h^{(k)}=\left\{v_h\in H^1(\Omega_h):v_{h|_T}\in\mathbb{P}_k(T) \;  \forall T\in\mathcal{T}_h\right\}.
+++++
+
+
+[NOTE]
+====
+Note that stem:[[\;\cdot\;]] is the jump on the interface stem:[E] defined by
+
+[stem]
+++++
+\left[\frac{\partial}{\partial n}(\phi_h w)\right]=\nabla(\phi_h w)^+\cdot n - \nabla(\phi_h w)^-\cdot n
+++++
+with stem:[n] is the unit normal vector outside stem:[E].
+====
+
+In the case of a non-homogeneous Dirichlet condition, we want to impose stem:[u=g] on stem:[\Gamma]. With the direct method, we must suppose that stem:[g] is currently given over the entire stem:[\Omega_h] and not just over stem:[\Gamma]. We can then write the solution stem:[u] as
+
+[stem]
+++++
+u=\phi w +g, \; \text{on } \Omega_h.
+++++
+It can then be injected into the weak formulation of the homogeneous problem and we can then search for stem:[w_h] on stem:[\Omega_h] such that
+[stem]
+++++
+\begin{aligned}
+\int_{\Omega_h}\nabla(\phi_h w_h)\nabla(\phi_h v_h)-\int_{\partial\Omega_h}&\frac{\partial}{\partial n}(\phi_h w_h)\phi_h v_h+G_h(w_h,v_h)=\int_{\Omega_h}f\phi_h v_h \\
+&-\int_{\Omega_h}\nabla g\nabla(\phi_h v_h)+\int_{\partial\Omega_h}\frac{\partial g}{\partial n}\phi_h v_h+G_h^{rhs}(v_h), \; \forall v_h\in \Omega_h
+\end{aligned}
+++++
+with
+
+[stem]
+++++
+G_h(w,v)=\sigma h\sum_{E\in\mathcal{F}_h^\Gamma}\int_E\left[\frac{\partial}{\partial n}(\phi_h w)\right]\left[\frac{\partial}{\partial n}(\phi_h v)\right]+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T \Delta(\phi_h w)\Delta(\phi_h v)
+++++
+and
+
+[stem]
+++++
+G_h^{rhs}(v)=-\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T f\Delta(\phi_h v)-\sigma h\sum_{E\in\mathcal{F}_h^\Gamma}\int_E\left[\frac{\partial g}{\partial n}\right]\left[\frac{\partial}{\partial n}(\phi_h v)\right]-\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T \Delta g\Delta(\phi_h v)
+++++
+

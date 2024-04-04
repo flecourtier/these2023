@@ -1,0 +1,101 @@
+:stem: latexmath
+:xrefstyle: short
+= Application to the Poisson problem
+:sectiondir: 2_FEMs/2_FEM/
+
+*Weak formulation :*
+
+We want to apply the standard FEM method to the Poisson problem with Dirichlet boundary condition under consideration. Let's start by writing the variational formulation of the problem. For the moment, we have the following strong formulation of the problem :
+
+[stem]
+++++
+-\Delta u = f \text{ on } \Omega
+++++
+Multiplying by a test function stem:[v\in H_0^1(\Omega)] and integrating over stem:[\Omega], we obtain
+
+[stem]
+++++
+-\int_\Omega \Delta u v = \int_\Omega f v.
+++++
+By integration by parts, we have
+
+[stem]
+++++
+-\int_\Omega \Delta u v = \int_\Omega \nabla u\cdot\nabla v-\int_\Gamma \frac{\partial u}{\partial n}v.
+++++
+This leads to the following weak formulation
+
+[stem]
+++++
+\text{Find } u\in H_0^1(\Omega) \text{ such that } a(u,v)=l(v), \;\forall v\in H_0^1(\Omega)
+++++
+with
+
+[stem]
+++++
+\left\{\begin{aligned}
+&a(u,v) = \int_\Omega \nabla u\cdot\nabla v \\
+&l(v) = \int_\Omega f v
+\end{aligned}\right.
+++++
+because stem:[v\in H_0^1(\Omega)].
+
+
+*Uniqueness of the solution :*
+
+An important result of the FEM method is the following theorem, which shows the uniqueness of the solution:
+
+
+[]
+====
+*Propositon (Lax-Milgram).*
+
+Let stem:[a] be a continuous, coercive bilinear form on stem:[V] and stem:[l] a continuous, linear form on stem:[V]. Then the variational problem has a unique solution stem:[u\in V]. 
+
+Moreover, if the bilinear form is symmetrical, stem:[u] is a solution to the following minimization problem:
+
+[stem]
+++++
+J(u)=\min_{v\in V} J(v), \quad J(v)=\frac{1}{2}a(v,v)-l(v)
+++++
+====
+
+Let's show that the Poisson problem with Dirichlet boundary condition has a unique weak solution stem:[u\in H_0^1(\Omega)]. 
+
+
+*  It's easy to see that stem:[a] is a bilinear (and symmetrical) form.
+
+Let's show that stem:[a] is continuous. Let stem:[u,v \in H_0^1(\Omega)], then
+[stem]
+++++
+\begin{aligned}
+|a(u,v)|&=\left|\int_\Omega \nabla u\cdot\nabla v\right|=|\langle u,v\rangle_{H^1(\Omega)} \\
+&\le ||u||_{H^1(\Omega)} ||v||_{H^1(\Omega)} \quad\text{by Cauchy-Schwarz}
+\end{aligned}
+++++
+
+Let's show that stem:[a] is coercive. Let stem:[u \in H_0^1(\Omega)], then
+[stem]
+++++
+\begin{aligned}
+a(u,u)&=\int_\Omega \nabla u\cdot\nabla u=\int_\Omega |\nabla u|^2 \\
+&=\frac{1}{2}\int_\Omega |\nabla u|^2+\frac{1}{2}\int_\Omega |\nabla u|^2 \\
+&\ge\frac{1}{2}\alpha\int_\Omega u^2+\frac{1}{2}\int_\Omega |\nabla u|^2 \quad \text{by Poincaré} \\
+&\ge \alpha\int_\Omega u^2+|\nabla u|^2=\alpha||u||_{H^1(\Omega)}		
+\end{aligned}
+++++
+*  It is easy to see that stem:[l] is a linear form.
+
+Let's show that stem:[l] is continuous. Let stem:[v \in H_0^1(\Omega)], then
+[stem]
+++++
+\begin{aligned}
+|l(v)|&=\left|\int_\Omega fv\right|=|\langle f,v\rangle_{L^2(\Omega)}| \\
+&\le ||f||_{L^2(\Omega)} ||v||_{L^2(\Omega)} \quad\text{by Cauchy-Schwarz} \\
+&\le ||f||_{L^2(\Omega)} ||v||_{H^1(\Omega)}
+\end{aligned}
+++++
+
+
+By the Lax-Milgram theorem, we deduce that the Poisson problem with Dirichlet boundary condition has a unique weak solution stem:[u\in H_0^1(\Omega)]. 
+

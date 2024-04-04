@@ -1,0 +1,42 @@
+:stem: latexmath
+:xrefstyle: short
+= Description of the stem:[\phi]-FEM dual method
+:sectiondir: 2_FEMs/3_phiFEM/
+
+The idea here is the same as for the direct method, but with the dual method, we assume that stem:[g] is defined on stem:[\Omega_h^\Gamma] and not on stem:[\Omega_h]. We then introduce a new unknown stem:[p] on stem:[\Omega_h^\Gamma] in addition to the unknown stem:[u] on stem:[\Omega_h] and so we aim to impose
+
+[stem]
+++++
+u=\phi p+g, \; \text{on } \Omega_h^\Gamma.
+++++
+So we look for stem:[u] on stem:[\Omega_h] and stem:[p] on stem:[\Omega_h^\Gamma] such that
+[stem]
+++++
+\begin{aligned}
+\int_{\Omega_h}\nabla u\nabla v-\int_{\partial\Omega_h}\frac{\partial u}{\partial n} v + \frac{\gamma}{h^2} \sum_{T\in\mathcal{T}_h^\Gamma}\int_T &\left(u-\frac{1}{h}\phi p\right)\left(v-\frac{1}{h}\phi q\right) + G_h(u,v) = \int_{\Omega_h}fv \\
+&+ \frac{\gamma}{h^2} \sum_{T\in\mathcal{T}_h^\Gamma}\int_T g\left(v-\frac{1}{h}\phi q\right) + G_h^{rhs}(v), \; \forall v \; \text{on } \Omega_h, \; q \; \text{on } \Omega_h^\Gamma.
+\end{aligned}
+++++
+with stem:[\gamma] an other positive stabilization parameter,
+
+[stem]
+++++
+G_h(u,v)=\sigma h\sum_{E\in\mathcal{F}_h^\Gamma}\int_E\left[\frac{\partial u}{\partial n}\right]\left[\frac{\partial v}{\partial n}\right]+\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T \Delta u\Delta v
+++++
+and
+
+[stem]
+++++
+G_h^{rhs}(v)=-\sigma h^2\sum_{T\in\mathcal{T}_h^\Gamma}\int_T f\Delta v.
+++++
+
+[NOTE]
+====
+The factors stem:[\frac{1}{h}] and stem:[\frac{1}{h^2}] control the condition number of the finite element matrix. For more details, please refer to the article \cite{duprez_new_2023}.
+====
+
+[NOTE]
+====
+In the context of this internship, we won't be concerned with the choice of stabilization parameters stem:[\sigma] and stem:[\gamma]. We'll always take stem:[\sigma=20] and stem:[\gamma=1], but it's important to note that they can have a significant influence on the results.
+====
+

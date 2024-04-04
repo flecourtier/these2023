@@ -1,0 +1,89 @@
+:stem: latexmath
+:xrefstyle: short
+= General principle of the method
+:sectiondir: 2_FEMs/2_FEM/
+
+Let's consider a domain stem:[\Omega] whose boundary is denoted stem:[\partial\Omega]. We seek to determine a function stem:[u] defined on stem:[\Omega], solution of a partial differential equation (PDE) for given boundary conditions.
+
+The general approach of the finite element method is to write down the variational formulation of this PDE, thus giving us a problem of the following type:
+
+*Variational Problem :*
+
+[stem]
+++++
+\text{Find } u\in V \text{ such that } a(u,v)=l(v), \;\forall v\in V
+++++
+
+where stem:[V] is a Hilbert space, stem:[a] is a bilinear form and stem:[l] is a linear form.
+
+To do this, we multiply the PDE by a test function stem:[v\in V], then integrate over stem:[L^2(\Omega)].
+
+The idea of FEM is to use Galerkin's method. We then look for an approximate solution stem:[u_h] in stem:[V_h], a finite-dimensional subspace dependent on a positive parameter stem:[h] such that
+
+
+[stem]
+++++
+V_h\subset V, \quad \dim V_h = N_h<\infty, \quad \forall h>0.
+++++
+
+The variational problem can then be approached by :
+
+*Approach Problem :*
+
+[stem]
+++++
+\text{Find } u_h\in V_h \text{ such that } a(u_h,v_h)=l(v_h), \;\forall v_h\in V.
+++++
+
+As stem:[V_h] is of finite dimension, we can consider a basis stem:[(\varphi_1,\dots,\varphi_{N_h})] of stem:[V_h] and thus decompose stem:[u_h] on this basis as :
+
+
+[stem]
+++++
+\label{decomp1}
+u_h=\sum_{i=1}^{N_h}u_i\varphi_i	
+++++
+
+By bilinearity of stem:[a], the approached problem is then rewritten as
+
+
+[stem]
+++++
+\text{Find } u_1,\dots,u_{N_h} \text{ such that } \sum_{i=1}^{N_h}u_i a(\varphi_i,v_h)=l(v_h), \;\forall v_h\in V 
+++++
+
+which is equivalent to
+
+
+[stem]
+++++
+\text{Find } u_1,\dots,u_{N_h} \text{ such that } \sum_{i=1}^{N_h}u_i a(\varphi_i,\varphi_j)=l(\varphi_j), \;\forall j\in \{1,\dots,N_h\}
+++++
+
+Thus, to find an approximation to the solution of the PDE, we simply solve the following linear system :
+
+[stem]
+++++
+AU=b
+++++
+with
+
+[stem]
+++++
+A=(a(\varphi_i,\varphi_j))_{1\le i,j\le N_h}, \quad U=(u_i)_{1\le i\le N_h} \quad \text{and} \quad b=(l(\varphi_j))_{1\le j\le N_h}
+++++
+
+
+[NOTE]
+====
+To impose Dirichlet boundary conditions, we can use one of 2 methods. The elimination method consists in modifying the rows associated with the boundary nodes in the finite element matrix. More precisely, we set the rows to 0 except 1 on the diagonal and the value of the condition on the second member. In other words, we simply write the value of the degrees of freedom at the Dirichlet boundary. The penalization method consists in modifying the matrix and the second member as follows:
+[stem]
+++++
+\begin{aligned}
+&A_{i,i} := A_{i,i}+\frac{1}{\epsilon} \\
+&f_i := f_i + \frac{1}{\epsilon}g_i
+\end{aligned}
+++++
+with stem:[\epsilon >0] and stem:[i] is a boundary nodes.
+====
+

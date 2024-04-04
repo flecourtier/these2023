@@ -7,9 +7,23 @@
 * xref:1_introduction/2_contrib.adoc[Ma contribution]
 
 .Levelset
-* xref:2_levelset/1_introduction.adoc[Introduction]
-* xref:2_levelset/2_maths_theory.adoc[Théorie d'approximation]
-* xref:2_levelset/3_learning.adoc[Apprentissage]
+* xref:3_levelset/1_introduction.adoc[Introduction]
+* xref:3_levelset/2_maths_theory.adoc[Théorie d'approximation]
+* xref:3_levelset/3_learning.adoc[Apprentissage]
+
+.FEMs
+* xref:2_FEMs/1_intro.adoc[Introduction]
+* xref:2_FEMs/2_FEM.adoc[Standard FEM]
+** xref:2_FEMs/2_FEM/subsec_0.adoc[Some notions of functional analysis.]
+** xref:2_FEMs/2_FEM/subsec_1.adoc[General principle of the method]
+** xref:2_FEMs/2_FEM/subsec_2.adoc[Some details on FEM]
+** xref:2_FEMs/2_FEM/subsec_3.adoc[Application to the Poisson problem]
+* xref:2_FEMs/3_phiFEM.adoc[stem:[\phi]-FEM]
+** xref:2_FEMs/3_phiFEM/subsec_0.adoc[Fictitious domain methods]
+** xref:2_FEMs/3_phiFEM/subsec_1.adoc[General presentation of the stem:[\phi]-FEM method]
+** xref:2_FEMs/3_phiFEM/subsec_2.adoc[Description of the stem:[\phi]-FEM direct method]
+** xref:2_FEMs/3_phiFEM/subsec_3.adoc[Description of the stem:[\phi]-FEM dual method]
+** xref:2_FEMs/3_phiFEM/subsec_4.adoc[Some details on the stabilization terms]
 
 .Contenus supplémentaires
 * xref:slides.adoc[Mes slides]

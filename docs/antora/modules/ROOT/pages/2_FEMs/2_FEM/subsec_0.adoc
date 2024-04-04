@@ -1,0 +1,99 @@
+:stem: latexmath
+:xrefstyle: short
+= Some notions of functional analysis.
+:sectiondir: 2_FEMs/2_FEM/
+
+In this section, we'll recall some of the notions of functional analysis that will be used in the next sections. In particular, Lebesgue spaces and Sobolev spaces. Please refer to the book \cite{brezis_functional_2011}. Let's consider stem:[\Omega] a smooth open-set of stem:[\mathbb{R}^d] (stem:[d=1,2,3]) with boundary stem:[\Gamma].
+
+We begin here by defining Lebesgue spaces:
+
+
+[]
+====
+*Definition (Lebesgue spaces).*
+Lebesgue spaces, denoted stem:[L^p], are vector spaces of classes of functions whose exponent power stem:[p] is integrable in the Lebesgue sense, where stem:[p] is a strictly positive real number. They are defined by
+
+[stem]
+++++
+L^p(\Omega)=\left\{u:\Omega\rightarrow\mathbb{R}|\int_\Omega u^p d\nu<+\infty\right\}
+++++
+In particular, taking stem:[p=2], we define the space
+
+[stem]
+++++
+L^2(\Omega)=\left\{u:\Omega\rightarrow\mathbb{R}|\int_\Omega u^2 d\nu<+\infty\right\}
+++++
+which is the space of integrable square functions.
+====
+
+We also define Sobolev spaces of order 1 and order 2:
+
+
+[]
+====
+*Definition (Sobolev spaces).*
+The Sobolev space of order 1, denoted stem:[H^1], is defined by
+[stem]
+++++
+\begin{aligned}
+H^1(\Omega)&=\left\{u\in L^2(\Omega)|\partial_{x_i}u\in L^2(\Omega)\right\} \\
+&=\left\{u\in L^2(\Omega),\nabla u\in L^2(\Omega)^d\right\}
+\end{aligned}
+++++
+with the scalar product stem:[\langle u, v\rangle_{H^1(\Omega)}], defined by :
+
+[stem]
+++++
+\langle u, v\rangle_{H^1(\Omega)} = \int_\Omega uv + \nabla u \cdot \nabla v, \forall u,v\in H^1(\Omega)
+++++
+and the induced norm stem:[||\cdot||_{H^1(\Omega)}].
+
+We also define the space
+
+[stem]
+++++
+H_0^1(\Omega)=\left\{u\in H^1(\Omega)|u_{|\Gamma}=0\right\}
+++++
+
+The Sobolev space of order 2, denoted stem:[H^2], is defined by
+
+[stem]
+++++
+H^2(\Omega)=\left\{u,u',u''\in L^2(\Omega)\right\}
+++++
+with scalar product stem:[\langle u, v\rangle_{H^2(\Omega)}], defined by :
+
+[stem]
+++++
+\langle u, v\rangle_{H^2(\Omega)} = \int_\Omega uv + u'v' + u''v'', \forall u,v\in H^1(\Omega)
+++++
+and the induced norm stem:[||\cdot||_{H^2(\Omega)}].
+====
+
+
+[NOTE]
+====
+In view of these definitions, we can see that
+
+[stem]
+++++
+||u||^2_{H^1(\Omega)}=||u||^2_{L^2(\Omega)}+|u|^2_{H^1\Omega)}
+++++
+with stem:[|u|_{H^1\Omega)}=||\nabla u||_{L^2(\Omega)}] called stem:[H^1] semi-norm.
+
+We also note that
+
+[stem]
+++++
+||u||^2_{H^2(\Omega)}=||u||^2_{L^2(\Omega)}+|u|^2_{H^1(\Omega)}+|u|^2_{H^2(\Omega)}
+++++
+with stem:[|u|_{H^2\Omega)}=||\nabla^2 u||_{L^2(\Omega)}] called stem:[H^2] semi-norm.
+====
+
+
+[NOTE]
+====
+In the following, we will note stem:[||\cdot||_{0,\Omega}] the stem:[L^2] norm on stem:[\Omega], stem:[||\cdot||_{1,\Omega}] the stem:[H^1] norm on stem:[\Omega] and stem:[||\cdot||_{2,\Omega}] the stem:[H^2] norm on stem:[\Omega].
+We will also note stem:[|\cdot|_{1,\Omega}] the stem:[H^1] semi-norm on stem:[\Omega] and stem:[|\cdot|_{2,\Omega}] the stem:[H^2] semi-norm on stem:[\Omega].
+====
+

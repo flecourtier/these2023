@@ -1,0 +1,127 @@
+:stem: latexmath
+:xrefstyle: short
+= General presentation of the stem:[\phi]-FEM method
+:sectiondir: 2_FEMs/3_phiFEM/
+
+In this section, we will present the stem:[\phi]-FEM method. We consider the case of the Poisson problem with homogeneous Dirichlet boundary conditions \cite{duprez_phi-fem_2020}. 
+
+[stem]
+++++
+\left\{
+\begin{aligned}
+-\Delta u &= f, \; &&\text{in } \; \Omega, \\
+u&=g, \; &&\text{on } \; \partial\Omega,
+\end{aligned}
+\right.
+\label{eq.Poisson}
+++++
+where the domain stem:[\Omega] and its boundary stem:[\Gamma] are given by a level-set function stem:[\phi] such that
+
+[stem]
+++++
+\Omega=\{\phi < 0\} \quad \text{and} \quad \Gamma=\{\phi = 0\}.
+++++
+
+[[space1]]
+
+.Definition of the level-set function.
+
+image::{sectiondir}PhiFEM_level_set.png[width=222.0,height=177.6]
+
+
+[NOTE]
+====
+For more details on mesh assumptions, convergence results and finite element matrix condition number, please refer to \cite{duprez_phi-fem_2020}. stem:[\phi]-FEM schemes for the Poisson problem with Neumann or mixed (Dirichlet and Neumann) conditions are presented in \cite{duprez_new_2023,cotin_phi-fem_nodate}. The stem:[\phi]-FEM scheme can also be found for other PDEs, including linear elasticity \cite[Chapter~2]{cotin_phi-fem_nodate}, the heat equation \cite[Chapter~5]{cotin_phi-fem_nodate} and the Stokes problem \cite{duprez_phi-fem_2023}.
+====
+
+
+---
+*Example.*
+If stem:[\; \Omega] is a circle of center stem:[A] of coordinates stem:[(x_A,y_A)] and radius stem:[r], a level-set function can be defined by
+
+[stem]
+++++
+\phi(x,y)=-r^2+(x-x_A)^2+(y-y_A)^2.
+++++
+If stem:[\; \Omega] is an ellipse with center stem:[A] of coordinates stem:[(x_A,y_A)] and parameters stem:[(a,b)], a level-set function can be defined by
+
+[stem]
+++++
+\phi(x,y)=-1+\frac{(x-x_A)^2}{a^2}+\frac{(y-y_A)^2}{b^2}.
+++++
+
+---
+
+We assume that stem:[\Omega] is inside a domain stem:[\mathcal{O}] and we introduce a simple quasi-uniform mesh stem:[\mathcal{T}_h^\mathcal{O}] on stem:[\mathcal{O}] (<<space2>>).
+ 
+We introduce now an approximation stem:[\phi_h\in V_{h,\mathcal{O}}^{(l)}] of stem:[\phi] given by stem:[\phi_h=I_{h,\mathcal{O}}^{(l)}(\phi)] where stem:[I_{h,\mathcal{O}}^{(l)}] is the standard Lagrange interpolation operator on
+
+[stem]
+++++
+V_{h,\mathcal{O}}^{(l)}=\left\{v_h\in H^1(\mathcal{O}):v_{h|_T}\in\mathbb{P}_l(T) \;  \forall T\in\mathcal{T}_h^\mathcal{O}\right\}
+++++
+and we denote by stem:[\Gamma_h=\{\phi_h=0\}], the approximate boundary of stem:[\Gamma] (<<space3>>).
+
+We will consider stem:[\mathcal{T}_h] a sub-mesh of stem:[\mathcal{T}_h^\mathcal{O}] obtained by removing the elements located entirely outside stem:[\Omega] (<<space3>>). To be more specific, stem:[\mathcal{T}_h] is defined by
+
+[stem]
+++++
+\mathcal{T}_h=\left\{T\in \mathcal{T}_h^\mathcal{O}:T\cap\{\phi_h<0\}\ne\emptyset\right\}.
+++++
+We denote by stem:[\Omega_h] the domain covered by the stem:[\mathcal{T}_h] mesh (stem:[\Omega_h] will be slightly larger than stem:[\Omega]) and stem:[\partial\Omega_h] its boundary (<<space3>>). The domain stem:[\Omega_h] is defined by
+
+[stem]
+++++
+\Omega_h=\left(\cup_{T\in\mathcal{T}_h}T\right)^O.
+++++
+
+[cols="a,a"]
+|===
+|[[space2]]
+
+.Fictitious domain.
+
+image::{sectiondir}PhiFEM_domain.png[width=255.0,height=204.0]
+|[[space3]]
+
+.Domain considered.
+
+image::{sectiondir}PhiFEM_domain_considered.png[width=300.0,height=240.0]
+
+|===
+
+Now, we can introduce stem:[\mathcal{T}_h^\Gamma\subset \mathcal{T}_h] (<<space4>>) which contains the mesh elements cut by the
+approximate boundary stem:[\Gamma_h = \{\phi_h=0\}], i.e. 
+
+[stem]
+++++
+\mathcal{T}_h^\Gamma=\left\{T\in \mathcal{T}_h:T\cap\Gamma_h\ne\emptyset\right\},
+++++
+and stem:[\mathcal{F}_h^\Gamma] (<<space5>>) which collects the interior facets of the mesh stem:[\mathcal{T}_h] either cut by stem:[\Gamma_h] or belonging to a cut mesh element
+
+[stem]
+++++
+\mathcal{F}_h^\Gamma=\left\{E\;(\text{an internal facet of } \mathcal{T}_h) \text{ such that } \exists T\in \mathcal{T}_h:T\cap\Gamma_h\ne\emptyset \text{ and } E\in\partial T\right\}.
+++++
+We denote by stem:[\Omega_h^\Gamma] the domain covered by the stem:[\mathcal{T}_h^\Gamma] mesh (<<space4>>) and also defined by
+
+[stem]
+++++
+\Omega_h^\Gamma=\left(\cup_{T\in\mathcal{T}_h^\Gamma}T\right)^O.
+++++
+
+[cols="a,a"]
+|===
+|[[space4]]
+
+.Boundary cells.
+
+image::{sectiondir}PhiFEM_boundary_cells.png[width=270.0,height=216.0]
+|[[space5]]
+
+.Boundary edges.
+
+image::{sectiondir}PhiFEM_boundary_edges.png[width=270.0,height=216.0]
+
+|===
+
