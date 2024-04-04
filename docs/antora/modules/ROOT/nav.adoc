@@ -6,11 +6,6 @@
 * xref:1_introduction/1_application.adoc[Domaine applicatif]
 * xref:1_introduction/2_contrib.adoc[Ma contribution]
 
-.Levelset
-* xref:3_levelset/1_introduction.adoc[Introduction]
-* xref:3_levelset/2_maths_theory.adoc[Théorie d'approximation]
-* xref:3_levelset/3_learning.adoc[Apprentissage]
-
 .FEMs
 * xref:2_FEMs/1_intro.adoc[Introduction]
 * xref:2_FEMs/2_FEM.adoc[Standard FEM]
@@ -24,6 +19,11 @@
 ** xref:2_FEMs/3_phiFEM/subsec_2.adoc[Description of the stem:[\phi]-FEM direct method]
 ** xref:2_FEMs/3_phiFEM/subsec_3.adoc[Description of the stem:[\phi]-FEM dual method]
 ** xref:2_FEMs/3_phiFEM/subsec_4.adoc[Some details on the stabilization terms]
+
+.Levelset
+* xref:3_levelset/1_introduction.adoc[Introduction]
+* xref:3_levelset/2_maths_theory.adoc[Théorie d'approximation]
+* xref:3_levelset/3_learning.adoc[Apprentissage]
 
 .Contenus supplémentaires
 * xref:slides.adoc[Mes slides]
