@@ -1,0 +1,14 @@
+{
+	"form":"Cat",
+	"layers":[64, 64, 64, 64, 64, 64],
+	"activation":"sine",
+	"lr":0.01,
+	"decay":0.99,
+	"w_eik":100.0,
+	"w_dir":100.0,
+	"w_neu":100.0,
+	"w_lap":20.0,
+	"n_epochs":10000,
+	"n_collocations":4000,
+	"n_bc_collocations":2000
+}

@@ -10,6 +10,8 @@ import scimba.pinns.pinn_x as pinn_x
 
 from scimba.shape.eikonal_x import EikonalPINNx
 from scimba.shape.training_x import TrainerEikonal
+import scimba.nets.training_tools as training_tools
+from scimba.shape.eikonal_losses import EikonalLossesData
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"torch loaded; device is {device}")
@@ -46,8 +48,8 @@ def run_EikonalLap2D(form,num_config,dict,new_training = False,createxyzfile = F
     if not Path(surface_filename).exists():
         if createxyzfile:
             t = np.linspace(0,1,n_bc_points)
-            c_t = form.c(t)
-            grad_c_t = form.c_prime_rot(t,theta=-np.pi/2)
+            c_t = form.c(t).cpu().detach().numpy()
+            grad_c_t = form.c_prime_rot(t,theta=form.theta_normals).cpu().detach().numpy()
             grad_c_t_norm = np.linalg.norm(grad_c_t,axis=0)
             normals = grad_c_t/grad_c_t_norm
 
@@ -94,18 +96,14 @@ def run_EikonalLap2D(form,num_config,dict,new_training = False,createxyzfile = F
     # Trainer
     ### 
 
+    losses = EikonalLossesData(w_eik=dict["w_eik"], w_dir=dict["w_dir"], w_neu=dict["w_neu"], w_reg=dict["w_lap"])
+    optimizers = training_tools.OptimizerData(learning_rate=dict["lr"], decay=dict["decay"])
     trainer = TrainerEikonal(
         eik=eik,
         file_name=file_path,
-        learning_rate=dict["lr"],
-        decay=dict["decay"],
+        losses=losses,
+        optimizers=optimizers,
         batch_size=dict["n_collocations"],
-        w_eik=dict["w_eik"],
-        w_dir=dict["w_dir"],
-        w_neu=dict["w_neu"],
-        w_tv=dict["w_lap"],
-        tv_loss_f=torch.nn.MSELoss()
-
     )
 
     if new_training or trainer.to_be_trained:
@@ -117,7 +115,5 @@ def run_EikonalLap2D(form,num_config,dict,new_training = False,createxyzfile = F
 
     fig_path = dir_name / "solutions" / (name+".png")
     trainer.plot(20000,filename=fig_path)
-    fig_path = dir_name / "solutions" / (name+"_mask.png")
-    trainer.plot_with_mask(20000,filename=fig_path)
 
     return eik, trainer
