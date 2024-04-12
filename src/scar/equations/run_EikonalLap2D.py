@@ -94,9 +94,14 @@ def run_EikonalLap2D(form,num_config,dict,new_training = False,createxyzfile = F
 
     ##
     # Trainer
-    ### 
+    ###
 
-    losses = EikonalLossesData(w_eik=dict["w_eik"], w_dir=dict["w_dir"], w_neu=dict["w_neu"], w_reg=dict["w_lap"])
+    losses = EikonalLossesData(
+        w_eik=dict["w_eik"],
+        w_dir=dict["w_dir"],
+        w_neu=dict["w_neu"],
+        w_reg=dict["w_lap"],
+    )
     optimizers = training_tools.OptimizerData(learning_rate=dict["lr"], decay=dict["decay"])
     trainer = TrainerEikonal(
         eik=eik,
@@ -115,5 +120,8 @@ def run_EikonalLap2D(form,num_config,dict,new_training = False,createxyzfile = F
 
     fig_path = dir_name / "solutions" / (name+".png")
     trainer.plot(20000,filename=fig_path)
+    name = "derivees_"+str(num_config)
+    fig_path = dir_name / "solutions" / (name+".png")
+    trainer.plot_derivatives(20000,filename=fig_path)
 
     return eik, trainer

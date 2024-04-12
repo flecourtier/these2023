@@ -7,6 +7,8 @@ from pathlib import Path
 
 from scimba.pinns import pinn_x, training_x
 from scimba.sampling import sampling_parameters, sampling_pde, uniform_sampling
+import scimba.nets.training_tools as training_tools
+import scimba.pinns.pinn_losses as pinn_losses
 
 from scar.equations.Poisson2D import *
 
@@ -53,16 +55,16 @@ def run_Poisson2D(cas, num_config, dict, save_sampling = False, save_phi=False, 
     if save_sampling:
         bornes = pde.space_domain.large_domain.surrounding_domain.bound
         
-        data_inside = sampler.sampling(dict["n_collocations"])[0].cpu().detach().numpy()
+        data_inside = sampler.sampling(dict["n_collocations"])[0].x.cpu().detach().numpy()
         plt.figure(figsize=(5,5))
         plot_sampling(bornes,data_inside,str(dict["n_collocations"])+" points")
 
         plt.savefig(dir_name / "models" / ("sampling_"+str(num_config)+"_diapo.png"),dpi=500)
 
     if save_phi:
-        data_inside = sampler.sampling(50000)[0]
+        data_inside = sampler.sampling(50000)[0]#.x
         phi_inside = cas.sd_function.sdf(data_inside)[:,0].detach().cpu().numpy()
-        data_inside = data_inside.detach().cpu().numpy()
+        data_inside = data_inside.x.detach().cpu().numpy()
 
         plt.figure(figsize=(10,10))
         plt.scatter(data_inside[:,0],data_inside[:,1],c=phi_inside)
@@ -90,16 +92,16 @@ def run_Poisson2D(cas, num_config, dict, save_sampling = False, save_phi=False, 
     # Trainer
     ###
 
+    losses = pinn_losses.PinnLossesData(w_res=dict["w_res"])
+    optimizers = training_tools.OptimizerData(learning_rate=dict["lr"], decay=dict["decay"])
     trainer = training_x.TrainerPINNSpace(
         pde=pde,
         network=pinn,
         sampler=sampler,
+        losses=losses,
+        optimizers=optimizers,
         file_name=file_path,
-        bc_loss_bool=False,
-        decay=dict["decay"],
         batch_size=dict["n_collocations"],
-        w_data=dict["w_data"],
-        w_res=dict["w_res"]
     )
 
     ###
@@ -108,18 +110,18 @@ def run_Poisson2D(cas, num_config, dict, save_sampling = False, save_phi=False, 
 
     if new_training or trainer.to_be_trained:
         # si lr est une liste on entrainer n_epoch/len(lr) fois avec chaque lr
-        if isinstance(dict["lr"],list):
-            # on récupère le nombre d'époques (pas forcément divisible par len(lr))
-            n_epochs = dict["n_epochs"]//len(dict["lr"])
-            tab_n_epochs = [n_epochs]*len(dict["lr"])
-            tab_n_epochs[-1] += dict["n_epochs"]%len(dict["lr"])
-            for (i,lr) in enumerate(dict["lr"]): 
-                print("## Train ", tab_n_epochs[i], " epochs with lr = ", lr)
-                trainer.learning_rate = lr
-                trainer.train(epochs=tab_n_epochs[i], n_collocation=dict["n_collocations"], n_data=dict["n_data"])
-        else:
-            trainer.learning_rate = dict["lr"]
-            trainer.train(epochs=dict["n_epochs"], n_collocation=dict["n_collocations"], n_data=dict["n_data"])
+        # if isinstance(dict["lr"],list):
+        #     # on récupère le nombre d'époques (pas forcément divisible par len(lr))
+        #     n_epochs = dict["n_epochs"]//len(dict["lr"])
+        #     tab_n_epochs = [n_epochs]*len(dict["lr"])
+        #     tab_n_epochs[-1] += dict["n_epochs"]%len(dict["lr"])
+        #     for (i,lr) in enumerate(dict["lr"]): 
+        #         print("## Train ", tab_n_epochs[i], " epochs with lr = ", lr)
+        #         trainer.learning_rate = lr
+        #         trainer.train(epochs=tab_n_epochs[i], n_collocation=dict["n_collocations"], n_data=dict["n_data"])
+        # else:
+        #     trainer.learning_rate = dict["lr"]
+        trainer.train(epochs=dict["n_epochs"], n_collocation=dict["n_collocations"], n_data=dict["n_data"])
 
     ###
     # Plot solutions and derivatives

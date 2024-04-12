@@ -51,7 +51,7 @@ class Poisson2D(pdes.AbstractPDEx):
         :param mu: Parameters
         :return: Residual of the PDE (Poisson equation)
         """
-        x1, x2 = self.get_coordinates(x)
+        x1, x2 = x.get_coordinates()
         X = torch.stack([x1,x2])
         alpha = self.get_parameters(mu)
         u_xx = self.get_variables(w, "w_xx")
@@ -63,7 +63,7 @@ class Poisson2D(pdes.AbstractPDEx):
         return u_xx + u_yy + f
     
     def post_processing(self, x, mu, w):
-        x1, x2 = self.get_coordinates(x)
+        x1, x2 = x.get_coordinates()
         mul = self.space_domain.large_domain.sdf(x)
         
         X = torch.stack([x1,x2])
@@ -84,7 +84,7 @@ class Poisson2D(pdes.AbstractPDEx):
         """
         # si self.problem.u_ex existe
         if hasattr(self.problem, "u_ex"):
-            x1, x2 = self.get_coordinates(x)
+            x1, x2 = x.get_coordinates()
             X = torch.stack([x1,x2])
             alpha = self.get_parameters(mu)
             return self.problem.u_ex(torch, X, alpha)

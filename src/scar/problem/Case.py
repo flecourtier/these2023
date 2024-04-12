@@ -57,7 +57,7 @@ class Case:
             form_config = ""
         self.problem = problem_class(self.form)
         self.bound_box = self.sd_function.bound_box
-        self.xdomain = domain.Domain(2,domain.SignedDistanceBasedDomain(2, self.bound_box, self.sd_function))
+        self.xdomain = domain.SpaceDomain(2,domain.SignedDistanceBasedDomain(2, self.bound_box, self.sd_function))
         self.pde = pde_class(self.xdomain, self.problem)
 
         self.dir_name = "networks/"+pde_class_name+"/"+geom_class_name+"/"+sdf_class_name+"/"+problem_class_name+"/"+form_config+str(threshold)+"/"

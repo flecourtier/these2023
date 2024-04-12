@@ -7,7 +7,6 @@ from scimba.equations import domain
 
 from scar.geometry.Geometry2D import ParametricCurves,Circle
 from scar.utils import read_config
-from scar.equations.run_Eikonal2D import run_Eikonal2D
 from scar.equations.run_EikonalLap2D import run_EikonalLap2D
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -98,7 +97,7 @@ class SDMVP(domain.SignedDistance):
         val[np.isnan(val.cpu().detach().numpy())] = 0.0
         return -(val**(1/self.p))[:,None]
     
-class SDEikonal(domain.SignedDistance):
+class SDEikonalLap(domain.SignedDistance):
     def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
         super().__init__(2, threshold)
 
@@ -112,9 +111,9 @@ class SDEikonal(domain.SignedDistance):
 
     def init_eik(self):
         class_name = self.form.__class__.__name__
-        form_dir_name = current / "networks" / "Eikonal2D" / class_name / "models" / ("config_"+str(self.form_config)+".json")
+        form_dir_name = current / "networks" / "EikonalLap2D" / class_name / "models" / ("config_"+str(self.form_config)+".json")
         dict_config = read_config(form_dir_name)
-        self.eik_pinns, self.form_trainer = run_Eikonal2D(self.form,self.form_config,dict_config)
+        self.eik_pinns, self.form_trainer = run_EikonalLap2D(self.form,self.form_config,dict_config)
         self.pde = self.eik_pinns.pde
 
     def phi(self,pre,xy):
@@ -150,26 +149,5 @@ class SDEikonal(domain.SignedDistance):
         :param X: (x,y) coordinates
         :return: Level set function evaluated at (x,y)
         """
-        return self.form_trainer(x,self.mu)
-
-class SDEikonalReg(SDEikonal):
-    def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
-        super().__init__(form, form_config, threshold)
-
-    def init_eik(self):
-        class_name = self.form.__class__.__name__
-        form_dir_name = current / "networks" / "EikonalRegularised2D" / class_name / "models" / ("config_"+str(self.form_config)+".json")
-        dict_config = read_config(form_dir_name)
-        self.eik_pinns, self.form_trainer = run_Eikonal2D(self.form,self.form_config,dict_config,regularised=True)
-        self.pde = self.eik_pinns.pde
-
-class SDEikonalLap(SDEikonal):
-    def __init__(self, form : ParametricCurves, form_config, threshold: float = 0.0):
-        super().__init__(form, form_config, threshold)
-
-    def init_eik(self):
-        class_name = self.form.__class__.__name__
-        form_dir_name = current / "networks" / "EikonalLap2D" / class_name / "models" / ("config_"+str(self.form_config)+".json")
-        dict_config = read_config(form_dir_name)
-        self.eik_pinns, self.form_trainer = run_EikonalLap2D(self.form,self.form_config,dict_config)
-        self.pde = self.eik_pinns.pde
+        # return self.form_trainer(x,self.mu)
+        return self.eik_pinns(x, self.mu)

@@ -35,7 +35,8 @@ def get_args():
     parser.add_argument("--activation", help="Type of the activation function.", type=str, default="sine")
 
     # Trainer arguments
-    parser.add_argument("--lr","--learning_rate", help="Learning rate of the trainer.", nargs="+", type=float, default=1e-2)
+    # parser.add_argument("--lr","--learning_rate", help="Learning rate of the trainer.", nargs="+", type=float, default=1e-2)
+    parser.add_argument("--lr","--learning_rate", help="Learning rate of the trainer.", type=float, default=1e-2)
     parser.add_argument("--decay", help="Multiplicative factor of learning rate decay.", type=float, default=0.99)
 
     parser.add_argument("--w_data", help="Weight of data in the loss.", type=float, default=0.0)
@@ -70,8 +71,8 @@ for subdir in [dir_name+"models", dir_name+"solutions"]:
 # Run model #
 #############
 
-default = len(sys.argv)==1
-from_config = len(sys.argv)!=3 and not (len(sys.argv)==5 and "--casefile" in sys.argv)
+default = len(sys.argv)==1 or (len(sys.argv)==3 and "--casefile" in sys.argv)
+from_config = len(sys.argv)!=3 and not (len(sys.argv)==5 and "--config" in sys.argv)
 config, args, config_filename, model_filename = get_config_filename(args,parser,dir_name,default,from_config)
 print("### Config file : ",config_filename)
 print("### Model file : ",model_filename)
