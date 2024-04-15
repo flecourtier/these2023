@@ -19,6 +19,7 @@ def get_test_sample(solver,parameter_domain,deg_corr):
     V_phi = FunctionSpace(solver.mesh,"CG",deg_corr)
     XXYY = V_phi.tabulate_dof_coordinates()
     X_test = torch.tensor(XXYY,requires_grad=True)
+    X_test = SpaceTensor(X_test,torch.zeros_like(X_test,dtype=int))
 
     # get parameters
     nb_params = len(parameter_domain)

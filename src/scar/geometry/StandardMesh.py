@@ -9,6 +9,9 @@ from pymedit import (
     mmg2d,
     trunc,
 )
+import shutil 
+from scimba.equations.domain import SpaceTensor
+from scar.utils import create_tree
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -24,6 +27,7 @@ def get_XY(bound_box,n=101):
 
 def create_test_sample(XY,parameter_domain,):
     X_test = torch.tensor(np.array(XY), dtype=torch.float32) 
+    X_test = SpaceTensor(X_test,torch.zeros_like(X_test,dtype=int))
 
     nb_params = len(parameter_domain)
     shape = (XY.shape[0],nb_params)
@@ -63,7 +67,8 @@ def construct_mesh(M,phiP1,hmin,hmax,filename):
 
     Mf = trunc(newM, 3) # Trunc the negative subdomain of the level set
     Mf.save(filename+".mesh")  # Saving in binary format
-    command = "meshio convert "+filename+".mesh "+filename+".xml"
+    print("CONVERTTTT")
+    command = "meshio convert "+filename+".mesh "+filename+".xml"+" >> output.txt"
     os.system(command) # Convert and save in xml format
 
 def get_df_mesh(bound_box,filename):
@@ -102,7 +107,14 @@ def get_boundary_vertices(mesh):
 
     return xy_boundary
 
-def overrefined_mesh(form,trainer,dir_name,n=101,hmin=0.001,hmax=0.005):
+def overrefined_mesh(form,trainer,dir_name,n=101,hmin=0.001,hmax=0.005,new_mesh=False):
+    dir_name += "overrefined_mesh/"
+    if not os.path.exists(dir_name):
+        create_tree(str(dir_name))
+    if new_mesh:
+        shutil.rmtree(dir_name)
+        create_tree(str(dir_name))
+        
     parameter_domain = trainer.pde.parameter_domain
     XY = get_XY(form.bound_box,n)
     X_test,mu_test = create_test_sample(XY,parameter_domain)
@@ -115,7 +127,15 @@ def overrefined_mesh(form,trainer,dir_name,n=101,hmin=0.001,hmax=0.005):
 
     return mesh
 
-def standard_mesh(form,trainer,dir_name,hmin,hmax,n=101):
+def standard_mesh(form,trainer,dir_name,hmin,hmax,n=101,new_mesh=False):
+    #create dir
+    dir_name += "standard_mesh/"
+    if not os.path.exists(dir_name):
+        create_tree(str(dir_name))
+    if new_mesh:
+        shutil.rmtree(dir_name)
+        create_tree(str(dir_name))
+        
     parameter_domain = trainer.pde.parameter_domain
     XY = get_XY(form.bound_box,n)
     X_test,mu_test = create_test_sample(XY,parameter_domain)

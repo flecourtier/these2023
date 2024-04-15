@@ -102,12 +102,45 @@ class FEMSolver():
             self.times_fem["mesh"] = end-start
             self.times_corr_add["mesh"] = end-start
         else:
-            hmin = h_macro-0.001
-            hmax = h_macro
             form_trainer = self.sdf_considered.form_trainer
             form_dir_name = current / "networks" / "EikonalLap2D" / self.form_considered.__class__.__name__ / "meshes"
-            mesh = standard_mesh(self.form_considered,form_trainer,str(form_dir_name)+"/",hmin,hmax,n=101)
+            # generate equivalent mesh
+            
+            # import matplotlib.pyplot as plt
+            # mesh = overrefined_mesh(self.form_considered,form_trainer,str(form_dir_name)+"/",new_mesh=True)
+            # print("hmax:",mesh.hmax())
+            # plt.figure()
+            # plot(mesh)
+            # plt.show()
+            
+            # print("Standard mesh")
+            
+            # mesh = standard_mesh(self.form_considered,form_trainer,str(form_dir_name)+"/",0.01,0.05,n=101,new_mesh=True)
+            # print("hmax:",mesh.hmax())
+            # plt.figure()
+            # plot(mesh)
+            # plt.show()
+            
+            # print("AUTREEEEEEEEEEE")
+            
+            # mesh = standard_mesh(self.form_considered,form_trainer,str(form_dir_name)+"/",0.001,0.005,n=101,new_mesh=True)
+            # print("hmax:",mesh.hmax())
+            # plt.figure()
+            # plot(mesh)
+            # plt.show()
+            
+            hmin = h_macro/5
+            hmax = h_macro
+            h = 10*h_macro
 
+            while h>h_macro:
+                mesh = standard_mesh(self.form_considered,form_trainer,str(form_dir_name)+"/",hmin,hmax,n=101,new_mesh=True)
+                h = mesh.hmax()
+                hmin = hmin / 2
+                hmax = hmax / 2
+            print("hmin,hmax :",hmin,hmax)     
+            print("h,h_macro :",h,h_macro)
+        
         V = FunctionSpace(mesh, "CG", 1)
         dx = Measure("dx", domain=mesh)
 

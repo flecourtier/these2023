@@ -241,6 +241,8 @@ class Heart(ParametricCurves):
         self.bord_a,self.bord_b = (-1.0,1.0)
         self.bord_a2,self.bord_b2 = (-1.0,1.0)
         super().__init__()
+        
+        self.theta_normals = PI/2
 
     def c(self,t): # t in [0,1]
         # t to |pi,pi]
@@ -250,6 +252,9 @@ class Heart(ParametricCurves):
         x = 16 * torch.sin(t)**3
         y = 13 * torch.cos(t) - 5 * torch.cos(2 * t) - 2 * torch.cos(3 * t) - torch.cos(4 * t)
         
+        x = x/20
+        y = y/20
+        
         return torch.cat((x, y), 0)
 
     def c_prime(self, t):
@@ -258,5 +263,8 @@ class Heart(ParametricCurves):
 
         x = 48 * torch.sin(t)**2 * torch.cos(t)
         y = -13 * torch.sin(t) + 10 * torch.sin(2 * t) + 6 * torch.sin(3 * t) + 4 * torch.sin(4 * t)
+        
+        x = x/20
+        y = y/20
         
         return torch.cat((x, y), 0)
