@@ -21,11 +21,13 @@ class Case:
         pde_class_name = dict_config["pde"]
         assert pde_class_name in "Poisson2D"
 
+        # SDF Learned
         if isinstance(sdf_class,dict):
             sdf_class_name = sdf_class["type"]
             assert sdf_class_name in {"SDEikonal","SDEikonalReg","SDEikonalLap"}
             assert problem_class_name == "ConstantForce"
             self.form_config = sdf_class["config"]
+        # SDF Analytic
         else:     
             if "SDMVP" in sdf_class:       
                 if sdf_class == "SDMVP":
@@ -64,6 +66,6 @@ class Case:
 
         # corr
         self.corr_type = dict_config["correction"]
-        assert self.corr_type in ["add","mult"]
+        assert self.corr_type in ["add","add_IPP"]
 
         self.corr_dir_name = self.dir_name+"corrections/"+self.corr_type+"/"

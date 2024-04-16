@@ -61,6 +61,8 @@ def correct_pred(solver,u_PINNs,corr_type,get_error=True,analytical_sol=True):
     # get u_Corr
     if corr_type == "add":
         u_Corr,C,norm_L2_Corr = solver.corr_add(0,u_PINNs,get_error=get_error,analytical_sol=analytical_sol)
+    elif corr_type == "add_IPP":
+        u_Corr,C,norm_L2_Corr = solver.corr_add_IPP(0,u_PINNs,get_error=get_error,analytical_sol=analytical_sol)
     # elif corr_type == "mult":
     #     u_Corr,C,norm_L2_Corr = solver.corr_mult(0,u_PINNs)
     else:

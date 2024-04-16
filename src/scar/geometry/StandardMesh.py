@@ -25,7 +25,7 @@ def get_XY(bound_box,n=101):
 
     return XY
 
-def create_test_sample(XY,parameter_domain,):
+def create_test_sample(XY,parameter_domain):
     X_test = torch.tensor(np.array(XY), dtype=torch.float32) 
     X_test = SpaceTensor(X_test,torch.zeros_like(X_test,dtype=int))
 
@@ -67,8 +67,7 @@ def construct_mesh(M,phiP1,hmin,hmax,filename):
 
     Mf = trunc(newM, 3) # Trunc the negative subdomain of the level set
     Mf.save(filename+".mesh")  # Saving in binary format
-    print("CONVERTTTT")
-    command = "meshio convert "+filename+".mesh "+filename+".xml"+" >> output.txt"
+    command = "meshio convert "+filename+".mesh "+filename+".xml"
     os.system(command) # Convert and save in xml format
 
 def get_df_mesh(bound_box,filename):

@@ -1,11 +1,3 @@
-################
-# Commentaires #
-################
-
-# Attention, ici il n'y a pas de recherche qui permet de savoir si cette configuration existe déjà
-# On remarquera également que si n_layers et units sont renseignés en plus de layeres, layers n'est pas pris en compte
-# Pas de garantit non plus que le fichier de config associé au modèle 1 soit le bon (si on suuprime 1 et pas l'autre par exemple)
-
 ###########
 # Imports #
 ###########

@@ -183,7 +183,7 @@ class Bean(ParametricCurves):
                 [np.cos(self.theta), -np.sin(self.theta)],
                 [np.sin(self.theta), np.cos(self.theta)],
             ]
-        )
+        ).to(device).double()
         return rot
 
     def c(self,t):

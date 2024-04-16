@@ -1,0 +1,11 @@
+{
+    "pde" : "Poisson2D",
+    "geometry" : "Bean",
+    "sdf" : {
+        "type" : "SDEikonalLap",
+        "config" : 2
+    },
+    "problem" : "ConstantForce",
+    "threshold" : 0.0,
+    "correction" : "add"
+}
