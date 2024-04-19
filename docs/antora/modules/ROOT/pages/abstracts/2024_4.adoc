@@ -10,12 +10,64 @@
 *  _Jeudi matin_ - Réunion thèse en visio (Michel)
 *  _Jeudi après-midi_ - Discussion Merge SCimBa à l'UFR (Emmanuel)
 *  _Jeudi après-midi_ - Formation Fidle Seq 15
+*  _Vendredi après-midi_ - CC2 + Suite TP3 Maillage (Info L3S6 MA)
 
 *Fait durant la semaine :*
 
-*  
+*  Préparation CC2
+*  Suite - Rédaction du rapport
+*  Début cas test du chat
 
 *A faire :*
 
-*  
+*  Correction CC2
+*  Suite - Rédaction du rapport
+
+== Week 28 : 08/04/2024 - 12/04/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_28/
+*Réunions :*
+
+*  _Lundi_ - Congé
+*  _Mardi matin_ - Réunion d'équipe
+*  _Jeudi matin_ - Réunion thèse en visio (Michel)
+*  _Jeudi après-midi_ - Formation Fidle Seq 16
+*  _Vendredi après-midi_ - TP3 Matrice (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Correction CC2
+*  Tests entraînement levelset sans la loss Eikonale
+*  Suite rapport
+*  Préparation formation Zotero (1ère partie en autoformation)
+*  Préparation TP3 Matrice
+
+*A faire :*
+
+*  Recommencer la partie implémentation (Classifieur, Levelset, etc.)
+
+== Week 29 : 15/04/2024 - 19/04/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_29/
+*Réunions :*
+
+*  _Mardi matin_ - Réunion d'équipe stem:[\rightarrow] loupé
+*  _Mardi matin_ - Formation Zotero
+*  _Mardi après-midi_ - Séminaire EDP
+*  _Mardi après-midi_ - Réunion Release ScimBa
+*  _Jeudi matin_ - Réunion thèse (Michel + Emmanuel en visio)
+*  _Vendredi après-midi_ - TP4 Héritage (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Problème interpollation pour la Correction
+*  Début classifieur
+*  Début discussion Article 1
+*  2 premiers cas tests - Article 1
+
+*A faire :*
+
+*  Commencer à s'occuper des cas tests pour l'article
 
