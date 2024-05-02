@@ -205,8 +205,8 @@ class FEMSolver():
         boundary = "on_boundary"
 
         params = self.params[i]
-        # f_expr = FExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
-        f_expr = Constant(1.0)
+        f_expr = FExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
+        # f_expr = Constant(1.0)
         if get_error:
             if analytical_sol:
                 u_ex = UexExpr(params, degree=10, domain=self.mesh, pb_considered=self.pb_considered)
@@ -214,14 +214,29 @@ class FEMSolver():
                 u_ex = self.pb_considered.u_ref()
         f_tild = f_expr + div(grad(phi_tild))
         
-        import matplotlib.pyplot as plt
-        plt.figure()
-        c = plot(div(grad(phi_tild)))
-        plt.colorbar(c)
-        plt.show()
+        # V_phi = phi_tild.function_space()
+        # print(self.V==V_phi)
+        
+        
+        # import matplotlib.pyplot as plt
+        # plt.figure()
+        # c = plot(f_tild, cmap="gist_ncar")
+        # plt.colorbar(c)
+        # plt.show()
 
         g = Constant(0.0)
+        
+        g = Function(self.V)
+        phi_tild_inter = interpolate(phi_tild, self.V)
+        g.vector()[:] = (phi_tild_inter.vector()[:])
+        
+        import matplotlib.pyplot as plt
+        plt.figure()
+        c = plot(g, cmap="gist_ncar")
+        plt.colorbar(c)
+        
         # g = -phi_tild
+        
         bc = DirichletBC(self.V, g, boundary)
 
         u = TrialFunction(self.V)

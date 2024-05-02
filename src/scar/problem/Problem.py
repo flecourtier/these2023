@@ -226,14 +226,14 @@ class ConstantForce:
     #         pass
 
     def u_ref(self,trainer,mesh_dir):
-        if not self.analytical_sol:
-            mesh_ex = overrefined_mesh(self.form,trainer,mesh_dir)
-            V_ex = FunctionSpace(mesh_ex, "CG", 1)
-            u_ref = self.get_u_ref(mesh_ex)
+        # if not self.analytical_sol:
+        mesh_ex = overrefined_mesh(self.form,trainer,mesh_dir)
+        V_ex = FunctionSpace(mesh_ex, "CG", 1)
+        u_ref = self.get_u_ref(mesh_ex)
 
-            return mesh_ex,V_ex,u_ref
-        else:
-            pass
+        return mesh_ex,V_ex,u_ref
+        # else:
+        #     pass
 
     def u_ex_prime(self, pre, xy, mu):
         """First derivative of the analytical solution for the Circle domain
