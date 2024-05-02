@@ -71,3 +71,43 @@
 
 *  Commencer à s'occuper des cas tests pour l'article
 
+== Week 30 : 22/04/2024 - 26/04/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_30/
+*Réunions :*
+
+*  _Mardi matin_ - Réunion d'équipe stem:[\rightarrow] Présentation de Nico
+*  _Jeudi matin_ - Réunion thèse stem:[\rightarrow] Annulée
+*  _Vendredi après-midi_ - TP5 Géométrie (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Lancement des courbes de convergences + graphiques facteurs - Cas test 1
+*  Lancement des courbes de convergences + graphiques facteurs - Cas test 2
+*  Début - cas test 3
+*  Génération d'une doc antora qui regroupe tous les résultats
+
+*A faire :*
+
+*  Continuer cas test 3
+*  Lancement nouvel entrainement pour cas test 1 (envoyé par Victor)
+
+== Week 31 : 29/04/2024 - 03/05/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_31/
+*Réunions :*
+
+*  _Lundi + Mardi_ - Congés
+*  _Mercredi_ - Férié
+*  _Jeudi après-midi_ - Formation Fidle Seq 17
+
+*Fait durant la semaine :*
+
+*  
+
+*A faire :*
+
+*  
+
