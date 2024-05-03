@@ -105,9 +105,11 @@
 
 *Fait durant la semaine :*
 
-*  
+*  Mails étudiants Projet
+*  Lancement Convergence + Facteurs - TestCase1-V2 (avec de meilleurs dérivées 3ème)
+*  Convergence TestCase3 (adaptations des solveurs FEM et Corr + Solution de référence)
 
 *A faire :*
 
-*  
+*  Lire article en cours !
 
