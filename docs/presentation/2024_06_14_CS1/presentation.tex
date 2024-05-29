@@ -1,0 +1,227 @@
+%% Requires compilation with XeLaTeX or LuaLaTeX
+\documentclass[compress,10pt,xcolor={table,dvipsnames},t]{beamer}
+\usetheme{diapo}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{argmin}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage[bottom]{footmisc}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{array,multirow,makecell}
+\usepackage{pifont}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{appendixnumberbeamer}
+\usepackage[style=numeric,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
+\usepackage{etoolbox}
+% box colorée dans équation
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usepackage{soul}
+% pour l'indicatrice
+\usepackage{dsfont}
+\usepackage{cancel}
+
+%%% configurer bibliographie
+
+% Charger votre fichier de bibliographie
+\addbibresource{biblio.bib}
+
+% Définir les champs à ne pas afficher dans la bibliographie
+\AtEveryBibitem{
+	\clearlist{language}
+	\clearfield{note}
+	\clearfield{edition}
+	\clearfield{series}
+	\clearfield{url}
+	\clearfield{urldate}
+	\clearfield{pagetotal}
+	\clearfield{pages}
+	\clearfield{issn}
+	\clearfield{doi}
+	\clearfield{url}
+	\clearfield{eprint}
+}
+
+% Définir le style des citations
+\DeclareFieldFormat{title}{\textit{#1}}
+\DeclareFieldFormat[article]{title}{#1}
+\DeclareNameAlias{sortname}{last-first}
+\DeclareFieldFormat{author}{#1.}
+
+% Choisir les informations à afficher dans la bibliographie
+\renewbibmacro{in:}{}
+\renewbibmacro*{journal+issuetitle}{%
+	\ifentrytype{article}{
+		\usebibmacro{journal}
+	}{%
+		\printfield{title}%
+	}%
+}
+
+\renewbibmacro*{date}{%
+	\ifentrytype{misc}{%
+		\printtext{\printdate}%
+	}{%
+		\printdate
+	}%
+}
+%% fin configuration biblio
+
+\setcellgapes{1pt}
+\setlength{\parindent}{0pt}
+\makegapedcells
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+\renewcommand*{\bibfont}{\scriptsize}
+\useoutertheme[subsection=false]{miniframes}
+\makeatletter
+%\patchcmd{\slideentry}{\advance\beamer@xpos by1\relax}{}{}{}
+\def\beamer@subsectionentry#1#2#3#4#5{\advance\beamer@xpos by1\relax}%
+\makeatother
+\setbeamercolor*{mini frame}{fg=bulles,bg=bulles}
+\hypersetup{
+	colorlinks=true,
+	urlcolor=blue,
+	citecolor=other,
+	linkcolor=title,
+}
+
+\title[PhiFEM]{Development of hybrid finite element/neural network methods to help create digital surgical twins}
+\subtitle{CS1}
+\authors[Frédérique LECOURTIER]
+\supervisors[Emmanuel FRANCK, Michel DUPREZ, Vanessa LLERAS]
+\date{June 14, 2024}
+
+\allowbreak
+
+% u_chapeau (chapeau en couleur)
+\usepackage{accents}
+\newcommand{\uchapeau}[1]{\accentset{\textcolor{red}{\wedge}}{#1}}
+\newcommand{\refappendix}[1]{\tikz[baseline=(char.base)]{\node[framednumber] (char) {\hyperlink{#1}{\small \textcolor{white}{Appendix \ref*{#1}}}};}}
+
+\definecolor{appendix}{RGB}{180, 189, 138}
+\tikzset{
+	framednumber/.style={
+		draw=appendix,% Couleur de la bordure
+		fill=appendix, % Couleur de fond
+		rounded corners, % Coins arrondis
+		inner sep=2pt,  % Espace intérieur
+	}
+}
+
+% numérotation et label des appendix
+\newcounter{appendixframenumber}
+\setcounter{appendixframenumber}{1}
+
+\makeatletter
+\newcommand{\labelappendixframe}[1]{%
+	\protected@write\@auxout{}{%
+		\string\newlabel{#1}{{\theappendixframenumber}{\thepage}}%
+	}%
+	\hypertarget{#1}{}
+}	
+\makeatother
+
+%\newenvironment{appendixframe}[2][]{%
+%	\begin{frame}[#1]{\appendixname~\theappendixframenumber~: #2}%
+%	}{%
+%	\end{frame}
+%	\addtocounter{appendixframenumber}{1}
+%}
+
+% barre en couleur terme dans équation
+\newcommand\Ccancel[2][black]{\renewcommand\CancelColor{\color{#1}}\cancel{#2}}
+
+% chifrre romain dans le texte
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\begin{document}
+	\nocite{*}
+	
+	\renewcommand{\inserttotalframenumber}{\pageref{lastslide}}
+	
+	{\setbeamertemplate{footline}{} 
+		\begin{frame}
+			\maketitle
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1} 
+	
+	\AtBeginSection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+				\end{beamercolorbox}
+				%\tableofcontents[sectionstyle=hide,subsectionstyle=show]
+				
+				%subsectionstyle=⟨style for current subsection⟩/⟨style for other subsections in current section⟩/⟨style for subsections in other sections⟩
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1} 
+	}
+	
+	\AtBeginSubsection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+				\end{beamercolorbox}
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/shaded/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1} 
+	}
+	
+	\section{Introduction}
+	\input{sections/intro}
+	
+	\section{How to deal with complex geometry in PINNs ?}
+	\input{sections/learn_levelset}
+	
+	\section{How improve PINNs prediction (on simple geometry) ?}
+	\input{sections/correction}
+	
+	%\section{Supplementary work}
+	\section{Conclusion}
+	\input{sections/conclu}
+	
+	{\setbeamertemplate{footline}{} 
+		\begin{frame}
+			\vfill
+			\centering
+			\LARGE Thank you !
+			\vfill
+		\end{frame}
+	
+		\begin{frame}{Bibliography}
+			\small
+			% \vspace{30pt}
+			% \setstretch{0.2}
+			% \AtNextBibliography{\small}
+			\printbibliography[heading=none]
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-2} 
+	
+	\appendix
+	
+	\section{Appendix}
+	
+	\input{sections/appendix}
+	
+\end{document}

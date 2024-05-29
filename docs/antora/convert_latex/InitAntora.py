@@ -166,8 +166,8 @@ def create_presentation_file(presentation_name):
 
     date_fr = []
     for d in date:
-        date_fr.append(d[-2:] + "/" + d[5:7] + "/" + d[:4])
-
+        date_fr.append(d[8:10] + "/" + d[5:7] + "/" + d[:4])
+        
     file_write = open(presentation_file, 'w')
     file_write.write("# Slides\n\n")
 

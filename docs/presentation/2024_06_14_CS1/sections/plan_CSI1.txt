@@ -1,0 +1,56 @@
+Présentation CSI1 - ../../2024
+
+Title : "CSI 1 - Development of hybrid finite element/neural network methods to help create digital surgical twins"
+
+I/ Introduction
+
+* Context scientific : NN methods - PINNs (rapide et "multiproblème") + MEF (corrige + certifie la prédiction)
+(Pres 2 - Appendix 9)
+
+* "Séparation" des tâches :
+Problème considéré : pb elliptic (Pres 2 - Diapo 2)
+Pour l'instant on a séparé le problème en 2 axes principaux :
+1) utiliser des PINNs pour prédire la solution dans des domaines complexes
+2) une fois la prediction obtenue, comment l'améliorer avec des méthodes éléments finis
+
+II/ How to deal with complex geometry in PINNs ?
+
+* PINNs classique : pb de minimisation (résidu + bord) + NN (MLP) + descente de gradient + méthode de Monte-Carlo
+
+* Problème recontré : comment récupérer un sampling de points à l'intérieur de la géométrie ? -> forme simple OK (Pres 3 - Diapo 2)
+
+* Approche considérée : Apprentissage d'une fonction levelset
+Avantages : sampling facile + impose BC en dure
+Contrainte : we need a regular levelset
+Solution : learn the Eikonal equation with penalisation of the levelset Laplacian
+
+* Résultats
+
+III/ How improve PINNs prediction (simple geom) ?
+(résultats d'un article en préparation)
+
+* Idea : (Pres 2 - Appendix 9)
+(simple geom = levelset analytique)
+
+* Utilisation de FEM
+
+* Résultats théoriques (cvg dans l'article à venir) + mettre courbes
+
+* Résultats numérique : comparaison avec FEM standard (gains obtenus...)
+
+(* Ratio Temps/Erreur - pas PhiFEM)
+
+IV/ Points futurs
+
+* Corr PINNs pred on complex geometrie (with FEM)
+
+* Utilisation de PhiFEM (présentation simple)
+(levelset apprise dans le PINNs utilisable dans PhiFEM)
+
+V/ Travaux supplémentaires
+
+* Mission de vacataire à l'UFR de Strabourg (Python + C++)
+* Formations suivis (Intégrité scientifique, Formation Enseignement, Formation Bibliographique - Zotero, Fomatyions FIDLE...)
+* Présentations (MImesis, Séminaire Tonus, ?)
+* Papier en cours de rédaction - Contribution : résultats numériques
+
