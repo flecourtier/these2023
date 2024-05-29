@@ -46,3 +46,45 @@
 
 *  Suite rédaction !!
 
+== Week 34 : 20/05/2024 - 24/05/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_34/
+*Réunions :*
+
+*  _Lundi_ - Férié
+*  _Jeudi matin_ - Réunion thèse (Michel + Vanessa en visio)
+*  _Vendred après-midi_ - CC3 (Info L3S6 MA)
+
+*Fait durant la semaine :*
+
+*  Préparation CC3 (Modification du sujet + préparation d'une correction)
+*  Cas test 3 : colormap cartes d'erreurs en jet
+*  Cas test 3 : carte d'erreurs sur les dérivées secondes de chaque réseau
+*  Cas test 3 : correction multiplicative - Facteurs sur 50 params ("big") en faisant varier M
+*  Cas test 1 v1 : graphique temps/erreur
+*  Plan Présentation CS
+
+*A faire :*
+
+*  Correction CC3
+*  Commencer Présentation CS
+
+== Week 35 : 27/05/2024 - 31/05/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_35/
+*Réunions :*
+
+*  _Jeudi matin_ - Réunion thèse UFR (Emmanuel)
+*  _Jeudi après-midi_ - Formation Fidle Seq 19
+
+*Fait durant la semaine :*
+
+*  Correction CC3
+*  Présentation CS
+
+*A faire :*
+
+* 
+
