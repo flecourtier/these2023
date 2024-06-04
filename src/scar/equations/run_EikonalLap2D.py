@@ -90,7 +90,16 @@ def run_EikonalLap2D(form,num_config,dict,new_training = False,createxyzfile = F
 
     net = pinn_x.MLP_x
     tlayers = dict["layers"]
-    eik = EikonalPINNx(2, bound, bc_points, bc_normals, net, layer_sizes=tlayers, activation_type=dict["activation"],lap=True)
+    # eik = EikonalPINNx(2, bound, bc_points, bc_normals, net, layer_sizes=tlayers, activation_type=dict["activation"],lap=True)
+    eik = EikonalPINNx(
+        net=pinn_x.MLP_x,
+        dim=2,
+        bound=bound,
+        bc_points=bc_points,
+        bc_normals=bc_normals,
+        layer_sizes=tlayers,
+        activation_type="sine",
+    )
 
     ##
     # Trainer

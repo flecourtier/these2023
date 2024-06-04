@@ -124,7 +124,7 @@ class SDEikonalLap(domain.SignedDistance):
         :return: Level set function evaluated at (x,y)
         """
         x,y = xy
-        return self.form_trainer(torch.tensor([[x,y]]),self.mu)
+        return self.eik_pinns(torch.tensor([[x,y]]),self.mu)
     
     def Omega_bool(self, x, y):
         """Returns True if (x,y) is in the Omega domain
