@@ -24,6 +24,7 @@
 % pour l'indicatrice
 \usepackage{dsfont}
 \usepackage{cancel}
+\usepackage{booktabs}
 
 %%% configurer bibliographie
 
@@ -142,6 +143,11 @@
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
 \makeatother
 
+% warning
+\newcommand{\warning}{{\fontencoding{U}\fontfamily{futs}\selectfont\char 49\relax}}
+
+\newcommand{\insertsectionheadSubtitle}{}
+
 \begin{document}
 	\nocite{*}
 	
@@ -152,7 +158,7 @@
 			\maketitle
 		\end{frame}
 	}
-	\addtocounter{framenumber}{-1} 
+	\addtocounter{framenumber}{-1} 	
 	
 	\AtBeginSection[]{
 		{\setbeamertemplate{footline}{}
@@ -161,6 +167,8 @@
 				\centering
 				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
 					\usebeamerfont{title}\insertsectionhead\par%
+					\vspace{0.5cm} % Ajustez l'espacement selon vos besoins
+					\usebeamerfont{classic}\usebeamercolor[fg]{classic}\insertsectionheadSubtitle
 				\end{beamercolorbox}
 				%\tableofcontents[sectionstyle=hide,subsectionstyle=show]
 				
@@ -193,8 +201,10 @@
 	\section{How to deal with complex geometry in PINNs ?}
 	\input{sections/learn_levelset}
 	
-	\section{How improve PINNs prediction (on simple geometry) ?}
+	\renewcommand{\insertsectionheadSubtitle}{\warning Considering simple geometry (i.e analytic levelset $\phi$).}
+	\section{How improve PINNs prediction ?}
 	\input{sections/correction}
+	\renewcommand{\insertsectionheadSubtitle}{}
 	
 	%\section{Supplementary work}
 	\section{Conclusion}
