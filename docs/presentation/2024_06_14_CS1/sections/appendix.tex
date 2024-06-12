@@ -245,3 +245,55 @@
 	\end{center}
 \end{frame}
 \addtocounter{appendixframenumber}{1}
+
+\subsection{Additive approach on Cat}\labelappendixframe{frame:cat}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Add on Cat}
+	\begin{center}
+		\pgfimage[width=0.9\linewidth]{images/appendix/cat/cat.jpg}
+	\end{center}
+\end{frame}
+\addtocounter{appendixframenumber}{1}
+
+\subsection{Multiplicative approach}\labelappendixframe{frame:mult}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Multiplicative approach}
+	\vspace{-5pt}
+	
+	\textbf{Correct by multiplying :} Considering $u_{NN}$ as the prediction of our PINNs for (\ref{edp}), we define
+	\begin{equation*}
+		u_M = u_{NN}+M
+	\end{equation*}
+	with $M$ a constant chosen so that $u_M>0$, called the enhancement constant.
+	
+	Thus, the correction problem consists in writing the solution as
+	\begin{equation*}
+		\tilde{u}=u_M\times\underset{\textcolor{red}{\approx 1}}{\fcolorbox{red}{white}{$\tilde{C}$}}
+	\end{equation*}
+	
+	\begin{minipage}{\linewidth}
+		\setstretch{0.5}
+		and searching $\tilde{C}: \Omega \rightarrow \mathbb{R}^d$ such that
+		\begin{equation*}
+			\left\{\begin{aligned}
+				L(u_M\tilde{C})&=f, \; &&\text{in } \Omega, \\
+				\tilde{C}&=1, \; &&\text{on } \Gamma.
+			\end{aligned}\right. \label{corr_add}
+		\end{equation*}
+	\end{minipage}
+\end{frame}
+\addtocounter{appendixframenumber}{1}
+
+%\subsection{Some 3D results}\labelappendixframe{frame:results3D}
+%
+%\begin{frame}{\appendixname~\theappendixframenumber~: Results}
+%	TODO
+%\end{frame}
+%\addtocounter{appendixframenumber}{1}
+
+%\subsection{Degree of PINNs evaluation}\labelappendixframe{frame:degree}
+%
+%\begin{frame}{\appendixname~\theappendixframenumber~: Results}
+%	TODO
+%\end{frame}
+%\addtocounter{appendixframenumber}{1}

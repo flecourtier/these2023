@@ -56,7 +56,7 @@
 			
 			\vspace{5pt}
 			\textbf{\textit{Problem :}} SDF is a $\mathcal{C}^0$ function  \\
-			$\Rightarrow$ its derivatives explodes \\
+			$\Rightarrow$ its derivatives explode \\
 			$\Rightarrow$ we \textcolor{orange}{need a regular levelset}
 		\end{minipage}
 	\end{center}
@@ -88,7 +88,7 @@
 		with $\mathcal{O}$ a box which contains $\Omega$ completely and $n$ the exterior normal to $\Gamma$.
 	\end{tcolorbox}
 
-	\textbf{How make that ?} with a PINNs \cite{clemot_neural_2023} by \textcolor{orange}{adding a term to regularize}.
+	\textbf{How to do that ?} with a PINNs \cite{clemot_neural_2023} by \textcolor{orange}{adding a regularization term}.
 	\vspace{-5pt}
 	\begin{equation*}
 		J_{reg} = \int_\mathcal{O} |\Delta\phi|^2
@@ -127,6 +127,9 @@
 	\end{center}
 
 	\begin{center}
-		\pgfimage[width=0.9\linewidth]{images/learn_levelset/cat_poisson_sol.png}
+		\pgfimage[width=0.8\linewidth]{images/learn_levelset/cat_poisson_sol.png}
 	\end{center}
+
+	\footnotesize
+	\textit{Remark :} Poisson on Bean \refappendix{frame:bean}
 \end{frame}
