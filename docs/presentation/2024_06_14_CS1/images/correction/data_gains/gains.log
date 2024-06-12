@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (MiKTeX 24.4) (preloaded format=xelatex 2024.3.18)  4 JUN 2024 15:34
+This is XeTeX, Version 3.141592653-2.6-0.999996 (MiKTeX 24.4) (preloaded format=xelatex 2024.3.18)  6 JUN 2024 10:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1049,15 +1049,15 @@ Package caption Info: End \AtBeginDocument code.
 PGFPlots: reading {data/gains_table_case1_degree1.csv}
 
 Package pgfplots Warning: Table 'data/gains_table_case1_degree1.csv' has an emp
-ty column name; replacing it by '0'' on input line 163.
+ty column name; replacing it by '0'' on input line 167.
 
  [warning /pgfplots/warning/empty column name]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 163
+LaTeX Font Info:    Trying to load font information for U+msa on input line 167
 .
 (/home/flecourtier/.miktex/texmfs/install/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 163
+LaTeX Font Info:    Trying to load font information for U+msb on input line 167
 .
 
 (/home/flecourtier/.miktex/texmfs/install/tex/latex/amsfonts/umsb.fd
@@ -1067,30 +1067,90 @@ PGFPlots: reading {data/gains_table_case1_degree2.csv}
 
 
 Package pgfplots Warning: Table 'data/gains_table_case1_degree2.csv' has an emp
-ty column name; replacing it by '0'' on input line 167.
+ty column name; replacing it by '0'' on input line 171.
 
  [warning /pgfplots/warning/empty column name]
 PGFPlots: reading {data/gains_table_case1_degree3.csv}
 
 Package pgfplots Warning: Table 'data/gains_table_case1_degree3.csv' has an emp
-ty column name; replacing it by '0'' on input line 171.
+ty column name; replacing it by '0'' on input line 175.
 
  [warning /pgfplots/warning/empty column name]
 [1
 
-] (gains.aux)
+]
+PGFPlots: reading {data/gains_table_case1_v2_degree1.csv}
+
+
+Package pgfplots Warning: Table 'data/gains_table_case1_v2_degree1.csv' has an 
+empty column name; replacing it by '0'' on input line 183.
+
+ [warning /pgfplots/warning/empty column name]
+PGFPlots: reading {data/gains_table_case1_v2_degree2.csv}
+
+Package pgfplots Warning: Table 'data/gains_table_case1_v2_degree2.csv' has an 
+empty column name; replacing it by '0'' on input line 187.
+
+ [warning /pgfplots/warning/empty column name]
+PGFPlots: reading {data/gains_table_case1_v2_degree3.csv}
+
+Package pgfplots Warning: Table 'data/gains_table_case1_v2_degree3.csv' has an 
+empty column name; replacing it by '0'' on input line 191.
+
+ [warning /pgfplots/warning/empty column name]
+[2]
+PGFPlots: reading {data/gains_table_case2_degree1.csv}
+
+
+Package pgfplots Warning: Table 'data/gains_table_case2_degree1.csv' has an emp
+ty column name; replacing it by '0'' on input line 199.
+
+ [warning /pgfplots/warning/empty column name]
+PGFPlots: reading {data/gains_table_case2_degree2.csv}
+
+Package pgfplots Warning: Table 'data/gains_table_case2_degree2.csv' has an emp
+ty column name; replacing it by '0'' on input line 203.
+
+ [warning /pgfplots/warning/empty column name]
+PGFPlots: reading {data/gains_table_case2_degree3.csv}
+
+Package pgfplots Warning: Table 'data/gains_table_case2_degree3.csv' has an emp
+ty column name; replacing it by '0'' on input line 207.
+
+ [warning /pgfplots/warning/empty column name]
+[3]
+PGFPlots: reading {data/gains_table_case3_degree1.csv}
+
+
+Package pgfplots Warning: Table 'data/gains_table_case3_degree1.csv' has an emp
+ty column name; replacing it by '0'' on input line 215.
+
+ [warning /pgfplots/warning/empty column name]
+PGFPlots: reading {data/gains_table_case3_degree2.csv}
+
+Package pgfplots Warning: Table 'data/gains_table_case3_degree2.csv' has an emp
+ty column name; replacing it by '0'' on input line 219.
+
+ [warning /pgfplots/warning/empty column name]
+PGFPlots: reading {data/gains_table_case3_degree3.csv}
+
+Package pgfplots Warning: Table 'data/gains_table_case3_degree3.csv' has an emp
+ty column name; replacing it by '0'' on input line 223.
+
+ [warning /pgfplots/warning/empty column name]
+[4] (gains.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 31506 strings out of 409617
- 770498 string characters out of 5774814
- 1931188 words of memory out of 5000000
+ 31524 strings out of 409617
+ 771002 string characters out of 5774814
+ 1932188 words of memory out of 5000000
  53067 multiletter control sequences out of 15000+600000
  559784 words of font info for 46 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  99i,8n,131p,729b,479s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on gains.pdf (1 page).
+Output written on gains.pdf (4 pages).

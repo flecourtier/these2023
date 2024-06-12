@@ -1,4 +1,6 @@
-\begin{frame}{\appendixname~\theappendixframenumber~: Standard FEM}\labelappendixframe{frame:fem}
+\section{\appendixname~\theappendixframenumber~: Standard FEM}\labelappendixframe{frame:fem}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: General Idea}
 	\textbf{Variational Problem :} $\quad\text{Find } u\in V \; | \; a(u,v)=l(v), \;\forall v\in V$
 	
 	with $V$ - Hilbert space, $a$ - bilinear form, $l$ - linear form.
@@ -22,7 +24,7 @@
 	\end{minipage} \hfill \begin{minipage}[t][][b]{0.2\linewidth}
 		\vspace{-5pt}
 		\centering
-		\pgfimage[width=0.9\linewidth]{images/appendix/FEM_triangle_mesh.png}
+		\pgfimage[width=0.9\linewidth]{images/appendix/fem/FEM_triangle_mesh.png}
 		
 		\footnotesize
 		$\mathcal{T}_h = \left\{K_1,\dots,K_{N_e}\right\}$
@@ -45,12 +47,201 @@
 \end{frame}
 \addtocounter{appendixframenumber}{1}
 
-\begin{frame}{\appendixname~\theappendixframenumber~: $\phi$-FEM}\labelappendixframe{frame:phifem}
-	App1
+\section{\appendixname~\theappendixframenumber~:$\phi$-FEM}\labelappendixframe{frame:phifem}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Problem}
+	Let $u=\phi w+g$ such that
+	$$\left\{\begin{aligned}
+		-\Delta u &= f, \; \text{in } \Omega, \\
+		u&=g, \; \text{on } \Gamma, \\
+	\end{aligned}\right.$$
+	where $\phi$ is the level-set function and $\Omega$ and $\Gamma$ are given by :
+	\begin{center}
+		\pgfimage[width=0.5\linewidth]{images/appendix/phifem/PhiFEM_level_set.png}
+	\end{center}
+	The level-set function $\phi$ is supposed to be known on $\mathbb{R}^d$ and sufficiently smooth. \\
+	For instance, the signed distance to $\Gamma$ is a good candidate.
+	
+	\vspace{5pt}
+	
+	\footnotesize
+	\textit{Remark :} Thanks to $\phi$ and $g$, the boundary conditions are respected.
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Fictitious domain}
+	\setstretch{0.5}
+	
+	\vspace{10pt}
+	
+	\begin{center}
+		\begin{minipage}{0.43\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/appendix/phifem/PhiFEM_domain.png}
+		\end{minipage} \hfill
+		\begin{minipage}{0.1\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/appendix/phifem/PhiFEM_fleche.png} 
+		\end{minipage} \hfill
+		\begin{minipage}{0.43\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/appendix/phifem/PhiFEM_domain_considered.png}
+		\end{minipage}
+	\end{center}
+	
+	\begin{enumerate}[\ding{217}]
+		\item $\phi_h$ : approximation of $\phi$ \\ 
+		\item $\Gamma_h=\{\phi_h=0\}$ : approximate boundary of $\Gamma$
+		\item $\Omega_h$ : computational mesh
+		\item $\partial\Omega_h$ : boundary of $\Omega_h$ ($\partial\Omega_h \ne \Gamma_h$)
+	\end{enumerate}	
+	
+	\footnotesize
+	\; \\
+	\textit{Remark :} $n_{vert}$ will denote the number of vertices in each direction
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Facets and Cells sets}
+	
+	\vspace{15pt}
+	
+	\begin{center}
+		\begin{minipage}{0.48\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/appendix/phifem/PhiFEM_boundary_cells.png}
+		\end{minipage} \hfill
+		\begin{minipage}{0.48\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/appendix/phifem/PhiFEM_boundary_edges.png}
+		\end{minipage}
+	\end{center}
+	
+	\begin{enumerate}[\ding{217}]
+		\item $\mathcal{T}_h^\Gamma$ : mesh elements cut by $\Gamma_h$
+		\item $\mathcal{F}_h^\Gamma$ : collects the interior facets of $\mathcal{T}_h^\Gamma$ \\
+		(either cut by $\Gamma_h$ or belonging to a cut mesh element)
+	\end{enumerate}
+	
+	% \begin{minipage}{0.6\linewidth}
+		%     \begin{enumerate}[\ding{217}]
+			%         \item $\mathcal{T}_h^\Gamma\subset \mathcal{T}_h$ : contains the mesh elements cut by $\Gamma_h$, i.e. 
+			%         \begin{equation*}
+				%             \mathcal{T}_h^\Gamma=\left\{T\in\mathcal{T}_h:T\cap\Gamma_h\ne\emptyset\right\},
+				%         \end{equation*}
+			%         \item $\Omega_h^\Gamma$ : domain covered by the $\mathcal{T}_h^\Gamma$ mesh, i.e.
+			%         \begin{equation*}
+				%             \Omega_h^\Gamma=\left(\cup_{T\in\mathcal{T}_h^\Gamma}T\right)^O
+				%         \end{equation*}
+			%         \item $\mathcal{F}_h^\Gamma$ : collects the interior facets of $\mathcal{T}_h$ either cut by $\Gamma_h$ or belonging to a cut mesh element, i.e.
+			%         \begin{align*}
+				%             \mathcal{F}_h^\Gamma=\left\{E\;(\text{an internal facet of } \mathcal{T}_h) \text{ such that }\right. \\
+				%             \left. \exists T\in \mathcal{T}_h:T\cap\Gamma_h\ne\emptyset \text{ and } E\in\partial T\right\}
+				%         \end{align*}
+			%     \end{enumerate}
+		% \end{minipage}
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Poisson problem}
+	\textbf{Approach Problem :} Find $w_h\in V_h^{(k)}$ such that 
+	$$a_h(w_h,v_h) = l_h(v_h) \quad \forall v_h \in V_h^{(k)}$$
+	where
+	$$a_h(w,v)=\int_{\Omega_h} \nabla (\phi_h w) \cdot \nabla (\phi_h v) - \int_{\partial\Omega_h} \frac{\partial}{\partial n}(\phi_h w)\phi_h v+\fcolorbox{blue}{white}{$G_h(w,v)$},$$
+	$$l_h(v)=\int_{\Omega_h} f \phi_h v + \fcolorbox{blue}{white}{$G_h^{rhs}(v)$} \qquad \qquad \color{blue}\text{Stabilization terms}$$
+	and 
+	$$V_h^{(k)}=\left\{v_h\in H^1(\Omega_h):v_{h|_T}\in\mathbb{P}_k(T), \; \forall T\in\mathcal{T}_h\right\}.$$
+	For the non homogeneous case, we replace
+	$$u=\phi w \quad \rightarrow \quad u=\phi w+g$$ 
+	by supposing that $g$ is currently given over the entire $\Omega_h$.
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Stabilization terms}
+	\begin{center}
+		\centering
+		\pgfimage[width=\linewidth]{images/appendix/phifem/PhiFEM_stab_terms.png}
+	\end{center}
+	\small
+	\underline{1st term :} ensure continuity of the solution by penalizing gradient jumps. \\
+	$\rightarrow$ Ghost penalty [Burman, 2010] \\
+	\underline{2nd term :} require the solution to verify the strong form on $\Omega_h^\Gamma$. \\
+	\normalsize
+	\textbf{Purpose :} 
+	\begin{enumerate}[\ding{217}]
+		\item reduce the errors created by the "fictitious" boundary 
+		\item ensure the correct condition number of the finite element matrix
+		\item restore the coercivity of the bilinear scheme
+	\end{enumerate}
 \end{frame}
 \addtocounter{appendixframenumber}{1}
 
-\begin{frame}{\appendixname~\theappendixframenumber~: Test3}\labelappendixframe{frame:Test3}
-	App3
+\section{Other results}
+
+\subsection{Poisson on Bean}\labelappendixframe{frame:bean}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Learn a levelset}
+	\vspace{-10pt}
+	\begin{tcolorbox}[
+		colback=other, % Couleur de fond de la boîte
+		colframe=other, % Couleur du cadre de la boîte
+		arc=2mm, % Rayon de l'arrondi des coins
+		boxrule=0.5pt, % Épaisseur du cadre de la boîte
+		breakable, enhanced jigsaw,
+		width=\linewidth,
+		opacityback=0.1
+		]
+		
+		If we have a boundary domain $\Gamma$, the SDF is solution to the Eikonal equation:
+		
+		\begin{minipage}{\linewidth}
+			\centering
+			$\left\{\begin{aligned}
+				&||\nabla\phi(X)||=1, \; X\in\mathcal{O} \\
+				&\phi(X)=0, \; X\in\Gamma \\
+				&\nabla\phi(X)=n, \; X\in\Gamma
+			\end{aligned}\right.$
+		\end{minipage}
+		
+		with $\mathcal{O}$ a box which contains $\Omega$ completely and $n$ the exterior normal to $\Gamma$.
+	\end{tcolorbox}
+	
+	\textbf{How make that ?} with a PINNs \cite{clemot_neural_2023} by \textcolor{orange}{adding a term to regularize}.
+	\vspace{-5pt}
+	\begin{equation*}
+		J_{reg} = \int_\mathcal{O} |\Delta\phi|^2
+	\end{equation*}
+
+	\begin{minipage}{0.32\linewidth}
+		\centering
+		\pgfimage[width=\linewidth]{images/appendix/bean/bean_levelset_loss.png}
+	\end{minipage} 
+	\begin{minipage}{0.32\linewidth}
+		\centering
+		\pgfimage[width=\linewidth]{images/appendix/bean/bean_levelset.png}
+	\end{minipage} 
+	\begin{minipage}{0.32\linewidth}
+		\centering
+		\pgfimage[width=\linewidth]{images/appendix/bean/bean_levelset_bc.png}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{\appendixname~\theappendixframenumber~: Poisson 2D}
+	\ding{217} Solving the \textcolor{orange}{Poisson problem} with $f=1$ and homogeneous Dirichlet BC. \\
+	\ding{217} Looking for $u_\theta = \phi w_\theta$ with $\phi$ the levelset learned. 
+	
+	\begin{center}
+		\begin{minipage}{0.32\linewidth}
+			\textbf{Sampling}
+			
+			\vspace{-8pt}
+			\centering
+			\pgfimage[width=0.6\linewidth]{images/appendix/bean/bean_levelset_sampling.png}
+		\end{minipage} \qquad 
+		\begin{minipage}{0.32\linewidth}
+			\centering
+			\pgfimage[width=\linewidth]{images/appendix/bean/bean_poisson_loss.png}
+		\end{minipage} 
+	\end{center}
+	
+	\begin{center}
+		\pgfimage[width=0.8\linewidth]{images/appendix/bean/bean_poisson_sol.png}
+	\end{center}
 \end{frame}
 \addtocounter{appendixframenumber}{1}

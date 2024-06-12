@@ -14,9 +14,9 @@
 	
 	\textbf{DoFs Minimization Problem :} \\
 	Considering the least-square form of (\ref{edp}), our discrete problem is
-	\begin{equation}
-		\displaystyle \theta_u=\argmin_{\theta\in\mathbb{R}^N} \alpha J_{in}(\theta)+\beta J_{bc}(\theta) \label{minpb_pinns}
-	\end{equation}
+	\begin{equation*}
+		\displaystyle \theta_u=\argmin_{\theta\in\mathbb{R}^N} \alpha J_{in}(\theta)+\beta J_{bc}(\theta) %\label{minpb_pinns}
+	\end{equation*}
 	with $N$ the number of parameters of the NN and
 	\begin{equation*}
 		J_{in}(\theta)=\frac{1}{2}\int_\Omega (L(u_\theta) - f)^2  \qquad \text{and} \qquad J_{bc}(\theta)=\frac{1}{2}\int_{\partial\Omega} (u_\theta-g)^2

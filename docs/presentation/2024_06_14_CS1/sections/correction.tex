@@ -39,12 +39,12 @@
 	\begin{minipage}{\linewidth}
 		\setstretch{0.5}
 		and searching $\tilde{C}: \Omega \rightarrow \mathbb{R}^d$ such that
-		\begin{equation*}
+		\begin{equation}
 			\left\{\begin{aligned}
 				L(\tilde{C})&=\tilde{f}, \; &&\text{in } \Omega, \\
 				\tilde{C}&=0, \; &&\text{on } \Gamma,
-			\end{aligned}\right. %\tag{$\mathcal{C}_{+}$} %\label{corr_add}
-		\end{equation*}
+			\end{aligned}\right. \label{corr_add}
+		\end{equation}
 		with $\tilde{f}=f-L(u_{NN})$. \refappendix{frame:fem}
 	\end{minipage}
 \end{frame}
@@ -80,15 +80,35 @@
 \end{frame}
 
 \begin{frame}{Theoretical results}
-	TODO
-	$\mu_1=0.05,\mu_2=0.22$
+	\vspace{-8pt}
+
+	\begin{tcolorbox}[
+		colback=other, % Couleur de fond de la boîte
+		colframe=other, % Couleur du cadre de la boîte
+		arc=2mm, % Rayon de l'arrondi des coins
+		boxrule=0.5pt, % Épaisseur du cadre de la boîte
+		breakable, enhanced jigsaw,
+		width=\linewidth,
+		opacityback=0.1
+		]
+		
+		We denote $u$ the solution of (\ref{edp}) and $u_h$ the discrete solution of the correction problem (\ref{corr_add}) with $V_h$ a $\mathbb{P}_k$ Lagrange space. Thus
+		\begin{equation*}
+			|| u-u_h ||_0 \leq \fcolorbox{orange}{other!10!white}{$\frac{|u-u_{\theta}|_{H^{k+1}}}{|u|_{H^{k+1}}}$} \left( \frac{\gamma}{\alpha} C h^{k+1} |u|_{H^{k+1}}\right)
+		\end{equation*}
+		with $\alpha$ and $\gamma$ respectively the coercivity and continuity constant.
+	\end{tcolorbox}
+	
+	Taking $\mu_1=0.05,\mu_2=0.22$.
 	\begin{center}
-		\pgfimage[width=0.5\linewidth]{images/correction/theoretical.png}
+		\pgfimage[width=0.5\linewidth]{images/correction/theoretical.jpg}
 	\end{center}
 \end{frame}
 
 \begin{frame}{Gains using our approach}	
-	\vspace{10pt}
+	Considering a set of $50$ parameters.
+	
+	\vspace{5pt}
 	
 	\hspace{20pt}\begin{minipage}{0.05\linewidth}
 		\footnotesize
@@ -123,5 +143,78 @@
 \end{frame}
 
 \begin{frame}{Time/Precision}	
-	TODO
+	\begin{minipage}{0.48\linewidth}
+		\centering
+		\vspace{-10pt}
+		\pgfimage[width=0.6\linewidth]{images/correction/time_error.png}
+	\end{minipage}
+	\begin{minipage}{0.48\linewidth}
+		Taking $\mu_1=0.05,\mu_2=0.22$.
+		
+		\centering
+		\pgfimage[width=0.9\linewidth]{images/correction/time_error_tab.png}
+	\end{minipage}
+
+%	\begin{table}[h]
+%		\centering
+%		\begin{tabular}{ccccc}
+%			\toprule[1.pt]
+%			& \multicolumn{2}{c}{\textbf{N}} & \multicolumn{2}{c}{\textbf{time (s)}} \\
+%			\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+%			\textbf{Precision} & \textbf{FEM} & \textbf{Add} & \textbf{FEM} & \textbf{Add} \\
+%			\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+%%			\textbf{$1e-3$} & 125 & 25.93 & 38 & 2.19 \\
+%%			\textbf{$1e-4$} & 147 & 32.87 & 41 & 2.52 \\
+%			\textbf{$1e-3$} & 125 & 38 & 25.93 & 2.19 \\
+%			\textbf{$1e-4$} & 147 & 41 & \fcolorbox{orange}{white}{32.87} & \fcolorbox{red}{white}{2.52} \\
+%			\bottomrule[1.pt]
+%		\end{tabular}
+%	\end{table}
+%
+%	\vspace{-5pt}
+%	\small
+%	\hspace{190pt} \begin{minipage}{0.1\linewidth}
+%		\textcolor{orange}{$t_{FEM}$}
+%	\end{minipage} \hspace{8pt} \begin{minipage}{0.1\linewidth}
+%		\textcolor{red}{$t_{Add}$}
+%	\end{minipage}
+
+	The training time of the PINNs (parametric) is defined by $t_{PINNs}\approx 240s$. 
+	
+	So if we solve the problem (\ref{edp}) for a set of $n_p$ parameters, the times of our approach and FEM are respectively
+	\begin{equation*}
+		Tot_{Add}=t_{PINNs}+n_p t_{Add} \quad \text{ and } \quad Tot_{FEM}=n_p t_{FEM}.
+	\end{equation*}
+	
+	So if we consider a set of at least $n_p=6$ parameters, our method is faster than FEM when considering network training time.
+	\begin{equation*}
+		n_p > \frac{t_{PINNs}}{t_{FEM}-t_{Add}}\approx 5.61
+	\end{equation*}
+
+	\footnotesize
+	\textit{Remark:} Considering that the times are of the same order for each parameter considered.	
 \end{frame}
+
+%\begin{frame}{Tableau temps}
+%	\begin{table}[h]
+%		\centering
+%		\begin{tabular}{ccccc}
+%				\toprule[1.pt]
+%				& \multicolumn{2}{c}{\textbf{N}} & \multicolumn{2}{c}{\textbf{time (s)}} \\
+%				\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+%				\textbf{Precision} & \textbf{FEM} & \textbf{Add} & \textbf{FEM} & \textbf{Add} \\
+%				\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+%				\textbf{$1e-3$} & 120 & 8 & \fcolorbox{orange}{white}{43} & \fcolorbox{red}{white}{0.24} \\
+%				\textbf{$1e-4$} & 373 & 25 & 423.89 & 1.93 \\
+%				\bottomrule[1.pt]
+%			\end{tabular}
+%	\end{table}
+%
+%	\vspace{-5pt}
+%	\small
+%	\hspace{190pt} \begin{minipage}{0.1\linewidth}
+%			\textcolor{orange}{$t_{FEM}$}
+%		\end{minipage} \hspace{8pt} \begin{minipage}{0.1\linewidth}
+%			\textcolor{red}{$t_{Add}$}
+%		\end{minipage}
+%\end{frame}
