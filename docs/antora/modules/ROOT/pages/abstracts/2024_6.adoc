@@ -1,0 +1,41 @@
+= Juin - 2024
+
+== Week 36 : 03/06/2024 - 07/06/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_36/
+*Réunions :*
+
+*  _Mardi matin_ - Réunion d'équipe (Présentation de Sid)
+*  _Jeudi matin_ - Réunion thèse UFR (Emmanuel)
+*  _Jeudi après-midi_ - Formation Fidle Seq 20
+*  _Vendredi après-midi_ - Congé
+
+*Fait durant la semaine :*
+
+*  Présentation CSI - Suite
+*  Résultats 3D
+
+*A faire :*
+
+*  Finir CSI
+
+== Week 37 : 10/06/2024 - 14/06/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_37/
+*Réunions :*
+
+*  _Lundi_ - Congé
+*  _Mardi_ - Congé
+*  _Vendredi matin_ - 1er CSI
+
+*Fait durant la semaine :*
+
+*  Présentation CSI - Fin
+*  Rapport CSI
+
+*A faire :*
+
+*  Poster + 
+
