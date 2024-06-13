@@ -202,7 +202,7 @@
 		with $\mathcal{O}$ a box which contains $\Omega$ completely and $n$ the exterior normal to $\Gamma$.
 	\end{tcolorbox}
 	
-	\textbf{How make that ?} with a PINNs \cite{clemot_neural_2023} by \textcolor{orange}{adding a term to regularize}.
+	\textbf{How make that ?} with a PINNs \footnotesize\citep{clemot_neural_2023}\normalsize by \textcolor{orange}{adding a term to regularize}.
 	\vspace{-5pt}
 	\begin{equation*}
 		J_{reg} = \int_\mathcal{O} |\Delta\phi|^2
@@ -276,7 +276,7 @@
 		and searching $\tilde{C}: \Omega \rightarrow \mathbb{R}^d$ such that
 		\begin{equation*}
 			\left\{\begin{aligned}
-				L(u_M\tilde{C})&=f, \; &&\text{in } \Omega, \\
+				-\Delta(u_M\tilde{C})&=f, \; &&\text{in } \Omega, \\
 				\tilde{C}&=1, \; &&\text{on } \Gamma.
 			\end{aligned}\right. \label{corr_add}
 		\end{equation*}

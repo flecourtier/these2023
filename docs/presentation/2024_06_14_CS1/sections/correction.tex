@@ -41,17 +41,17 @@
 		and searching $\tilde{C}: \Omega \rightarrow \mathbb{R}^d$ such that
 		\begin{equation}
 			\left\{\begin{aligned}
-				L(\tilde{C})&=\tilde{f}, \; &&\text{in } \Omega, \\
+				-\Delta \tilde{C}&=\tilde{f}, \; &&\text{in } \Omega, \\
 				\tilde{C}&=0, \; &&\text{on } \Gamma,
-			\end{aligned}\right. \label{corr_add}
+			\end{aligned}\right. \label{corr_add} \tag{$\mathcal{P}^{+}$}
 		\end{equation}
-		with $\tilde{f}=f-L(u_{NN})$. \refappendix{frame:fem} \refappendix{frame:mult}
+		with $\tilde{f}=f+\Delta u_{NN}$. \refappendix{frame:fem} \refappendix{frame:mult}
 	\end{minipage}
 \end{frame}
 
 \begin{frame}{Poisson on Square}
-	Solving the \textcolor{orange}{Poisson problem} with homogeneous Dirichlet BC. \\
-	\ding{217} \textbf{Domain :} $\Omega=[−0.5\pi,0.5\pi]^2$ \\
+	Solving (\ref{edp}) with homogeneous Dirichlet BC ($g=0$). \\
+	\ding{217} \textbf{Domain (fixed) :} $\Omega=[−0.5\pi,0.5\pi]^2$ \\
 	\ding{217} \textbf{Analytical levelset function :}
 	\small
 	\begin{equation*}
@@ -65,7 +65,7 @@
 		u_{ex}(x,y)=\exp\left(−\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2}\right)\sin(2x)\sin(2y)
 	\end{equation*} 
 	\normalsize
-	with $\mu_1,\mu_2\in[-0.5,0.5]$. 
+	with $\mu_1,\mu_2\in[-0.5,0.5]$ (\textcolor{red}{parametric}). 
 	
 	\vspace{8pt}
 	Taking $\mu_1=0.05,\mu_2=0.22$, the solution is given by
@@ -81,32 +81,35 @@
 
 \begin{frame}{Theoretical results}
 	\vspace{-8pt}
-
-	\begin{tcolorbox}[
-		colback=other, % Couleur de fond de la boîte
-		colframe=other, % Couleur du cadre de la boîte
-		arc=2mm, % Rayon de l'arrondi des coins
-		boxrule=0.5pt, % Épaisseur du cadre de la boîte
-		breakable, enhanced jigsaw,
-		width=\linewidth,
-		opacityback=0.1
-		]
-		
+	
+	\hypersetup{
+		citecolor=white,
+	}
+	
+	\begin{mytheo}{\footnotesize\citep{ours_2024}\normalsize}{add}
 		We denote $u$ the solution of (\ref{edp}) and $u_h$ the discrete solution of the correction problem (\ref{corr_add}) with $V_h$ a $\mathbb{P}_k$ Lagrange space. Thus
 		\begin{equation*}
 			|| u-u_h ||_0 \leq \fcolorbox{orange}{other!10!white}{$\frac{|u-u_{\theta}|_{H^{k+1}}}{|u|_{H^{k+1}}}$} \left( \frac{\gamma}{\alpha} C h^{k+1} |u|_{H^{k+1}}\right)
 		\end{equation*}
 		with $\alpha$ and $\gamma$ respectively the coercivity and continuity constant.
-	\end{tcolorbox}
-	
-	Taking $\mu_1=0.05,\mu_2=0.22$.
+	\end{mytheo}
+
+	\hypersetup{
+		citecolor=other,
+	}
+
+	Taking $\mu_1=0.05,\mu_2=0.22$. 
+	\vspace{-20pt}
 	\begin{center}
-		\pgfimage[width=0.5\linewidth]{images/correction/theoretical.jpg}
+		\pgfimage[width=0.5\linewidth]{images/correction/theoretical.png}
 	\end{center}
+	\vspace{-7pt}
+	\footnotesize
+	\textit{Remark :} We note $N$ the number of nodes in each direction of the square.
 \end{frame}
 
 \begin{frame}{Gains using our approach}	
-	Considering a set of $50$ parameters.
+	Considering a set of $n_p=50$ parameters : $\left\{(\mu_1^{(1)},\mu_2^{(1)}),\dots,(\mu_1^{(n_p)},\mu_2^{(n_p)})\right\}$.
 	
 	\vspace{5pt}
 	
@@ -142,55 +145,43 @@
 	\end{minipage} 
 \end{frame}
 
-\begin{frame}{Time/Precision}	
+\begin{frame}{Time/Precision I}	
+	Taking $\mu_1=0.05,\mu_2=0.22$.
+	
 	\begin{minipage}{0.48\linewidth}
 		\centering
-		\vspace{-10pt}
-		\pgfimage[width=0.6\linewidth]{images/correction/time_error.png}
+		\pgfimage[width=0.9\linewidth]{images/correction/time_error.png}
 	\end{minipage}
 	\begin{minipage}{0.48\linewidth}
-		Taking $\mu_1=0.05,\mu_2=0.22$.
-		
 		\centering
 		\pgfimage[width=0.9\linewidth]{images/correction/time_error_tab.png}
 	\end{minipage}
 
-%	\begin{table}[h]
-%		\centering
-%		\begin{tabular}{ccccc}
-%			\toprule[1.pt]
-%			& \multicolumn{2}{c}{\textbf{N}} & \multicolumn{2}{c}{\textbf{time (s)}} \\
-%			\cmidrule(lr){2-3} \cmidrule(lr){4-5}
-%			\textbf{Precision} & \textbf{FEM} & \textbf{Add} & \textbf{FEM} & \textbf{Add} \\
-%			\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}
-%%			\textbf{$1e-3$} & 125 & 25.93 & 38 & 2.19 \\
-%%			\textbf{$1e-4$} & 147 & 32.87 & 41 & 2.52 \\
-%			\textbf{$1e-3$} & 125 & 38 & 25.93 & 2.19 \\
-%			\textbf{$1e-4$} & 147 & 41 & \fcolorbox{orange}{white}{32.87} & \fcolorbox{red}{white}{2.52} \\
-%			\bottomrule[1.pt]
-%		\end{tabular}
-%	\end{table}
-%
-%	\vspace{-5pt}
-%	\small
-%	\hspace{190pt} \begin{minipage}{0.1\linewidth}
-%		\textcolor{orange}{$t_{FEM}$}
-%	\end{minipage} \hspace{8pt} \begin{minipage}{0.1\linewidth}
-%		\textcolor{red}{$t_{Add}$}
-%	\end{minipage}
+	\vspace{10pt}
 
-	The training time of the PINNs (parametric) is defined by $t_{PINNs}\approx 240s$. 
+	\textbf{Question :} Where is the \textcolor{orange}{PINNs training time} ? $\qquad t_{PINNs}\approx 240s$	 
+\end{frame}
+
+\begin{frame}{Time/Precision II}	
+	Taking a \textcolor{orange}{set of $n_p$ parameters} $\left\{(\mu_1^{(1)},\mu_2^{(1)}),\dots,(\mu_1^{(n_p)},\mu_2^{(n_p)})\right\}$.
 	
-	So if we solve the problem (\ref{edp}) for a set of $n_p$ parameters, the times of our approach and FEM are respectively
+	The time of our approach (including the PINNs training) to solve $n_p$ problems is
+	\vspace{-5pt}
 	\begin{equation*}
-		Tot_{Add}=t_{PINNs}+n_p t_{Add} \quad \text{ and } \quad Tot_{FEM}=n_p t_{FEM}.
+		Tot_{Add}=t_{PINNs}+n_p t_{Add}
 	\end{equation*}
-	
-	So if we consider a set of at least $n_p=6$ parameters, our method is faster than FEM when considering network training time.
+	and the time of FEM is
 	\begin{equation*}
-		n_p > \frac{t_{PINNs}}{t_{FEM}-t_{Add}}\approx 5.61
+		Tot_{FEM}=n_p t_{FEM}.
 	\end{equation*}
 
+	Let's suppose we want to achieve an \textcolor{orange}{error of $1e-3$}. 
+	
+	To solve $n_p$ problems, our method is faster than FEM (when considering network training time) if
+	\begin{equation*}
+		Tot_{Add}<Tot_{FEM} \quad \Rightarrow \quad n_p > \frac{t_{PINNs}}{t_{FEM}-t_{Add}}\approx 5.61\quad  \Rightarrow \quad \fcolorbox{red}{white}{$n_p=6$}
+	\end{equation*}
+	
 	\footnotesize
 	\textit{Remark:} Considering that the times are of the same order for each parameter considered.	
 \end{frame}

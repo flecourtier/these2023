@@ -15,7 +15,9 @@
 \usepackage{tikz}
 \usepackage{paralist}
 \usepackage{appendixnumberbeamer}
-\usepackage[style=numeric,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
+%\usepackage[style=authoryear,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
+\usepackage[square]{natbib}
+\bibliographystyle{plainnat}
 \usepackage{etoolbox}
 % box colorée dans équation
 \usepackage[most]{tcolorbox}
@@ -25,52 +27,6 @@
 \usepackage{dsfont}
 \usepackage{cancel}
 \usepackage{booktabs}
-
-%%% configurer bibliographie
-
-% Charger votre fichier de bibliographie
-\addbibresource{biblio.bib}
-
-% Définir les champs à ne pas afficher dans la bibliographie
-\AtEveryBibitem{
-	\clearlist{language}
-	\clearfield{note}
-	\clearfield{edition}
-	\clearfield{series}
-	\clearfield{url}
-	\clearfield{urldate}
-	\clearfield{pagetotal}
-	\clearfield{pages}
-	\clearfield{issn}
-	\clearfield{doi}
-	\clearfield{url}
-	\clearfield{eprint}
-}
-
-% Définir le style des citations
-\DeclareFieldFormat{title}{\textit{#1}}
-\DeclareFieldFormat[article]{title}{#1}
-\DeclareNameAlias{sortname}{last-first}
-\DeclareFieldFormat{author}{#1.}
-
-% Choisir les informations à afficher dans la bibliographie
-\renewbibmacro{in:}{}
-\renewbibmacro*{journal+issuetitle}{%
-	\ifentrytype{article}{
-		\usebibmacro{journal}
-	}{%
-		\printfield{title}%
-	}%
-}
-
-\renewbibmacro*{date}{%
-	\ifentrytype{misc}{%
-		\printtext{\printdate}%
-	}{%
-		\printdate
-	}%
-}
-%% fin configuration biblio
 
 \setcellgapes{1pt}
 \setlength{\parindent}{0pt}
@@ -141,6 +97,15 @@
 
 \newcommand{\insertsectionheadSubtitle}{}
 
+\newtcbtheorem{mytheo}{Theorem}{colback=other, % Couleur de fond de la boîte
+	colframe=other, % Couleur du cadre de la boîte
+	arc=2mm, % Rayon de l'arrondi des coins
+	boxrule=0.5pt, % Épaisseur du cadre de la boîte
+	breakable, enhanced jigsaw,
+	width=\linewidth,
+	opacityback=0.1
+	}{th}
+
 \begin{document}
 	\nocite{*}
 	
@@ -204,22 +169,31 @@
 	\input{sections/conclu}
 	
 	{\setbeamertemplate{footline}{} 
-		\begin{frame}
-			\vfill
-			\centering
-			\LARGE Thank you !
-			\vfill
-		\end{frame}
+%		\begin{frame}
+%			\vfill
+%			\centering
+%			\LARGE Thank you !
+%			\vfill
+%		\end{frame}
 	
-		\begin{frame}{Bibliography}
+		\begin{frame}{}
+			\vspace{10pt}
+			\begin{center}
+				\LARGE Thank you !
+			\end{center}
+			\vspace{10pt}
+			
+			\normalsize
+			\textbf{Bibliography}
 			\small
 			% \vspace{30pt}
 			% \setstretch{0.2}
 			% \AtNextBibliography{\small}
-			\printbibliography[heading=none]
+			\bibliography{biblio}
+%			\printbibliography[heading=none]
 		\end{frame}
 	}
-	\addtocounter{framenumber}{-2} 
+	\addtocounter{framenumber}{-1} 
 	
 	\appendix
 	

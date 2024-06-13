@@ -85,25 +85,26 @@
 	\vspace{2pt}
 	\textbf{$\phi$-FEM :} New fictitious domain finite element method. \qquad \refappendix{frame:phifem}
 	
-	$\Rightarrow$ domain given by a level-set function	
+	$\Rightarrow$ domain given by a level-set function \footnotesize\citep{duprez_phi-fem_2020}\normalsize
 \end{frame}
 
-\begin{frame}{Current work}
-	\textbf{Elliptic problem with Dirichlet conditions :} \\
-	Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
-	\begin{equation}
-		\left\{\begin{aligned}
-			&L(u)=-\nabla \cdot (A(x) \nabla u(x)) + c(x)u(x) = f(x) \quad \text{in } \Omega, \\
-			&u(x) = g(x) \quad \text{on } \partial \Omega
-		\end{aligned}\right. \label{edp}
-	\end{equation}
-	with $A$ a definite positive coercivity condition and $c$ a scalar. We consider $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary. 
+\begin{frame}{Outline}
+	\textbf{Two lines of research :}
 	
-	\vspace{10pt}
-	
-	\textbf{Two lines of research :} \\
 	\begin{enumerate}
 		\item How to deal with complex geometry in PINNs ?
 		\item Once we have the prediction, how can we improve it (using FEM-type methods) ?
 	\end{enumerate}
+
+	\vspace{15pt}
+
+	\textbf{Poisson problem with Dirichlet conditions :} \\
+	Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
+	\begin{equation}
+		\left\{\begin{aligned}
+			&-\Delta u(x) = f(x) \quad \text{in } \Omega, \\
+			&u(x) = g(x) \quad \text{on } \Gamma
+		\end{aligned}\right. \label{edp} \tag{$\mathcal{P}$}
+	\end{equation}
+	with $\Delta$ the Laplace operator, $\Omega$ a smooth bounded open set and $\Gamma$ its boundary. 
 \end{frame}

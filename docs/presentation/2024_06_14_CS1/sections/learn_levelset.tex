@@ -12,14 +12,14 @@
 	
 	\vspace{5pt}
 	
-	\textbf{DoFs Minimization Problem :} \\
+	\textbf{DoFs Minimization Problem :} \footnotesize\citep{raissi_physics-informed_2019}\normalsize \\
 	Considering the least-square form of (\ref{edp}), our discrete problem is
 	\begin{equation*}
-		\displaystyle \theta_u=\argmin_{\theta\in\mathbb{R}^N} \alpha J_{in}(\theta)+\beta J_{bc}(\theta) %\label{minpb_pinns}
+		\displaystyle \bar{\theta}=\argmin_{\theta\in\mathbb{R}^m} \alpha J_{in}(\theta)+\beta J_{bc}(\theta) %\label{minpb_pinns}
 	\end{equation*}
-	with $N$ the number of parameters of the NN and
+	with $m$ the number of parameters of the NN and
 	\begin{equation*}
-		J_{in}(\theta)=\frac{1}{2}\int_\Omega (L(u_\theta) - f)^2  \qquad \text{and} \qquad J_{bc}(\theta)=\frac{1}{2}\int_{\partial\Omega} (u_\theta-g)^2
+		J_{in}(\theta)=\frac{1}{2}\int_\Omega (\Delta u_\theta + f)^2  \qquad \text{and} \qquad J_{bc}(\theta)=\frac{1}{2}\int_{\partial\Omega} (u_\theta-g)^2
 	\end{equation*}	
 	
 	\textbf{Monte-Carlo method :} Discretize the cost function by random process.
@@ -32,7 +32,7 @@
 	
 	\vspace{8pt}
 	
-	\textbf{Solution :} Approach by levelset.
+	\textbf{Solution :} Approach by levelset. \footnotesize\citep{sukumar_exact_2022}\normalsize
 	
 	\begin{center}
 		\pgfimage[width=0.4\linewidth]{images/learn_levelset/levelset.png}
@@ -49,6 +49,7 @@
 			\begin{equation*}
 				u_\theta(X)=\phi(X)w_\theta(X)+g(X)
 			\end{equation*}
+			(\ding{217} Can be used for $\phi$-FEM)
 		\end{minipage}
 		\begin{minipage}{0.44\linewidth}
 			\textbf{\textit{Natural LevelSet :}} \\
@@ -76,19 +77,23 @@
 		
 		If we have a boundary domain $\Gamma$, the SDF is solution to the Eikonal equation:
 		
-		\begin{minipage}{\linewidth}
-			\centering
+		\begin{minipage}{0.7\linewidth}
+			\hspace{100pt}
 			$\left\{\begin{aligned}
 				&||\nabla\phi(X)||=1, \; X\in\mathcal{O} \\
 				&\phi(X)=0, \; X\in\Gamma \\
 				&\nabla\phi(X)=n, \; X\in\Gamma
 			\end{aligned}\right.$
 		\end{minipage}
+		\begin{minipage}{0.25\linewidth}
+			\centering
+			\pgfimage[width=0.7\linewidth]{images/learn_levelset/points_normals.png}
+		\end{minipage}
 		
 		with $\mathcal{O}$ a box which contains $\Omega$ completely and $n$ the exterior normal to $\Gamma$.
 	\end{tcolorbox}
 
-	\textbf{How to do that ?} with a PINNs \cite{clemot_neural_2023} by \textcolor{orange}{adding a regularization term}.
+	\textbf{How to do that ?} with a PINNs \footnotesize\citep{clemot_neural_2023}\normalsize ~by \textcolor{orange}{adding a regularization term},
 	\vspace{-5pt}
 	\begin{equation*}
 		J_{reg} = \int_\mathcal{O} |\Delta\phi|^2
@@ -106,10 +111,13 @@
 		\centering
 		\pgfimage[width=\linewidth]{images/learn_levelset/cat_levelset_bc.png}
 	\end{minipage} 
+
+	\footnotesize
+	\textit{Remark :} PINNs non parametric - \textcolor{red}{1 geometry}
 \end{frame}
 
 \begin{frame}{Poisson On Cat}	
-	\ding{217} Solving the \textcolor{orange}{Poisson problem} with $f=1$ and homogeneous Dirichlet BC. \\
+	\ding{217} Solving (\ref{edp}) with $f=1$ (\textcolor{red}{non parametric}) and homogeneous Dirichlet BC ($g=0$). \\
 	\ding{217} Looking for $u_\theta = \phi w_\theta$ with $\phi$ the levelset learned. 
 	
 	\begin{center}
@@ -127,7 +135,7 @@
 	\end{center}
 
 	\begin{center}
-		\pgfimage[width=0.8\linewidth]{images/learn_levelset/cat_poisson_sol.png}
+		\pgfimage[width=0.8\linewidth]{images/learn_levelset/cat_poisson_sol.jpg}
 	\end{center}
 
 	\footnotesize
