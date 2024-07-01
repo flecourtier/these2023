@@ -2,7 +2,8 @@
 
 	\column{0.5}
 		
-	\block{Scientific context \textnormal{\large- Create real-time digital twins of an organ (e.g. liver)}}{
+	\block{Scientific context \\ \large Create real-time digital twins of an organ (e.g. liver)}{
+		\vspace{10pt}
 		\textbf{Current Objective :} Develop hybrid \textbf{\fcolorbox{color1!50}{color1}{finite element}} / \textbf{\fcolorbox{color1!50}{color1}{neural network}} methods.
 		
 		\vspace{-5pt}
@@ -12,7 +13,7 @@
 			\textbf{\textcolor{color2}{quick + parameterized}}
 		\end{minipage}
 		
-		\vspace{15pt}
+		\vspace{20pt}
 		
 		\begin{center}
 			\begin{minipage}{\linewidth}
@@ -38,14 +39,14 @@
 							% Ajouter une flèche entre les deux rectangles
 							\draw[->, color2, line width=4.5pt] (20.5,0.3) -- (23.5,0.3);
 							%		
-							\node at (28,4) {Train a PINNs \textcolor{red}{CITE}};
+							\node at (28,4) {Train a PINNs};
 							\node[draw=none, inner sep=0pt] at (28,0) {\includegraphics[width=7cm]{images/intro/objective_pinns.png}};				
 						\end{tikzpicture}
 					\end{center}
 				\end{tcolorbox}
 			\end{minipage}	
 
-			\vspace{15pt}
+			\vspace{30pt}
 
 			\begin{minipage}{\linewidth}
 				\centering
@@ -83,9 +84,13 @@
 				\end{tcolorbox}
 			\end{minipage}
 		\end{center}		
-	}
+		}
+		
+	\node[rotate=-30,below left=1cm and -1cm] at (topright) {\includegraphics[width=7cm]{images/intro/foie.png}};
 
 	\block{Poisson problem with Dirichlet boundary conditions}{
+		\vspace{10pt}
+		
 		Find $u : \Omega \rightarrow \mathbb{R}^d (d=1,2,3)$ such that
 		\begin{equation}
 			\left\{\begin{aligned}
@@ -98,12 +103,64 @@
 
 	\column{0.5}
 
-	\block{PINNs \textnormal{\large - Physics-Informed Neural Networks}}{
-		TODO ?
+	\block{PINNs \textnormal{\large - Physics-Informed Neural Networks \textcolor{red}{CITE}}}{
+		\begin{minipage}{0.6\linewidth}
+			\vspace{-40pt}
+			\textbf{Implicit neural representation.}
+			\begin{equation*}
+				u_\theta(x)=u_{NN}(x)
+			\end{equation*}
+			with $u_{NN}$ a neural network (e.g. a MLP).
+		\end{minipage}
+		\begin{minipage}{0.36\linewidth}
+			\includegraphics[width=0.85\linewidth]{images/intro/MLP_schema.png}
+		\end{minipage}
+		
+		\vspace{-15pt}
+		
+		\textbf{DoFs Minimization Problem.}
+		
+		Considering the least-square form of (\ref{edp}), our discrete problem is
+		\begin{equation*}
+			\displaystyle \bar{\theta}=\argmin_{\theta\in\mathbb{R}^m} \alpha J_{\text{in}}(\theta)+\beta J_{\text{bc}}(\theta)
+		\end{equation*}
+		with $m$ the number of parameters of the NN and
+		\begin{equation*}
+			J_{\text{in}}(\theta)=\frac{1}{2}\int_\Omega (\Delta u_\theta + f)^2  \qquad \text{and} \qquad J_{\text{bc}}(\theta)=\frac{1}{2}\int_{\partial\Omega} (u_\theta-g)^2
+		\end{equation*}	
 	}
 
+
 	\block{Finite Element methods}{
-		TODO ?
+		\textbf{Variational Problem.} Let's define $V$ as a Hilbert space.
+		\begin{equation*}
+			\text{Find } u \in V \text{ such that, } \; \forall v\in V, \; a(u,v)=l(v)
+		\end{equation*}
+		with $a$ a bilinear form and $l$ a linear form defined as
+		\begin{equation*}
+			a(u,v)=\int_\Omega \nabla u \cdot \nabla v \quad \text{and} \quad l(v)=\int_\Omega f v.
+		\end{equation*}
+		
+		\vspace{10pt}
+		
+		\textbf{Approach Problem.} Let's define $V_h$ as a finite-dimensional subspace of $V$ ($V_h\subset V$).
+		\begin{equation*}
+			\text{Find } u_h \in V \text{ such that, } \; \forall v_h\in V, \; a(u_h,v_h)=l(v_h)
+		\end{equation*}
+		with $u_h\in V_h$ an approximate solution of $u$ and $N_h=\dim(V_h)$.
+
+		\vspace{10pt}
+
+		\textbf{Linear System.} Let's define $\big\{\varphi_1,\dots,\varphi_{N_h}\big\}$ a basis of $V_h$.
+		\begin{equation*}
+			AU=b
+		\end{equation*}
+		with
+		\begin{equation*}
+			A=\big(a(\varphi_i,\varphi_j)\big)_{1\le i,j\le N_h}, \quad U=\big(u_i\big)_{1\le i\le N_h} \quad \text{and} \quad b=\big(l(\varphi_j)\big)_{1\le j\le N_h}
+		\end{equation*}
 	}
+
+	\node[below left=1cm and 1cm] at (topright) {\includegraphics[width=6cm]{images/intro/mesh.png}};
 
 \end{columns}
