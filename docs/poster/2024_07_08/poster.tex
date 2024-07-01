@@ -1,4 +1,4 @@
-\documentclass[25pt,a0paper]{tikzposter}
+\documentclass[a0paper,blockverticalspace=25pt]{tikzposter}
 
 \usepackage[most]{tcolorbox}
 \usepackage{tikz}
@@ -19,13 +19,15 @@
 \usebackgroundstyle{Empty}
 \usenotestyle{VerticalShading}
 
-\usetikzlibrary{scopes}
+\tikzposterlatexaffectionproofoff
+
+% \usetikzlibrary{scopes}
 
 %% Define Color Style
 
 \definecolor{color1}{RGB}{221, 229, 182}
-% \definecolor{bulles}{RGB}{19, 42, 19}
- \definecolor{color2}{RGB}{96, 108, 56}
+\definecolor{color2}{RGB}{96, 108, 56}
+\definecolor{color3}{RGB}{172, 199, 157}
 % \definecolor{other}{RGB}{134, 151, 79}
 % \definecolor{trianglesup}{RGB}{221, 229, 182}
 
@@ -56,6 +58,14 @@
 
 \usecolorstyle{myColorStyle}
 
+\definecolorstyle{bibStyle}{
+	}{
+	% Block Colors
+	\colorlet{blocktitlebgcolor}{white}
+	\colorlet{blockbodybgcolor}{white}
+	\colorlet{blockbodyfgcolor}{white}
+}
+
 %% Set Title config
 
 \usetikzlibrary{positioning}
@@ -74,16 +84,35 @@
 \author{\parbox{\linewidth}{\Large \textbf{Frédérique LECOURTIER}, Emmanuel FRANCK, Michel DUPREZ, Vanessa LLERAS}}
 \institute{}
 
+\newtcbtheorem{mytheo}{Theorem}{colback=color1!30, % Couleur de fond de la boîte
+	colframe=color3!90, % Couleur du cadre de la boîte
+	arc=2mm, % Rayon de l'arrondi des coins
+	boxrule=2pt, % Épaisseur du cadre de la boîte
+	breakable, enhanced jigsaw,
+	width=\linewidth,
+	% opacityback=0.1
+	}{th}
+
+% \usepackage[square]{natbib}
+% \bibliographystyle{dinat}
+% % to remove "REFERENCES" title
+% \usepackage{etoolbox}
+% \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+% Ajouter la ressource bibliographique
+\addbibresource{biblio.bib}
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	citecolor=color2,
+	linkcolor=color2,
+}
+
 \begin{document}
-	\maketitle
+	\maketitle[titletoblockverticalspace=20pt]
 	\node [below left=6cm and 2cm] at (topright) {\includegraphics[width=15cm]{images/logo-mimesis.png}};
-	%
-	%\block{Scientific context - Create real-time digital twins of an organ (e.g. liver).}{
-	%%\begin{itemize}
-	%%\item We try to do this. What?
-	%%\item we try to do that.
-	%%\end{itemize}
-	%}
 
 	\input{sections/intro.tex}
 
@@ -91,35 +120,12 @@
 
 	\input{sections/corr.tex}
 
-	%\note[rotate=8, connection, width = 7cm,
-	%% roundedcorners=15, targetoffsetx=2cm
-	%]{Oh wait! A note!}
+	\usecolorstyle{bibStyle}
 
-	% \begin{columns}
-
-	% 	\column{0.5}
-	% 	\block{A test!}{
-	% 	\begin{itemize}
-	% 	\item We try to do this. what?
-	% 	\item we try to do that.
-	% 	\end{itemize}
-	% 	}
-		
-	% 	\column{0.5}
-	% 	\block{A test!}{
-	% 	My poster is coll because ...
-	% 	\begin{itemize}
-	% 	\item We try to do this. what?
-	% 	\item we try to do that.
-	% 	\end{itemize}
-	% 	}
-
-	% \end{columns}
-
-	%\block{Random Picture}{%
-	%\begin{tikzfigure}[Figures in tikzposter]
-	%\includegraphics[width=\linewidth]{Photo_4}
-	%\end{tikzfigure}
-	%}
+	\block{
+		\vspace{-40pt}
+		\footnotesize
+		\printbibliography[heading=none]
+	}
 
 \end{document}

@@ -1,3 +1,119 @@
 \block{How can we improve PINNs prediction ? \textnormal{- Using FEM-type methods}}{
-    TODO
+    \begin{center}
+        \begin{minipage}{0.49\linewidth}
+            \centering
+            \begin{tcolorbox}[
+                colback=color1!50, % Couleur de fond de la boîte
+                colframe=color2, % Couleur du cadre de la boîte
+                arc=2mm, % Rayon de l'arrondi des coins
+                boxrule=2pt, % Épaisseur du cadre de la boîte
+                breakable, enhanced jigsaw,
+                width=\linewidth
+                ]            
+                \textbf{Additive approach.} Considering $u_{NN}$ as the prediction of our PINNs for (\ref{edp}), the correction problem consists in writing the solution as
+                \begin{equation*}
+                    \tilde{u}=u_{\theta}+\underset{\textcolor{orange}{\ll 1}}{\fcolorbox{orange}{color1!50}{$\tilde{C}$}}
+                \end{equation*}
+
+                \vspace{-20pt}
+
+                and searching $\tilde{C}: \Omega \rightarrow \mathbb{R}^d$ such that
+                \begin{equation}
+                    \left\{\begin{aligned}
+                        -\Delta \tilde{C}&=\tilde{f}, \; &&\text{in } \Omega, \\
+                        \tilde{C}&=0, \; &&\text{on } \Gamma,
+                    \end{aligned}\right. \label{corr_add} \tag{$\mathcal{P}^{+}$}
+                \end{equation}
+
+                \vspace{-10pt}
+
+                with $\tilde{f}=f+\Delta u_{\theta}$.
+            \end{tcolorbox}
+    
+            \begin{tcolorbox}[
+                colback=color1!50, % Couleur de fond de la boîte
+                colframe=color2, % Couleur du cadre de la boîte
+                arc=2mm, % Rayon de l'arrondi des coins
+                boxrule=2pt, % Épaisseur du cadre de la boîte
+                breakable, enhanced jigsaw,
+                width=\linewidth
+                ]            
+                \textbf{Problem considered.} Poisson on Square
+                
+                \vspace{10pt}
+
+                \ding{217} Solving (\ref{edp}) with homogeneous Dirichlet BC ($g=0$) and $\Omega=[-0.5\pi,0.5\pi]^2$. \\
+                \ding{217} Analytical levelset function : $\quad \phi(x,y)=(x-0.5\pi)(x+0.5\pi)(y-0.5\pi)(y+0.5\pi)$ \\
+                \ding{217} Analytical solution :               
+                \vspace{-8pt}
+                \begin{equation*}
+                    u_{ex}(x,y)=\exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2}\right)\sin(2x)\sin(2y)
+                \end{equation*} 
+                \normalsize
+                with $\mu_1,\mu_2\in[-0.5,0.5]$ (\textbf{\fcolorbox{color1!50}{color1}{parametric}}). 
+            \end{tcolorbox}
+        \end{minipage}	
+        \;
+        \begin{minipage}{0.49\linewidth}
+            \centering
+            \begin{tcolorbox}[
+                colback=color1!50, % Couleur de fond de la boîte
+                colframe=color2, % Couleur du cadre de la boîte
+                arc=2mm, % Rayon de l'arrondi des coins
+                boxrule=2pt, % Épaisseur du cadre de la boîte
+                breakable, enhanced jigsaw,
+                width=\linewidth
+                ]            
+                \textbf{Theoretical results.} \\
+                We denote $u$ the solution of (\ref{edp}) and $u_h$ the discrete solution of (\ref{corr_add}).                
+                \begin{center}
+                    \begin{minipage}{0.68\linewidth}
+                        \begin{mytheo}{\cite{ours_2024}}{add}
+                            Considering $V_h$ as a $\mathbb{P}_k$ Lagrange space, we have
+                            \begin{equation*}
+                                || u-u_h ||_0 \lesssim \fcolorbox{orange}{color1!30}{$\frac{|u-u_{\theta}|_{H^{k+1}}}{|u|_{H^{k+1}}}$} h^{k+1} |u|_{H^{k+1}}
+                            \end{equation*}
+                        \end{mytheo}
+                        
+                        \small
+                        \textit{Remark :} We note N the number of nodes in each direction of the square.
+                    \end{minipage} \;
+                    \begin{minipage}{0.3\linewidth}
+                        \normalsize
+                        Taking $\mu_1=0.05$, $\mu_2=0.22$.
+                        \centering
+                        \pgfimage[width=0.9\linewidth]{images/corr/cvg_case1.png}
+                    \end{minipage}
+                \end{center}
+
+                % \hypersetup{
+                %     citecolor=color1,
+                % }
+            \end{tcolorbox}
+    
+            \begin{tcolorbox}[
+                colback=color1!50, % Couleur de fond de la boîte
+                colframe=color2, % Couleur du cadre de la boîte
+                arc=2mm, % Rayon de l'arrondi des coins
+                boxrule=2pt, % Épaisseur du cadre de la boîte
+                breakable, enhanced jigsaw,
+                width=\linewidth
+                ]            
+                \textbf{Result :} \textbf{\fcolorbox{color1!50}{color1}{Gains using additive approach.}}
+
+                Considering a set of $n_p=50$ parameters : $\left\{(\mu_1^{(1)},\mu_2^{(1)}),\dots,(\mu_1^{(n_p)},\mu_2^{(n_p)})\right\}$.
+	
+                \vspace{5pt}
+                
+                \hspace{20pt}\begin{minipage}{0.05\linewidth}
+                    \normalsize
+                    \rotatebox[origin=b]{90}{\textbf{Solution $\mathbb{P}_1$}} 
+                \end{minipage}
+                \begin{minipage}{0.8\linewidth}
+                    \centering
+                    \pgfimage[width=0.8\linewidth]{images/corr/gains_P1.png}
+                \end{minipage} 
+            \end{tcolorbox}
+        \end{minipage}
+    \end{center}
 }
