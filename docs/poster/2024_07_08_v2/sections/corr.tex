@@ -13,7 +13,7 @@
                 breakable, enhanced jigsaw,
                 width=\linewidth
                 ]            
-                \textbf{Additive approach.} Considering $u_{NN}$ as the prediction of our PINNs for \textit{Poisson}, the correction problem consists in writing the solution as
+                \textbf{Additive approach.} Considering $u_{\theta}$ as the prediction of our PINNs for the Poisson problem, the correction problem consists in writing the solution as
                 \begin{equation*}
                     \tilde{u}=u_{\theta}+\underset{\textcolor{orange}{\ll 1}}{\fcolorbox{orange}{color1!50}{$\tilde{C}$}}
                 \end{equation*}
@@ -41,18 +41,17 @@
                 breakable, enhanced jigsaw,
                 width=\linewidth
                 ]            
-                \textbf{Problem considered.} Poisson on Square
+                \textbf{Poisson problem on Square.}
                 
                 \vspace{10pt}
 
-                \ding{217} Solving \textit{Poisson} with homogeneous Dirichlet BC ($g=0$) and $\Omega=[-0.5\pi,0.5\pi]^2$. \\
+                \ding{217} Considering homogeneous Dirichlet BC ($g=0$) and $\Omega=[-0.5\pi,0.5\pi]^2$. \\
                 \ding{217} Analytical levelset function : $\quad \phi(x,y)=(x-0.5\pi)(x+0.5\pi)(y-0.5\pi)(y+0.5\pi)$ \\
                 \ding{217} Analytical solution :               
                 \vspace{-8pt}
                 \begin{equation*}
                     u_{ex}(x,y)=\exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2}\right)\sin(2x)\sin(2y)
                 \end{equation*} 
-                \normalsize
                 with $\mu_1,\mu_2\in[-0.5,0.5]$ (\textbf{\fcolorbox{color1!50}{color1}{parametric}}). 
             \end{tcolorbox}
 
@@ -64,13 +63,13 @@
                 breakable, enhanced jigsaw,
                 width=\linewidth
                 ]            
-                \textbf{Theoretical results.}
+                \textbf{Theoretical results.} Considering $u_{\theta}$ as the prediction of our PINNs.
 
                 \hypersetup{citecolor=white}
 
                 \begin{center}
                     \begin{mytheo}{\cite{ours_2024}}{add}
-                        We denote $u$ the solution of \textit{Poisson} and $u_h$ the discrete solution of the correction problem (\ref{corr_add}) with $V_h$ a $\mathbb{P}_k$ Lagrange space. Thus
+                        We denote $u$ the solution of the Poisson problem and $u_h$ the discrete solution of the correction problem (\ref{corr_add}) with $V_h$ a $\mathbb{P}_k$ Lagrange space. Thus
                         \begin{equation*}
                             || u-u_h ||_0 \lesssim \fcolorbox{orange}{color1!30}{$\frac{|u-u_{\theta}|_{H^{k+1}}}{|u|_{H^{k+1}}}$} h^{k+1} |u|_{H^{k+1}}
                         \end{equation*}
@@ -118,8 +117,11 @@
                 \vspace{10pt}
 
                 \begin{center}
-                    \pgfimage[width=0.8\linewidth]{images/corr/cvg_case1.png}
+                    \pgfimage[width=0.75\linewidth]{images/corr/cvg_case1.png}
                 \end{center}
+                
+                \normalsize
+                \textit{Remark :} We note N the number of nodes in each direction of the square.
             \end{tcolorbox}
     
             \begin{tcolorbox}[
@@ -132,7 +134,7 @@
                 ]            
                 \textbf{Gains on error using additive approach.}
 
-                Considering a set of $n_p=50$ parameters : $\left\{(\mu_1^{(1)},\mu_2^{(1)}),\dots,(\mu_1^{(n_p)},\mu_2^{(n_p)})\right\}$.
+                Considering a set of $n_p=50$ parameters : $\left\{\big(\mu_1^{(1)},\mu_2^{(1)}\big),\dots,\big(\mu_1^{(n_p)},\mu_2^{(n_p)}\big)\right\}$.
 	
                 \vspace{5pt}
                 
@@ -186,9 +188,13 @@
 
                 Let's suppose we want to achieve an \textbf{\fcolorbox{color1!50}{color1}{error of $1e-3$}}.
                 
+                \vspace{-10pt}
+
                 \begin{equation*}
                     Tot_{Add}<Tot_{FEM} \quad \Rightarrow \quad n_p > \frac{t_{PINNs}}{t_{FEM}-t_{Add}}\approx 5.61\quad  \Rightarrow \quad \fcolorbox{orange}{color1!50}{$n_p=6$}
                 \end{equation*}
+
+                \vspace{10pt}
             \end{tcolorbox}
         \end{center}
     }
