@@ -1,0 +1,145 @@
+\begin{columns}
+
+\column{0.5}
+
+\block{How to deal with complex geometry in PINNs ? \qquad\qquad\qquad}{
+    % \warning \textbf{In practice :} Not so easy ! We need to find \textbf{\fcolorbox{color1!50}{color1}{how to sample in the geometry}}.
+
+    \begin{center}
+        \centering
+        \begin{tcolorbox}[
+            colback=color1!50, % Couleur de fond de la boîte
+            colframe=color2, % Couleur du cadre de la boîte
+            arc=2mm, % Rayon de l'arrondi des coins
+            boxrule=2pt, % Épaisseur du cadre de la boîte
+            breakable, enhanced jigsaw,
+            width=\linewidth
+            ]            
+            \textbf{Approach by levelset.} \cite{sukumar_exact_2022}
+
+            \vspace{10pt}
+
+            \begin{minipage}{0.38\linewidth}
+                \centering
+                \pgfimage[width=0.7\linewidth]{images/levelset/levelset.png}
+            \end{minipage}
+            \begin{minipage}{0.58\linewidth}
+                \textbf{\textit{Advantages :}} \\
+                \ding{217} Sample is easy in this case. \\
+                \ding{217} Allow to impose in hard the BC (no more $J_{\text{bc}}$) :
+                \vspace{-5pt}
+                \begin{equation*}
+                    u_\theta(X)=\phi(X)w_\theta(X)+g(X)
+                \end{equation*}
+                with $\phi$ a levelset function and $w_\theta$ a NN.
+            \end{minipage}
+        \end{tcolorbox}
+
+        \begin{tcolorbox}[
+            colback=color1!50, % Couleur de fond de la boîte
+            colframe=color2, % Couleur du cadre de la boîte
+            arc=2mm, % Rayon de l'arrondi des coins
+            boxrule=2pt, % Épaisseur du cadre de la boîte
+            breakable, enhanced jigsaw,
+            width=\linewidth
+            ]            
+            \textbf{Levelset considered.} A regularized Signed Distance Function (SDF).
+
+            \begin{mytheo}{Eikonal equation.}{eik}
+                If we have a boundary domain $\Gamma$, the SDF is solution to:
+                
+                \begin{minipage}{0.7\linewidth}
+                    \hspace{350pt}
+                    $\left\{\begin{aligned}
+                        &||\nabla\phi(X)||=1, \; X\in\mathcal{O} \\
+                        &\phi(X)=0, \; X\in\Gamma \\
+                        &\nabla\phi(X)=n, \; X\in\Gamma
+                    \end{aligned}\right.$
+                \end{minipage}
+                \begin{minipage}{0.25\linewidth}
+                    \centering
+                    \pgfimage[width=0.7\linewidth]{images/levelset/points_normals.png}
+                \end{minipage}
+                
+                with $\mathcal{O}$ a box which contains $\Omega$ completely and $n$ the exterior normal to $\Gamma$.
+            \end{mytheo}
+            
+            \textbf{How to do that ?} with a PINNs \cite{clemot_neural_2023}, by adding the following regularization term
+            \vspace{-5pt}
+            \begin{equation*}
+                J_{\text{reg}} = \int_\mathcal{O} |\Delta\phi|^2.
+            \end{equation*} 
+        \end{tcolorbox}
+    \end{center}	
+}
+
+\note[rotate=6, width = 10.5cm, targetoffsetx=10cm, targetoffsety=16cm, roundedcorners=30, linewidth=1pt]{No mesh, so easy to go on complex geometry !}
+\node[rotate=-6,below left=-1.5cm and 7.5cm] at (topright) {\includegraphics[width=2cm]{images/levelset/speaking.png}};
+    
+\column{0.5}
+
+\block{Results \textnormal{- Complex geometry}}{
+    \vspace{-20pt}
+    \begin{center}
+        \begin{tcolorbox}[
+            colback=color1!50, % Couleur de fond de la boîte
+            colframe=color2, % Couleur du cadre de la boîte
+            arc=2mm, % Rayon de l'arrondi des coins
+            boxrule=2pt, % Épaisseur du cadre de la boîte
+            breakable, enhanced jigsaw,
+            width=\linewidth
+            ]            
+            \textbf{Levelset learning.}
+
+            \vspace{2pt}
+
+            \begin{minipage}{0.48\linewidth}
+                \centering
+                \pgfimage[width=0.8\linewidth]{images/levelset/cat_levelset_loss.png}
+            \end{minipage} 
+            \begin{minipage}{0.48\linewidth}
+                \centering
+                \pgfimage[width=0.95\linewidth]{images/levelset/cat_levelset.png}
+            \end{minipage} 
+        \end{tcolorbox}
+
+        \begin{tcolorbox}[
+            colback=color1!50, % Couleur de fond de la boîte
+            colframe=color2, % Couleur du cadre de la boîte
+            arc=2mm, % Rayon de l'arrondi des coins
+            boxrule=2pt, % Épaisseur du cadre de la boîte
+            breakable, enhanced jigsaw,
+            width=\linewidth
+            ]            
+            \textbf{Poisson on Cat.}
+
+            \ding{217} Solving \textit{Poisson} with $f=1$ (non parametric) and homogeneous Dirichlet BC ($g= 0$). \\
+            \ding{217} Looking for $u_\theta = \phi w_\theta$ with $\phi$ the levelset learned.
+
+            \vspace{2pt}
+
+            \begin{minipage}{0.44\linewidth}
+                \centering
+                \pgfimage[width=0.8\linewidth]{images/levelset/cat_poisson_loss.png}
+            \end{minipage} 
+            \begin{minipage}{0.52\linewidth}
+                \centering
+                \pgfimage[width=\linewidth]{images/levelset/cat_poisson.png}
+            \end{minipage} 
+        \end{tcolorbox}
+    \end{center}
+}
+
+\end{columns}
+
+% \node (manote){
+% };
+
+% \begin{scope}[shift=(manote.south west), x={($0.1*(manote.south east)-0.1*(manote.south west)$)},
+%      y={($0.1*(manote.north west)-0.1*(manote.south west)$)}]
+
+%      \draw[lightgray, step=1](manote.south west) grid (manote.north east);
+
+% \end{scope}
+
+    
