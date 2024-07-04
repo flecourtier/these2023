@@ -27,6 +27,7 @@
 
 .Contenus supplémentaires
 * xref:slides.adoc[Mes slides]
+* xref:posters.adoc[Mes posters]
 * xref:abstracts.adoc[Résumés hebdomadaires]
 ** xref:abstracts/2023_10.adoc[Octobre 2023]
 ** xref:abstracts/2023_11.adoc[Novembre 2023]
