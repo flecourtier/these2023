@@ -36,8 +36,8 @@ def create_nav(section_files,sections,write_dir):
             section_file.write("= " + section + "\n")
             section_file.close()   
 
+## Cp presentation
 def cp_slides():
-    ## Cp presentation
     presentation_dir = root_dir + "presentation/"
     pres_attachments_dir = attachments_dir + "presentation/"
     if os.path.exists(pres_attachments_dir):
@@ -58,6 +58,29 @@ def cp_slides():
                     presentation_name[file] = name
 
     return presentation_name
+
+## Cp posters
+def cp_posters():
+    poster_dir = root_dir + "poster/"
+    pres_attachments_dir = attachments_dir + "poster/"
+    if os.path.exists(pres_attachments_dir):
+        shutil.rmtree(pres_attachments_dir)
+    os.mkdir(pres_attachments_dir)
+
+    poster_name = {}
+    for file in os.listdir(poster_dir):
+        if file!="georgia_files":
+            pdf_to_copy = poster_dir + file + "/poster.pdf"
+            shutil.copyfile(pdf_to_copy,pres_attachments_dir + file + ".pdf")
+            
+            latex_file = poster_dir + file + "/poster.tex"
+            file_read = open(latex_file, 'r')
+            while line := file_read.readline():
+                if search_word_in_line("% Titre : ", line):
+                    name = line.split(": ")[1]
+                    poster_name[file] = name
+
+    return poster_name
 
 # copy all the images of the tex report in the antora documentation
 def cp_assets(section_files,rapport_dir):
@@ -173,6 +196,31 @@ def create_presentation_file(presentation_name):
 
     for i in range(len(date)):
         file_write.write("* "+date_fr[i]+" : xref:attachment$presentation/" + date[i] + ".pdf[" + name[i] + "]\n")
+    
+    file_write.close() 
+    
+# create the poster page
+def create_poster_file(poster_name):
+    # create the nav.adoc file
+    poster_file = page_dir + "posters.adoc"
+    
+    date,name = [],[]
+    for key,value in poster_name.items():
+        date.append(key)
+        name.append(value)
+    date,name = np.array(date), np.array(name)
+    index = np.argsort(date)[::-1]
+    date,name = date[index],name[index]
+
+    date_fr = []
+    for d in date:
+        date_fr.append(d[8:10] + "/" + d[5:7] + "/" + d[:4])
+        
+    file_write = open(poster_file, 'w')
+    file_write.write("# Slides\n\n")
+
+    for i in range(len(date)):
+        file_write.write("* "+date_fr[i]+" : xref:attachment$poster/" + date[i] + ".pdf[" + name[i] + "]\n")
     
     file_write.close() 
 

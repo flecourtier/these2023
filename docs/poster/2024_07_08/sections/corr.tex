@@ -1,7 +1,10 @@
-\block{How can we improve PINNs prediction ? \textnormal{- Using FEM-type methods}}{
-    \begin{center}
-        \begin{minipage}{0.49\linewidth}
-            \centering
+\begin{columns}
+
+    \column{0.5}
+
+    \block{How can we improve PINNs prediction ? \\ \textnormal{\Large Using FEM-type methods}}{
+        \vspace{-20pt}
+        \begin{center}
             \begin{tcolorbox}[
                 colback=color1!50, % Couleur de fond de la boîte
                 colframe=color2, % Couleur du cadre de la boîte
@@ -10,7 +13,7 @@
                 breakable, enhanced jigsaw,
                 width=\linewidth
                 ]            
-                \textbf{Additive approach.} Considering $u_{NN}$ as the prediction of our PINNs for (\ref{edp}), the correction problem consists in writing the solution as
+                \textbf{Additive approach.} Considering $u_{\theta}$ as the prediction of our PINNs for the Poisson problem, the correction problem consists in writing the solution as
                 \begin{equation*}
                     \tilde{u}=u_{\theta}+\underset{\textcolor{orange}{\ll 1}}{\fcolorbox{orange}{color1!50}{$\tilde{C}$}}
                 \end{equation*}
@@ -38,24 +41,20 @@
                 breakable, enhanced jigsaw,
                 width=\linewidth
                 ]            
-                \textbf{Problem considered.} Poisson on Square
+                \textbf{Poisson problem on Square.}
                 
                 \vspace{10pt}
 
-                \ding{217} Solving (\ref{edp}) with homogeneous Dirichlet BC ($g=0$) and $\Omega=[-0.5\pi,0.5\pi]^2$. \\
+                \ding{217} Considering homogeneous Dirichlet BC ($g=0$) and $\Omega=[-0.5\pi,0.5\pi]^2$. \\
                 \ding{217} Analytical levelset function : $\quad \phi(x,y)=(x-0.5\pi)(x+0.5\pi)(y-0.5\pi)(y+0.5\pi)$ \\
                 \ding{217} Analytical solution :               
                 \vspace{-8pt}
                 \begin{equation*}
                     u_{ex}(x,y)=\exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2}\right)\sin(2x)\sin(2y)
                 \end{equation*} 
-                \normalsize
                 with $\mu_1,\mu_2\in[-0.5,0.5]$ (\textbf{\fcolorbox{color1!50}{color1}{parametric}}). 
             \end{tcolorbox}
-        \end{minipage}	
-        \;
-        \begin{minipage}{0.49\linewidth}
-            \centering
+
             \begin{tcolorbox}[
                 colback=color1!50, % Couleur de fond de la boîte
                 colframe=color2, % Couleur du cadre de la boîte
@@ -64,31 +63,65 @@
                 breakable, enhanced jigsaw,
                 width=\linewidth
                 ]            
-                \textbf{Theoretical results.} \\
-                We denote $u$ the solution of (\ref{edp}) and $u_h$ the discrete solution of (\ref{corr_add}).                
+                \textbf{Theoretical results.} Considering $u_{\theta}$ as the prediction of our PINNs.
+
+                \hypersetup{citecolor=white}
+
                 \begin{center}
-                    \begin{minipage}{0.68\linewidth}
-                        \begin{mytheo}{\cite{ours_2024}}{add}
-                            Considering $V_h$ as a $\mathbb{P}_k$ Lagrange space, we have
-                            \begin{equation*}
-                                || u-u_h ||_0 \lesssim \fcolorbox{orange}{color1!30}{$\frac{|u-u_{\theta}|_{H^{k+1}}}{|u|_{H^{k+1}}}$} h^{k+1} |u|_{H^{k+1}}
-                            \end{equation*}
-                        \end{mytheo}
-                        
-                        \small
-                        \textit{Remark :} We note N the number of nodes in each direction of the square.
-                    \end{minipage} \;
-                    \begin{minipage}{0.3\linewidth}
-                        \normalsize
-                        Taking $\mu_1=0.05$, $\mu_2=0.22$.
-                        \centering
-                        \pgfimage[width=0.9\linewidth]{images/corr/cvg_case1.png}
-                    \end{minipage}
+                    \begin{mytheo}{\cite{ours_2024}}{add}
+                        We denote $u$ the solution of the Poisson problem and $u_h$ the discrete solution of the correction problem (\ref{corr_add}) with $V_h$ a $\mathbb{P}_k$ Lagrange space. Thus
+                        \begin{equation*}
+                            || u-u_h ||_0 \lesssim \fcolorbox{orange}{color1!30}{$\frac{|u-u_{\theta}|_{H^{k+1}}}{|u|_{H^{k+1}}}$} h^{k+1} |u|_{H^{k+1}}
+                        \end{equation*}
+                        \vspace{-5pt}
+                        \hspace{485pt} \begin{minipage}{0.2\linewidth}
+                            \large \textbf{\textcolor{orange}{$C_{\text{gain}}$}}
+                        \end{minipage}
+                    \end{mytheo}
                 \end{center}
 
-                % \hypersetup{
-                %     citecolor=color1,
-                % }
+                \hypersetup{citecolor=color2}
+
+                \textit{Remark :} The constant $C_{\text{gain}}$ shows that the closer the prior is to the solution, the lower the error constant associated with the method.
+            \end{tcolorbox}
+        \end{center}	
+    }
+
+    \usecolorstyle{bibStyle}
+    \useblockstyle{Default}
+
+	\block{
+		\vspace{-40pt}
+        \AtNextBibliography{\small}
+		\printbibliography[heading=none]
+	}
+
+    \usecolorstyle{myColorStyle}
+    \useblockstyle{TornOut}
+
+    \column{0.5}
+
+    \block{Results \textnormal{- Improve prediction}}{
+        \vspace{-20pt}
+        \begin{center}
+            \begin{tcolorbox}[
+                colback=color1!50, % Couleur de fond de la boîte
+                colframe=color2, % Couleur du cadre de la boîte
+                arc=2mm, % Rayon de l'arrondi des coins
+                boxrule=2pt, % Épaisseur du cadre de la boîte
+                breakable, enhanced jigsaw,
+                width=\linewidth
+                ]            
+                \textbf{Theoretical results.} Taking $\mu_1=0.05$, $\mu_2=0.22$.
+
+                \vspace{10pt}
+
+                \begin{center}
+                    \pgfimage[width=0.75\linewidth]{images/corr/cvg_case1.png}
+                \end{center}
+                
+                \normalsize
+                \textit{Remark :} We note N the number of nodes in each direction of the square \big(Total : $N^2$\big).
             \end{tcolorbox}
     
             \begin{tcolorbox}[
@@ -99,21 +132,80 @@
                 breakable, enhanced jigsaw,
                 width=\linewidth
                 ]            
-                \textbf{Result :} \textbf{\fcolorbox{color1!50}{color1}{Gains using additive approach.}}
+                \textbf{Gains on error using additive approach.}
 
-                Considering a set of $n_p=50$ parameters : $\left\{(\mu_1^{(1)},\mu_2^{(1)}),\dots,(\mu_1^{(n_p)},\mu_2^{(n_p)})\right\}$.
+                Considering a set of $n_p=50$ parameters : $\left\{\big(\mu_1^{(1)},\mu_2^{(1)}\big),\dots,\big(\mu_1^{(n_p)},\mu_2^{(n_p)}\big)\right\}$.
 	
                 \vspace{5pt}
                 
                 \hspace{20pt}\begin{minipage}{0.05\linewidth}
                     \normalsize
+                    \flushright
                     \rotatebox[origin=b]{90}{\textbf{Solution $\mathbb{P}_1$}} 
                 \end{minipage}
                 \begin{minipage}{0.8\linewidth}
                     \centering
-                    \pgfimage[width=0.8\linewidth]{images/corr/gains_P1.png}
+                    \pgfimage[width=0.9\linewidth]{images/corr/gains_P1.png}
                 \end{minipage} 
             \end{tcolorbox}
-        \end{minipage}
-    \end{center}
-}
+
+            \begin{tcolorbox}[
+                colback=color1!50, % Couleur de fond de la boîte
+                colframe=color2, % Couleur du cadre de la boîte
+                arc=2mm, % Rayon de l'arrondi des coins
+                boxrule=2pt, % Épaisseur du cadre de la boîte
+                breakable, enhanced jigsaw,
+                width=\linewidth
+                ]            
+                \textbf{Time/error ratio.} Training time for PINNs : $t_{PINNs}\approx 240s$.
+
+                \vspace{10pt}
+
+                \ding{217} \textbf{At a given precision, how long does each method take to solve 1 problem ?}
+
+                \begin{center}
+                    \pgfimage[width=0.45\linewidth]{images/corr/time_error_tab.png}
+                \end{center}
+
+                \vspace{10pt}
+
+                \ding{217} \textbf{How many parameters $n_p$ to make our method faster than FEM ?}
+
+                \vspace{10pt}
+
+                \begin{minipage}{0.48\linewidth}
+                    Total time of Additive approach :
+                    \vspace{-5pt}
+                    $$Tot_{Add}=t_{PINNs}+n_p t_{Add}$$
+                \end{minipage}
+                \begin{minipage}{0.48\linewidth}
+                    Total time of FEM :
+                    \vspace{-5pt}
+                    $$Tot_{FEM}=n_p t_{FEM}$$
+                \end{minipage}
+
+                \vspace{10pt}
+
+                Let's suppose we want to achieve an \textbf{\fcolorbox{color1!50}{color1}{error of $1e-3$}}.
+                
+                \vspace{-10pt}
+
+                \begin{equation*}
+                    Tot_{Add}<Tot_{FEM} \quad \Rightarrow \quad n_p > \frac{t_{PINNs}}{t_{FEM}-t_{Add}}\approx 5.61\quad  \Rightarrow \quad \fcolorbox{orange}{color1!50}{$n_p=6$}
+                \end{equation*}
+
+                \vspace{10pt}
+            \end{tcolorbox}
+        \end{center}
+    }
+
+    % \usecolorstyle{bibStyle}
+    % \useblockstyle{Default}
+
+	% \block{
+	% 	\vspace{-40pt}
+	% 	\footnotesize
+	% 	\printbibliography[heading=none]
+	% }
+
+\end{columns}

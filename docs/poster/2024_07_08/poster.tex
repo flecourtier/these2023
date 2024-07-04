@@ -1,4 +1,4 @@
-\documentclass[a0paper,blockverticalspace=25pt]{tikzposter}
+\documentclass[a0paper,blockverticalspace=30pt,colspace=20pt]{tikzposter}
 
 \usepackage[most]{tcolorbox}
 \usepackage{tikz}
@@ -10,7 +10,7 @@
 % \usepackage{authblk}
 % \usepackage[french]{babel}
 
-\DeclareMathOperator*{\argmin}{argmin}
+% \DeclareMathOperator*{\argmin}{argmin}
 
 %% Tikzposter is highly customizable: please see
 %% https://bitbucket.org/surmann/tikzposter/downloads/styleguide.pdf
@@ -84,10 +84,12 @@
 \usepackage{lipsum}
 \usepackage{setspace}
 
+% Titre : Combining Finite Element methods and Neural Networks to solve elliptic problem on complex 2D geometries
 \title{\parbox{\linewidth}{\Huge Combining Finite Element methods and Neural Networks to \\ solve elliptic problem on complex 2D geometries}}
-\author{\parbox{\linewidth}{\Large \textbf{Frédérique LECOURTIER}$^1$, Emmanuel FRANCK$^3$, Michel DUPREZ$^1$, Vanessa LLERAS$^4$, Victor MICHEL-DANSAC$^3$, \\
-\Large Nicolas VICTORION$^2$, Hélène BARUCQ$^2$, Florian FAUCHER$^2$}}
-\institute{\parbox{\linewidth}{\small $^1$ Mimesis team, INRIA Nancy grand Est, Icube $\quad$ $^2$ Makutu team, INRIA Bordeaux, TotalEnergies $\quad$ $^3$ Macaron team, INRIA Nancy grand Est, IRMA $\quad$ $^4$ Montpellier University}}
+% \author{\parbox{\linewidth}{\Large \textbf{Frédérique LECOURTIER}$^1$, Emmanuel FRANCK$^3$, Michel DUPREZ$^1$, Vanessa LLERAS$^4$, Victor MICHEL-DANSAC$^3$, \\
+% \Large Nicolas VICTORION$^2$, Hélène BARUCQ$^2$, Florian FAUCHER$^2$}}
+\author{\parbox{\linewidth}{\Large Hélène BARUCQ$^3$, Michel DUPREZ$^1$, Florian FAUCHER$^3$, Emmanuel FRANCK$^2$, \textbf{Frédérique LECOURTIER}$^1$, \\ Vanessa LLERAS$^4$, Victor MICHEL-DANSAC$^2$, and Nicolas VICTORION$^3$}}
+\institute{\parbox{\linewidth}{\small $^1$ Mimesis team, INRIA Nancy grand Est, Icube $\quad$ $^2$ Macaron team, INRIA Nancy grand Est, IRMA $\quad$ $^3$ Makutu team, INRIA Bordeaux, TotalEnergies $\quad$ $^4$ Montpellier University}}
 
 % AUTHORS ( pb mise en page )
 
@@ -137,7 +139,7 @@
 }
 
 \begin{document}
-	\maketitle[titletoblockverticalspace=20pt,titlegraphictotitledistance=1pt]
+	\maketitle[titletoblockverticalspace=25pt,titlegraphictotitledistance=1pt]
 	\node [below left=6cm and 2cm] at (topright) {\includegraphics[width=15cm]{images/logo-mimesis.png}};
 
 	\input{sections/intro.tex}
@@ -145,13 +147,4 @@
 	\input{sections/levelset.tex}
 
 	\input{sections/corr.tex}
-
-	\usecolorstyle{bibStyle}
-
-	\block{
-		\vspace{-40pt}
-		\footnotesize
-		\printbibliography[heading=none]
-	}
-
 \end{document}

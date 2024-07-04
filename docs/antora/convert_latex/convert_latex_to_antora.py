@@ -79,6 +79,9 @@ nav_file.write("\n.Contenus supplémentaires\n")
 presentation_name = cp_slides()
 create_presentation_file(presentation_name)
 nav_file.write("* xref:slides.adoc[Mes slides]\n")
+poster_name = cp_posters()
+create_poster_file(poster_name)
+nav_file.write("* xref:posters.adoc[Mes posters]\n")
 
 ####
 # Create Abstracts
