@@ -37,3 +37,4 @@
 ** xref:abstracts/2024_4.adoc[Avril 2024]
 ** xref:abstracts/2024_5.adoc[Mai 2024]
 ** xref:abstracts/2024_6.adoc[Juin 2024]
+** xref:abstracts/2024_7.adoc[Juillet 2024]

@@ -37,5 +37,43 @@
 
 *A faire :*
 
-*  Poster + 
+*  Commencer poster
+
+== Week 38 : 17/06/2024 - 21/06/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_38/
+*Réunions :*
+
+*  _Vendredi_ - Congé
+*  _Jeudi matin_ - Réunion thèse UFR (Emmanuel + Michel)
+
+*Fait durant la semaine :*
+
+*  Cas test 4 - V1 (BC mixtes sur Cercle)
+*  Cas test 4 - V2 (BC mixtes sur Donut)
+
+*A faire :*
+
+*  Commencer poster
+*  Continuer cas test 4
+*  Tester Firedrake (à comparer avec FEniCS et FEniCSx)
+
+== Week 39 : 24/06/2024 - 28/06/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_39/
+*Réunions :*
+
+*  _Lundi à Mercredi matin_ - Congés
+*  _Jeudi après-midi_ - Réunion thèse (Emmanuel + Vanessa)
+
+*Fait durant la semaine :*
+
+*  Documents - Inscription ED + Documents enseignement
+*  Poster - Début
+
+*A faire :*
+
+*  Finir poster !!
 
