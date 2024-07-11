@@ -14,10 +14,21 @@
 *  Poster (envoyé à l'impression)
 *  CV + LdM - Summer School 2024
 *  Rapport - Inscription ED (début)
+*  Tentative installation Firedrake (échec)
 
 *A faire :*
 
 *  Finir rapport ED + Faire Inscription
 *  Papier (Section 1.2 + Proof Mult prior)
 *  Reprendre Cas Test 4 (BC mixtes sur Donut)
+
+== Week 41 : 08/07/2024 - 12/07/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_41/
+\textcolor{blue}{Workshop on Scientific Machine Learning (SciML) - Strasbourg}
+
+*Réunions :*
+
+*  _Vendredi_ - Congé
 
