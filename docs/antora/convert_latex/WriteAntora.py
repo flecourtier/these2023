@@ -340,14 +340,16 @@ def group_by_months(section_files,section_names,sections,write_dir):
     new_section_files = []
     new_section_names = []
     new_sections = {}
+    file_exists = False
     for i in range(1,current_week_num+1):
         current_month = monday.month
         current_year = monday.year
 
         if os.path.exists(page_dir + write_dir + "week_" + str(i) + ".adoc"):
             file_read = open(page_dir + write_dir + "week_" + str(i) + ".adoc", 'r')
+            file_exists = True
         else:
-            file_read = None
+            file_exists = False
 
         if i==1 or previous_month!=current_month:
             file_write = open(page_dir + write_dir + str(current_year) + "_" + str(current_month) + ".adoc", 'w')
@@ -365,15 +367,15 @@ def group_by_months(section_files,section_names,sections,write_dir):
         subtitle = "== Week " + str(i) + " : " + monday.strftime("%d/%m/%Y") + " - " + friday.strftime("%d/%m/%Y") + "\n"
         file_write.write(subtitle)
 
-        if file_read != None:
+        if file_exists != None:
             while line := file_read.readline():
                 if line[0]!="=":
                     file_write.write(line)
+                    
+            os.remove(file_read)
         else:
             file_write.write("To DO\n")
 
-        if file_read != None:
-            os.remove(file_read)
             
         previous_month = current_month
             
