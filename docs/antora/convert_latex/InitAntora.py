@@ -217,7 +217,7 @@ def create_poster_file(poster_name):
         date_fr.append(d[8:10] + "/" + d[5:7] + "/" + d[:4])
         
     file_write = open(poster_file, 'w')
-    file_write.write("# Slides\n\n")
+    file_write.write("# Posters\n\n")
 
     for i in range(len(date)):
         file_write.write("* "+date_fr[i]+" : xref:attachment$poster/" + date[i] + ".pdf[" + name[i] + "]\n")
