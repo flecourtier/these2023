@@ -367,14 +367,14 @@ def group_by_months(section_files,section_names,sections,write_dir):
         subtitle = "== Week " + str(i) + " : " + monday.strftime("%d/%m/%Y") + " - " + friday.strftime("%d/%m/%Y") + "\n"
         file_write.write(subtitle)
 
-        if file_exists != None:
+        if file_exists:
             while line := file_read.readline():
                 if line[0]!="=":
                     file_write.write(line)
                     
-            os.remove(file_read)
+            os.remove(page_dir + write_dir + "week_" + str(i) + ".adoc")
         else:
-            file_write.write("To DO\n")
+            file_write.write("TO DO\n")
 
             
         previous_month = current_month
