@@ -1,0 +1,25 @@
+= Septembre - 2024
+
+== Week 49 : 02/09/2024 - 06/09/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_49/
+*Réunions :*
+
+*  _Mardi matin_ - Réunion d'équipe (Présentation de Francesco)
+
+*Fait durant la semaine :*
+
+*  Correction Abstracts ED + Inscription
+*  Dossier vacataire
+*  Correction Poster - Journée du 24 Octobre ED
+*  TestCase 4 - V4 (Convergence Donuts Dirichlet)
+
+*A faire :*
+
+*  Reprendre TestCase4 - V4 et le paramétrer (centre de la gaussienne)
+*  Essayer de régler le problème de l'expression FEniCS (Evaluation du réseau point par point)
+*  Implémentation imposition en dure conditions de Neumann (ScimBa)
+
+== Week 50 : 09/09/2024 - 13/09/2024
+TO DO

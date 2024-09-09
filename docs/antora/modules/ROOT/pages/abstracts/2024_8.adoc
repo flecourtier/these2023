@@ -1,0 +1,19 @@
+= Août - 2024
+
+== Week 45 : 05/08/2024 - 09/08/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_45/
+\textcolor{red}{Vacances d'Ete !}== Week 46 : 12/08/2024 - 16/08/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_46/
+\textcolor{red}{Vacances d'Ete !}== Week 47 : 19/08/2024 - 23/08/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_47/
+\textcolor{red}{Vacances d'Ete !}== Week 48 : 26/08/2024 - 30/08/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_48/
+\textcolor{blue}{Summer School "New trends in Computing" - Strasbourg}

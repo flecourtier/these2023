@@ -32,3 +32,31 @@
 
 *  _Vendredi_ - Congé
 
+== Week 42 : 15/07/2024 - 19/07/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_42/
+*Fait durant la semaine :*
+
+*  Article - Résultats numériques
+*  Lancement cas tests
+
+== Week 43 : 22/07/2024 - 26/07/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_43/
+*Fait durant la semaine :*
+
+*  Correction articles
+*  CI - Article Repo
+*  Lancement cas tests
+
+== Week 44 : 29/07/2024 - 02/08/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_44/
+*Fait durant la semaine :*
+
+*  Correction articles
+*  Lancement cas tests
+
