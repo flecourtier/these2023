@@ -372,7 +372,8 @@ def group_by_months(section_files,section_names,sections,write_dir):
         else:
             file_write.write("To DO\n")
 
-        os.remove(page_dir + write_dir + "week_" + str(i) + ".adoc")
+        if file_read != None:
+            os.remove(file_read)
             
         previous_month = current_month
             
