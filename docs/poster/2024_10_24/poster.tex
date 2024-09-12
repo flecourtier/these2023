@@ -1,0 +1,167 @@
+% Configurer TexStudio : pdflatex -synctex=1 -interaction=nonstopmode --shell-escape \%.tex
+% https://www.baeldung.com/cs/latex-svg-images
+
+\documentclass[a0paper,blockverticalspace=30pt,colspace=20pt]{tikzposter}
+
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usepackage{svg}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fourier}
+\usepackage{pifont}
+% \usepackage{authblk}
+% \usepackage[french]{babel}
+
+% \DeclareMathOperator*{\argmin}{argmin}
+
+%% Tikzposter is highly customizable: please see
+%% https://bitbucket.org/surmann/tikzposter/downloads/styleguide.pdf
+\usetheme{Default}
+\usetitlestyle{Filled}
+\useblockstyle{TornOut}
+\usebackgroundstyle{Empty}
+\usenotestyle{VerticalShading}
+
+\tikzposterlatexaffectionproofoff
+
+% \usetikzlibrary{scopes}
+
+%% Define Color Style
+
+\definecolor{color1}{RGB}{221, 229, 182}
+\definecolor{color2}{RGB}{96, 108, 56}
+\definecolor{color3}{RGB}{172, 199, 157}
+% \definecolor{other}{RGB}{134, 151, 79}
+% \definecolor{trianglesup}{RGB}{221, 229, 182}
+
+\definecolorstyle{myColorStyle}{
+	\colorlet{colorOne}{color1}
+	}{
+	% Background Colors
+	\colorlet{backgroundcolor}{colorOne!50}
+	\colorlet{framecolor}{colorOne!50}
+	% Title Colors
+	\colorlet{titlefgcolor}{black}
+	\colorlet{titlebgcolor}{colorOne}
+	% Block Colors
+	\colorlet{blocktitlebgcolor}{colorOne!50}
+	\colorlet{blocktitlefgcolor}{black}
+	\colorlet{blockbodybgcolor}{colorOne!50}
+	\colorlet{blockbodyfgcolor}{black}
+	% Innerblock Colors
+	\colorlet{innerblocktitlebgcolor}{white}
+	\colorlet{innerblocktitlefgcolor}{black}
+	\colorlet{innerblockbodybgcolor}{white}
+	\colorlet{innerblockbodyfgcolor}{black}
+	% Note colors
+	\colorlet{notefgcolor}{black}
+	\colorlet{notebgcolor}{white}
+	\colorlet{notefrcolor}{black}
+}
+
+\usecolorstyle{myColorStyle}
+
+\definecolorstyle{bibStyle}{
+	}{
+	% Block Colors
+	\colorlet{blocktitlebgcolor}{white}
+	\colorlet{blockbodybgcolor}{white}
+	\colorlet{blockbodyfgcolor}{white}
+}
+
+%% Set Title config
+
+\usetikzlibrary{positioning}
+\makeatletter
+\def\title#1{\gdef\@title{\scalebox{\TP@titletextscale}{%
+	\begin{minipage}[t]{\linewidth}
+		\centering
+		#1
+		\par
+		\vspace{0.5em}
+	\end{minipage}%
+}}}
+\makeatother
+
+\usepackage{lipsum}
+\usepackage{setspace}
+
+% Titre : Combining Finite Element methods and Neural Networks to solve elliptic problem on complex 2D geometries
+\title{\parbox{\linewidth}{\Huge Combining Finite Element methods and Neural Networks to \\ solve elliptic problem on complex 2D geometries}}
+% \author{\parbox{\linewidth}{\Large \textbf{Frédérique LECOURTIER}$^1$, Emmanuel FRANCK$^3$, Michel DUPREZ$^1$, Vanessa LLERAS$^4$, Victor MICHEL-DANSAC$^3$, \\
+% \Large Nicolas VICTORION$^2$, Hélène BARUCQ$^2$, Florian FAUCHER$^2$}}
+\author{\parbox{\linewidth}{\Large Hélène BARUCQ$^3$, Michel DUPREZ$^1$, Florian FAUCHER$^3$, Emmanuel FRANCK$^2$, \textbf{Frédérique LECOURTIER}$^1$, \\ Vanessa LLERAS$^4$, Victor MICHEL-DANSAC$^2$, and Nicolas VICTORION$^3$}}
+\institute{\parbox{\linewidth}{\small $^1$ Mimesis team, INRIA Nancy grand Est, Icube $\quad$ $^2$ Macaron team, INRIA Nancy grand Est, IRMA $\quad$ $^3$ Makutu team, INRIA Bordeaux, TotalEnergies $\quad$ $^4$ Montpellier University}}
+
+\newtcbtheorem{mytheo}{Theorem}{colback=color1!30, % Couleur de fond de la boîte
+	colframe=color3!90, % Couleur du cadre de la boîte
+	arc=2mm, % Rayon de l'arrondi des coins
+	boxrule=2pt, % Épaisseur du cadre de la boîte
+	breakable, enhanced jigsaw,
+	width=\linewidth,
+	% opacityback=0.1
+	}{th}
+
+% \usepackage[square]{natbib}
+% \bibliographystyle{dinat}
+% % to remove "REFERENCES" title
+% \usepackage{etoolbox}
+% \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+% Ajouter la ressource bibliographique
+\addbibresource{biblio.bib}
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	citecolor=color2,
+	linkcolor=color2,
+}
+
+\usepackage{svg}
+
+% Block de Titre
+\definecolorstyle{TitleStyle}{
+	\colorlet{colorOne}{color1}
+	}{
+	% Background Colors
+	\colorlet{backgroundcolor}{colorOne!50}
+	\colorlet{framecolor}{colorOne!50}
+	% Title Colors
+	\colorlet{titlefgcolor}{black}
+	\colorlet{titlebgcolor}{colorOne}
+	% Block Colors
+	\colorlet{blocktitlebgcolor}{colorOne}
+	\colorlet{blocktitlefgcolor}{black}
+	\colorlet{blockbodybgcolor}{colorOne}
+	\colorlet{blockbodyfgcolor}{black}
+	% Innerblock Colors
+	\colorlet{innerblocktitlebgcolor}{white}
+	\colorlet{innerblocktitlefgcolor}{black}
+	\colorlet{innerblockbodybgcolor}{white}
+	\colorlet{innerblockbodyfgcolor}{black}
+	% Note colors
+	\colorlet{notefgcolor}{black}
+	\colorlet{notebgcolor}{white}
+	\colorlet{notefrcolor}{black}
+}
+
+\usecolorstyle{myColorStyle}
+
+\begin{document}
+	\maketitle[titletoblockverticalspace=25pt,titlegraphictotitledistance=1pt]
+	\node [below left=9cm and 2cm] at (topright) {\includegraphics[width=13cm]{images/logo-mimesis.png}};
+%	\node [below left=4cm and 15cm] at (topright) {\includegraphics[width=7cm]{images/logo-ed.png}};
+%	\node [below left=1cm and 2cm] at (topright) {\includegraphics[width=13cm]{images/logo-univ.png}};
+	\node [below left=4cm and 15cm] at (topright) {\includesvg[width=7cm]{images/logo-ed.svg}};
+	\node [below left=1cm and 2cm] at (topright) {\includesvg[width=13cm]{images/logo-univ.svg}};
+	\node [below left=9cm and 16cm] at (topright) {\includegraphics[width=9cm]{images/logo-inria.png}};
+
+	\input{sections/intro.tex}
+
+	\input{sections/levelset.tex}
+
+	\input{sections/corr.tex}
+\end{document}
