@@ -1,4 +1,6 @@
 # Posters
 
+* 24/10/2024 : xref:attachment$poster/2024_10_24.pdf[Combining Finite Element methods and Neural Networks to solve elliptic problem on complex 2D geometries
+]
 * 08/07/2024 : xref:attachment$poster/2024_07_08.pdf[Combining Finite Element methods and Neural Networks to solve elliptic problem on complex 2D geometries
 ]
