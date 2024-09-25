@@ -22,4 +22,46 @@
 *  Implémentation imposition en dure conditions de Neumann (ScimBa)
 
 == Week 50 : 09/09/2024 - 13/09/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_50/
+*Réunions :*
+
+*  _Lundi après-midi_ - Visio avec Victor (Problème imposition Dirichlet - Anneau)
+*  _Mercredi matin_ - Réunion thèse (Emmanuel + Michel)
+
+*Fait durant la semaine :*
+
+*  Problème imposition Dirichlet - Anneau (FEniCS)
+*  Rangement du repo
+*  Cas test avec imposition exacte des conditions de Neumann/Robin dans les PINNs
+*  Vérification des formulations pour Neumann/Robin
+
+*A faire :*
+
+*  Tester convergence sur CasTest mixte
+
+== Week 51 : 16/09/2024 - 20/09/2024
+:stem: latexmath
+:xrefstyle: short
+:sectiondir: abstracts/week_51/
+*Réunions :*
+
+*  _Mardi matin_ - Réunion Papier (Emmanuel + Michel + Hélène + Florian)
+*  _Mardi matin_ - Réunion d'équipe (Présentation de Romain)
+*  _Mardi après-midi_ - Seminaire EDP
+*  _Mercredi après-midi_ - Visio Thèse (Emmanuel + Michel + Vanessa)
+
+*Fait durant la semaine :*
+
+*  Ajout "2D elliptic on a Square" + "2D Laplacian on an Annulus" dans Papier
+*  CasTest Laplacian 1D
+*  Modifs Numérique + Ajout "Laplacian 1D" dans Papier
+
+*A faire :*
+
+*  Finir "Laplacian 1D" dans Papier
+*  Améliorer convergence mixte (entrainement avec loss améliorée - dérivées 3ème)
+
+== Week 52 : 23/09/2024 - 27/09/2024
 TO DO
