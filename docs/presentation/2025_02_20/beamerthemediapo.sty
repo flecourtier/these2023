@@ -1,0 +1,96 @@
+% beamertheme.sty
+% \ProvidesPackage{beamertheme}
+\RequirePackage{silence}
+\RequirePackage{etoolbox}
+\RequirePackage{tikz}
+\RequirePackage{fontspec}
+\WarningsOff[mathdesign/mdbch]
+
+% couleurs utilisées
+\definecolor{bulles}{RGB}{19, 23, 42}
+\definecolor{title}{RGB}{56, 69, 108}
+\definecolor{other}{RGB}{79, 127, 151}
+\definecolor{triangleinf}{RGB}{167, 199, 231}
+\definecolor{trianglesup}{RGB}{167, 199, 231}
+\definecolor{appendix}{RGB}{138, 164, 189}
+
+% color
+\setbeamercolor{classic}{fg=black}
+\setbeamercolor{title}{fg=title}
+\setbeamercolor{author}{fg=other}
+\setbeamercolor{institute}{fg=other}
+\setbeamercolor{date}{fg=other}
+\setbeamercolor{frametitle}{fg=title}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg=black}
+\setbeamercolor{block title}{fg=title}
+
+% font
+\setromanfont{Georgia}
+%\usefonttheme{serif} %fonctionne
+\setsansfont[Scale=MatchLowercase]{Open Sans}
+\setbeamerfont{classic}{family=\sffamily,series=\mdseries,size=\small}
+\setbeamerfont{title}{family=\rmfamily,series=\bfseries,size=\Large}
+\setbeamerfont{subtitle}{family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamerfont{author}{size=\normalsize,series=\mdseries}
+\setbeamerfont{institute}{size=\scriptsize,series=\mdseries}
+\setbeamerfont{date}{size=\normalsize,series=\bfseries}
+\setbeamerfont{frametitle}{family=\rmfamily,series=\bfseries,size=\Large}
+\setbeamerfont{block title}{family=\rmfamily,size=\large}
+
+\setbeamersize{text margin left=2em, text margin right=2em}
+
+% template
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+% \setbeamertemplate{title page}[default][left]
+\setbeamertemplate{frametitle}{\vskip0.01\paperheight\usebeamercolor[fg]{frametitle}\insertframetitle} 
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{itemize subsubitem}{\textbullet}
+% \setlength{\leftmargini}{1.25em}
+% \setlength{\leftmarginii}{1em}
+% \setlength{\leftmarginiii}{1em}
+\setbeamertemplate{footline}{\vskip0.15\paperheight}
+
+% titlepage
+\defbeamertemplate*{title page}{customized}[1][]
+{
+    \vspace{10pt}
+	\begin{center}
+		\includegraphics[height=0.12\paperheight]{images/logo-dte2025}\par
+		\vspace{8pt}
+		\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par
+		\bigskip
+		\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par
+		\vspace{5pt}
+		\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par
+	\end{center}
+	\vspace{2pt}
+    \usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par
+}
+
+% triangles et logo
+\pgfdeclareimage[height=0.05\paperheight]{logomimesis}{images/logo-mimesis}
+\pgfdeclareimage[height=0.08\paperheight]{logoinria}{images/logo-inria}
+
+\setbeamertemplate{background}{%
+	\begin{tikzpicture}[overlay,remember picture]
+		\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+		\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;  
+		\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.04\paperheight] at (current page.south east) {\pgfuseimage{logomimesis}};%
+		\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.42\paperheight,yshift=0.025\paperheight] at (current page.south east) {\pgfuseimage{logoinria}};%
+	\end{tikzpicture}%
+    \usebeamerfont{footline}%
+	\usebeamercolor[fg]{footline}%
+	\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+}
+
+% page number
+\addtobeamertemplate{navigation symbols}{}{%
+	\usebeamerfont{footline}%
+	\usebeamercolor[fg]{footline}%
+	\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+}
+\setbeamercolor{footline}{fg=black}
+\setbeamerfont{footline}{series=\bfseries,size=\normalsize}

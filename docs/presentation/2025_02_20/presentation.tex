@@ -1,0 +1,207 @@
+%% Requires compilation with XeLaTeX or LuaLaTeX
+\documentclass[compress,10pt,xcolor={table,dvipsnames},t]{beamer}
+\usetheme{diapo}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{argmin}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage[bottom]{footmisc}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{array,multirow,makecell}
+\usepackage{pifont}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{appendixnumberbeamer}
+%\usepackage[style=authoryear,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
+\usepackage[square]{natbib}
+\bibliographystyle{plainnat}
+\usepackage{etoolbox}
+% box colorée dans équation
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usepackage{soul}
+% pour l'indicatrice
+\usepackage{dsfont}
+\usepackage{cancel}
+\usepackage{booktabs}
+
+\setcellgapes{1pt}
+\setlength{\parindent}{0pt}
+\makegapedcells
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+\renewcommand*{\bibfont}{\scriptsize}
+\useoutertheme[subsection=false]{miniframes}
+\makeatletter
+%\patchcmd{\slideentry}{\advance\beamer@xpos by1\relax}{}{}{}
+\def\beamer@subsectionentry#1#2#3#4#5{\advance\beamer@xpos by1\relax}%
+\makeatother
+\setbeamercolor*{mini frame}{fg=bulles,bg=bulles}
+\hypersetup{
+	colorlinks=true,
+	urlcolor=blue,
+	citecolor=other,
+	linkcolor=title,
+}
+
+\title[PhiFEM]{Combining Finite Element Methods and Neural Networks to Solve Elliptic Problems on 2D Geometries}
+% \subtitle{1st CSI}
+
+\author{%
+	Hélène Barucq\inst{2}, 
+    Michel Duprez\inst{1}, 
+    Florian Faucher\inst{2}, 
+    Emmanuel Franck\inst{3}, 
+    \textbf{Frédérique Lecourtier}\inst{1}, 
+    Vanessa Lleras\inst{1,4},
+    Victor Michel-Dansac\inst{3} and
+    Nicolas Victorion\inst{2}
+}
+
+\institute{%
+    \inst{1} Project-Team MIMESIS, Inria, Strasbourg, France \\
+    \inst{2} Project-Team Makutu, Inria, TotalEnergies, Pau, France \\
+    \inst{3} Project-Team MACARON, Inria, Strasbourg, France \\
+    \inst{4} IMAG, University of Montpellier, Montpellier, France
+}
+
+\date{February 20, 2025}
+
+\allowbreak
+
+% u_chapeau (chapeau en couleur)
+\usepackage{accents}
+\newcommand{\uchapeau}[1]{\accentset{\textcolor{red}{\wedge}}{#1}}
+\newcommand{\refappendix}[1]{\tikz[baseline=(char.base)]{\node[framednumber] (char) {\hyperlink{#1}{\small \textcolor{white}{Appendix \ref*{#1}}}};}}
+
+\tikzset{
+	framednumber/.style={
+		draw=appendix,% Couleur de la bordure
+		fill=appendix, % Couleur de fond
+		rounded corners, % Coins arrondis
+		inner sep=2pt,  % Espace intérieur
+	}
+}
+
+% numérotation et label des appendix
+\newcounter{appendixframenumber}
+\setcounter{appendixframenumber}{1}
+
+\makeatletter
+\newcommand{\labelappendixframe}[1]{%
+	\protected@write\@auxout{}{%
+		\string\newlabel{#1}{{\theappendixframenumber}{\thepage}}%
+	}%
+	\hypertarget{#1}{}
+}	
+\makeatother
+
+% barre en couleur terme dans équation
+\newcommand\Ccancel[2][black]{\renewcommand\CancelColor{\color{#1}}\cancel{#2}}
+
+% chifrre romain dans le texte
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% warning
+\newcommand{\warning}{{\fontencoding{U}\fontfamily{futs}\selectfont\char 49\relax}}
+
+\newcommand{\insertsectionheadSubtitle}{}
+
+\newtcbtheorem{mytheo}{Theorem}{colback=other, % Couleur de fond de la boîte
+	colframe=other, % Couleur du cadre de la boîte
+	arc=2mm, % Rayon de l'arrondi des coins
+	boxrule=0.5pt, % Épaisseur du cadre de la boîte
+	breakable, enhanced jigsaw,
+	width=\linewidth,
+	opacityback=0.1
+	}{th}
+
+\begin{document}
+	\nocite{*}
+	
+	\renewcommand{\inserttotalframenumber}{\pageref{lastslide}}
+	
+	{\setbeamertemplate{footline}{} 
+		\begin{frame}
+			\maketitle
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1} 	
+	
+	\AtBeginSection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+					\vspace{0.5cm} % Ajustez l'espacement selon vos besoins
+					\usebeamerfont{classic}\usebeamercolor[fg]{classic}\insertsectionheadSubtitle
+				\end{beamercolorbox}
+				%\tableofcontents[sectionstyle=hide,subsectionstyle=show]
+				
+				%subsectionstyle=⟨style for current subsection⟩/⟨style for other subsections in current section⟩/⟨style for subsections in other sections⟩
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1} 
+	}
+	
+	\AtBeginSubsection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+				\end{beamercolorbox}
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/shaded/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1} 
+	}
+	
+	\section{Introduction}
+	\input{sections/intro}
+	
+	\section{How improve PINN prediction with FEM ?}
+	\input{sections/correction}
+
+	\section{Numerical results - 2D Poisson problem}
+	\input{sections/numerical_results_poisson}
+
+	\section{Numerical results - 2D anysotropic Elliptic problem}
+	\input{sections/numerical_results_ell}
+
+	\section{Conclusion}
+	\input{sections/conclu}
+	
+	{\setbeamertemplate{footline}{} 	
+		\begin{frame}{}
+			\vspace{18pt}
+			\normalsize
+			\textbf{References}
+			\small
+			% \vspace{30pt}
+			% \setstretch{0.2}
+			% \AtNextBibliography{\small}
+			\bibliography{biblio}
+%			\printbibliography[heading=none]
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1} 
+	
+	\appendix
+	
+	\section{Appendix}
+	\input{sections/appendix}
+	
+\end{document}
