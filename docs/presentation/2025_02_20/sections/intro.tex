@@ -7,7 +7,7 @@
 		\includegraphics[width=0.95\linewidth]{images/intro/liver.png}
 	\end{minipage}
 	
-	\vspace{3pt}
+	\vspace{1pt}
 	\textbf{Objective :} Develop an hybrid \fcolorbox{red}{white}{finite element} / \fcolorbox{orange}{white}{neural network} method.
 	
 	\vspace{1pt}
@@ -18,6 +18,7 @@
 		\textcolor{orange}{quick + parameterized}
 	\end{minipage}
 
+	\normalsize
 	\vspace{5pt}
 	\textbf{Parametric linear elliptic PDE :}
 	For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
@@ -27,8 +28,11 @@
 	\end{equation*}
 	where $\mathcal{L}$ is the parametric differential operator defined  by
 	\begin{equation*}
-		\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u).
+		\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u),
 	\end{equation*}
+	and some Dirichlet, Neumann or Robin BC (which can also depend on $\bm{\mu}$).
+	
+	\footnotesize
 	\begin{table}[ht!]
 		\centering
 		\begin{tabular}{c|c}
@@ -63,8 +67,56 @@
 \end{frame}
 
 \begin{frame}{Physics-Informed Neural Networks}
-	TODO
+	\textbf{Standard PINNs :} Find the optimal weights $\theta^\star$ that satisfy
+	\begin{equation}
+		\label{eq:opt_pb}
+		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \omega_b \; J_b(\theta) \big),
+	\end{equation}
+	with the residual loss function and the boundary loss function defined by
+	\begin{equation*}
+		J_r(\theta) =
+		\int_{\mathcal{M}}\int_{\Omega}
+		\big| \mathcal{L}\big(u_\theta(\bm{x},\bm{\mu});\bm{x},\bm{\mu}\big)-f(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},
+	\end{equation*}
+	\begin{equation*}
+		J_b(\theta) =
+		\int_{\mathcal{M}}\int_{\partial \Omega} \big| u_\theta(\bm{x},\bm{\mu}) - g(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},
+	\end{equation*}
+	where $u_\theta$ is a neural network, $g$ is the Dirichlet BC. In \eqref{eq:opt_pb}, the weights $\omega_r$ and $\omega_b$ (hyperparameters) are used to balance the different terms of the loss function.
+
+	\vspace{5pt}
+	\textbf{Monte-Carlo method :} Discretize the cost functions by random process.
 \end{frame}
+
+\begin{frame}[noframenumbering]{Physics-Informed Neural Networks}
+	\textbf{\textcolor{red}{Improved} PINNs\footcite{LagLikFot1998,FraMicNav2024} :} Find the optimal weights $\theta^\star$ that satisfy
+	\begin{equation}
+		\label{eq:opt_pb_nobc}
+		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \Ccancel[red]{\omega_b \; J_b(\theta)} \big),
+	\end{equation}
+	with $\omega_r=1$ and the residual loss function defined by
+	\begin{equation*}
+		J_r(\theta) =
+		\int_{\mathcal{M}}\int_{\Omega}
+		\big| \mathcal{L}\big(u_\theta(\bm{x},\bm{\mu});\bm{x},\bm{\mu}\big)-f(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},
+	\end{equation*}
+	\begin{minipage}{0.7\linewidth}
+		where $u_\theta$ is a neural network defined by
+		\begin{equation*}
+			\textcolor{red}{u_{\theta}(\bm{x},\bm{\mu}) = \varphi(\bm{x}) w_{\theta}(\bm{x},\bm{\mu}) + g(\bm{x},\bm{\mu}),}
+		\end{equation*}
+		with $\varphi$ a level-set function, $w_\theta$ a NN and $g$ the Dirichlet BC. 
+	\end{minipage}
+	\begin{minipage}{0.28\linewidth}
+		\vspace{-15pt}
+		\includegraphics[width=0.95\linewidth]{images/intro/levelset.png}
+	\end{minipage}
+
+	\vspace{5pt}
+	\textbf{Monte-Carlo method :} Discretize the residual cost function by random process.
+	\vspace{15pt}
+\end{frame}
+
 
 \begin{frame}{Finite Element Method}
 	TODO

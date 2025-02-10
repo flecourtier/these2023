@@ -46,7 +46,7 @@
 	colorlinks=true,
 	urlcolor=blue,
 	citecolor=other,
-	linkcolor=title,
+	linkcolor=blue,
 }
 
 \title[PhiFEM]{Combining Finite Element Methods and Neural Networks to Solve Elliptic Problems on 2D Geometries}
@@ -123,6 +123,8 @@
 	opacityback=0.1
 	}{th}
 
+\newcommand*{\footcite}[1]{\footnote[frame,1]{\cite{#1}}}
+
 \begin{document}
 	\nocite{*}
 	
@@ -170,7 +172,7 @@
 		\addtocounter{framenumber}{-1} 
 	}
 	
-	\section{Introduction}
+	\section*{Introduction}
 	\input{sections/intro}
 	
 	\section{How improve PINN prediction with FEM ?}
