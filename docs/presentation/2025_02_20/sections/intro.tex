@@ -1,8 +1,56 @@
 \begin{frame}{Scientific context}
-	TODO
+	\begin{minipage}{0.78\linewidth}
+		\textbf{Context :} Create real-time digital twins of an organ (e.g. liver).
+	\end{minipage}
+	\begin{minipage}{0.18\linewidth}
+		\vspace{-20pt}
+		\includegraphics[width=0.95\linewidth]{images/intro/liver.png}
+	\end{minipage}
+	
+	\vspace{3pt}
+	\textbf{Objective :} Develop an hybrid \fcolorbox{red}{white}{finite element} / \fcolorbox{orange}{white}{neural network} method.
+	
+	\vspace{1pt}
+	\small
+	\hspace{130pt} \begin{minipage}{0.14\linewidth}
+		\textcolor{red}{accurate}
+	\end{minipage} \hspace{8pt} \begin{minipage}{0.3\linewidth}
+		\textcolor{orange}{quick + parameterized}
+	\end{minipage}
+
+	\vspace{5pt}
+	\textbf{Parametric linear elliptic PDE :}
+	For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
+	\begin{equation*}
+		% \label{eq:ob_pde}
+		\mathcal{L}\big(u;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
+	\end{equation*}
+	where $\mathcal{L}$ is the parametric differential operator defined  by
+	\begin{equation*}
+		\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u).
+	\end{equation*}
+	\begin{table}[ht!]
+		\centering
+		\begin{tabular}{c|c}
+			$\Omega$ & Spatial domain \\
+			$d$ & Spatial dimension \\
+			$\bm{x}=(x_1,\dots,x_d)$ & Spatial coordinates \\
+			\hline
+			$\mathcal{M}$ & Parameter space \\
+			$p$ & Number of parameters \\
+			$\bm{\mu}=(\mu_1,\ldots,\mu_p)$ & Parameter vector \\
+		\end{tabular} \hspace{10pt}
+		\begin{tabular}{c|c}
+			$f$ & Right-hand side \\
+			$R$ & Reaction coefficient \\
+			$C$ & Convection coefficient \\
+			$D$ & Diffusion matrix \\
+			Pe & Péclet number \\
+		\end{tabular}
+	\end{table}
 \end{frame}
 
-\begin{frame}{Parametric linear Elliptic PDE}
+\begin{frame}{Pipeline of the Enriched FEM}
 	TODO
 \end{frame}
 
