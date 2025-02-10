@@ -14,3 +14,8 @@ Vous trouverez ici des résumés des travaux effectués chaque semaine :
 * xref:abstracts/2024_7.adoc[Juillet 2024]
 * xref:abstracts/2024_8.adoc[Août 2024]
 * xref:abstracts/2024_9.adoc[Septembre 2024]
+* xref:abstracts/2024_10.adoc[Octobre 2024]
+* xref:abstracts/2024_11.adoc[Novembre 2024]
+* xref:abstracts/2024_12.adoc[Décembre 2024]
+* xref:abstracts/2025_1.adoc[Janvier 2025]
+* xref:abstracts/2025_2.adoc[Février 2025]
