@@ -1,0 +1,122 @@
+%% -------------------------------------------------------------------
+%% TikZ figure standalone: generate a pdf image
+%% --------------------------------------------
+%% \documentclass[varwidth=true, border=0pt, convert={size=640x}]{standalone}
+% \documentclass[varwidth=21cm, border=0pt]{standalone}
+\documentclass[varwidth=10.5cm,border=2mm]{standalone}
+
+%\usepackage[a4paper]{geometry}
+\usepackage{amsfonts,amsmath,amssymb,amsthm}
+\usepackage{float,xcolor,fancyhdr,siunitx,ifthen}
+
+\usepackage{tikz,pgfplots}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{positioning,arrows,fit,patterns}
+\newcommand{\myblue} {blue!80!white}
+\newcommand{\mygreen}{green!50!black}
+\pgfplotsset{compat=newest}
+
+\newlength{\plotwidth}  \newlength{\modelwidth}
+\newlength{\plotheight} \newlength{\modelheight}
+\newcommand{\datafileA}{}
+\newcommand{\legendA}{}
+\newcommand{\legendB}{}
+\newcommand  {\dataX}{}
+\newcommand  {\dataA}{}
+\newcommand  {\dataB}{}
+
+\begin{document}
+\newcommand{\myxlabel}{$x$}
+\newcommand{\myylabel}{}
+\newcommand{\legendpos}{south east}
+\renewcommand{\datafileA}{derivatives_mu1_PINN.txt}
+\renewcommand{\dataX}{x}
+\setlength{\plotwidth}  {3.25cm}
+\setlength{\plotheight} {3.00cm}
+
+\begin{tikzpicture}
+
+	%% ---------------------------------------------------------------------------------------- %%
+	\begin{groupplot}[group style={group size=1 by 2,
+					vertical sep= 0.7em,group name=mygroupplot},
+			enlargelimits=false, enlarge y limits=false, enlarge x limits=false,
+			height=\plotheight,width=\plotwidth,
+			scale only axis,
+			clip mode=individual,
+			legend columns=1,
+			tick label style={font=\scriptsize},
+		]
+		%% ------------------------------------------------------------
+		%% Plot n°1 
+		%% ------------------------------------------------------------
+		\nextgroupplot[% axis on top, separate axis lines,
+			% xlabel={\scriptsize \myxlabel },
+			% ylabel={\scriptsize \myylabel },
+			legend pos={north east},
+			legend style={draw=none},
+			ymin=-0.55,
+			ymax=0.55,
+			xmin=0,
+			xmax=1,
+			ytick={-0.6,0.6},
+			xtick={-0.1,1.1},
+		]
+		\renewcommand{\dataA}{u}
+		\renewcommand{\dataB}{u_theta}
+		\renewcommand{\legendA}{$u$}
+		\renewcommand{\legendB}{$u_\theta$}
+
+		\addplot[color=orange, line width=1.5]
+		table[x expr = \thisrow{\dataX},
+				y expr = \thisrow{\dataA}]
+			{\datafileA}; \addlegendentry{\legendA}
+		\addplot[color=blue, line width=1,densely dotted]
+		table[x expr = \thisrow{\dataX},
+				y expr = \thisrow{\dataB}]
+			{\datafileA}; \addlegendentry{\legendB}
+
+            \coordinate (c1) at (axis cs:0.55,-0.15);
+            \coordinate (c2) at (axis cs:0.75,-0.15);
+			\coordinate (c3) at (axis cs:0.55,-0.15);
+            % draw a rectangle
+            \draw (c1) rectangle (axis cs:0.75,0.05);
+
+      \nextgroupplot[% axis on top, separate axis lines,
+			% xlabel={\scriptsize \myxlabel },
+			% ylabel={\scriptsize \myylabel },
+			legend pos={north east},
+			legend style={draw=none},
+			ymin=-0.15,
+			ymax=0.05,
+			xmin=0.55,
+			xmax=0.75,
+			ytick={-0.6,0.6},
+			xtick={-0.1,1.1},
+			name=ax2,
+			height=2.5cm,
+			width=2.5cm,
+		]
+		\renewcommand{\dataA}{u}
+		\renewcommand{\dataB}{u_theta}
+		\renewcommand{\legendA}{$u$}
+		\renewcommand{\legendB}{$u_\theta$}
+
+		\addplot[color=orange, line width=1.5]
+		table[x expr = \thisrow{\dataX},
+				y expr = \thisrow{\dataA}]
+			{\datafileA}; \addlegendentry{\legendA}
+		\addplot[color=blue, line width=1,densely dotted]
+		table[x expr = \thisrow{\dataX},
+				y expr = \thisrow{\dataB}]
+			{\datafileA}; \addlegendentry{\legendB}
+
+            \draw[thick, green!30!black, <->] (0.65,-0.08) -- (0.65,-0.042) node[midway, left] {$p_h^+$};
+
+	\end{groupplot}
+
+      \draw [dashed] (c3) -- (ax2.north west);
+      \draw [dashed] (c2) -- (ax2.north east);
+	% -------------------------------------------------------------------------------
+\end{tikzpicture}
+
+\end{document}

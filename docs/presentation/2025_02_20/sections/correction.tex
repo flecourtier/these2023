@@ -1,5 +1,34 @@
 \begin{frame}{Additive approach}
-	TODO
+	\textbf{Variational Problem :} Let $u_{\theta} \in H^{k+1}(\Omega)\cap H^1_0(\Omega)$.
+	\begin{center}
+		Find $p_h^+ \in V_h^0$ such that, $\forall v_h \in V_h^0$, $a(p_h^+,v_h) = l(v_h) - a(u_{\theta},v_h)$,
+	\end{center}
+	\begin{minipage}[t]{0.6\linewidth}
+		with the \textcolor{red}{enriched trial space $V_h^+$} defined by
+		\begin{equation*}
+			%\label{eq:Vh_add}
+			V_h^+ = \left\{
+			u_h^+= u_{\theta} + p_h^+, \quad p_h^+ \in V_h^0
+			\right\}.
+		\end{equation*}
+	
+		\vspace{10pt}
+	
+		\textbf{Impose BC :} If our problem satisfies $u=g$ on $\partial \Omega$,
+		then $p_h^+$ has to satisfy
+		\[
+			p_h^+ = g - u_{\theta} \text{\quad on } \partial \Omega,
+		\]
+		with $u_\theta$ the PINN prior (weak BC). 
+	
+		\vspace{10pt}
+	
+		Considering the strong BC, $p_h^+=0$ on $\partial \Omega$.
+	\end{minipage} \qquad \begin{minipage}[t][][b]{0.28\linewidth}
+		\vspace{-8pt}
+		\centering
+		\pgfimage[width=\linewidth]{images/correction/correction.pdf}
+	\end{minipage}
 \end{frame}
 
 \begin{frame}{Theorerical results}
