@@ -22,10 +22,11 @@
 	\vspace{5pt}
 	\textbf{Parametric linear elliptic PDE :}
 	For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
-	\begin{equation*}
-		% \label{eq:ob_pde}
+	\begin{equation}
+		\label{eq:ob_pde}
 		\mathcal{L}\big(u;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
-	\end{equation*}
+		\tag{$\mathcal{P}$}
+	\end{equation}
 	where $\mathcal{L}$ is the parametric differential operator defined  by
 	\begin{equation*}
 		\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u),
@@ -71,6 +72,7 @@
 	\begin{equation}
 		\label{eq:opt_pb}
 		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \omega_b \; J_b(\theta) \big),
+		\tag{$\mathcal{P}_\theta$}
 	\end{equation}
 	with the residual loss function and the boundary loss function defined by
 	\begin{equation*}
@@ -90,10 +92,10 @@
 
 \begin{frame}[noframenumbering]{Physics-Informed Neural Networks}
 	\textbf{\textcolor{red}{Improved PINNs\footcite{LagLikFot1998,FraMicNav2024} (Strong BC)} :} Find the optimal weights $\theta^\star$ that satisfy
-	\begin{equation}
-		\label{eq:opt_pb_nobc}
-		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \Ccancel[red]{\omega_b \; J_b(\theta)} \big),
-	\end{equation}
+	\begin{equation*}
+		% \label{eq:opt_pb_nobc}
+		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \Ccancel[red]{\omega_b \; J_b(\theta)} \big),%\tag{$\mathcal{P}_\theta$}
+	\end{equation*}
 	with $\omega_r=1$ and the residual loss function defined by
 	\begin{equation*}
 		J_r(\theta) =
@@ -121,8 +123,12 @@
 
 
 \begin{frame}{Finite Element Method}	
-	\textbf{Variational Problem :} Find $u_h\in V_h^0$ such that, $\forall v_h\in V_h^0$, $a(u_h,v_h)=l(v_h)$, 
-
+	\textbf{Variational Problem :} 
+	\begin{equation}
+		\label{eq:weakform}
+		\text{Find } u_h\in V_h^0 \text{such that}, \forall v_h\in V_h^0, a(u_h,v_h)=l(v_h),
+		\tag{$\mathcal{P}_h$}
+	\end{equation}
 	\vspace{1pt}
 	with $h$ the characteristic mesh size, $a$ and $l$ the bilinear and linear forms given by
 	\vspace{-3pt}
@@ -160,8 +166,8 @@
 	\end{minipage}
 
 	\vspace{-5pt}
-	Find $U\in\mathbb{R}^{N_h}$ such that 
-	$$AU=b$$	
+	Find $U\in\mathbb{R}^{N_h}$ such that \hspace{40pt} $AU=b$
+
 	with 
 	\begin{equation*}
 		A=\big(a(\phi_i,\phi_j)\big)_{1\le i,j\le N_h} \quad \text{and} \quad b=\big(l(\phi_j)\big)_{1\le j\le N_h}.

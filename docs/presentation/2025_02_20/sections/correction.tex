@@ -1,12 +1,12 @@
 \begin{frame}{Additive approach}
 	\textbf{Variational Problem :} Let $u_{\theta} \in H^{k+1}(\Omega)\cap H^1_0(\Omega)$.
-	\begin{center}
-		Find $p_h^+ \in V_h^0$ such that, $\forall v_h \in V_h^0$, $a(p_h^+,v_h) = l(v_h) - a(u_{\theta},v_h)$,
-	\end{center}
+	\begin{equation}
+		\label{eq:weakplus}
+		\text{Find } p_h^+ \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(p_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
+	\end{equation}
 	\begin{minipage}[t]{0.6\linewidth}
 		with the \textcolor{red}{enriched trial space $V_h^+$} defined by
 		\begin{equation*}
-			%\label{eq:Vh_add}
 			V_h^+ = \left\{
 			u_h^+= u_{\theta} + p_h^+, \quad p_h^+ \in V_h^0
 			\right\}.
@@ -32,5 +32,35 @@
 \end{frame}
 
 \begin{frame}{Theorerical results}
-	TODO
+	\small
+	Let $\alpha$ and $\gamma$ respectively the coercivity and continuity constants of $a$. Let $u$ the solution of \eqref{eq:ob_pde}.
+	\normalsize
+
+	\hypersetup{
+		citecolor=white,
+	}
+
+	\begin{mytheo}{Convergence analysis of the standard FEM \footnotesize\citep{Ern2004TheoryAP}\normalsize}{fem}
+		We denote $u_h\in V_h$ the solution of \eqref{eq:weakform} with $V_h$ the standard trial space. \\
+		For all $1\leqslant q\leqslant k$,
+		\vspace{-5pt}
+		\begin{equation*}
+			\| u-u_h\|_{L^2} \leqslant C \dfrac{\gamma^2}{\alpha} \, h^{q+1} |u|_{H^{q+1}}.
+		\end{equation*}
+	\end{mytheo}
+	
+	\begin{mytheo}{Convergence analysis of the enriched FEM \footnotesize\citep{ours_2025}\normalsize}{add}
+		We denote $u_h^+\in V_h^+$ the solution of \eqref{eq:weakplus} with $V_h^+$ the enriched trial space. \\
+		For all $1\leqslant q\leqslant k$,
+		\vspace{-5pt}
+		\begin{equation*}
+			\| u-u_h^+\|_{L^2} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{q+1}}}{| u |_{H^{q+1}}}$} \left(C \dfrac{\gamma^2}{\alpha} \, h^{q+1} |u|_{H^{q+1}}\right).
+		\end{equation*}
+	\end{mytheo}
+
+	\hypersetup{
+		citecolor=other,
+	}
+
+	The same type of estimates holds for the $H^1$ norm.
 \end{frame}
