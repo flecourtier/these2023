@@ -1,0 +1,22 @@
+\usepackage{booktabs}
+
+% costs pour tous les q : N et DoFs
+\newcommand{\coststableallq}[1]{
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+        & & \multicolumn{2}{c}{\textbf{$N$}} \\
+		\cmidrule(lr){3-4}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-2} \cmidrule(lr){3-4}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={2}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-2} \cmidrule(lr){3-4}},
+		columns/q/.style={column name=\textbf{k}},
+        columns/e/.style={column name=\textbf{e},sci},
+		columns/FEM_N/.style={column name=\textbf{FEM},fixed},
+        columns/Add_N/.style={column name=\textbf{Add},fixed},
+        columns={q,e,FEM_N,Add_N},
+        precision=2
+    ]{#1}
+}

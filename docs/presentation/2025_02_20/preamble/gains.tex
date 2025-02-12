@@ -1,0 +1,29 @@
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% gains pour tous les q
+\newcommand{\gainstableallq}[1]{
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+        & \multicolumn{3}{c}{\textbf{Gains in $L^2$ rel error}} \\
+		& \multicolumn{3}{c}{\textbf{of our method w.r.t. FEM}} \\
+		\cmidrule(lr){2-4}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-4}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={1}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-4}},
+		columns/q/.style={column name=\textbf{k}},
+        columns/min_FEM/.style={column name=\textbf{min},fixed},
+        columns/max_FEM/.style={column name=\textbf{max},fixed},
+        columns/mean_FEM/.style={column name=\textbf{mean},fixed,
+            postproc cell content/.append style={
+                /pgfplots/table/@cell content/.add={\color{red}}{},
+            }
+        },
+        columns={q,min_FEM,max_FEM,mean_FEM},
+        precision=2
+    ]{#1}
+}
+

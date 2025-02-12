@@ -68,7 +68,7 @@
 \end{frame}
 
 \begin{frame}{Physics-Informed Neural Networks}
-	\textbf{Standard PINNs (Weak BC) :} Find the optimal weights $\theta^\star$ that satisfy
+	\textbf{Standard PINNs\footcite{RAISSI2019686} (Weak BC) :} Find the optimal weights $\theta^\star$ that satisfy
 	\begin{equation}
 		\label{eq:opt_pb}
 		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \omega_b \; J_b(\theta) \big),
@@ -88,6 +88,7 @@
 
 	\vspace{5pt}
 	\textbf{Monte-Carlo method :} Discretize the cost functions by random process.
+	\vspace{15pt}
 \end{frame}
 
 \begin{frame}[noframenumbering]{Physics-Informed Neural Networks}
@@ -122,7 +123,7 @@
 \end{frame}
 
 
-\begin{frame}{Finite Element Method}	
+\begin{frame}{Finite Element Method\footcite{Ern2004TheoryAP}}	
 	\textbf{Variational Problem :} 
 	\begin{equation}
 		\label{eq:weakform}
@@ -172,4 +173,5 @@
 	\begin{equation*}
 		A=\big(a(\phi_i,\phi_j)\big)_{1\le i,j\le N_h} \quad \text{and} \quad b=\big(l(\phi_j)\big)_{1\le j\le N_h}.
 	\end{equation*}
+	\vspace{-3pt}
 \end{frame}
