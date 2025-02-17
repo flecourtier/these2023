@@ -1,7 +1,7 @@
 \subsection{2D Poisson problem on Square - Dirichlet BC}
 
 \begin{frame}{Problem considered} 
-	\textbf{Problem statement:} We consider the Poisson problem in 2D with homogeneous Dirichlet boundary conditions:
+	\textbf{Problem statement:} Consider the Poisson problem with Dirichlet BC:
 	\vspace{-5pt}
 	\begin{equation*}
 		\left\{
@@ -17,26 +17,26 @@
 	with $\Omega=[-0.5 \pi, 0.5 \pi]^2$ and $\mathcal{M}=[-0.5,0.5]^2$ ($p=2$ parameters).
 		
 	\vspace{8pt}
-	We define the right-hand side $f$ such that the solution is given by
+	\textbf{Analytical solution :}
+
 	\vspace{-5pt}
 	\begin{equation*}
 		% \label{eq:analytical_solution_Lap2D}
-		u(\bm{x},\bm{\mu})=\exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2}\right)\sin(2 x)\sin(2 y),
+		u(\bm{x},\bm{\mu})=\exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2}\right)\sin(2 x)\sin(2 y).
 	\end{equation*}
-	\vspace{-5pt}
-	with $\bm{x}=(x,y)\in\Omega$ and some parameters $\bm{\mu}=(\mu_1,\mu_2) \in \mathcal{M}$.
 
 	\vspace{12pt}
-	\textbf{PINN training:} MLP of 5 layers, trained with an LBFGs optimizer (5000 epochs). \\
+	\textbf{PINN training:} MLP of 5 layers; LBFGs optimizer (5000 epochs). \\
 	Imposing the Dirichlet BC exactly in the PINN with the levelset $\varphi$ defined by
 	$$\varphi(\bm{x})=(x+0.5\pi)(x-0.5\pi)(y+0.5\pi)(y-0.5\pi).$$
-	\small\vspace{10pt}
+	
+	\small\vspace{4pt}
 	Training time : less than 1 hour on a laptop GPU.
 \end{frame}
 
 \begin{frame}{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 given parameter.
+		\textbf{Error estimates :} 1 set of parameters.
 		$$\bm{\mu}^{(1)}=(0.05, 0.22) $$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -49,7 +49,7 @@
 
 \begin{frame}[noframenumbering]{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 given parameter.
+		\textbf{Error estimates :} 1  set of parameters.
 		$$\bm{\mu}^{(1)}=(0.05, 0.22) $$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -57,7 +57,7 @@
 		\end{figure}
 	\end{minipage} \qquad \small
 	\begin{minipage}[t]{0.48\linewidth}
-		\textbf{Gains achieved :} $n_p=50$ parameters.
+		\textbf{Gains achieved :} $n_p=50$ sets of parameters.
 		$$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}$$
 		\vspace{-15pt}
 		\begin{table}[H]
@@ -77,7 +77,7 @@
 
 \begin{frame}[noframenumbering]{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 given parameter.
+		\textbf{Error estimates :} 1 set of parameters.
 		$$\bm{\mu}^{(1)}=(0.05, 0.22) $$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -85,11 +85,8 @@
 		\end{figure}
 	\end{minipage} \qquad \small
 	\begin{minipage}[t]{0.48\linewidth}
-		\textbf{Numerical costs of the two approaches :}
+		\textbf{$N_\text{dofs}$ required to reach the same error $e$ :}
 
-		\centering
-		\vspace{8pt}
-		$N$ required to reach the same error $e$.
 		\vspace{10pt}
 		\begin{table}[H]
 			\centering
@@ -101,7 +98,7 @@
 \subsection{2D Anisotropic Elliptic problem on a Square - Dirichlet BC}
 
 \begin{frame}{Problem considered} 
-	\textbf{Problem statement:} We consider the Poisson problem in 2D with mixed BC:
+	\textbf{Problem statement:} Considering an Anisotropic Elliptic problem with Dirichlet BC:
 	\vspace{-5pt}
 	\begin{equation*}
 		\left\{
@@ -114,18 +111,16 @@
 	\end{equation*}
 
 	with $\Omega=[0,1]^2$ and $\mathcal{M}=[0.4, 0.6]\times [0.4, 0.6]\times [0.01,1]\times [0.1,0.8]$ ($p=4$).
-		
+	
 	\vspace{8pt}
-	We define the right-hand side $f$ by
+	\textbf{Right-hand side :}
+
 	\vspace{-5pt}
 	\begin{equation*}
 		f(\bm{x},\bm{\mu})=\exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{0.025\sigma^2}\right).
 	\end{equation*}
-
-	\vspace{-5pt}
-	with $\bm{x}=(x,y)\in\Omega$ and some parameters $\bm{\mu}=(\mu_1,\mu_2,\epsilon,\sigma) \in \mathcal{M}$.
 	
-	The diffusion matrix $D$ (symmetric and positive definite) is given by
+	\textbf{Diffusion matrix :} (symmetric and positive definite)
 	\begin{equation*}
 		D(\bm{x},\bm{\mu})=\begin{pmatrix}
 			\epsilon x^2+y^2 & (\epsilon-1)xy \\
@@ -134,14 +129,14 @@
 	\end{equation*}
 
 	\vspace{2pt}
-	\textbf{PINN training:} MLP with Fourier Features\footcite{TanSri2020} of 5 layers, trained with an Adam optimizer (15000 epochs). Imposing the Dirichlet BC exactly in the PINN with a levelset function.
+	\textbf{PINN training:} MLP with Fourier Features\footcite{TanSri2020} of 5 layers; Adam optimizer (15000 epochs). Imposing the Dirichlet BC exactly in the PINN with a level-set function.
 
 	\vspace{5pt}
 \end{frame}
 
 \begin{frame}{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 given parameter.
+		\textbf{Error estimates :} 1 set of parameters.
 		$$\bm{\mu}^{(1)}=(0.51,0.54,0.52,0.55)$$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -154,7 +149,7 @@
 
 \begin{frame}[noframenumbering]{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 given parameter.
+		\textbf{Error estimates :} 1 set of parameters.
 		$$\bm{\mu}^{(1)}=(0.51,0.54,0.52,0.55)$$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -162,7 +157,7 @@
 		\end{figure}
 	\end{minipage} \qquad \small
 	\begin{minipage}[t]{0.48\linewidth}
-		\textbf{Gains achieved :} $n_p=50$ parameters.
+		\textbf{Gains achieved :} $n_p=50$ sets of parameters.
 		$$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}$$
 		\vspace{-15pt}
 		\begin{table}[H]
@@ -183,7 +178,7 @@
 \subsection{2D Poisson problem on Annulus - Mixed BC}
 
 \begin{frame}{Problem considered} 
-	\textbf{Problem statement:} We consider the Poisson problem in 2D with mixed BC:
+	\textbf{Problem statement:} Considering the Poisson problem with mixed BC:
 	\vspace{-5pt}
 	\begin{equation*}
 		\left\{
@@ -199,20 +194,22 @@
 	with $\Omega=\{(x,y)\in\mathbb{R}^2, \; 0.25\le x^2+y^2\le 1\}$ and $\mathcal{M}=[2.4,2.6]$ ($p=1$).
 		
 	\vspace{8pt}
-	We define the right-hand side $f$ such that the solution is given by
-	\vspace{-5pt}
+	\textbf{Analytical solution :}
+
+	\vspace{-12pt}
 	\begin{equation*}
 		% \label{eq:analytical_solution_Lap2D}
 		u(\bm{x};\bm{\mu})= 1 - \frac{\ln\big(\mu_1\sqrt{x^2+y^2}\big)}{\ln(4)},
 	\end{equation*}
 	\vspace{-5pt}
-	with $\bm{x}=(x,y)\in\Omega$ and some parameters $\bm{\mu}=\mu_1 \in \mathcal{M}$. The BC are given by
+	
+	\textbf{Boundary conditions :}
 	\begin{equation*}
 		g(\bm{x};\bm{\mu})=1 - \frac{\ln(\mu_1)}{\ln(4)} \quad \text{and} \quad g_R(\bm{x};\bm{\mu})=2 + \frac{4-\ln(\mu_1)}{\ln(4)}.
 	\end{equation*}
 
 	\vspace{2pt}
-	\textbf{PINN training:} MLP of 5 layers, trained with an LBFGs optimizer (4000 epochs). \\
+	\textbf{PINN training:} MLP of 5 layers; LBFGs optimizer (4000 epochs). \\
 	Imposing the mixed BC exactly in the PINN\footcite{Sukumar_2022}.
 
 	\vspace{8pt}
@@ -220,7 +217,7 @@
 
 \begin{frame}{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 given parameter.
+		\textbf{Error estimates :} 1 set of parameters.
 		$$\bm{\mu}^{(1)}=\mu_1=2.51 $$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -233,7 +230,7 @@
 
 \begin{frame}[noframenumbering]{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 given parameter.
+		\textbf{Error estimates :} 1 set of parameters.
 		$$\bm{\mu}^{(1)}=\mu_1=2.51 $$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -241,7 +238,7 @@
 		\end{figure}
 	\end{minipage} \qquad \small
 	\begin{minipage}[t]{0.48\linewidth}
-		\textbf{Gains achieved :} $n_p=50$ parameters.
+		\textbf{Gains achieved :} $n_p=50$ sets of parameters.
 		$$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}$$
 		\vspace{-15pt}
 		\begin{table}[H]
@@ -254,4 +251,13 @@
 		\vspace{-5pt}
 		Gain : $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$ \\
 		\end{minipage}
+\end{frame}
+
+\begin{frame}{Numerical results}
+	\begin{figure}[!ht] \centering
+		\includegraphics[width=\linewidth]{images/numeric/poisson/mixed/plots/standalone_solutions.pdf}
+		
+		\vspace{8pt}
+		\includegraphics[width=0.7\linewidth]{images/numeric/poisson/mixed/plots/standalone_errors.pdf}
+	\end{figure}
 \end{frame}
