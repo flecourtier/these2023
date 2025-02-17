@@ -1,9 +1,13 @@
 \begin{frame}{Additive approach}
 	\textbf{Variational Problem :} Let $u_{\theta} \in H^{k+1}(\Omega)\cap H^1_0(\Omega)$.
+	
+	\vspace{-5pt}
 	\begin{equation}
 		\label{eq:weakplus}
 		\text{Find } p_h^+ \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(p_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
 	\end{equation}
+	
+	\vspace{5pt}
 	\begin{minipage}[t]{0.6\linewidth}
 		with the \textcolor{red}{enriched trial space $V_h^+$} defined by
 		\begin{equation*}
@@ -12,18 +16,13 @@
 			\right\}.
 		\end{equation*}
 	
-		\vspace{10pt}
+		\vspace{20pt}
 	
-		\textbf{Impose BC :} If our problem satisfies $u=g$ on $\partial \Omega$,
-		then $p_h^+$ has to satisfy
+		\textbf{General Dirichlet BC :} If $u=g$ on $\partial \Omega$, then
 		\[
 			p_h^+ = g - u_{\theta} \text{\quad on } \partial \Omega,
 		\]
-		with $u_\theta$ the PINN prior (weak BC). 
-	
-		\vspace{10pt}
-	
-		Considering the strong BC, $p_h^+=0$ on $\partial \Omega$.
+		with $u_\theta$ the PINN prior. 
 	\end{minipage} \qquad \begin{minipage}[t][][b]{0.28\linewidth}
 		\vspace{-8pt}
 		\centering
@@ -32,35 +31,43 @@
 \end{frame}
 
 \begin{frame}{Convergence analysis}
-	\small
-	Let $\alpha$ and $\gamma$ respectively the coercivity and continuity constants of $a$. Let $u$ the solution of \eqref{eq:ob_pde}.
-	\normalsize
-
+	% \small
+	% Let $u$ the solution of \eqref{eq:ob_pde}.
+	% \normalsize
+	\vspace{-10pt}
 	\hypersetup{
 		citecolor=white,
 	}
 
 	\begin{mytheo}{Convergence analysis of the standard FEM \footnotesize\citep{Ern2004TheoryAP}\normalsize}{fem}
-		We denote $u_h\in V_h$ the solution of \eqref{eq:weakform} with $V_h$ the standard trial space. \\
-		For all $1\leqslant q\leqslant k$,
+		We denote $u_h\in V_h$ the solution of \eqref{eq:weakform} with $V_h$ the standard trial space. Then,
 		\vspace{-5pt}
 		\begin{equation*}
-			\| u-u_h\|_{L^2} \leqslant C \dfrac{\gamma^2}{\alpha} \, h^{q+1} |u|_{H^{q+1}}.
+			| u-u_h|_{H^1} \leqslant C_{H^1} \, h^{k} |u|_{H^{k+1}},
+		\end{equation*}
+		\begin{equation*}
+			\| u-u_h\|_{L^2} \leqslant C_{L^2} \, h^{k+1} |u|_{H^{k+1}}.
 		\end{equation*}
 	\end{mytheo}
 	
 	\begin{mytheo}{Convergence analysis of the enriched FEM \footnotesize\citep{ours_2025}\normalsize}{add}
-		We denote $u_h^+\in V_h^+$ the solution of \eqref{eq:weakplus} with $V_h^+$ the enriched trial space. \\
-		For all $1\leqslant q\leqslant k$,
+		We denote $u_h^+\in V_h^+$ the solution of \eqref{eq:weakplus} with $V_h^+$ the enriched trial space. Then,
 		\vspace{-5pt}
 		\begin{equation*}
-			\| u-u_h^+\|_{L^2} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{q+1}}}{| u |_{H^{q+1}}}$} \left(C \dfrac{\gamma^2}{\alpha} \, h^{q+1} |u|_{H^{q+1}}\right).
+			| u-u_h^+|_{H^1} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{H^1} \, h^{k} |u|_{H^{k+1}}\right),
 		\end{equation*}
+		\begin{equation*}
+			\| u-u_h^+\|_{L^2} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{L^2} \, h^{k+1} |u|_{H^{k+1}}\right).
+		\end{equation*}
+		% \small
+		% \vspace{-5pt}
+		% \hspace{140pt} \begin{minipage}{0.14\linewidth}
+		% 	\textcolor{orange}{gain}
+		% \end{minipage}
+		% \vspace{-5pt}
 	\end{mytheo}
 
 	\hypersetup{
 		citecolor=other,
 	}
-
-	The same type of estimates holds for the $H^1$ norm.
 \end{frame}

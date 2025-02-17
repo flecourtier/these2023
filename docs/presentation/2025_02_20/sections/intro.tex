@@ -88,17 +88,29 @@
 \end{frame}
 
 \begin{frame}[noframenumbering]{Physics-Informed Neural Networks}
-	\textbf{\textcolor{red}{Improved PINNs\footcite{LagLikFot1998,FraMicNav2024} (Strong BC)} :} Find the optimal weights $\theta^\star$ that satisfy
+	\textbf{\textcolor{red}{Improved PINNs\footcite{LagLikFot1998,FraMicNav2024} (Strong BC)} :} Find the optimal weights $\theta^\star$ such that
 	\begin{equation*}
 		% \label{eq:opt_pb_nobc}
 		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \Ccancel[red]{\omega_b \; J_b(\theta)} \big),%\tag{$\mathcal{P}_\theta$}
 	\end{equation*}
-	with $\omega_r=1$ and the residual loss function defined by
-	\begin{equation*}
-		J_r(\theta) =
-		\int_{\mathcal{M}}\int_{\Omega}
-		\big| \mathcal{L}\big(u_\theta(\bm{x},\bm{\mu});\bm{x},\bm{\mu}\big)-f(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},
-	\end{equation*}
+	
+	\vspace{-5pt}
+	with $\omega_r=1$ and
+	\vspace{5pt}
+
+	\begin{minipage}{0.2\linewidth}
+		\flushright
+		\textcolor{orange}{residual loss}
+	\end{minipage}
+	\begin{minipage}{0.68\linewidth}
+		\centering
+		\fcolorbox{orange}{white}{
+			$J_r(\theta) =
+			\int_{\mathcal{M}}\int_{\Omega}
+			\big| \mathcal{L}\big(u_\theta(\bm{x},\bm{\mu});\bm{x},\bm{\mu}\big)-f(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},$}
+	\end{minipage}
+
+	\vspace{15pt}
 	\begin{minipage}{0.75\linewidth}
 		where $u_\theta$ is a neural network defined by
 		\begin{equation*}
