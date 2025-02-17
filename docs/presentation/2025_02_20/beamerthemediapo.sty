@@ -54,9 +54,12 @@
 \setbeamertemplate{footline}{\vskip0.15\paperheight}
 
 % titlepage
+\pgfdeclareimage[height=0.05\paperheight]{logomimesis}{images/logo-mimesis}
+\pgfdeclareimage[height=0.08\paperheight]{logoinria}{images/logo-inria}
+
 \defbeamertemplate*{title page}{customized}[1][]
 {
-    \vspace{10pt}
+    \vspace{15pt}
 	\begin{center}
 		\includegraphics[height=0.12\paperheight]{images/logo-dte2025}\par
 		\vspace{8pt}
@@ -68,22 +71,39 @@
 	\end{center}
 	\vspace{2pt}
     \usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par
+	\begin{flushright}
+		\includegraphics[height=0.05\paperheight]{images/logo-anr} \hspace{0.3cm}
+		\includegraphics[height=0.05\paperheight]{images/logo-mimesis}
+		\hspace{0.3cm}
+		\includegraphics[height=0.07\paperheight]{images/logo-inria}
+	\end{flushright}
 }
 
 % triangles et logo
-\pgfdeclareimage[height=0.05\paperheight]{logomimesis}{images/logo-mimesis}
-\pgfdeclareimage[height=0.08\paperheight]{logoinria}{images/logo-inria}
+\newcommand{\BackgroundTitle}{
+	\setbeamertemplate{background}{%
+		\begin{tikzpicture}[overlay,remember picture]
+			\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+			\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;  
+		\end{tikzpicture}%
+		\usebeamerfont{footline}%
+		\usebeamercolor[fg]{footline}%
+		\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+	}
+}
 
-\setbeamertemplate{background}{%
-	\begin{tikzpicture}[overlay,remember picture]
-		\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
-		\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;  
-		\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.04\paperheight] at (current page.south east) {\pgfuseimage{logomimesis}};%
-		\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.42\paperheight,yshift=0.025\paperheight] at (current page.south east) {\pgfuseimage{logoinria}};%
-	\end{tikzpicture}%
-    \usebeamerfont{footline}%
-	\usebeamercolor[fg]{footline}%
-	\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+\newcommand{\Background}{
+	\setbeamertemplate{background}{%
+		\begin{tikzpicture}[overlay,remember picture]
+			\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+			\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;  
+			\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.07\paperheight] at (current page.south east) {\normalsize\textbf{LECOURTIER Frédérique}};%
+			\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.05\paperheight,yshift=0.03\paperheight] at (current page.south east) {\textbf{Combine FEM and NN to solve Elliptic Problems on 2D geometries}};%
+		\end{tikzpicture}%
+		\usebeamerfont{footline}%
+		\usebeamercolor[fg]{footline}%
+		\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+	}
 }
 
 % page number

@@ -53,19 +53,19 @@
 % \subtitle{1st CSI}
 
 \author{%
-	Hélène Barucq\inst{2}, 
-    Michel Duprez\inst{1}, 
-    Florian Faucher\inst{2}, 
+	Hélène Barucq\inst{1}, 
+    Michel Duprez\inst{2}, 
+    Florian Faucher\inst{1}, 
     Emmanuel Franck\inst{3}, 
-    \textbf{Frédérique Lecourtier}\inst{1}, 
-    Vanessa Lleras\inst{1,4},
+    \textbf{Frédérique Lecourtier}\inst{2}, 
+    Vanessa Lleras\inst{4},
     Victor Michel-Dansac\inst{3} and
-    Nicolas Victorion\inst{2}
+    Nicolas Victorion\inst{1}
 }
 
 \institute{%
-    \inst{1} Project-Team MIMESIS, Inria, Strasbourg, France \\
-    \inst{2} Project-Team Makutu, Inria, TotalEnergies, Pau, France \\
+	\inst{1} Project-Team Makutu, Inria, TotalEnergies, Pau, France \\
+	\inst{2} Project-Team MIMESIS, Inria, Strasbourg, France \\
     \inst{3} Project-Team MACARON, Inria, Strasbourg, France \\
     \inst{4} IMAG, University of Montpellier, Montpellier, France
 }
@@ -135,6 +135,7 @@
 	\renewcommand{\inserttotalframenumber}{\pageref{lastslide}}
 	
 	{\setbeamertemplate{footline}{} 
+		\BackgroundTitle	
 		\begin{frame}
 			\maketitle
 		\end{frame}
@@ -176,6 +177,7 @@
 		\addtocounter{framenumber}{-1} 
 	}
 	
+	\Background
 	\section*{Introduction}
 	\input{sections/intro}
 	
