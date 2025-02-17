@@ -1,13 +1,13 @@
 \begin{frame}{Scientific context}
-	\begin{minipage}{0.78\linewidth}
+	\begin{minipage}{0.75\linewidth}
 		\textbf{Context :} Create real-time digital twins of an organ (e.g. liver).
 	\end{minipage}
-	\begin{minipage}{0.18\linewidth}
+	\begin{minipage}{0.21\linewidth}
 		\vspace{-20pt}
-		\includegraphics[width=0.95\linewidth]{images/intro/liver.png}
+		\includegraphics[width=\linewidth]{images/intro/liver.png}
 	\end{minipage}
 	
-	\vspace{1pt}
+	\vspace{5pt}
 	\textbf{Objective :} Develop an hybrid \fcolorbox{red}{white}{finite element} / \fcolorbox{orange}{white}{neural network} method.
 	
 	\vspace{1pt}
@@ -20,11 +20,11 @@
 
 	\normalsize
 	\vspace{5pt}
-	\textbf{Parametric linear elliptic PDE :}
+	\textbf{Parametric elliptic convection/diffusion PDE :}
 	For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
 	\begin{equation}
 		\label{eq:ob_pde}
-		\mathcal{L}\big(u;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
+		\mathcal{L}\big(u\,;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
 		\tag{$\mathcal{P}$}
 	\end{equation}
 	where $\mathcal{L}$ is the parametric differential operator defined  by
@@ -32,59 +32,55 @@
 		\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u),
 	\end{equation*}
 	and some Dirichlet, Neumann or Robin BC (which can also depend on $\bm{\mu}$).
-	
-	\footnotesize
-	\begin{table}[ht!]
-		\centering
-		\begin{tabular}{c|c}
-			$\Omega$ & Spatial domain \\
-			$d$ & Spatial dimension \\
-			$\bm{x}=(x_1,\dots,x_d)$ & Spatial coordinates \\
-			\hline
-			$\mathcal{M}$ & Parameter space \\
-			$p$ & Number of parameters \\
-			$\bm{\mu}=(\mu_1,\ldots,\mu_p)$ & Parameter vector \\
-		\end{tabular} \hspace{10pt}
-		\begin{tabular}{c|c}
-			$f$ & Right-hand side \\
-			$R$ & Reaction coefficient \\
-			$C$ & Convection coefficient \\
-			$D$ & Diffusion matrix \\
-			Pe & Péclet number \\
-		\end{tabular}
-	\end{table}
 \end{frame}
 
 \begin{frame}{Pipeline of the Enriched FEM}
 	\begin{figure}[!ht]
 		\centering
-		\includegraphics[width=0.7\linewidth]{images/intro/pipeline/offline_v2.pdf}
+		\includegraphics[width=0.7\linewidth]{images/intro/pipeline/offline.pdf}
 
-		\includegraphics[width=0.7\linewidth]{images/intro/pipeline/online_v2.pdf}
+		\includegraphics[width=\linewidth]{images/intro/pipeline/online.pdf}
 	\end{figure}
 
-	\textbf{Correction :} Enriched continuous Lagrange finite element approximation spaces
-	using the PINN prediction.
+	\textbf{Remark :} The PINN prediction enriched Finite element approximation spaces.
 \end{frame}
 
 \begin{frame}{Physics-Informed Neural Networks}
-	\textbf{Standard PINNs\footcite{RAISSI2019686} (Weak BC) :} Find the optimal weights $\theta^\star$ that satisfy
+	\textbf{Standard PINNs\footcite{RAISSI2019686} (Weak BC) :} Find the optimal weights $\theta^\star$, such that
 	\begin{equation}
 		\label{eq:opt_pb}
 		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \omega_b \; J_b(\theta) \big),
 		\tag{$\mathcal{P}_\theta$}
 	\end{equation}
-	with the residual loss function and the boundary loss function defined by
-	\begin{equation*}
-		J_r(\theta) =
-		\int_{\mathcal{M}}\int_{\Omega}
-		\big| \mathcal{L}\big(u_\theta(\bm{x},\bm{\mu});\bm{x},\bm{\mu}\big)-f(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},
-	\end{equation*}
-	\begin{equation*}
-		J_b(\theta) =
-		\int_{\mathcal{M}}\int_{\partial \Omega} \big| u_\theta(\bm{x},\bm{\mu}) - g(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},
-	\end{equation*}
-	where $u_\theta$ is a neural network, $g=0$ is the Dirichlet BC. In \eqref{eq:opt_pb}, the weights $\omega_r$ and $\omega_b$ (hyperparameters) are used to balance the different terms of the loss function.
+
+	\vspace{-5pt}
+	with
+	\vspace{5pt}
+
+	\begin{minipage}{0.2\linewidth}
+		\flushright
+		\textcolor{orange}{residual loss} \\
+		\vspace{3pt}
+		\textcolor{red}{boundary loss}
+	\end{minipage}
+	\begin{minipage}{0.68\linewidth}
+		\centering
+		\fcolorbox{orange}{white}{
+			$J_r(\theta) =
+			\int_{\mathcal{M}}\int_{\Omega}
+			\big| \mathcal{L}\big(u_\theta(\bm{x},\bm{\mu});\bm{x},\bm{\mu}\big)-f(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},$}
+		
+		\vspace{3pt}
+		\fcolorbox{red}{white}{
+			$J_b(\theta) =
+			\int_{\mathcal{M}}\int_{\partial \Omega} \big| u_\theta(\bm{x},\bm{\mu}) - g(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},$}
+	\end{minipage}
+	
+	\vspace{5pt}
+	where $u_\theta$ is a neural network, $g=0$ is the Dirichlet BC. 
+
+	\vspace{2pt}
+	In \eqref{eq:opt_pb}, $\omega_r$ and $\omega_b$ are some weights.
 
 	\vspace{5pt}
 	\textbf{Monte-Carlo method :} Discretize the cost functions by random process.
@@ -115,10 +111,9 @@
 		\hspace{-23pt}\includegraphics[width=1.3\linewidth]{images/intro/levelset.png}
 	\end{minipage}
 
+	\vspace{5pt}
 	Thus, the Dirichlet BC is imposed exactly in the PINN : \textcolor{red}{$u_{\theta} = g$ on $\partial \Omega$}.
 
-	\vspace{5pt}
-	\textbf{Monte-Carlo method :} Discretize the residual cost function by random process.
 	\vspace{15pt}
 \end{frame}
 
@@ -127,7 +122,7 @@
 	\textbf{Variational Problem :} 
 	\begin{equation}
 		\label{eq:weakform}
-		\text{Find } u_h\in V_h^0 \text{such that}, \forall v_h\in V_h^0, a(u_h,v_h)=l(v_h),
+		\text{Find } u_h\in V_h^0 \;\text{such that}, \forall v_h\in V_h^0, a(u_h,v_h)=l(v_h),
 		\tag{$\mathcal{P}_h$}
 	\end{equation}
 	\vspace{1pt}
@@ -142,18 +137,18 @@
 
 	\begin{minipage}[t]{0.7\linewidth}
 		\vspace{-3pt}
-		and $V_h$ the finite element space of dimension $N_h$ defined by
+		and $V_h^0$ the finite element space defined by
 		\vspace{-3pt}
 		\begin{equation*}
 			% \label{eq:Vh}
-			V_h = \left\{v_h\in C^0(\Omega),\; \forall K\in \mathcal{T}_h,\; v_h\vert_{K}\in\mathbb{P}_k,v_h\vert_{\partial\Omega}=0\right\},
+			V_h^0 = \left\{v_h\in C^0(\Omega),\; \forall K\in \mathcal{T}_h,\; v_h\vert_{K}\in\mathbb{P}_k,v_h\vert_{\partial\Omega}=0\right\},
 		\end{equation*}
 
 		\vspace{-3pt}
 		where $\mathbb{P}_k$ is the space of polynomials of degree at most $k$.
 
 		\vspace{10pt}
-		\textbf{Linear system :} Let $(\phi_1,\dots,\phi_{N_h})$ a basis of $V_h$.
+		\textbf{Linear system :} Let $(\phi_1,\dots,\phi_{N_h})$ a basis of $V_h^0$.
 	\end{minipage} \qquad \begin{minipage}[t][][b]{0.2\linewidth}
 		% \vspace{-5pt}
 		\centering
