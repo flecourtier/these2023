@@ -1,0 +1,3 @@
+method,N,PINNs_err,PINNs_gains,NN_err,NN_gains
+Add,16,1.29e-03,40.34,3.51e-03,14.78
+,32,3.49e-04,35.41,8.80e-04,14.06
