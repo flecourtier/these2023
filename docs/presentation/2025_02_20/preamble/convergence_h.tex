@@ -318,3 +318,41 @@
 
     \end{cvghline}
 }
+
+\newcommand{\cvgFEMCorrMultOnedeg}[6]{
+    \edef\fem{#1}
+    \edef\femsec{#2}
+    \edef\add{#3}
+    \edef\mult{#4}
+    \edef\multHundred{#5}
+
+    \begin{cvgh}{\fem}{3}{2,3}{#6}
+        % Complete the legend
+        \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+        \addlegendentry{\,Mult $\mathbb{P}_1$ (M=3)\;}
+        \addlegendentry{\,Add $\mathbb{P}_1$\;}
+        \addlegendentry{\,FEM $\mathbb{P}_2$\;}
+        \addlegendentry{\,Mult $\mathbb{P}_1$ (M=100)\;}
+
+        % Plot the data
+        \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt ]
+        table [x=h, y=err, col sep=comma]
+            {\fem};
+
+        \addplot [style={dotted}, mark=square*, mark size=2, color=multcolor3, line width=1.0pt ]
+        table [x=h, y=err, col sep=comma]
+            {\mult};
+
+        \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt ]
+        table [x=h, y=err, col sep=comma]
+            {\add};
+
+        \addplot [style={solid}, mark=*, mark size=2, color=femcolor, line width=0.8pt ]
+        table [x=h, y=err, col sep=comma]
+            {\femsec};
+
+        \addplot [style={dotted}, mark=square, mark size=2, color=multcolor100, line width=1.0pt ]
+        table [x=h, y=err, col sep=comma]
+            {\multHundred};
+    \end{cvgh}
+}
