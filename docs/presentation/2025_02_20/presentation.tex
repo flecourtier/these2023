@@ -35,7 +35,7 @@
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
-\renewcommand*{\bibfont}{\scriptsize}
+\renewcommand*{\bibfont}{\footnotesize}
 \useoutertheme[subsection=false]{miniframes}
 \makeatletter
 %\patchcmd{\slideentry}{\advance\beamer@xpos by1\relax}{}{}{}
@@ -192,11 +192,11 @@
 	\input{sections/conclu}
 	
 	{\setbeamertemplate{footline}{} 	
-		\begin{frame}{}
-			\vspace{18pt}
-			\normalsize
-			\textbf{References}
-			\small
+		\begin{frame}{References}
+			% \vspace{18pt}
+			% \normalsize
+			% \textbf{References}
+			\Large
 			% \vspace{30pt}
 			% \setstretch{0.2}
 			% \AtNextBibliography{\small}
