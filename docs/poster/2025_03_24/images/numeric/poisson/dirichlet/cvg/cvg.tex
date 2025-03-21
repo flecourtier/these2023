@@ -1,0 +1,230 @@
+
+\documentclass[border=1mm]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{tikz}
+% \usepackage[margin=1cm]{geometry}
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+% \usepackage{filecontents}
+\usepackage{datatool}
+\usepackage{fp}
+\usetikzlibrary{backgrounds}
+
+\pgfplotsset{
+    compat=newest,
+}
+\pgfplotsset{
+    smaller labels/.style={
+        label style={font=\footnotesize},
+        tick label style={font=\footnotesize}
+    }
+}
+\tikzset{font=\small}
+\usetikzlibrary{
+    fpu,
+    fixedpointarithmetic,
+    babel,
+    external,
+    arrows.meta,
+    plotmarks,
+    positioning,
+    angles,
+    quotes,
+    intersections,
+    calc,
+    spy,
+    decorations.pathreplacing,
+    matrix,
+    fit,
+}
+\usepgfplotslibrary{fillbetween}
+
+% Define colors
+\definecolor{femcolor}{RGB}{51, 138, 55} %Green (27,158,119)
+\definecolor{addcolor}{RGB}{217,95,2} %Orange
+\definecolor{addsobcolor}{RGB}{199,39,34} %Red (sob or other)
+\definecolor{multcolor3}{RGB}{117,112,179} %Purple 
+\definecolor{multcolor100}{RGB}{0,0,0} %Black (+ empty marker)
+\definecolor{multcolor0weak}{RGB}{49, 73, 181} %Blue
+\definecolor{multcolor0strong}{RGB}{49, 181, 161} %Cyan
+
+% Define line styles according to the method 
+% FEM : solid
+% Add : dashed
+% Mult : dotted
+
+% Define marker styles according to the degree
+% P1 : square
+% P2 : circle
+% P3 : triangle
+
+%________________ error lines (by Ricardo Costa) ________________
+
+% argument 1: slopes (e.g. {4,6})
+% argument 2: x position of the bottom left corner
+% argument 3: y position of the bottom left corner
+% argument 4: x length
+
+\makeatletter
+
+\newcommand{\printslopeinv}[4]{
+    \tikzset{fixed point arithmetic}
+    % get arguments
+    \def\nero@printslope@orderlist{#1}
+    \edef\nero@printslope@xpos{#2}
+    \edef\nero@printslope@ypos{#3}
+    \edef\nero@printslope@width{#4}
+    % get points position
+    \pgfmathparse{\nero@printslope@xpos+\nero@printslope@width}
+    \edef\nero@printslope@px{\pgfmathresult}
+    \edef\nero@printslope@py{\nero@printslope@ypos}
+    \edef\nero@printslope@qx{\pgfmathresult}
+    \edef\nero@printslope@ry{\nero@printslope@ypos}
+    \foreach \nero@printslope@order in {#1}{
+        \pgfmathparse{
+        ((\nero@printslope@px/\nero@printslope@xpos)^(\nero@printslope@order))*\nero@printslope@ypos}
+        \edef\nero@printslope@qy{\pgfmathresult}
+            \edef\nero@aux1{\noexpand\draw[line width=0.6pt]
+            (axis cs:\nero@printslope@xpos,\nero@printslope@ypos)
+            -- (axis cs:\nero@printslope@qx,\nero@printslope@qy)
+            -- (axis cs:\nero@printslope@px,\nero@printslope@py);}
+        \nero@aux1
+        % slope label
+        \pgfmathparse{10^((ln(\nero@printslope@ry)+ln(\nero@printslope@qy))/(ln(10)*2))}
+        \edef\nero@printslope@labelpos{\pgfmathresult}
+        \edef\nero@aux2{\noexpand\node[anchor=west] at
+            (axis cs:\nero@printslope@qx,\nero@printslope@labelpos)
+            {\noexpand\tiny \nero@printslope@order};}
+        \nero@aux2
+        \global\edef\nero@printslope@ry{\nero@printslope@qy}
+    }
+    % base line
+    \draw[line width=0.6pt] (axis cs:\nero@printslope@xpos,\nero@printslope@ypos)
+        |- (axis cs:\nero@printslope@px,\nero@printslope@py);
+    % label of base line
+    \pgfmathparse{10^((ln(\nero@printslope@px)+ln(\nero@printslope@xpos))/(ln(10)*2))}
+    \edef\nero@printslope@labelpos{\pgfmathresult}
+    \node[anchor=north] at (axis cs:\nero@printslope@labelpos,\nero@printslope@ypos) {\tiny 1};
+}
+
+\makeatother
+
+\newlength{\plotwidth}
+\setlength{\plotwidth}{0.54\textwidth}
+\newlength{\plotheight}
+\setlength{\plotheight}{0.4\textwidth}
+
+\gdef\iterator{0}
+
+\newenvironment{cvghline}[4]{
+    \begin{tikzpicture}
+        \edef\filename{#1}
+        \edef\legendcolumns{#2}
+        \edef\slopes{#3}
+        \edef\ypos{#4}
+
+        % Read the CSV file into a table
+        \pgfplotstableread[col sep=comma]{\filename}\datatable
+
+        % Obtenir le second élément
+        \pgfmathtruncatemacro{\secondrow}{1} % Index de la dernière ligne
+        \pgfplotstablegetelem{\secondrow}{h}\of\datatable
+        \pgfmathsetmacro{\second}{\pgfplotsretval} % Dernière valeur de h_rounded
+
+        % Obtenir le premier élément
+        \pgfmathtruncatemacro{\firstrow}{0} % Index de l'avant-dernière ligne
+        \pgfplotstablegetelem{\firstrow}{h}\of\datatable
+        \pgfmathsetmacro{\first}{\pgfplotsretval} % Avant-dernière valeur de h_rounded
+
+        % Calculer la différence entre les deux
+        \pgfmathsetmacro{\diff}{\first - \second}
+
+        %update iterator
+        \pgfmathtruncatemacro{\iterator}{\iterator+1}
+
+        \begin{loglogaxis}[
+            smaller labels,
+            name = left_plot,
+            % axis lines
+            axis lines = left,
+            enlarge x limits={abs=10pt},
+            enlarge y limits={abs=10pt},
+            % axis x line shift = -5pt,
+            axis y line shift = -5pt,
+            % labels
+			xmode=log,
+            xlabel = {$h$},
+            ylabel = {\rotatebox{270}{$L^2$}},
+            xlabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            ylabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            % ticks and labels
+            xtick=data,
+            xticklabels from table={\datatable}{h},
+            width=\plotwidth, height=\plotheight,
+            mark options={solid, scale=1},
+            grid = major,
+            legend columns=\legendcolumns,
+            legend to name=leg:legendFEMCORR_\iterator,
+            legend image post style={mark options={solid, scale=1},xscale=0.8},
+            axis background/.style={fill=white}
+        ]
+        \expandafter\printslopeinv\expandafter{\slopes}{\second}{\ypos}{\diff}
+    }
+    {
+        \end{loglogaxis}
+        \node[yshift=-20pt] at (left_plot.outer south) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+        
+        \draw[black, line width=0.4mm] (0.1,1.9) -- (5,1.9) node[anchor=west, xshift=2pt] {$e$};
+
+    \end{tikzpicture}
+}
+
+\newcommand{\cvgFEMCorrAlldegLine}[3]{
+    \edef\fem{#1}
+    \edef\add{#2}
+
+    \begin{cvghline}{\fem}{3}{2,3,4}{#3}
+        % Complete the legend
+        \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+        \addlegendentry{\,FEM $\mathbb{P}_2$\;}
+        \addlegendentry{\,FEM $\mathbb{P}_3$\;}
+        \addlegendentry{\,Add $\mathbb{P}_1$\;}
+        \addlegendentry{\,Add $\mathbb{P}_2$\;}
+        \addlegendentry{\,Add $\mathbb{P}_3$\;}
+
+        % Plot FEM
+        \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt ]
+        table [x=h, y=P1, col sep=comma]
+            {\fem};
+        
+        \addplot [style={solid}, mark=*, mark size=2, color=femcolor, line width=0.8pt ]
+        table [x=h, y=P2, col sep=comma]
+            {\fem};
+        
+        \addplot [style={solid}, mark=triangle*, mark size=2, color=femcolor, line width=0.8pt ]
+        table [x=h, y=P3, col sep=comma]
+            {\fem};
+
+        % Plot Add
+        \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt ]
+        table [x=h, y=P1, col sep=comma]
+            {\add};
+
+        \addplot [style={dashed}, mark=*, mark size=2, color=addcolor, line width=0.8pt ]
+        table [x=h, y=P2, col sep=comma]
+            {\add};
+
+        \addplot [style={dashed}, mark=triangle*, mark size=2, color=addcolor, line width=0.8pt ]
+        table [x=h, y=P3, col sep=comma]
+            {\add};
+
+    \end{cvghline}
+}
+
+\begin{document}
+    \cvgFEMCorrAlldegLine{FEM_case1_v1_param1.csv}{Corr_case1_v1_param1.csv}{1e-10}
+\end{document}
