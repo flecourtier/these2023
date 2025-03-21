@@ -24,22 +24,22 @@
         
         \centering
         \begin{tikzpicture}
-            \draw[draw=black,dashed] (0,0) rectangle ++ (5,2.5);	
-            \node at (2.5,1.85) {\Large \textbf{Inputs}};
-            \node[anchor=west] at (0.1,1.1) {\large $\Omega$ : space domain};
-            \node[anchor=west] at (0.1,0.5) {\large $\mathcal{M}$ : parameter domain};
+            \draw[draw=black,dashed] (0,0) rectangle ++ (5.4,2.5);	
+            \node at (2.7,1.85) {\Large \textbf{Inputs}};
+            \node[anchor=west] at (0.1,1.1) {\large $X\in\Omega$ : sets of coordinates};
+            \node[anchor=west] at (0.1,0.5) {\large $\mu\in\mathcal{M}$ : sets of parameters};
             
-            \draw[->, black, line width=2pt] (5.5,1.25) -- (6.5,1.25);
+            \draw[->, black, line width=2pt] (5.9,1.25) -- (6.9,1.25);
             
-            \node[draw=none, inner sep=0pt] at (8.5,1.55) {\includegraphics[width=3cm]{network.png}};
-            \node at (8.5,0.35) {\large \textbf{Parametric PINN}};
+            \node[draw=none, inner sep=0pt] at (8.9,1.55) {\includegraphics[width=3cm]{network.png}};
+            \node at (8.9,0.35) {\large \textbf{Parametric PINN}};
 
-            \draw[->, black, line width=2pt] (10.5,1.25) -- (11.5,1.25);
+            \draw[->, black, line width=2pt] (10.9,1.25) -- (11.9,1.25);
 
-            \draw[draw=black,dashed] (12,0) rectangle ++ (5,2.5);	
-            \node at (14.5,1.85) {\Large \textbf{Output}};
-            \node at (14.5,1.1) {\large $u_\theta$ : prediction of};
-            \node at (14.5,0.5) {\large the PDE solution $u$};
+            \draw[draw=black,dashed] (12.4,0) rectangle ++ (4.6,2.5);	
+            \node at (14.7,1.85) {\Large \textbf{Output}};
+            \node at (14.7,1.1) {\large $u_\theta$ : prediction of};
+            \node at (14.7,0.5) {\large the PDE solution $u$};
         \end{tikzpicture}
     \end{tcolorbox}
 \end{document}
