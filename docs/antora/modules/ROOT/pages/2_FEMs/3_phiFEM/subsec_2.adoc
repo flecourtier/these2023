@@ -16,7 +16,7 @@ Let's first consider the homogeneous case, then assuming that the source term st
 ====
 Note that stem:[\Omega_h] is constructed using stem:[\phi_h] and therefore implicitly depends on stem:[\phi].
 ====
-Given an approximation stem:[\phi_h] of stem:[\phi] on the mesh stem:[\mathcal{T}_h], as defined in xref:3_phiFEM/subsec_1.adoc[Section "General presentation of the stem:[\phi]-FEM method"], and a finite element space stem:[V_h] on stem:[\mathcal{T}_h], we can then search for stem:[w_h\in V_h] such that
+Given an approximation stem:[\phi_h] of stem:[\phi] on the mesh stem:[\mathcal{T}_h], as defined in xref:2_FEMs/3_phiFEM/subsec_1.adoc[Section "General presentation of the stem:[\phi]-FEM method"], and a finite element space stem:[V_h] on stem:[\mathcal{T}_h], we can then search for stem:[w_h\in V_h] such that
 
 [stem]
 ++++
