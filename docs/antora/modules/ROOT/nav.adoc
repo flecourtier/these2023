@@ -47,3 +47,5 @@
 ** xref:abstracts/2025_1.adoc[Janvier 2025]
 ** xref:abstracts/2025_2.adoc[Février 2025]
 ** xref:abstracts/2025_3.adoc[Mars 2025]
+** xref:abstracts/2025_4.adoc[Avril 2025]
+** xref:abstracts/2025_5.adoc[Mai 2025]
