@@ -79,6 +79,8 @@ def cp_posters():
                 if search_word_in_line("% Titre : ", line):
                     name = line.split(": ")[1]
                     poster_name[file] = name
+                else:
+                    ValueError("Poster file " + latex_file + " does not contain the title line '% Titre : '")
 
     return poster_name
 

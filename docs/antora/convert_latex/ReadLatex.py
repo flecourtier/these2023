@@ -60,11 +60,12 @@ def get_subsections(section_files,sections_name,rapport_dir):
 
 # create a dict which contains all the label of sections, subsections and subsubsections
 def get_label_sections(section_files,sections,rapport_dir):
+    chapter_dir = rapport_dir.split("/")[-2] + "/"
     label_sections = {}
     for (s,(section,subsections)) in enumerate(sections.items()):
         section_file = section_files[s]
         if section_file!="":
-            section_file_name = section_file.split("/")[1]
+            section_file_name = chapter_dir+section_file.split("/")[1]
             file_read = open(rapport_dir + section_file + ".tex", 'r')
             
             num_subsection = -1

@@ -217,7 +217,7 @@ def cp_section(section_file,section_name,subsections,label_sections,read_dir,wri
                 print("while 2")
             name_label_sec = line.split(ref+"{")[1].split("}")[0]
             label = label_sections[name_label_sec]
-            print(label)
+            
             if "xref" in label and "" in label:
                 if subsubsections!=[]:
                     # print("xref")
