@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{argmin}
+\usepackage{xparse} %for \NewDocumentEnvironment
 \usepackage{amssymb}
 \usepackage{xcolor}
 \usepackage[bottom]{footmisc}
@@ -75,6 +76,7 @@
 \usepackage{accents}
 \newcommand{\uchapeau}[1]{\accentset{\textcolor{red}{\wedge}}{#1}}
 \newcommand{\refappendix}[1]{\tikz[baseline=(char.base)]{\node[framednumber] (char) {\hyperlink{#1}{\small \textcolor{white}{Appendix \ref*{#1}}}};}}
+% \newcommand{\refsubappendix}[1]{\tikz[baseline=(char.base)]{\node[framednumber] (char) {\hyperlink{#1.maj}{\small \textcolor{white}{Appendix \ref*{#1}}}};}}
 
 \tikzset{
 	framednumber/.style={
@@ -85,9 +87,11 @@
 	}
 }
 
-% numérotation et label des appendix
+%% numérotation et label des appendix
 \newcounter{appendixframenumber}
-\setcounter{appendixframenumber}{1}
+\setcounter{appendixframenumber}{0}
+\newcounter{subappendixframenumber}
+\setcounter{subappendixframenumber}{1}
 
 \makeatletter
 \newcommand{\labelappendixframe}[1]{%
@@ -97,6 +101,29 @@
 	\hypertarget{#1}{}
 }	
 \makeatother
+
+% Ce compteur temporaire stockera "x.y" (1.1, 1.2, etc.) pour les sous-appendices
+\makeatletter
+\newcommand{\labelsubappendixframe}[1]{%
+	\edef\@currentlabel{\theappendixframenumber.\thesubappendixframenumber}%
+	\label{#1}%
+}
+\makeatother
+
+\newcommand{\appendixsection}[1]{%
+	\addtocounter{appendixframenumber}{1}%
+	\section{\appendixname~\theappendixframenumber~: #1}
+}
+
+\NewDocumentEnvironment{appendixframe}{mo+b} 
+{%
+	% Optionnal : noframenumbering
+	\IfNoValueTF{#2}
+	{\begin{frame}{A\theappendixframenumber.\thesubappendixframenumber~– #1}}
+	{\begin{frame}[#2]{A\theappendixframenumber.\thesubappendixframenumber~– #1}}
+		#3
+	\end{frame}
+}{}
 
 % barre en couleur terme dans équation
 \newcommand\Ccancel[2][black]{\renewcommand\CancelColor{\color{#1}}\cancel{#2}}
@@ -122,6 +149,13 @@
 
 \newcommand*{\footcite}[1]{\footnote[frame,1]{\citep{#1}}}
 
+% star command
+\newcommand{\filledstar}{\textcolor{Goldenrod}{\ding{72}}\hspace{-8pt}\ding{73}\,}
+
+\input{preamble/convergence_h}
+\input{preamble/gains}
+\input{preamble/costs}
+
 \begin{document}
 	\nocite{*}
 	
@@ -143,13 +177,16 @@
 				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
 					\usebeamerfont{title}\insertsectionhead\par%
 					\vspace{0.5cm} % Ajustez l'espacement selon vos besoins
-					\usebeamerfont{classic}\usebeamercolor[fg]{classic}\insertsectionheadSubtitle
+					% \usebeamerfont{classic}\usebeamercolor[fg]{classic}\insertsectionheadSubtitle
 				\end{beamercolorbox}
 				%\tableofcontents[sectionstyle=hide,subsectionstyle=show]
 				
 				%subsectionstyle=⟨style for current subsection⟩/⟨style for other subsections in current section⟩/⟨style for subsections in other sections⟩
 				\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
 				\vfill
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{classic}\usebeamercolor[fg]{classic}\insertsectionheadSubtitle
+				\end{beamercolorbox}
 			\end{frame}
 		}
 		\addtocounter{framenumber}{-1} 
@@ -172,39 +209,44 @@
 	}
 	
 	\Background
+
+	% insert table of contents
+	% {\setbeamertemplate{footline}{}
+	% \begin{frame}{Table of contents}
+	% 	\tableofcontents[sectionstyle=show,subsectionstyle=shaded]
+	% \end{frame}
+	% }
+
 	\section*{Introduction}
-% 	\input{sections/intro}
+	\input{sections/intro}
 	
-% 	\section{How improve PINN prediction with FEM ?}
-% 	\input{sections/correction}
-
-% 	\section{Numerical results}
-% 	\input{sections/numerical_results}
-
-% 	\section{Conclusion}
-% 	\input{sections/conclu}
+	
+	\renewcommand{\insertsectionheadSubtitle}{This section is based on \citep{ours_2025}.}
+	\section{Enriched finite element method}
+	\input{sections/correction}
+	\renewcommand{\insertsectionheadSubtitle}{}
 
 	\section{Supplementary work}
 	\input{sections/supp}
+
+	\section*{Conclusion}
+
+	\begin{frame}{Conclusion}
+		TODO
+	\end{frame}
 	
-% 	{\setbeamertemplate{footline}{} 	
-% 		\begin{frame}{References}
-% 			% \vspace{18pt}
-% 			% \normalsize
-% 			% \textbf{References}
-% 			\Large
-% 			% \vspace{30pt}
-% 			% \setstretch{0.2}
-% 			% \AtNextBibliography{\small}
-% 			\bibliography{biblio}
-% %			\printbibliography[heading=none]
-% 		\end{frame}
-% 	}
-% 	\addtocounter{framenumber}{-1} 
+	{\setbeamertemplate{footline}{} 	
+	\begin{frame}{References}
+		\Large
+		\bibliography{biblio}
+	\end{frame}
+	}
+	\addtocounter{framenumber}{-1} 
 	
-% 	\appendix
+	% \section{Appendix}
 	
-% 	\section{Appendix}
-% 	\input{sections/appendix}
+	\appendix
+	
+	\input{sections/appendix}
 	
 \end{document}
