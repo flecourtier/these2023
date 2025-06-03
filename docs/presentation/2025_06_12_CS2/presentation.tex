@@ -112,7 +112,8 @@
 
 \newcommand{\appendixsection}[1]{%
 	\addtocounter{appendixframenumber}{1}%
-	\section{\appendixname~\theappendixframenumber~: #1}
+	\section{\appendixname~\theappendixframenumber~: #1}%\labelappendixframe{frame:#2}%
+	\setcounter{subappendixframenumber}{1}% Réinitialiser le compteur des sous-appendices
 }
 
 \NewDocumentEnvironment{appendixframe}{mo+b} 
@@ -226,6 +227,9 @@
 	\input{sections/correction}
 	\renewcommand{\insertsectionheadSubtitle}{}
 
+	\section{New lines of research}
+	\input{sections/newlines}
+
 	\section{Supplementary work}
 	\input{sections/supp}
 
@@ -233,6 +237,7 @@
 
 	\begin{frame}{Conclusion}
 		TODO
+		(parler de data-driven / multiplicative approach)
 	\end{frame}
 	
 	{\setbeamertemplate{footline}{} 	

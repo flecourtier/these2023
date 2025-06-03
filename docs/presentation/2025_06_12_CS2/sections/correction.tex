@@ -68,7 +68,7 @@
 	\textcolor{orange}{Gains of the additive approach.}
 \end{frame}
 
-\subsection{Numerical results \filledstar}
+\subsection{\filledstar Numerical results}
 
 \begin{frame}{1st problem considered} 
 	\textbf{Problem statement:} Considering an \textcolor{red}{Anisotropic Elliptic problem with Dirichlet BC}:
@@ -109,7 +109,7 @@
 \begin{frame}{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
 		\textbf{Error estimates :} 1 set of parameters.
-		$$\bm{\mu}^{(1)}=(0.51,0.54,0.52,0.55)$$
+		$$\bm{\mu}=(0.51,0.54,0.52,0.55)$$
 		\vspace{-35pt}
 		\begin{figure}[H]
 			\cvgFEMCorrAlldeg{images/numeric/elliptic/cvg/FEM_case3_v1_param1.csv}{images/numeric/elliptic/cvg/Corr_case3_v1_param1.csv}{1e-9}
@@ -122,7 +122,7 @@
 \begin{frame}[noframenumbering]{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
 		\textbf{Error estimates :} 1 set of parameters.
-		$$\bm{\mu}^{(1)}=(0.51,0.54,0.52,0.55)$$
+		$$\bm{\mu}=(0.51,0.54,0.52,0.55)$$
 		\vspace{-35pt}
 		\begin{figure}[H]
 			\cvgFEMCorrAlldeg{images/numeric/elliptic/cvg/FEM_case3_v1_param1.csv}{images/numeric/elliptic/cvg/Corr_case3_v1_param1.csv}{1e-9}
@@ -145,16 +145,6 @@
 		\small\vspace{8pt}
 		Cartesian mesh : $N^2$ nodes.
 	\end{minipage}
-\end{frame}
-
-\begin{frame}{Numerical solutions}
-	\begin{figure}[!ht] \centering
-		\includegraphics[width=0.33\linewidth]{images/numeric/elliptic/plots/standalone_solutions_cropped.pdf}		
-		\includegraphics[width=0.7\linewidth]{images/numeric/elliptic/plots/standalone_errors.pdf}
-	\end{figure}
-
-	\vspace{-8pt}
-	$$\bm{\mu}^{(2)}=(0.46,0.52,0.05,0.12)$$
 \end{frame}
 
 \begin{frame}{2nd problem considered} 
@@ -198,7 +188,7 @@
 \begin{frame}{Numerical results}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
 		\textbf{Error estimates :} 1 set of parameters.
-		$$\bm{\mu}^{(1)}=2.51$$
+		$$\bm{\mu}=2.51$$
 		\vspace{-35pt}
 		\begin{figure}[H]
 			\cvgFEMCorrAlldeg{images/numeric/poisson/mixed/cvg/FEM_case5_v2_param1.csv}{images/numeric/poisson/mixed/cvg/Corr_case5_v2_param1.csv}{1e-10}
@@ -221,11 +211,31 @@
 \end{frame}
 
 \begin{frame}{Numerical solutions}
-	\begin{figure}[!ht] \centering
-		\includegraphics[width=0.31\linewidth]{images/numeric/poisson/mixed/plots/standalone_solutions_cropped.pdf}
-		\includegraphics[width=0.7\linewidth]{images/numeric/poisson/mixed/plots/standalone_errors.pdf}
-	\end{figure}
+	\vspace{-3pt}
+	\textbf{1st problem :} $\bm{\mu}=(0.46,0.52,0.05,0.12)$
 
 	\vspace{-8pt}
-	$$\bm{\mu}^{(1)}=2.51 $$
+	\begin{figure}[!ht] \centering
+		\includegraphics[width=0.34\linewidth]{images/numeric/elliptic/plots/solution.pdf}		
+		\includegraphics[width=0.31\linewidth]{images/numeric/elliptic/plots/error_FEM.pdf}	
+		\includegraphics[width=0.31\linewidth]{images/numeric/elliptic/plots/error_ADD.pdf}	
+	\end{figure}
+
+	\vspace{-3pt}
+	\textbf{2nd problem :} $\bm{\mu}=2.51 $
+
+	\vspace{-8pt}
+	\begin{figure}[!ht] \centering
+		\includegraphics[width=0.34\linewidth]{images/numeric/poisson/mixed/plots/solution.pdf}		
+		\includegraphics[width=0.31\linewidth]{images/numeric/poisson/mixed/plots/error_FEM.pdf}	
+		\includegraphics[width=0.31\linewidth]{images/numeric/poisson/mixed/plots/error_ADD.pdf}	
+	\end{figure}
+
+	% \begin{figure}[!ht] \centering
+	% 	\includegraphics[width=0.31\linewidth]{images/numeric/poisson/mixed/plots/standalone_solutions_cropped.pdf}
+	% 	\includegraphics[width=0.7\linewidth]{images/numeric/poisson/mixed/plots/standalone_errors.pdf}
+	% \end{figure}
+
+	% \vspace{-8pt}
+	% $$\bm{\mu}^{(1)}=2.51 $$
 \end{frame}

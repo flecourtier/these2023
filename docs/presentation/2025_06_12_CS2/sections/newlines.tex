@@ -1,0 +1,183 @@
+\subsection{Complex geometries}
+
+\begin{frame}{Learn a regular levelset}		
+    \vspace{-10pt}
+    \hypersetup{
+		citecolor=white,
+	}
+
+    \begin{mytheo}{\footnotesize\citep{clemot_neural_2023}\normalsize}{fem}
+		If we have a boundary domain $\Gamma$, the SDF is solution to the Eikonal equation:
+		
+		\begin{minipage}{0.7\linewidth}
+			\hspace{100pt}
+			$\left\{\begin{aligned}
+				&||\nabla\phi(X)||=1, \; X\in\mathcal{O} \\
+				&\phi(X)=0, \; X\in\Gamma \\
+				&\nabla\phi(X)=n, \; X\in\Gamma
+			\end{aligned}\right.$
+		\end{minipage}
+		\begin{minipage}{0.25\linewidth}
+			\centering
+			\pgfimage[width=0.7\linewidth]{images/newlines/levelset/points_normals.png}
+		\end{minipage}
+		
+		with $\mathcal{O}$ a box which contains $\Omega$ completely and $n$ the exterior normal to $\Gamma$.
+	\end{mytheo}
+
+    \hypersetup{
+        citecolor=other,
+    }
+
+    \vspace{5pt}
+
+    \textbf{Objective:} Move on to complex geometries by using a levelset function to
+
+    \begin{itemize}
+        \item Sample points in the domain $\Omega$ for the PINN training.
+        \item Impose exactly the boundary condition in PINN \citep{Sukumar_2022}.
+    \end{itemize}
+
+    \vspace{5pt}
+
+	\textbf{How to learn a regular levelset ?} with a PINN by \textcolor{orange}{adding a regularization term},
+	\vspace{-5pt}
+	\begin{equation*}
+		J_{reg} = \int_\mathcal{O} |\Delta\phi|^2,
+	\end{equation*}
+    and a sample of boundary points that considers the \textcolor{orange}{curvature} of $ \Gamma$. \filledstar
+
+    % Curvature
+\end{frame}
+
+\begin{frame}{Numerical results}		
+    \begin{figure}[!ht] \centering
+		\includegraphics[width=\linewidth]{images/newlines/levelset/EikonalBean.png}
+
+        \vspace{10pt}
+
+		\includegraphics[width=\linewidth]{images/newlines/levelset/boundary.png}
+	\end{figure}
+\end{frame}
+
+\subsection{\filledstar Posteriori error estimates}
+
+\begin{frame}{Adaptive mesh refinement}	
+    \textbf{Adaptive refinement loop} using Dorfler marking strategy. \refappendix{frame:amr} %(residual estimator)
+    
+    \begin{center}
+        \textbf{Standard FEM}
+        \vspace{2pt}
+
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/fem/u_h.png}
+        \quad
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/fem/eta_h.png}
+        \quad
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/fem/marking.png}
+        \qquad
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/fem/refined.png}
+    \end{center}
+
+    \vspace{-10pt}
+    $\cdots\hspace{1pt}\longrightarrow\hspace{8pt}
+    \text{SOLVE}\hspace{18pt}\longrightarrow\hspace{6pt}
+    \text{ESTIMATE}\hspace{8pt}\longrightarrow\hspace{14pt}
+    \text{MARK}\hspace{14pt}\longrightarrow\hspace{8pt}
+    \text{REFINE}\hspace{4pt}\longrightarrow\hspace{1pt}
+    \cdots$
+
+    \hspace{45pt}$\text{on }u_h\hspace{55pt}\eta_{res,T}$
+
+    \vspace{8pt}
+    \textbf{Local residual estimator (in $L^2$ norm):} Let $T$ be a cell of $\mathcal{T}_h$ .
+
+    \vspace{-8pt}
+    $$\eta_{res,T}^2 = h_T^4 \|\Delta u_h + f_h\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E^2 \|[\nabla u_h\cdot n]\|_{L^2(E)}^2$$
+    with $h_\bullet$ the size of $\bullet$ and considering the Poisson problem.
+
+    % Considering the Poisson problem with Dirichlet boundary conditions.
+
+    % (en précisant que c'est le coût du solve qui est le plus important)
+\end{frame}
+
+\begin{frame}[noframenumbering]{Adaptive mesh refinement}	
+    \textbf{Adaptive refinement loop} using Dorfler marking strategy.
+    
+    \begin{center}
+        \textcolor{red}{\textbf{Additive Approach}}
+        \vspace{2pt}
+
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/add/p_h.png}
+        \quad
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/add/eta_h_add.png}
+        \quad
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/add/marking_add.png}
+        \qquad
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/add/refined_add.png}
+    \end{center}
+
+    \vspace{-10pt}
+    $\cdots\hspace{1pt}\longrightarrow\hspace{8pt}
+    \text{SOLVE}\hspace{18pt}\longrightarrow\hspace{6pt}
+    \text{ESTIMATE}\hspace{8pt}\longrightarrow\hspace{14pt}
+    \text{MARK}\hspace{14pt}\longrightarrow\hspace{8pt}
+    \text{REFINE}\hspace{4pt}\longrightarrow\hspace{1pt}
+    \cdots$
+
+    \hspace{45pt}$\text{on }\textcolor{red}{p_h^+}\hspace{55pt}\eta_{res,T}$
+
+    \vspace{8pt}
+    \textbf{Local residual estimator (in $L^2$ norm):} Let $T$ be a cell of $\mathcal{T}_h$ .
+
+    \vspace{-8pt}
+    $$\eta_{res,T}^2 = h_T^4 \|\textcolor{red}{\big((\Delta u_\theta)_h + \Delta p_h^+\big) + f_h}\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E^2 \|\textcolor{red}{[\nabla p_h^+\cdot n]}\|_{L^2(E)}^2$$
+    with $h_\bullet$ the size of $\bullet$ and considering the Poisson problem.
+\end{frame}
+
+\begin{frame}[noframenumbering]{Adaptive mesh refinement}	
+    \textbf{Adaptive refinement loop} using Dorfler marking strategy.
+    
+    \begin{center}
+        \textbf{Additive Approach \textcolor{red}{- No resolution}}
+        \vspace{2pt}
+
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/addnet/u_theta_h.png}
+        \quad
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/addnet/eta_h_addnet.png}
+        \quad
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/addnet/marking_addnet.png}
+        \qquad
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/addnet/refined_addnet.png}
+    \end{center}
+
+    \vspace{-10pt}
+    $\cdots\longrightarrow
+    \textcolor{red}{\text{INTERPOLATE}}\longrightarrow\hspace{6pt}
+    \text{ESTIMATE}\hspace{8pt}\longrightarrow\hspace{14pt}
+    \text{MARK}\hspace{14pt}\longrightarrow\hspace{8pt}
+    \text{REFINE}\hspace{4pt}\longrightarrow\hspace{1pt}
+    \cdots$
+
+    \hspace{55pt}$\textcolor{red}{u_\theta}\hspace{55pt}\eta_{res,T}$
+
+    \vspace{8pt}
+    \textbf{Local residual estimator (in $L^2$ norm):} Let $T$ be a cell of $\mathcal{T}_h$ .
+
+    \vspace{-8pt}
+    $$\eta_{res,T}^2 = h_T^4 \|\textcolor{red}{(\Delta u_\theta)_h + f_h}\|_{L^2(T)}^2$$
+    with $h_\bullet$ the size of $\bullet$ and considering the Poisson problem.
+\end{frame}
+
+\begin{frame}{Numerical results}	
+    TODO
+
+    Points à travailler :
+    \begin{itemize}
+        \item Interpoler uniquement les nouveaux points.
+        \item Cout du passage sur GPU.
+        \item Erreur résiduel ne correspond pas vraiment à l'erreur additive ($u-u_\theta$), travail sur la courbure plutôt quer sur l'erreur résiduelle.
+    \end{itemize}
+
+\end{frame}
+
+\subsection{\filledstar Non linear PDEs}
