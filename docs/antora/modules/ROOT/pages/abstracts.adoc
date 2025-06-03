@@ -22,3 +22,4 @@ Vous trouverez ici des résumés des travaux effectués chaque semaine :
 * xref:abstracts/2025_3.adoc[Mars 2025]
 * xref:abstracts/2025_4.adoc[Avril 2025]
 * xref:abstracts/2025_5.adoc[Mai 2025]
+* xref:abstracts/2025_6.adoc[Juin 2025]
