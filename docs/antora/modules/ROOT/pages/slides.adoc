@@ -1,6 +1,6 @@
 # Slides
 
-* 12/06/2025 : xref:attachment$presentation/2025_06_12_CS2.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
+* 17/06/2025 : xref:attachment$presentation/2025_06_17_CS2.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
 * 20/02/2025 : xref:attachment$presentation/2025_02_20.pdf[Combining Finite Element Methods and Neural Networks to Solve Elliptic Problems on 2D Geometries]
 * 14/06/2024 : xref:attachment$presentation/2024_06_14_CS1.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
 * 26/03/2024 : xref:attachment$presentation/2024_03_26.pdf[How to work with complex geometries in PINNs ?]
