@@ -1,0 +1,177 @@
+\documentclass[border=0.5cm]{standalone}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+% \usepackage{filecontents}
+\usepackage{datatool}
+\usepackage{fp}
+\usetikzlibrary{backgrounds}
+
+\pgfplotsset{
+    compat=newest,
+}
+\pgfplotsset{
+    smaller labels/.style={
+        label style={font=\footnotesize},
+        tick label style={font=\footnotesize}
+    }
+}
+\tikzset{font=\small}
+\usetikzlibrary{
+    fpu,
+    fixedpointarithmetic,
+    babel,
+    external,
+    arrows.meta,
+    plotmarks,
+    positioning,
+    angles,
+    quotes,
+    intersections,
+    calc,
+    spy,
+    decorations.pathreplacing,
+    matrix,
+    fit,
+}
+\usepgfplotslibrary{fillbetween}
+
+% Define colors
+\definecolor{femcolor}{RGB}{51, 138, 55} %Green (27,158,119)
+\definecolor{addcolor}{RGB}{217,95,2} %Orange
+\definecolor{addnetcolor}{RGB}{49, 73, 181}%{199,39,34} %Red (sob or other)
+
+% Define line styles according to the method 
+% FEM : solid
+% Add : dashed
+% Mult : dotted
+
+% Define marker styles according to the degree
+% P1 : square
+% P2 : circle
+% P3 : triangle
+
+%________________ error lines (by Ricardo Costa) ________________
+
+% argument 1: slopes (e.g. {4,6})
+% argument 2: x position of the bottom left corner
+% argument 3: y position of the bottom left corner
+% argument 4: x length
+
+\makeatletter
+
+\makeatother
+
+\newlength{\plotwidth}
+\setlength{\plotwidth}{0.75\textwidth}
+\newlength{\plotheight}
+\setlength{\plotheight}{0.65\textwidth}
+
+\gdef\iterator{0}
+
+\newenvironment{cvgh}[4]{
+    \begin{tikzpicture}
+        \edef\filename{#1}
+        \edef\legendcolumns{#2}
+        \edef\slopes{#3}
+        \edef\ypos{#4}
+
+        % Read the CSV file into a table
+        \pgfplotstableread[col sep=comma]{\filename}\datatable
+
+        % Obtenir le second élément
+        \pgfmathtruncatemacro{\secondrow}{1} % Index de la dernière ligne
+        \pgfplotstablegetelem{\secondrow}{N_dofs}\of\datatable
+        \pgfmathsetmacro{\second}{\pgfplotsretval} % Dernière valeur de h_rounded
+
+        % Obtenir le premier élément
+        \pgfmathtruncatemacro{\firstrow}{0} % Index de l'avant-dernière ligne
+        \pgfplotstablegetelem{\firstrow}{N_dofs}\of\datatable
+        \pgfmathsetmacro{\first}{\pgfplotsretval} % Avant-dernière valeur de h_rounded
+
+        % Calculer la différence entre les deux
+        \pgfmathsetmacro{\diff}{\first - \second}
+
+        %update iterator
+        \pgfmathtruncatemacro{\iterator}{\iterator+1}
+
+        \begin{loglogaxis}[
+            smaller labels,
+            name = left_plot,
+            % axis lines
+            axis lines = left,
+            enlarge x limits={abs=10pt},
+            enlarge y limits={abs=10pt},
+            % axis x line shift = -5pt,
+            axis y line shift = -5pt,
+            % labels
+			xmode=log,
+            xlabel = {$N_\text{dofs}$},
+            ylabel = {\rotatebox{270}{$L^2$}},
+            xlabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            ylabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            % ticks and labels
+            % xtick=data,
+            % xticklabels from table={\datatable}{N_dofs},
+            width=\plotwidth, height=\plotheight,
+            mark options={solid, scale=1},
+            grid = major,
+            legend columns=\legendcolumns,
+            legend to name=leg:legendFEMCORR_\iterator,
+            legend image post style={mark options={solid, scale=1},xscale=0.8},
+        ]
+        % \expandafter\printslopeinv\expandafter{\slopes}{\second}{\ypos}{\diff}
+    }
+    {
+        \end{loglogaxis}
+        \node[yshift=-20pt] at (left_plot.outer south) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+
+    \end{tikzpicture}
+}
+
+\newcommand{\cvgunifadapt}[6]{
+    \edef\fem{#1}
+    \edef\add{#2}
+    \edef\adaptfem{#3}
+    \edef\adaptadd{#4}
+    \edef\adaptaddnet{#5}
+
+    \begin{cvgh}{\fem}{3}{2,3,4}{#6}
+        % Complete the legend
+        \addlegendentry{\,FEM (adapt)\;}
+        \addlegendentry{\,Add (adapt)\;}
+        \addlegendentry{\,Add - no solve (adapt)\;}
+        \addlegendentry{\,FEM (unif)\;}
+        \addlegendentry{\,Add (unif)\;}
+        
+        % Plot adapt
+        \addplot [style={dashed}, mark=*, mark size=2, color=femcolor, line width=1.5pt ]
+        table [x=N_dofs, y=error, col sep=comma]
+        {\adaptfem};
+        
+        \addplot [style={dashed}, mark=*, mark size=2, color=addcolor, line width=1.5pt ]
+        table [x=N_dofs, y=error, col sep=comma]
+        {\adaptadd};
+        
+        \addplot [style={dashed}, mark=*, mark size=2, color=addnetcolor, line width=1.5pt ]
+        table [x=N_dofs, y=error, col sep=comma]
+        {\adaptaddnet};
+
+        % Plot unif
+        \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=1.5pt ]
+        table [x=N_dofs, y=error, col sep=comma]
+            {\fem};
+        
+        \addplot [style={solid}, mark=square*, mark size=2, color=addcolor, line width=1.5pt ]
+        table [x=N_dofs, y=error, col sep=comma]
+            {\add};
+        
+    \end{cvgh}
+}
+
+\begin{document}
+    \cvgunifadapt{data/data_FEM_unif.csv}{data/data_ADD_unif.csv}{data/data_FEM_adapt.csv}{data/data_ADD_adapt.csv}{data/data_ADDNet_adapt.csv}{
+        0.0001
+    }
+\end{document}

@@ -69,13 +69,13 @@
         \textbf{Standard FEM}
         \vspace{2pt}
 
-        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/fem/u_h.png}
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/explications/fem/u_h.png}
         \quad
-        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/fem/eta_h.png}
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/explications/fem/eta_h.png}
         \quad
-        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/fem/marking.png}
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/explications/fem/marking.png}
         \qquad
-        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/fem/refined.png}
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/explications/fem/refined.png}
     \end{center}
 
     \vspace{-10pt}
@@ -107,13 +107,13 @@
         \textcolor{red}{\textbf{Additive Approach}}
         \vspace{2pt}
 
-        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/add/p_h.png}
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/explications/add/p_h.png}
         \quad
-        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/add/eta_h_add.png}
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/explications/add/eta_h_add.png}
         \quad
-        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/add/marking_add.png}
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/explications/add/marking_add.png}
         \qquad
-        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/add/refined_add.png}
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/explications/add/refined_add.png}
     \end{center}
 
     \vspace{-10pt}
@@ -141,13 +141,13 @@
         \textbf{Additive Approach \textcolor{red}{- No resolution}}
         \vspace{2pt}
 
-        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/addnet/u_theta_h.png}
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/explications/addnet/u_theta_h.png}
         \quad
-        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/addnet/eta_h_addnet.png}
+        \includegraphics[width=0.2\linewidth]{images/newlines/mesh/explications/addnet/eta_h_addnet.png}
         \quad
-        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/addnet/marking_addnet.png}
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/explications/addnet/marking_addnet.png}
         \qquad
-        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/addnet/refined_addnet.png}
+        \includegraphics[width=0.17\linewidth]{images/newlines/mesh/explications/addnet/refined_addnet.png}
     \end{center}
 
     \vspace{-10pt}
@@ -168,16 +168,75 @@
     with $h_\bullet$ the size of $\bullet$ and considering the Poisson problem.
 \end{frame}
 
-\begin{frame}{Numerical results}	
-    TODO
+\begin{frame}{Numerical results}
+    \vspace{-10pt}
+    \begin{center}
+        \includegraphics[width=0.4\linewidth]{images/newlines/mesh/results/cvg.pdf}
+        \includegraphics[width=0.4\linewidth]{images/newlines/mesh/results/times.pdf}
+    \end{center}
+    
+    \vspace{-10pt}
+    \footnotesize
+    \warning \quad Results obtained on a laptop GPU (probably due to external factors).
+    
+    \normalsize
+    \vspace{5pt}
+    \textbf{Ideas for improving results :} Additive approach (no resolution).
 
-    Points à travailler :
-    \begin{itemize}
-        \item Interpoler uniquement les nouveaux points.
-        \item Cout du passage sur GPU.
-        \item Erreur résiduel ne correspond pas vraiment à l'erreur additive ($u-u_\theta$), travail sur la courbure plutôt quer sur l'erreur résiduelle.
-    \end{itemize}
+    \vspace{3pt}
+    \begin{minipage}{0.1\linewidth}
+        \begin{tikzpicture}[scale=1]
+            \draw[->, thick] (0,0) -- (0.8,0.8);
+            \node[below right] at (0.4,0.4) {\textbf{mesh}};
+
+            \draw[->, thick] (0,1) -- (0.8,1.8);
+            \node[below right] at (0.4,1.4) {\textbf{time}};
+        \end{tikzpicture}
+    \end{minipage} \hspace{5pt}
+    \begin{minipage}{0.86\linewidth}
+        \vspace{2pt}
+        Interpolate only mesh points added in the refinement process. \\
+
+        \vspace{5pt}
+        Use another metric such as curvature, rather than residual error.
+
+        \vspace{-5pt}
+        $$\Delta u_\theta+f \qquad \ne \qquad u-u_\theta$$
+    \end{minipage}
+    % \begin{itemize}
+    %     \item To improve execution times: \\ 
+    %     Interpolate only mesh points added in the refinement process.
+    %     % \item Cout du passage sur GPU.
+    %     \item To improve the mesh : \\
+    %     Use another metric such as curvature, rather than residual error. \\
+    %     (The network residual ($\Delta u_\theta+f$) does not match the additive solution (the network error $u-u_\theta$).)
+
+    % \end{itemize}
 
 \end{frame}
 
 \subsection{\filledstar Non linear PDEs}
+
+\begin{frame}{Problem considered}	
+    TODO
+    % \textbf{Objective:} Extend the additive approach to non linear PDEs.
+
+    % \vspace{5pt}
+
+    % \textbf{Problem statement:} Considering the \textcolor{red}{non linear Poisson problem with Dirichlet BC}:
+    % \vspace{-5pt}
+    % \begin{equation*}
+    %     \left\{
+    %     \begin{aligned}
+    %         -\Delta u & = f(u), \; &  & \text{in } \; \Omega, \\
+    %         u         & = g, \;  &  & \text{on } \; \partial\Omega.
+    %     \end{aligned}
+    %     \right.
+    % \end{equation*}
+
+    % with $\Omega=\{(x,y)\in\mathbb{R}^2, \; 0.25\le x^2+y^2\le 1\}$ and $f(u)=u^3$.
+\end{frame}
+
+\begin{frame}{Numerical results}	
+    TODO
+\end{frame}
