@@ -116,12 +116,22 @@
 	\setcounter{subappendixframenumber}{1}% Réinitialiser le compteur des sous-appendices
 }
 
-\NewDocumentEnvironment{appendixframe}{mo+b} 
+\NewDocumentEnvironment{subappendixframe}{mo+b} 
 {%
 	% Optionnal : noframenumbering
 	\IfNoValueTF{#2}
 	{\begin{frame}{A\theappendixframenumber.\thesubappendixframenumber~– #1}}
 	{\begin{frame}[#2]{A\theappendixframenumber.\thesubappendixframenumber~– #1}}
+		#3
+	\end{frame}
+}{}
+
+\NewDocumentEnvironment{appendixframe}{mo+b} 
+{%
+	% Optionnal : noframenumbering
+	\IfNoValueTF{#2}
+	{\begin{frame}{A\theappendixframenumber~– #1}}
+	{\begin{frame}[#2]{A\theappendixframenumber~– #1}}
 		#3
 	\end{frame}
 }{}
@@ -223,7 +233,7 @@
 	
 	
 	\renewcommand{\insertsectionheadSubtitle}{This section is based on \citep{ours_2025}.}
-	\section{Enriched finite element method}
+	\section{Enriched finite element method using PINNs}
 	\input{sections/correction}
 	\renewcommand{\insertsectionheadSubtitle}{}
 
@@ -236,8 +246,22 @@
 	\section*{Conclusion}
 
 	\begin{frame}{Conclusion}
-		TODO
-		(parler de data-driven / multiplicative approach)
+		\textbf{Enriched finite element method using PINNs}
+		\begin{itemize}
+			\item PINNs are good candidates for the enriched approach. \refappendix{frame:datavspinns}
+			\item Numerical validation of the theoretical results.
+			\item The enriched approach provides the same results as the standard FEM method, but with coarser meshes.
+			$\Rightarrow$ Reduction of the computational cost.
+		\end{itemize}
+		We have also tested a multiplicative approach. \refappendix{frame:mult}
+
+		\vspace{10pt}
+		\textbf{New lines of research}
+		\begin{itemize}
+			\item The treatment of complex geometries is progressing.
+			\item New PDEs begin to be considered, in particular non-linear problems.
+			\item Other methods for improving the additive approach are being studied, including posterior error estimators.
+		\end{itemize}
 	\end{frame}
 	
 	{\setbeamertemplate{footline}{} 	
