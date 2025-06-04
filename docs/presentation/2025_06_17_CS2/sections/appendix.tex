@@ -141,12 +141,15 @@
 	\vspace{-3pt}
 \end{appendixframe}
 
-\appendixsection{Adaptive mesh refinement}\labelappendixframe{frame:amr}
+\appendixsection{More}
 
-\begin{appendixframe}{Dorfler marking strategy}
-	
-	TODO
-	% \begin{equation*}
-    %     \eta_{res} = \left(\sum_{T\in\mathcal{T}_h}\eta_{res,T}^2\right)^{1/2}, \quad \eta_{res,T}^2 = h_T^4 \|R\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E^2 \|J\|_{L^2(E)}^2
-    % \end{equation*}
+\begin{appendixframe}{Adaptive mesh refinement}
+	\labelsubappendixframe{frame:amr}
+	\textbf{Dorfler marking strategy :} \citep{dorfler_1996} \\
+	Find $\mathcal{M}_h \subset \mathcal{T}_h$ of minimal cardinality such that
+	\begin{equation*}
+		\sum_{T \in \mathcal{M}_h} \eta_{\bullet,T}^2 \geq \theta \sum_{T \in \mathcal{T}_h} \eta_{\bullet,T}^2,
+	\end{equation*}
+	with $\eta_{\bullet,T}$ a local estimator \footnote[frame,1]{For instance, the residual estimator. \citep{ainsworth_posteriori_1997}}
+	and $\theta \in (0,1)$.
 \end{appendixframe}

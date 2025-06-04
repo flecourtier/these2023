@@ -52,12 +52,15 @@
 
 \begin{frame}{Numerical results}		
     \begin{figure}[!ht] \centering
-		\includegraphics[width=\linewidth]{images/newlines/levelset/EikonalBean.png}
+		\includegraphics[width=\linewidth]{images/newlines/levelset/EikonalBean_curvature.png}
 
-        \vspace{10pt}
+        % \vspace{10pt}
 
-		\includegraphics[width=\linewidth]{images/newlines/levelset/boundary.png}
+		\includegraphics[width=\linewidth]{images/newlines/levelset/boundary_curvature.png}
 	\end{figure}
+
+    \vspace{-5pt}
+    TODO : Ajouter résultats "Poisson on Bean" + Mettre au propre les images. 
 \end{frame}
 
 \subsection{\filledstar Posteriori error estimates}
@@ -186,11 +189,11 @@
     \vspace{3pt}
     \begin{minipage}{0.1\linewidth}
         \begin{tikzpicture}[scale=1]
-            \draw[->, thick] (0,0) -- (0.8,0.8);
-            \node[below right] at (0.4,0.4) {\textbf{mesh}};
+            \draw[->, thick] (0,1.8) -- (0.8,1);
+            \node[above right] at (0.4,1.4) {\textbf{time}};
 
-            \draw[->, thick] (0,1) -- (0.8,1.8);
-            \node[below right] at (0.4,1.4) {\textbf{time}};
+            \draw[->, thick] (0,0.8) -- (0.8,0);
+            \node[above right] at (0.4,0.4) {\textbf{error}};
         \end{tikzpicture}
     \end{minipage} \hspace{5pt}
     \begin{minipage}{0.86\linewidth}
