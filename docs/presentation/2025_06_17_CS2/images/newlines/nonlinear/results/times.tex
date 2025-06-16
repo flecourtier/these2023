@@ -1,0 +1,208 @@
+\documentclass[border=0cm]{standalone}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+% \usepackage{filecontents}
+\usepackage{datatool}
+\usepackage{fp}
+\usetikzlibrary{backgrounds}
+
+\pgfplotsset{
+    compat=newest,
+}
+\pgfplotsset{
+    smaller labels/.style={
+        label style={font=\footnotesize},
+        tick label style={font=\footnotesize}
+    }
+}
+\tikzset{font=\small}
+\usetikzlibrary{
+    fpu,
+    fixedpointarithmetic,
+    babel,
+    external,
+    arrows.meta,
+    plotmarks,
+    positioning,
+    angles,
+    quotes,
+    intersections,
+    calc,
+    spy,
+    decorations.pathreplacing,
+    matrix,
+    fit,
+}
+\usepgfplotslibrary{fillbetween}
+
+% Define colors
+\definecolor{femcolor}{RGB}{51, 138, 55} %Green (27,158,119)
+\definecolor{addcolor}{RGB}{217,95,2} %Orange
+\definecolor{feminitcolor}{RGB}{49, 73, 181}%{199,39,34} %Red (sob or other)
+
+% Define line styles according to the method 
+% FEM : solid
+% Add : dashed
+% Mult : dotted
+
+% Define marker styles according to the degree
+% P1 : square
+% P2 : circle
+% P3 : triangle
+
+%________________ error lines (by Ricardo Costa) ________________
+
+% argument 1: slopes (e.g. {4,6})
+% argument 2: x position of the bottom left corner
+% argument 3: y position of the bottom left corner
+% argument 4: x length
+
+\makeatletter
+
+\makeatother
+
+\newlength{\plotwidth}
+\setlength{\plotwidth}{0.75\textwidth}
+\newlength{\plotheight}
+\setlength{\plotheight}{0.65\textwidth}
+
+\gdef\iterator{0}
+
+\newenvironment{cvgh}[4]{
+    \begin{tikzpicture}
+        \edef\filename{#1}
+        \edef\legendcolumns{#2}
+        \edef\slopes{#3}
+        \edef\ypos{#4}
+
+        %update iterator
+        \pgfmathtruncatemacro{\iterator}{\iterator+1}
+
+        \begin{loglogaxis}[
+            smaller labels,
+            name = left_plot,
+            % axis lines
+            axis lines = left,
+            enlarge x limits={abs=10pt},
+            enlarge y limits={abs=10pt},
+            % axis x line shift = -5pt,
+            axis y line shift = -5pt,
+            % labels
+			xmode=log,
+            xlabel = {Time (s)},
+            ylabel = {\rotatebox{270}{$L^2$}},
+            xlabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            ylabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            width=\plotwidth, height=\plotheight,
+            mark options={solid, scale=1},
+            grid = major,
+            legend columns=\legendcolumns,
+            legend to name=leg:legendFEMCORR_\iterator,
+            legend image post style={mark options={solid, scale=1},xscale=0.8},
+        ]
+        % \expandafter\printslopeinv\expandafter{\slopes}{\second}{\ypos}{\diff}
+    }
+    {
+        \end{loglogaxis}
+        \node[yshift=-20pt] at (left_plot.outer south) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+
+    \end{tikzpicture}
+}
+
+\newcommand{\cvgerrortimeUn}[4]{
+    \edef\fem{#1}
+    \edef\feminit{#2}
+    \edef\add{#3}
+
+    \begin{cvgh}{\fem}{3}{2,3,4}{#4}
+        % Complete the legend
+        \addlegendentry{\,Standard $\mathbb{P}^1$\;}
+        \addlegendentry{\,DeepPhysics $\mathbb{P}^1$\;}
+        \addlegendentry{\,Add $\mathbb{P}^1$\;}
+        
+        % Plot adapt
+        \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=1.5pt ]
+        table [x=times, y=error, col sep=comma]
+        {\fem};
+        
+        \addplot [style={dashed}, mark=square*, mark size=2, color=black, line width=2pt ]
+        table [x=times, y=error, col sep=comma]
+        {\feminit};
+        
+        \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=1.5pt ]
+        table [x=times, y=error, col sep=comma]
+        {\add};
+        
+    \end{cvgh}
+}
+
+\newcommand{\cvgerrortimeD}[4]{
+    \edef\fem{#1}
+    \edef\feminit{#2}
+    \edef\add{#3}
+
+    \begin{cvgh}{\fem}{3}{2,3,4}{#4}
+        % Complete the legend
+        \addlegendentry{\,Standard $\mathbb{P}^2$\;}
+        \addlegendentry{\,DeepPhysics $\mathbb{P}^2$\;}
+        \addlegendentry{\,Add $\mathbb{P}^2$\;}
+        
+        % Plot adapt
+        \addplot [style={solid}, mark=*, mark size=2, color=femcolor, line width=1.5pt ]
+        table [x=times, y=error, col sep=comma]
+        {\fem};
+        
+        \addplot [style={dashed}, mark=*, mark size=2, color=black, line width=2pt ]
+        table [x=times, y=error, col sep=comma]
+        {\feminit};
+        
+        \addplot [style={dashed}, mark=*, mark size=2, color=addcolor, line width=1.5pt ]
+        table [x=times, y=error, col sep=comma]
+        {\add};
+        
+    \end{cvgh}
+}
+
+\newcommand{\cvgerrortimeT}[4]{
+    \edef\fem{#1}
+    \edef\feminit{#2}
+    \edef\add{#3}
+
+    \begin{cvgh}{\fem}{3}{2,3,4}{#4}
+        % Complete the legend
+        \addlegendentry{\,Standard $\mathbb{P}^3$\;}
+        \addlegendentry{\,DeepPhysics $\mathbb{P}^3$\;}
+        \addlegendentry{\,Add $\mathbb{P}^3$\;}
+        
+        % Plot adapt
+        \addplot [style={solid}, mark=triangle*, mark size=2, color=femcolor, line width=1.5pt ]
+        table [x=times, y=error, col sep=comma]
+        {\fem};
+        
+        \addplot [style={dashed}, mark=triangle*, mark size=2, color=black, line width=2pt ]
+        table [x=times, y=error, col sep=comma]
+        {\feminit};
+        
+        \addplot [style={dashed}, mark=triangle*, mark size=2, color=addcolor, line width=1.5pt ]
+        table [x=times, y=error, col sep=comma]
+        {\add};
+        
+    \end{cvgh}
+}
+
+\begin{document}
+    \cvgerrortimeUn{data/data_FEM_P1.csv}{data/data_FEMinit_P1.csv}{data/data_ADD_P1.csv}{
+        0.0001
+    }
+    \hspace{-40pt}
+    \cvgerrortimeD{data/data_FEM_P2.csv}{data/data_FEMinit_P2.csv}{data/data_ADD_P2.csv}{
+        0.0001
+    }
+    \hspace{-40pt}
+    \cvgerrortimeT{data/data_FEM_P3.csv}{data/data_FEMinit_P3.csv}{data/data_ADD_P3.csv}{
+        0.0001
+    }
+
+\end{document}

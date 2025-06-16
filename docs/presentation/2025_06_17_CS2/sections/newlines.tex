@@ -223,8 +223,7 @@
 \begin{frame}{Problem considered}	
     \textbf{Objective:} Extend the additive approach to non linear PDEs.
 
-    \vspace{5pt}
-
+    \vspace{10pt}
     \textbf{Problem statement:} Considering the \textcolor{red}{non linear Poisson problem with Dirichlet BC}:
     \vspace{-5pt}
     \begin{equation*}
@@ -249,8 +248,101 @@
 	
     \vspace{5pt}
 	\textbf{PINN training:} Imposing BC exactly with a level-set function.
+
+\end{frame}
+
+\begin{frame}{Newton method}
+    
+
+    We want to solve the non linear system: \hfill \tiny $N_h$ : number of degrees of freedom.
+
+    \normalsize
+    \vspace{-10pt}
+    \begin{equation}
+        \label{eq:nonlinear}
+        F(u) = 0 
+    \end{equation}
+
+    \vspace{-2pt}
+    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $u\in\mathbb{R}^{N_h}$ the unknown vector.
+
+    \begin{center}
+        \small
+        \begin{minipage}{0.9\linewidth}
+            \begin{algorithm}[H]
+                \SetAlgoLined
+                \caption{Newton's method to solve \eqref{eq:nonlinear} \citep{newton_accel_2025}}
+                \textbf{Initialization step:} set $u^{(0)} = u_0$\;
+                \For{\( k \ge 0 \)}{
+                    Solve the linear system \( F(u^{(k)}) + F'(u^{(k)}) \delta^{(k+1)} = 0 \) for \( \delta^{(k+1)} \)\;
+                    Update \( u^{(k+1)} = u^{(k)} + \delta^{(k+1)} \)\;
+                }
+            \end{algorithm}
+        \end{minipage}
+    \end{center}
+
+    \vspace{5pt}
+    \textbf{Standard version:} \\
+    Initialization with a constant value $u_0$. For instance, $u_0=1$.
+
+    \vspace{5pt}
+    \textbf{DeepPhysics version:} \citep{odot_deepphysics_2021} \\
+    Initialization with a PINN solution $u_0=u_\theta$.
+\end{frame}
+
+\begin{frame}[noframenumbering]{Newton method}
+    \vspace{5pt}
+    We want to solve the non linear system: \hfill \tiny $N_h$ : number of degrees of freedom.
+
+    \normalsize
+    \vspace{-10pt}
+    \begin{equation}
+        F(u) = 0 \tag{1}
+    \end{equation}
+
+    \vspace{-2pt}
+    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $u\in\mathbb{R}^{N_h}$ the unknown vector.
+
+    \begin{center}
+        \small
+        \begin{minipage}{0.9\linewidth}
+            \begin{algorithm}[H]
+                \SetAlgoLined
+                \caption{\textcolor{red}{Additive approach} to solve \eqref{eq:nonlinear} }
+                \textbf{Initialization step:} set \textcolor{red}{$p_+^{(0)} = 0$}\;
+                \For{\( k \ge 0 \)}{
+                    Solve the linear system \( F(\textcolor{red}{p_+^{(k)}+u_\theta}) + F'(\textcolor{red}{p_+^{(k)}+u_\theta}) \delta^{(k+1)} = 0 \) for \( \delta^{(k+1)} \)\;
+                    Update \( \textcolor{red}{p_+^{(k+1)}} = \textcolor{red}{p_+^{(k)}} + \delta^{(k+1)} \)\;
+                }
+            \end{algorithm}
+        \end{minipage}
+    \end{center}
+
+    \textbf{Advantage compared to DeepPhysics:}
+
+    \begin{center}
+    $u_\theta$ is not required to live in the same space as $p_h^+$.
+    \end{center}
 \end{frame}
 
 \begin{frame}{Numerical results}	
-    TODO
+    \vspace{-10pt}
+    \begin{center}
+        \begin{minipage}{0.58\linewidth}
+            \includegraphics[width=\linewidth]{images/newlines/nonlinear/results/cvg_cropped.pdf}
+        \end{minipage}
+        \begin{minipage}{0.38\linewidth}
+            \small
+            \textbf{Number of iterations :}
+
+            \begin{itemize}
+                \item Standard Newton: $8$ iterations.
+                \item DeepPhysics: $4$ iterations.
+                \item Additive approach: $4$ iterations.
+            \end{itemize}
+        \end{minipage}
+        
+        \vspace{-10pt}
+        \includegraphics[width=\linewidth]{images/newlines/nonlinear/results/times_cropped.pdf}
+    \end{center}
 \end{frame}
