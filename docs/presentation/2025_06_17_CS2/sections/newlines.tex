@@ -203,8 +203,8 @@
         \vspace{5pt}
         Use another metric such as curvature, rather than residual error.
 
-        \vspace{-5pt}
-        $$\Delta u_\theta+f \qquad \ne \qquad u-u_\theta$$
+        % \vspace{-5pt}
+        % $$\Delta u_\theta+f \qquad \ne \qquad u-u_\theta$$
     \end{minipage}
     % \begin{itemize}
     %     \item To improve execution times: \\ 
@@ -221,23 +221,34 @@
 \subsection{\filledstar Non linear PDEs}
 
 \begin{frame}{Problem considered}	
-    TODO
-    % \textbf{Objective:} Extend the additive approach to non linear PDEs.
+    \textbf{Objective:} Extend the additive approach to non linear PDEs.
 
-    % \vspace{5pt}
+    \vspace{5pt}
 
-    % \textbf{Problem statement:} Considering the \textcolor{red}{non linear Poisson problem with Dirichlet BC}:
-    % \vspace{-5pt}
-    % \begin{equation*}
-    %     \left\{
-    %     \begin{aligned}
-    %         -\Delta u & = f(u), \; &  & \text{in } \; \Omega, \\
-    %         u         & = g, \;  &  & \text{on } \; \partial\Omega.
-    %     \end{aligned}
-    %     \right.
-    % \end{equation*}
+    \textbf{Problem statement:} Considering the \textcolor{red}{non linear Poisson problem with Dirichlet BC}:
+    \vspace{-5pt}
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            -\text{div}\big((1+4u^4)\nabla u\big) & = f, \; &  & \text{in } \; \Omega, \\
+            u         & = 1, \;  &  & \text{on } \; \partial\Omega.
+        \end{aligned}
+        \right.
+    \end{equation*}
 
-    % with $\Omega=\{(x,y)\in\mathbb{R}^2, \; 0.25\le x^2+y^2\le 1\}$ and $f(u)=u^3$.
+    with $\Omega=[-0.5\pi,0.5\pi]^2$ and $\mathcal{M}=[-0.5,0.5]^2$ ($p=2$).
+
+    \vspace{5pt}
+	\textbf{Analytical solution :}
+
+	\vspace{-12pt}
+	\begin{equation*}
+		u(\bm{x};\bm{\mu})= 1 + \exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2}\right)\sin(2x)\sin(2y)
+	\end{equation*}
+	\vspace{-5pt}
+	
+    \vspace{5pt}
+	\textbf{PINN training:} Imposing BC exactly with a level-set function.
 \end{frame}
 
 \begin{frame}{Numerical results}	
