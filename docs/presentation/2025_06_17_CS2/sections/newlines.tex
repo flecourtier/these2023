@@ -72,7 +72,7 @@
 		\left\{
 		\begin{aligned}
 			-\Delta u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M}, \\
-			u         & = 0, \;  &  & \text{on } \; \Gamma, \\
+			u         & = 0, \;  &  & \text{on } \; \Gamma \times \mathcal{M},
 		\end{aligned}
 		\right.
 		% \label{eq:Lap2DMixed}\tag{$\mathcal{P}$}
@@ -331,11 +331,11 @@
     \normalsize
     \vspace{-10pt}
     \begin{equation}
-        F(u) = 0 \tag{1}
+        F(\textcolor{red}{p_+ + u_\theta}) = 0 \tag{1}
     \end{equation}
 
     \vspace{-2pt}
-    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $u\in\mathbb{R}^{N_h}$ the unknown vector.
+    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $\textcolor{red}{p_+}\in\mathbb{R}^{N_h}$ the unknown vector.
 
     \begin{center}
         \small
@@ -355,17 +355,17 @@
     \textbf{Advantage compared to DeepPhysics:}
 
     \begin{center}
-    $u_\theta$ is not required to live in the same space as $p_h^+$.
+    $u_\theta$ is not required to live in the same space as $p_+$.
     \end{center}
 \end{frame}
 
 \begin{frame}{Numerical results}	
     \vspace{-10pt}
     \begin{center}
-        \begin{minipage}{0.58\linewidth}
+        \begin{minipage}{0.54\linewidth}
             \includegraphics[width=\linewidth]{images/newlines/nonlinear/results/cvg_cropped.pdf}
         \end{minipage}
-        \begin{minipage}{0.38\linewidth}
+        \begin{minipage}{0.42\linewidth}
             \small
             \textbf{Number of iterations :}
 
@@ -376,7 +376,7 @@
             \end{itemize}
         \end{minipage}
         
-        \vspace{-10pt}
+        \vspace{-6pt}
         \includegraphics[width=\linewidth]{images/newlines/nonlinear/results/times.pdf}
     \end{center}
 \end{frame}
