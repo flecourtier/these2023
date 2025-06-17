@@ -166,7 +166,6 @@
 % algorithm
 \usepackage[ruled,vlined]{algorithm2e}
 
-
 \input{preamble/convergence_h}
 \input{preamble/gains}
 \input{preamble/costs}
@@ -224,18 +223,19 @@
 	}
 	
 	\Background
-
-	% insert table of contents
-	% {\setbeamertemplate{footline}{}
-	% \begin{frame}{Table of contents}
-	% 	\tableofcontents[sectionstyle=show,subsectionstyle=shaded]
-	% \end{frame}
-	% }
-
+	
 	\section*{Introduction}
 	\input{sections/intro}
 	
 	
+	% insert table of contents
+	{\setbeamertemplate{footline}{}
+	\begin{frame}{Table of contents}
+		\tableofcontents[sectionstyle=show,subsectionstyle=shaded]
+	\end{frame}
+	\addtocounter{framenumber}{-1} 
+	}
+
 	\renewcommand{\insertsectionheadSubtitle}{This section is based on \citep{ours_2025}.}
 	\section{Enriched finite element method using PINNs}
 	\input{sections/correction}
@@ -264,18 +264,22 @@
 		\begin{itemize}
 			\item The treatment of complex geometries is progressing.
 			\item New PDEs begin to be considered, in particular non-linear problems.
-			\item Other methods for improving the additive approach are being studied, including posteriori error estimators.
+			\item Other methods for improving the additive approach are being studied, including a posteriori error estimators.
 		\end{itemize}
 	\end{frame}
+
+	\BackgroundBiblio
 	
 	{\setbeamertemplate{footline}{} 	
 	\begin{frame}{References}
-		\tiny
+		\scriptsize
 		\bibliography{biblio}
 	\end{frame}
 	}
 	\addtocounter{framenumber}{-1} 
 	
+	\Background
+
 	% \section{Appendix}
 	
 	\appendix

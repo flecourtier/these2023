@@ -59,11 +59,42 @@
 		\includegraphics[width=\linewidth]{images/newlines/levelset/boundary_curvature.png}
 	\end{figure}
 
-    \vspace{-5pt}
-    TODO : Ajouter résultats "Poisson on Bean" + Mettre au propre les images. 
+    % \vspace{-5pt}
+    % TODO : Ajouter résultats "Poisson on Bean" + Mettre au propre les images. 
 \end{frame}
 
-\subsection{\filledstar Posteriori error estimates}
+\subsection{\filledstar A posteriori error estimates}
+
+\begin{frame}{Problem considered} 
+	\textbf{Problem statement:} Considering the \textcolor{red}{Poisson problem with Dirichlet BC}:
+	\vspace{-5pt}
+	\begin{equation*}
+		\left\{
+		\begin{aligned}
+			-\Delta u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M}, \\
+			u         & = 0, \;  &  & \text{on } \; \Gamma, \\
+		\end{aligned}
+		\right.
+		% \label{eq:Lap2DMixed}\tag{$\mathcal{P}$}
+	\end{equation*}
+
+	with $\Omega=[-0.5\pi,0.5\pi]^2$ and $\mathcal{M}=[-0.5,0.5]^2$ ($p=2$).
+	
+	\vspace{2pt}
+	\textbf{Analytical solution :}
+
+	\vspace{-12pt}
+	\begin{equation*}
+		% \label{eq:analytical_solution_Lap2D}
+		u(\bm{x};\bm{\mu})= \exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2(0.15)^2}\right)\sin(2x)\sin(2y).
+	\end{equation*}
+
+	\vspace{2pt}
+	\small
+	\textbf{PINN training:} Imposing Dirichlet BC exactly in the PINN.
+
+	\vspace{8pt}
+\end{frame}
 
 \begin{frame}{Adaptive mesh refinement}	
     \textbf{Adaptive refinement loop} using Dorfler marking strategy. \refappendix{frame:amr} %(residual estimator)
@@ -95,7 +126,8 @@
     \textbf{Local residual estimator (in $L^2$ norm):} Let $T$ be a cell of $\mathcal{T}_h$ .
 
     \vspace{-8pt}
-    $$\eta_{res,T}^2 = h_T^4 \|\Delta u_h + f_h\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E^2 \|[\nabla u_h\cdot n]\|_{L^2(E)}^2$$
+    % $$\eta_{res,T}^2 = h_T^4 \|\Delta u_h + f_h\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E^2 \|[\nabla u_h\cdot n]\|_{L^2(E)}^2$$
+    $$\eta_{res,T}^2 = h_T^2 \|\Delta u_h + f_h\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E \|[\nabla u_h\cdot n]\|_{L^2(E)}^2$$
     with $h_\bullet$ the size of $\bullet$ and considering the Poisson problem.
 
     % Considering the Poisson problem with Dirichlet boundary conditions.
@@ -133,7 +165,8 @@
     \textbf{Local residual estimator (in $L^2$ norm):} Let $T$ be a cell of $\mathcal{T}_h$ .
 
     \vspace{-8pt}
-    $$\eta_{res,T}^2 = h_T^4 \|\textcolor{red}{\big((\Delta u_\theta)_h + \Delta p_h^+\big) + f_h}\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E^2 \|\textcolor{red}{[\nabla p_h^+\cdot n]}\|_{L^2(E)}^2$$
+    % $$\eta_{res,T}^2 = h_T^4 \|\textcolor{red}{\big((\Delta u_\theta)_h + \Delta p_h^+\big) + f_h}\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E^2 \|\textcolor{red}{[\nabla p_h^+\cdot n]}\|_{L^2(E)}^2$$
+    $$\eta_{res,T}^2 = h_T^2 \|\textcolor{red}{\big((\Delta u_\theta)_h + \Delta p_h^+\big) + f_h}\|_{L^2(T)}^2 + \frac{1}{2} \sum_{E \in \partial T} h_E \|\textcolor{red}{[\nabla p_h^+\cdot n]}\|_{L^2(E)}^2$$
     with $h_\bullet$ the size of $\bullet$ and considering the Poisson problem.
 \end{frame}
 
@@ -167,7 +200,8 @@
     \textbf{Local residual estimator (in $L^2$ norm):} Let $T$ be a cell of $\mathcal{T}_h$ .
 
     \vspace{-8pt}
-    $$\eta_{res,T}^2 = h_T^4 \|\textcolor{red}{(\Delta u_\theta)_h + f_h}\|_{L^2(T)}^2$$
+    % $$\eta_{res,T}^2 = h_T^4 \|\textcolor{red}{(\Delta u_\theta)_h + f_h}\|_{L^2(T)}^2$$
+    $$\eta_{res,T}^2 = h_T^2 \|\textcolor{red}{(\Delta u_\theta)_h + f_h}\|_{L^2(T)}^2$$
     with $h_\bullet$ the size of $\bullet$ and considering the Poisson problem.
 \end{frame}
 
@@ -180,7 +214,7 @@
     
     \vspace{-10pt}
     \footnotesize
-    \warning \quad Results obtained on a laptop GPU (probably due to external factors).
+    \warning \quad Results obtained on a laptop GPU (Time measurements polluted by external factors).
     
     \normalsize
     \vspace{5pt}
@@ -343,6 +377,6 @@
         \end{minipage}
         
         \vspace{-10pt}
-        \includegraphics[width=\linewidth]{images/newlines/nonlinear/results/times_cropped.pdf}
+        \includegraphics[width=\linewidth]{images/newlines/nonlinear/results/times.pdf}
     \end{center}
 \end{frame}

@@ -109,6 +109,16 @@
 	}
 }
 
+% pour la biblio
+\newcommand{\BackgroundBiblio}{
+    \setbeamertemplate{background}{%
+        \begin{tikzpicture}[overlay,remember picture]
+            \fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+            % \fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;
+        \end{tikzpicture}%
+    }
+}
+
 % page number
 \addtobeamertemplate{navigation symbols}{}{%
 	\usebeamerfont{footline}%
