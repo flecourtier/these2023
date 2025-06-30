@@ -1,0 +1,117 @@
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% gains pour tous les q
+\newcommand{\gainstableallq}[1]{
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+        & \multicolumn{3}{c}{\textbf{Gains in $L^2$ rel error}} \\
+		& \multicolumn{3}{c}{\textbf{of our method w.r.t. FEM}} \\
+		\cmidrule(lr){2-4}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-4}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={1}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-4}},
+		columns/q/.style={column name=\textbf{k}},
+        columns/min_FEM/.style={column name=\textbf{min},fixed},
+        columns/max_FEM/.style={column name=\textbf{max},fixed},
+        columns/mean_FEM/.style={column name=\textbf{mean},fixed,
+            postproc cell content/.append style={
+                /pgfplots/table/@cell content/.add={\color{red}}{},
+            }
+        },
+        columns={q,min_FEM,max_FEM,mean_FEM},
+        precision=2
+    ]{#1}
+}
+
+% Lap1D : gains pour comparaison PINNs/Data
+\newcommand{\gainsbothNN}[2]{
+	\pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+        & \textbf{FEM} \\
+		\cmidrule(lr){2-2}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-2}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={2}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-2}},
+        columns/N/.style={column name=\textbf{N}},
+		columns/err/.style={column name=\textbf{error},sci},
+        columns={N,err},
+        precision=2
+    ]{#1} \hspace{20pt}
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+        & \multicolumn{2}{c}{\textbf{PINN prior $u_{\theta}$}} &
+		\multicolumn{2}{c}{\textbf{Data prior $u_{\theta}^\text{data}$}} \\
+		\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={2}{before row=\cmidrule(lr){1-1}\cmidrule(lr){2-3} \cmidrule(lr){4-5}},
+		% columns/method/.style={column name=\textbf{method},string type},
+        columns/N/.style={column name=\textbf{N}},
+		columns/PINNs_err/.style={column name=\textbf{error},sci},
+        columns/PINNs_gains/.style={column name=\textbf{gain},fixed},
+        columns/NN_err/.style={column name=\textbf{error},sci},
+		columns/NN_gains/.style={column name=\textbf{gain},fixed},
+        columns={N,PINNs_err,PINNs_gains,NN_err,NN_gains},
+        precision=2
+    ]{#2}
+}
+
+% gains pour tous les q
+\newcommand{\gainstableMult}[1]{
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+        & \multicolumn{6}{c}{\textbf{Gains in $L^2$ rel error of our method w.r.t. FEM}} \\
+        \cmidrule(lr){2-7}
+        & \multicolumn{3}{c}{\textbf{PINN prior $u_{\theta}$}} &
+		\multicolumn{3}{c}{\textbf{Data prior $u_{\theta}^\text{data}$}} \\
+		\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-4} \cmidrule(lr){5-7}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={2}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-4} \cmidrule(lr){5-7}},
+		% columns/method/.style={column name=\textbf{method},string type},
+        columns/N/.style={column name=\textbf{N}},
+        columns/min_FEM_PINN/.style={column name=\textbf{min},fixed},
+        columns/max_FEM_PINN/.style={column name=\textbf{max},fixed},
+        columns/mean_FEM_PINN/.style={column name=\textbf{mean},fixed},
+        columns/min_FEM_data/.style={column name=\textbf{min},fixed},
+        columns/max_FEM_data/.style={column name=\textbf{max},fixed},
+        columns/mean_FEM_data/.style={column name=\textbf{mean},fixed},
+        columns={N,min_FEM_PINN,max_FEM_PINN,mean_FEM_PINN,min_FEM_data,max_FEM_data,mean_FEM_data},
+        precision=2
+    ]{#1}
+}
+
+% \newcommand{\gainstableMultData}[1]{
+%     \pgfplotstabletypeset[
+%         col sep=comma,
+%         every head row/.style={
+%         before row={\toprule[1.pt]
+%         & & \multicolumn{3}{c}{\textbf{Gains in $L^2$ rel error}} \\
+% 		& & \multicolumn{3}{c}{\textbf{of our method w.r.t. FEM}} \\
+% 		\cmidrule(lr){3-5}
+%         },
+%         after row=\cmidrule(lr){1-1} \cmidrule(lr){2-2} \cmidrule(lr){3-5}},
+%         every last row/.style={after row=\bottomrule[1.pt]},
+%         every nth row={2}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-2} \cmidrule(lr){3-5}},
+% 		columns/method/.style={column name=\textbf{method},string type},
+%         columns/N/.style={column name=\textbf{N}},
+%         columns/min_FEM/.style={column name=\textbf{min},fixed},
+%         columns/max_FEM/.style={column name=\textbf{max},fixed},
+%         columns/mean_FEM/.style={column name=\textbf{mean},fixed},
+%         columns={method,N,min_FEM,max_FEM,mean_FEM},
+%         precision=2
+%     ]{#1}
+% }

@@ -1,0 +1,133 @@
+% beamertheme.sty
+% \ProvidesPackage{beamertheme}
+\RequirePackage{silence}
+\RequirePackage{etoolbox}
+\RequirePackage{tikz}
+\RequirePackage{fontspec}
+\WarningsOff[mathdesign/mdbch]
+
+% couleurs utilisées
+\definecolor{bulles}{RGB}{19, 23, 42}
+\definecolor{title}{RGB}{56, 69, 108}
+\definecolor{other}{RGB}{79, 127, 151}
+\definecolor{triangleinf}{RGB}{167, 199, 231}
+\definecolor{trianglesup}{RGB}{167, 199, 231}
+\definecolor{appendix}{RGB}{138, 164, 189}
+
+% color
+\setbeamercolor{classic}{fg=black}
+\setbeamercolor{title}{fg=title}
+\setbeamercolor{author}{fg=other}
+\setbeamercolor{institute}{fg=other}
+\setbeamercolor{date}{fg=other}
+\setbeamercolor{frametitle}{fg=title}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg=black}
+\setbeamercolor{block title}{fg=title}
+
+% font
+\setromanfont{Georgia}
+%\usefonttheme{serif} %fonctionne
+\setsansfont[Scale=MatchLowercase]{Open Sans}
+\setbeamerfont{classic}{family=\sffamily,series=\mdseries,size=\small}
+\setbeamerfont{title}{family=\rmfamily,series=\bfseries,size=\LARGE}
+\setbeamerfont{subtitle}{family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamerfont{author}{series=\mdseries, size=\large}
+\setbeamerfont{institute}{size=\small,series=\mdseries}
+\setbeamerfont{date}{size=\normalsize,series=\bfseries}
+\setbeamerfont{frametitle}{family=\rmfamily,series=\bfseries,size=\Large}
+\setbeamerfont{block title}{family=\rmfamily,size=\large}
+
+\setbeamersize{text margin left=2em, text margin right=2em}
+
+% template
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+% \setbeamertemplate{title page}[default][left]
+\setbeamertemplate{frametitle}{\vskip0.01\paperheight\usebeamercolor[fg]{frametitle}\insertframetitle} 
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{itemize subsubitem}{\textbullet}
+% \setlength{\leftmargini}{1.25em}
+% \setlength{\leftmarginii}{1em}
+% \setlength{\leftmarginiii}{1em}
+\setbeamertemplate{footline}{\vskip0.15\paperheight}
+
+% titlepage
+\pgfdeclareimage[height=0.05\paperheight]{logomimesis}{images/logo-mimesis}
+\pgfdeclareimage[height=0.08\paperheight]{logoinria}{images/logo-inria}
+
+\defbeamertemplate*{title page}{customized}[1][]
+{
+	\vspace{3pt}
+	\includegraphics[height=0.07\paperheight]{images/logo-inria}
+	\hspace{0.3cm}
+	\includegraphics[height=0.05\paperheight]{images/logo-mimesis}
+	\hspace{0.3cm}
+	\includegraphics[height=0.05\paperheight]{images/logo-anr} 
+
+	\vspace{15pt}
+	\begin{center}
+		\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par
+		
+		\vspace{15pt}
+		\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par
+		
+		\vspace{10pt}
+		\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par
+	\end{center}
+	
+	\vspace{10pt}
+	\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par
+	
+	\vspace{-26pt}
+	\begin{flushright}
+		\rotatebox{2.5}{\includegraphics[height=0.095\paperheight]{images/logo-icosahom-1}}
+		
+		\vspace{3pt}
+		\includegraphics[height=0.1\paperheight]{images/logo-icosahom-2}\par
+	\end{flushright}
+}
+
+% triangles et logo
+\newcommand{\BackgroundTitle}{
+	\setbeamertemplate{background}{%
+		\begin{tikzpicture}[overlay,remember picture]
+			\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+			\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;  
+		\end{tikzpicture}
+	}
+}
+
+\newcommand{\Background}{
+	\setbeamertemplate{background}{%
+		\begin{tikzpicture}[overlay,remember picture]
+			\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+			\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;  
+			\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.07\paperheight] at (current page.south east) {\normalsize\textbf{LECOURTIER Frédérique}};%
+			\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.05\paperheight,yshift=0.03\paperheight] at (current page.south east) {\textbf{Enriching continuous Lagrange FE approximation spaces using NN}};%
+		\end{tikzpicture}%
+		\usebeamerfont{footline}%
+		\usebeamercolor[fg]{footline}%
+		\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+	}
+	% page number
+	\addtobeamertemplate{navigation symbols}{}{%
+		\usebeamerfont{footline}%
+		\usebeamercolor[fg]{footline}%
+		\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
+	}
+}
+
+% pour la biblio
+\newcommand{\BackgroundBiblio}{
+    \setbeamertemplate{background}{%
+        \begin{tikzpicture}[overlay,remember picture]
+            \fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+            % \fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;
+        \end{tikzpicture}%
+    }
+}
+
+\setbeamercolor{footline}{fg=black}
+\setbeamerfont{footline}{series=\bfseries,size=\normalsize}

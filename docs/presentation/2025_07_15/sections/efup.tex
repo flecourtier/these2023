@@ -1,0 +1,68 @@
+\begin{frame}{Newton method - Additive approach}
+    TODO
+    % \vspace{5pt}
+    % We want to solve the non linear system: \hfill \tiny $N_h$ : number of degrees of freedom.
+
+    % \normalsize
+    % \vspace{-10pt}
+    % \begin{equation}
+    %     F(\textcolor{red}{p_+ + u_\theta}) = 0 \tag{1}
+    % \end{equation}
+
+    % \vspace{-2pt}
+    % with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $\textcolor{red}{p_+}\in\mathbb{R}^{N_h}$ the unknown vector.
+
+    % \begin{center}
+    %     \small
+    %     \begin{minipage}{0.9\linewidth}
+    %         \begin{algorithm}[H]
+    %             \SetAlgoLined
+    %             \caption{\textcolor{red}{Additive approach} to solve \eqref{eq:nonlinear} }
+    %             \textbf{Initialization step:} set \textcolor{red}{$p_+^{(0)} = 0$}\;
+    %             \For{\( k \ge 0 \)}{
+    %                 Solve the linear system \( F(\textcolor{red}{p_+^{(k)}+u_\theta}) + F'(\textcolor{red}{p_+^{(k)}+u_\theta}) \delta^{(k+1)} = 0 \) for \( \delta^{(k+1)} \)\;
+    %                 Update \( \textcolor{red}{p_+^{(k+1)}} = \textcolor{red}{p_+^{(k)}} + \delta^{(k+1)} \)\;
+    %             }
+    %         \end{algorithm}
+    %     \end{minipage}
+    % \end{center}
+
+    % \textbf{Advantage compared to DeepPhysics:}
+
+    % \begin{center}
+    % $u_\theta$ is not required to live in the same space as $p_+$.
+    % \end{center}
+\end{frame}
+
+
+% \begin{frame}{Additive approach}
+% 	\textbf{Variational Problem :} Let $u_{\theta} \in H^{k+1}(\Omega)\cap H^1_0(\Omega)$.
+	
+% 	\vspace{-5pt}
+% 	\begin{equation}
+% 		\label{eq:weakplus}
+% 		\text{Find } p_h^+ \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(p_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
+% 	\end{equation}
+	
+% 	\vspace{5pt}
+% 	\begin{minipage}[t]{0.6\linewidth}
+% 		with the \textcolor{red}{enriched trial space $V_h^+$} defined by
+% 		\begin{equation*}
+% 			V_h^+ = \left\{
+% 			u_h^+= u_{\theta} + p_h^+, \quad p_h^+ \in V_h^0
+% 			\right\}.
+% 		\end{equation*}
+	
+% 		\vspace{20pt}
+	
+% 		\textbf{General Dirichlet BC :} If $u=g$ on $\partial \Omega$, then
+% 		\[
+% 			p_h^+ = g - u_{\theta} \text{\quad on } \partial \Omega,
+% 		\]
+% 		with $u_\theta$ the PINN prior. 
+% 	\end{minipage} \qquad \begin{minipage}[t][][b]{0.28\linewidth}
+% 		\vspace{-15pt}
+% 		\centering
+% 		\pgfimage[width=\linewidth]{images/correction/correction.pdf}
+% 	\end{minipage}
+% \end{frame}

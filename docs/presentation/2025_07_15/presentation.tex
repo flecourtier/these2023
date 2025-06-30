@@ -1,0 +1,269 @@
+%% Requires compilation with XeLaTeX or LuaLaTeX
+\documentclass[compress,10pt,xcolor={table,dvipsnames},t]{beamer} %aspectratio=169
+\usetheme{diapo}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{argmin}
+\usepackage{xparse} %for \NewDocumentEnvironment
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage[bottom]{footmisc}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{array,multirow,makecell}
+\usepackage{pifont}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{appendixnumberbeamer}
+%\usepackage[style=authoryear,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
+\usepackage[square]{natbib}
+\bibliographystyle{plainnat}
+\usepackage{etoolbox}
+% box colorée dans équation
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usepackage{soul}
+% pour l'indicatrice
+\usepackage{dsfont}
+\usepackage{cancel}
+\usepackage{booktabs}
+\usepackage{bm}
+% pour indentation des itemize
+% \usepackage{enumitem}
+
+\setcellgapes{1pt}
+\setlength{\parindent}{0pt}
+\makegapedcells
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+\renewcommand*{\bibfont}{\footnotesize}
+\useoutertheme[subsection=false]{miniframes}
+\makeatletter
+%\patchcmd{\slideentry}{\advance\beamer@xpos by1\relax}{}{}{}
+\def\beamer@subsectionentry#1#2#3#4#5{\advance\beamer@xpos by1\relax}%
+\makeatother
+\setbeamercolor*{mini frame}{fg=bulles,bg=bulles}
+\hypersetup{
+	colorlinks=true,
+	urlcolor=blue,
+	citecolor=other,
+	linkcolor=title,
+}
+
+\title[PhiFEM]{Enriching continuous Lagrange finite element approximation spaces using neural networks}
+\subtitle{ICOSAHOM 2025}
+
+\author{%
+	Michel Duprez\inst{1}, 
+	Emmanuel Franck\inst{2},
+	\textbf{Frédérique Lecourtier}\inst{1} and
+    Vanessa Lleras\inst{3}
+}
+
+\institute{%
+	\inst{1} Project-Team MIMESIS, Inria, Strasbourg, France \\
+    \inst{2} Project-Team MACARON, Inria, Strasbourg, France \\
+    \inst{3} IMAG, University of Montpellier, Montpellier, France
+}
+
+\date{July 15, 2025}
+
+\allowbreak
+
+% u_chapeau (chapeau en couleur)
+\usepackage{accents}
+\newcommand{\uchapeau}[1]{\accentset{\textcolor{red}{\wedge}}{#1}}
+\newcommand{\refappendix}[1]{\tikz[baseline=(char.base)]{\node[framednumber] (char) {\hyperlink{#1}{\small \textcolor{white}{Appendix \ref*{#1}}}};}}
+% \newcommand{\refsubappendix}[1]{\tikz[baseline=(char.base)]{\node[framednumber] (char) {\hyperlink{#1.maj}{\small \textcolor{white}{Appendix \ref*{#1}}}};}}
+
+\tikzset{
+	framednumber/.style={
+		draw=appendix,% Couleur de la bordure
+		fill=appendix, % Couleur de fond
+		rounded corners, % Coins arrondis
+		inner sep=2pt,  % Espace intérieur
+	}
+}
+
+%% numérotation et label des appendix
+\newcounter{appendixframenumber}
+\setcounter{appendixframenumber}{0}
+\newcounter{subappendixframenumber}
+\setcounter{subappendixframenumber}{1}
+
+\makeatletter
+\newcommand{\labelappendixframe}[1]{%
+	\protected@write\@auxout{}{%
+		\string\newlabel{#1}{{\theappendixframenumber}{\thepage}}%
+	}%
+	\hypertarget{#1}{}
+}	
+\makeatother
+
+% Ce compteur temporaire stockera "x.y" (1.1, 1.2, etc.) pour les sous-appendices
+\makeatletter
+\newcommand{\labelsubappendixframe}[1]{%
+	\edef\@currentlabel{\theappendixframenumber.\thesubappendixframenumber}%
+	\label{#1}%
+}
+\makeatother
+
+\newcommand{\appendixsection}[1]{%
+	\addtocounter{appendixframenumber}{1}%
+	\section{\appendixname~\theappendixframenumber~: #1}%\labelappendixframe{frame:#2}%
+	\setcounter{subappendixframenumber}{1}% Réinitialiser le compteur des sous-appendices
+}
+
+\NewDocumentEnvironment{subappendixframe}{mo+b} 
+{%
+	% Optionnal : noframenumbering
+	\IfNoValueTF{#2}
+	{\begin{frame}{A\theappendixframenumber.\thesubappendixframenumber~– #1}}
+	{\begin{frame}[#2]{A\theappendixframenumber.\thesubappendixframenumber~– #1}}
+		#3
+	\end{frame}
+}{}
+
+\NewDocumentEnvironment{appendixframe}{mo+b} 
+{%
+	% Optionnal : noframenumbering
+	\IfNoValueTF{#2}
+	{\begin{frame}{A\theappendixframenumber~– #1}}
+	{\begin{frame}[#2]{A\theappendixframenumber~– #1}}
+		#3
+	\end{frame}
+}{}
+
+% barre en couleur terme dans équation
+\newcommand\Ccancel[2][black]{\renewcommand\CancelColor{\color{#1}}\cancel{#2}}
+
+% chifrre romain dans le texte
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% warning
+\newcommand{\warning}{{\fontencoding{U}\fontfamily{futs}\selectfont\char 49\relax}}
+
+\newcommand{\insertsectionheadSubtitle}{}
+
+\newtcbtheorem{mytheo}{Theorem}{colback=other, % Couleur de fond de la boîte
+	colframe=other, % Couleur du cadre de la boîte
+	arc=2mm, % Rayon de l'arrondi des coins
+	boxrule=0.5pt, % Épaisseur du cadre de la boîte
+	breakable, enhanced jigsaw,
+	width=\linewidth,
+	opacityback=0.1
+	}{th}
+
+\newcommand*{\footcite}[1]{\footnote[frame,1]{\citep{#1}}}
+
+% star command
+\newcommand{\filledstar}{\textcolor{Goldenrod}{\ding{72}}\hspace{-8pt}\ding{73}\,}
+
+% algorithm
+\usepackage[ruled,vlined]{algorithm2e}
+
+\input{preamble/convergence_h}
+\input{preamble/gains}
+\input{preamble/costs}
+
+\begin{document}
+	% \nocite{*}
+	
+	\renewcommand{\inserttotalframenumber}{\pageref{lastslide}}
+	
+	{\setbeamertemplate{footline}{} 
+		\BackgroundTitle
+		\begin{frame}[plain]
+			\maketitle
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1} 	
+	
+	\AtBeginSection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+					\vspace{0.5cm} % Ajustez l'espacement selon vos besoins
+					% \usebeamerfont{classic}\usebeamercolor[fg]{classic}\insertsectionheadSubtitle
+				\end{beamercolorbox}
+				%\tableofcontents[sectionstyle=hide,subsectionstyle=show]
+				
+				%subsectionstyle=⟨style for current subsection⟩/⟨style for other subsections in current section⟩/⟨style for subsections in other sections⟩
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
+				\vfill
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{classic}\usebeamercolor[fg]{classic}\insertsectionheadSubtitle
+				\end{beamercolorbox}
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1} 
+	}
+	
+	\AtBeginSubsection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+					\vspace{0.5cm} 
+				\end{beamercolorbox}
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/shaded/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1} 
+	}
+	
+	\Background
+	
+	\section*{Introduction}
+	\input{sections/intro}
+
+	\section{Physics-informed neural network (PINN)}
+	\input{sections/pinns}
+
+	\section{Finite element method (FEM)}
+	\input{sections/fem}
+
+	\section{Enriched finite element method using PINN}
+	\input{sections/efup}
+	% \input{sections/correction}
+	% \input{sections/newlines}
+
+	\section{Numerical results}
+	\input{sections/results}
+	% \section{New lines of research}
+
+	\section*{Conclusion}
+
+	\begin{frame}{Conclusion}
+		TODO
+	\end{frame}
+
+	\BackgroundBiblio
+	
+	{\setbeamertemplate{footline}{} 	
+	\begin{frame}{References}
+		\scriptsize
+		\bibliography{biblio}
+	\end{frame}
+	}
+	\addtocounter{framenumber}{-1} 
+	
+	\Background
+
+	% \section{Appendix}
+	
+	\appendix
+	
+	\input{sections/appendix}
+	
+\end{document}
