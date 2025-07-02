@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+
+% Encodage
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% Mathématiques
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{mathtools}
+
+% Marges
+\usepackage[a4paper, margin=2.5cm]{geometry}
+
+% Pour les vecteurs en gras
+\usepackage{bm}
+
+% Pour les symboles des ensembles R, etc.
+\usepackage{dsfont}
+
+% Pour les figures (si besoin de TikZ plus tard)
+\usepackage{graphicx}
+\usepackage{tikz}
+
+% Style
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.5em}
+
+% Liens cliquables
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+
+\title{Méthode de Newton pour Navier-Stokes \footnotesize(proposé par ChatGPT)}
+\author{}
+\date{}
+
+
+\begin{document}
+
+\maketitle
+
+\textbf{Objectif} : résoudre le système stationnaire de Navier-Stokes avec flottabilité et gravité, en formulant les équations sous forme faible, puis en les discrétisant et en résolvant par la méthode de Newton.
+
+\section*{1. Formulation faible continue}
+
+On considère les formes faibles suivantes :\\
+
+\begin{itemize}
+  \item Incompressibilité :
+  \[
+  a_{\text{inc}}(\mathbf{u}, q) = \int_\Omega (\nabla \cdot \mathbf{u}) \, q \, dx
+  \]
+  \item Quantité de mouvement :
+  \[
+  a_{\text{mom}}(\mathbf{u}, p, T; \mathbf{v}) = \int_\Omega \left[ (\mathbf{u} \cdot \nabla)\mathbf{u} \cdot \mathbf{v} + \mu \nabla \mathbf{u} : \nabla \mathbf{v} - p \nabla \cdot \mathbf{v} - g(\beta T + 1)\mathbf{e}_y \cdot \mathbf{v} \right] dx
+  \]
+  \item Énergie thermique :
+  \[
+  a_{\text{ener}}(\mathbf{u}, T; s) = \int_\Omega \left[ (\mathbf{u} \cdot \nabla T) \, s + k_f \nabla T \cdot \nabla s \right] dx
+  \]
+\end{itemize}
+
+\section*{2. Espaces discrets}
+
+On choisit des espaces d’éléments finis compatibles :
+
+\begin{itemize}
+  \item Vitesse : \( V_h \subset [H^1]^2 \), typiquement \( \mathbb{P}_2 \)
+  \item Pression : \( Q_h \subset L^2 \), typiquement \( \mathbb{P}_1 \)
+  \item Température : \( W_h \subset H^1 \), souvent \( \mathbb{P}_1 \)
+\end{itemize}
+
+\section*{3. Bases discrètes}
+
+On construit des bases finies :
+
+\begin{itemize}
+  \item \( \{ \phi_i^{(u_x)} \}_{i=1}^{N_u} \), \( \{ \phi_i^{(u_y)} \}_{i=1}^{N_u} \) pour \( \mathbf{u} \)
+  \item \( \{ \psi_j \}_{j=1}^{N_p} \) pour \( p \)
+  \item \( \{ \eta_k \}_{k=1}^{N_T} \) pour \( T \)
+\end{itemize}
+
+\section*{4. Représentation des inconnues}
+
+Les champs sont approchés par :
+\[
+\mathbf{u}_h = \sum_{i=1}^{N_u} u_i^{(x)} \phi_i^{(u_x)} + u_i^{(y)} \phi_i^{(u_y)}, \quad
+p_h = \sum_{j=1}^{N_p} p_j \psi_j, \quad
+T_h = \sum_{k=1}^{N_T} T_k \eta_k
+\]
+
+Le vecteur global d’inconnues est :
+\[
+u = \begin{bmatrix}
+\mathbf{u} \\
+p \\
+T
+\end{bmatrix}
+\in \mathbb{R}^{2N_u + N_p + N_T}
+\]
+
+\section*{5. Linéarisation}
+
+Les formes \( a_{\text{mom}} \) et \( a_{\text{ener}} \) sont non linéaires. On linéarise autour de \( u^{(k)} \), en construisant :
+
+\begin{itemize}
+  \item Le résidu \( F(u^{(k)}) \)
+  \item La jacobienne \( F'(u^{(k)}) \)
+\end{itemize}
+
+\section*{6. Assemblage de \( F(u) \)}
+
+On construit \( F(u) \in \mathbb{R}^{2N_u + N_p + N_T} \) en testant les formes discrètes avec les fonctions de base :
+
+\[
+F(u) =
+\begin{bmatrix}
+F_{\text{mom}}(\mathbf{u}, p, T) \in \mathbb{R}^{2N_u} \\
+F_{\text{inc}}(\mathbf{u}) \in \mathbb{R}^{N_p} \\
+F_{\text{ener}}(\mathbf{u}, T) \in \mathbb{R}^{N_T}
+\end{bmatrix}
+\]
+
+\section*{7. Méthode de Newton}
+
+À chaque itération \( k \), on effectue :
+
+\begin{align*}
+\text{Résolution : } & \quad F'(u^{(k)}) \delta^{(k+1)} = -F(u^{(k)}) \\
+\text{Mise à jour : } & \quad u^{(k+1)} = u^{(k)} + \delta^{(k+1)}
+\end{align*}
+
+---
+
+\textbf{Remarque} : Ce cadre est valable pour de nombreuses équations couplées en mécanique des fluides ou thermique, et l’opérateur \( F \) représente simplement le résidu discret des équations testées par les bases.
+
+
+\end{document}

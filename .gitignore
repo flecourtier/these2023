@@ -34,3 +34,11 @@ texput.log
 docs/antora/cache
 docs/antora/public
 docs/antora/node_modules
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz

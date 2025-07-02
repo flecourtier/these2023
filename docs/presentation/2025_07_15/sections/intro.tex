@@ -24,33 +24,24 @@
 
 		\includegraphics[width=\linewidth]{images/intro/pipeline/online.pdf}
 	\end{figure}
-	% \normalsize
-	% \vspace{5pt}
-	% \textbf{\filledstar Parametric elliptic convection/diffusion PDE :}
-	% For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
-	% \begin{equation}
-	% 	\label{eq:ob_pde}
-	% 	\mathcal{L}\big(u\,;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
-	% 	\tag{$\mathcal{P}$}
-	% \end{equation}
-	% where $\mathcal{L}$ is the parametric differential operator defined  by
-	% \begin{equation*}
-	% 	\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u),
-	% \end{equation*}
-	% and some Dirichlet, Neumann or Robin BC (which can also depend on $\bm{\mu}$).
 \end{frame}
 
 \begin{frame}{Problem considered}
+	\only<2-3>{\textcolor{red}{\textbf{Objective:} Simulate the flow for a range of $\bm{\mu} = (\mu,k_f) \in \mathcal{M} = [0.01, 0.1]^2$.}
+	
+	\vspace{5pt}}
+
 	\textbf{Stationary incompressible Navier-Stokes equations (with buoyancy and gravity) :}
 
-	We consider $\Omega = [-1,1]^2$ a squared domain and $\mathbf{e}_y = (0,1)$.
+	We consider \only<1>{$\Omega = [-1,1]^2$ a squared domain}\only<2-3>{\textcolor{red}{$\bm{x}=(x,y)\in\Omega$}} and $\bm{e}_y = (0,1)$.
 	
-	Find the velocity $\mathbf{u}=(u,v)$, the pressure $p$ and the temperature $T$ such that
+	Find \only<1>{the velocity $\bm{u}=(u,v)$, the pressure $p$ and the temperature $T$}\only<2-3>{\textcolor{red}{$\bm{U} = (\bm{u},p,T) = (u,v,p,T)$}} such that
 	\begin{equation} \label{eq:Pb}
 		\left\{\begin{aligned}
-			&\nabla \cdot \mathbf{u} = 0 \;\; \text{in } \Omega \quad &&\text{\small (incompressibility)} \\
-			&(\mathbf{u} \cdot \nabla)\mathbf{u} + \nabla p - \mu \Delta \mathbf{u} - g (\beta T + 1)\mathbf{e}_y = 0 \;\; \text{in } \Omega \quad &&\text{\small (momentum)} \\
-			&\mathbf{u} \cdot \nabla T - k_f \Delta T = 0 \;\; \text{in } \Omega \quad &&\text{\small (energy)}
+			&\only<1>{(\bm{u} \cdot \nabla)\bm{u} + \nabla p - \mu \Delta \bm{u} - g (\beta T + 1)\bm{e}_y}\only<2-3>{\textcolor{red}{R_{mom}(U;\bm{x},\bm{\mu})}} = 0 \;\; \text{in } \Omega \quad &&\text{\small (momentum)} \\
+			&\only<1>{\nabla \cdot \bm{u}}\only<2-3>{\textcolor{red}{R_{inc}(U;\bm{x},\bm{\mu})}} = 0 \;\; \text{in } \Omega \quad &&\text{\small (incompressibility)} \\
+			&\only<1>{\bm{u} \cdot \nabla T - k_f \Delta T}\only<2-3>{\textcolor{red}{R_{ener}(U;\bm{x},\bm{\mu})}} = 0 \;\; \text{in } \Omega \quad &&\text{\small (energy)} \only<1-2>{\\
+			&\text{+ suitable BC}}
 		\end{aligned}\right.
 		\tag{$\mathcal{P}$}
 	\end{equation}
@@ -59,43 +50,12 @@
 
 	\vspace{5pt}
 
-	\textbf{Boundary Conditions:} 
+	\only<3>{\textbf{Boundary Conditions:} 
 
 	\begin{itemize}
-		\item $\mathbf{u} = 0$ on $\partial\Omega$
+		\item $\bm{u} = 0$ on $\partial\Omega$
 		\item $T = 1$ on the left wall ($x=-1$) and $T = -1$ on the right wall ($x=1$) \\
 		$\displaystyle \frac{\partial T}{\partial n} = 0$ on the top and bottom walls ($y=\pm 1$)	
-	\end{itemize}
-
-\end{frame}
-
-\begin{frame}[noframenumbering]{Problem considered}
-	\textcolor{red}{\textbf{Objective:} Simulate the flow for a range of $\bm{\mu} = (\mu,k_f) \in \mathcal{M} = [0.01, 0.1]^2$.}
-	
-	\vspace{5pt}
-	\textbf{Stationary incompressible Navier-Stokes equations (with buoyancy and gravity) :}
-
-	We consider \textcolor{red}{$\bm{x}=(x,y)\in\Omega$} and $\mathbf{e}_y = (0,1)$.
-	
-	Find \textcolor{red}{$U = (u,v,p,T)$} such that
-	\begin{equation}
-		\left\{\begin{aligned}
-			&\textcolor{red}{R_{inc}(U;\bm{x},\bm{\mu})} = 0 \;\; \text{in } \Omega \quad &&\text{\small (incompressibility)} \\
-			&\textcolor{red}{R_{mom}(U;\bm{x},\bm{\mu})} = 0 \;\; \text{in } \Omega \quad &&\text{\small (momentum)} \\
-			&\textcolor{red}{R_{ener}(U;\bm{x},\bm{\mu})} = 0 \;\; \text{in } \Omega \quad &&\text{\small (energy)}
-		\end{aligned}\right.
-		\tag{$\mathcal{P}$}
-	\end{equation}
-	
-	with $g=9.81$ the gravity, $\beta=0.1$ the expansion coefficient, $\mu$ the viscosity and $k_f$ the thermal conductivity. \citep{coulaud_investigations_2024}
-
-	\vspace{5pt}
-	\textbf{Boundary Conditions:} 
-
-	\begin{itemize}
-		\item $\mathbf{u} = 0$ on $\partial\Omega$
-		\item $T = 1$ on the left wall ($x=-1$) and $T = -1$ on the right wall ($x=1$) \\
-		$\displaystyle \frac{\partial T}{\partial n} = 0$ on the top and bottom walls ($y=\pm 1$)	
-	\end{itemize}
+	\end{itemize}}
 
 \end{frame}

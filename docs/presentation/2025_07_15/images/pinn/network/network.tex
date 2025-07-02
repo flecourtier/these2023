@@ -58,12 +58,12 @@
     }            
 
     % Post-processing
-    \node (mult1) at (7.5,-1.5) {$\times\varphi$};
+    \node (mult1) at (7.5,-1.5) {$\times\varphi_1$};
     \draw[->] (out1) -- (mult1);
     \node[final] (f1) at (9,-1.5) {$u_\theta$};
     \draw[->] (mult1) -- (f1);
 
-    \node (mult2) at (7.5,-2.5) {$\times\varphi$};
+    \node (mult2) at (7.5,-2.5) {$\times\varphi_1$};
     \draw[->] (out2) -- (mult2);
     \node[final] (f2) at (9,-2.5) {$v_\theta$};
     \draw[->] (mult2) -- (f2);
@@ -71,7 +71,7 @@
     \node[final] (f3) at (9,-3.5) {$p_\theta$};
     \draw[->] (out3) -- (f3);
 
-    \node (mult4) at (7,-4.5) {$\times\psi$};
+    \node (mult4) at (7,-4.5) {$\times\varphi_2$};
     \draw[->] (out4) -- (mult4);
     \node (mult4b) at (8,-4.5) {$+g$};
     \draw[->] (mult4) -- (mult4b);
