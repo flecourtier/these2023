@@ -1,4 +1,4 @@
-\begin{frame}[allowframebreaks]{Discrete weak formulation}	
+\begin{frame}{Discrete weak formulation I\footnote[frame,1]{The $\bm{\mu}$ parameter is fixed in the FE resolution.}}	
 	Find $U_h=(\bm{u}_h, p_h, T_h) \in [V_h^{\, 0}]^2 \times Q_h \times W_h$ s.t., $\forall (\bm{v}_h, q_h, w_h) \in [V_h^{\, 0}]^2 \times Q_h \times W_h^{\, 0}$,
 
 	\vspace{-4pt}
@@ -8,7 +8,7 @@
 		\begin{aligned}
 			&\int_\Omega (\bm{u}_h \cdot \nabla)\bm{u}_h \cdot \bm{v}_h \, dx + \mu \int_\Omega \nabla \bm{u}_h : \nabla \bm{v}_h \, dx \\
 			&\hspace{50pt} - \int_\Omega p_h \, \nabla \cdot \bm{v}_h \, dx - g \int_\Omega (1 + \beta T_h) \bm{e}_y \cdot \bm{v}_h \, dx = 0 \qquad\text{\footnotesize (momentum)} \\
-			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, dx + 10^{-4} \int_\Omega q_h \, p_h \, dx = 0 \qquad\text{\footnotesize (incompressibility + pressure penalization)}\\
+			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, dx \only<2>{\textcolor{red}{\, + \, 10^{-4} \int_\Omega q_h \, p_h \, dx}} = 0 \qquad\text{\footnotesize (incompressibility \only<2>{\textcolor{red}{+ pressure penalization}})}\\
 			&\int_\Omega (\bm{u}_h \cdot \nabla T_h) \, w_h \, dx + \int_\Omega k_f \nabla T_h \cdot \nabla w_h \, dx = 0  \qquad\text{\footnotesize (energy)}
 			% \epsilon \int_\Omega q \, p \, dx = 0
 		\end{aligned}
@@ -36,7 +36,10 @@
 	and
 	$$W = \{w\in H^1(\Omega), \; w\vert_{x=-1}=1, \; w\vert_{x=1}=-1\}.$$
 
-	\newpage
+	\vspace{5pt}
+\end{frame}
+
+\begin{frame}{Discrete weak formulation II}	
 
 	Considering $(\phi_i)_{i=1}^{N_u}$, $(\psi_j)_{j=1}^{N_p}$ and $(\eta_k)_{k=1}^{N_T}$ the basis functions of the finite element spaces $V_h^{\, 0}$, $Q_h$ and $W_h$ respectively, we can write the discrete solutions as:
 	\begin{equation*}
@@ -49,7 +52,6 @@
 
 	\vspace{-5pt}
 	$$\vec{u} = \big(u_i\big)_{i=1}^{N_u} \in \mathbb{R}^{N_u}, \quad \vec{v} = \big(v_i\big)_{i=1}^{N_u} \in \mathbb{R}^{N_u},$$
-	% \vec{\bm{u}} = \big(\bm{u}_i\big)_{i=1}^{N_u} = \big((u_i,v_i)\big)_{i=1}^{N_u} \in [\mathbb{R}^{N_u}]^2,$$
 	$$\vec{p} = \big(p_j\big)_{j=1}^{N_p} \in \mathbb{R}^{N_p} \; \text{ and } \; \vec{T} = \big(T_k\big)_{k=1}^{N_T} \in \mathbb{R}^{N_T}.$$
 
 	\vspace{5pt}
@@ -61,17 +63,20 @@
 \end{frame}
 
 \begin{frame}{Newton method}
+	We consider the following three parameters:
+	$$\bm{\mu}^{(1)} = (0.1,0.1), \; \bm{\mu}^{(2)} = (0.05,0.05) \; \text{and} \; \bm{\mu}^{(3)} = (0.01,0.01).$$
+
 	We want to solve the non linear system: %\hfill \tiny $N_h$ : number of degrees of freedom.
 
     \normalsize
     \vspace{-10pt}
     \begin{equation*}
         % \label{eq:nonlinear}
-        F(\vec{U}) = 0 
+        F(\vec{U}_k) = 0 
     \end{equation*}
 
     \vspace{-2pt}
-    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $\vec{U}\in \mathbb{R}^{N_h}$ the unknown vector.
+    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $\vec{U}_k\in \mathbb{R}^{N_h}$ the unknown vector associated to the $k$-th parameter $\bm{\mu}^{(k)}$ ($k=1,2,3$).
 
 	\setcounter{algocf}{0}
     \begin{center}
@@ -80,37 +85,43 @@
             \begin{algorithm}[H]
                 \SetAlgoLined
                 \caption{Newton's algorithm \citep{newton_accel_2025}}
-                \textbf{Initialization step:} set $\vec{U}^{(0)} = \vec{U}_0$\;
-                \For{\( k \ge 0 \)}{
-                    Solve the linear system \( F(\vec{U}^{(k)}) + F'(\vec{U}^{(k)}) \delta^{(k+1)} = 0 \) for \( \delta^{(k+1)} \)\;
-                    Update \( \vec{U}^{(k+1)} = \vec{U}^{(k)} + \delta^{(k+1)} \)\;
+                \textbf{Initialization step:} set $\vec{U}_k^{(0)} = \only<1>{\vec{U}_{k,0}}\only<2>{\textcolor{red}{\vec{U}_{k,0}}}$\;
+                \For{\( j \ge 0 \)}{
+                    Solve the linear system \( F(\vec{U}_k^{(j)}) + F'(\vec{U}_k^{(j)}) \delta_k^{(j+1)} = 0 \) for \( \delta_k^{(j+1)} \)\;
+                    Update \( \vec{U}_k^{(j+1)} = \vec{U}_k^{(j)} + \delta_k^{(j+1)} \)\;
                 }
             \end{algorithm}
         \end{minipage}
     \end{center}
-
-	\uncover<2>{\textbf{Natural initialization} : 
-	$$\vec{U}_0 = \big(\bm{0}_{N_u}, \bm{0}_{N_u}, \bm{0}_{N_p}, \vec{T}_0\big)$$
-	where for $i=1,\ldots,N_T$,
-	$$(\vec{T}_0)_i = g(\bm{x}^{(i)}) = 1 - (x^{(i)}+1)$$
-	with $\bm{x}^{(i)}=\big(x^{(i)},y^{(i)}\big)$ the $i$-th dofs coordinates.}
+	\only<2>{\textcolor{red}{How to initialize the Newton solver?}}
 \end{frame}
 
-\begin{frame}{Initialization }
+\begin{frame}{3 types of initialization}
+	\begin{itemize}
+		\item \textbf{Natural initialization :} \only<2-4>{Using constant or linear function.}
+		
+		\only<2>{Considering a fixed parameter with $k\in\{1,2,3\}$, we can use the following initialization:	
+		$$\vec{U}_{k,0} = \big(\bm{0}_{N_u}, \bm{0}_{N_u}, \bm{0}_{N_p}, \vec{T}_0\big)$$
+		where for $i=1,\ldots,N_T$,
+		$$(\vec{T}_0)_i = g(\bm{x}^{(i)}) = 1 - (x^{(i)}+1)$$
+		with $\bm{x}^{(i)}=\big(x^{(i)},y^{(i)}\big)$ the $i$-th dofs coordinates of $W_h$.}
+		
+		\item \textbf{DeepPhysics initialization :} \only<3-4>{Using PINN prediction \citep{odot_deepphysics_2021}.}
 
-	% \only<3>{\textbf{Standard initialization} :\\
-	% Denoting $U^{(0)}$ the initial guess, we can use a constant value for the initialization, i.e. $U^{(0)} = U_0$.}
-
-	% \vspace{5pt}
-	% \textbf{DeepPhysics version:} \citep{odot_deepphysics_2021} \\
-	% Initialization with a PINN solution $U^{(0)}=U_\theta$.
-	% }
-
-    % \vspace{5pt}
-    % \textbf{Standard version:} \\
-    % Initialization with a constant value $u_0$. For instance, $u_0=1$.
-
-    % \vspace{5pt}
-    % \textbf{DeepPhysics version:} \citep{odot_deepphysics_2021} \\
-    % Initialization with a PINN solution $u_0=u_\theta$.
+		\only<3>{Considering a fixed parameter with $k\in\{1,2,3\}$, we can use the following initialization for $i=1,\ldots,N_h$,
+		$$\big(\vec{U}_{k,0}\big)_i = U_\theta(\bm{x}^{(i)},\bm{\mu}^{(k)})$$
+		with $\bm{x}^{(i)}=\big(x^{(i)},y^{(i)}\big)$ the $i$-th dofs coordinates of $[V_h^0]^2 \times Q_h \times W_h$ and $U_\theta$ the PINN.}
+		
+		\item \textbf{Incremental initialization.} \only<4>{Using a coarse FE solution of a simpler parameter.}
+		
+		\only<4>{\begin{itemize}
+			\item We consider a fixed parameter with $k\in\{2,3\}$.
+			\item We consider a coarse grid ($16\times 16$ grid) and compute the FE solution of \eqref{eq:weak_pb} for the parameter $\bm{\mu}^{(k-1)}$.
+			\item We interpolate the coarse solution to the current mesh.
+			\item We use it as an initialization for the Newton method, i.e.
+			$$\vec{U}_{k,0} = \big(\vec{u}_{k-1}, \vec{v}_{k-1}, \vec{p}_{k-1}, \vec{T}_{k-1}\big)$$
+			where $\vec{u}_{k-1}$, $\vec{v}_{k-1}$, $\vec{p}_{k-1}$ and $\vec{T}_{k-1}$ are the FE solutions for the parameter $\bm{\mu}^{(k-1)}$.
+		\end{itemize}
+		}
+	\end{itemize}
 \end{frame}
