@@ -37,8 +37,8 @@
 \begin{tikzpicture}
 
 	%% ---------------------------------------------------------------------------------------- %%
-	\begin{groupplot}[group style={group size=1 by 2,
-					vertical sep= 0.7em,group name=mygroupplot},
+	\begin{groupplot}[group style={group size=2 by 1,
+					horizontal sep= 1em,group name=mygroupplot},
 			enlargelimits=false, enlarge y limits=false, enlarge x limits=false,
 			height=\plotheight,width=\plotwidth,
 			scale only axis,
@@ -52,7 +52,7 @@
 		\nextgroupplot[% axis on top, separate axis lines,
 			% xlabel={\scriptsize \myxlabel },
 			% ylabel={\scriptsize \myylabel },
-			legend pos={north east},
+			legend pos={south west},
 			legend style={draw=none},
 			ymin=-0.55,
 			ymax=0.55,
@@ -63,8 +63,8 @@
 		]
 		\renewcommand{\dataA}{u}
 		\renewcommand{\dataB}{u_theta}
-		\renewcommand{\legendA}{$u$}
-		\renewcommand{\legendB}{$u_\theta$}
+		\renewcommand{\legendA}{$U$}
+		\renewcommand{\legendB}{$U_\theta$}
 
 		\addplot[color=orange, line width=1.5]
 		table[x expr = \thisrow{\dataX},
@@ -77,7 +77,8 @@
 
             \coordinate (c1) at (axis cs:0.55,-0.15);
             \coordinate (c2) at (axis cs:0.75,-0.15);
-			\coordinate (c3) at (axis cs:0.55,-0.15);
+			\coordinate (c3) at (axis cs:0.55,0.05);
+			\coordinate (c4) at (axis cs:0.75,0.05);
             % draw a rectangle
             \draw (c1) rectangle (axis cs:0.75,0.05);
 
@@ -98,8 +99,8 @@
 		]
 		\renewcommand{\dataA}{u}
 		\renewcommand{\dataB}{u_theta}
-		\renewcommand{\legendA}{$u$}
-		\renewcommand{\legendB}{$u_\theta$}
+		\renewcommand{\legendA}{$U$}
+		\renewcommand{\legendB}{$U_\theta$}
 
 		\addplot[color=orange, line width=1.5]
 		table[x expr = \thisrow{\dataX},
@@ -110,12 +111,12 @@
 				y expr = \thisrow{\dataB}]
 			{\datafileA}; \addlegendentry{\legendB}
 
-            \draw[thick, green!30!black, <->] (0.65,-0.08) -- (0.65,-0.042) node[midway, left] {$p_h^+$};
+            \draw[thick, green!30!black, <->] (0.65,-0.08) -- (0.65,-0.042) node[midway, left] {$C_h^+$};
 
 	\end{groupplot}
 
-      \draw [dashed] (c3) -- (ax2.north west);
-      \draw [dashed] (c2) -- (ax2.north east);
+      \draw [dashed] (c4) -- (ax2.north west);
+      \draw [dashed] (c2) -- (ax2.south west);
 	% -------------------------------------------------------------------------------
 \end{tikzpicture}
 

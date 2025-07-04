@@ -1,68 +1,94 @@
-\begin{frame}{Newton method - Additive approach}
-    TODO
-    % \vspace{5pt}
-    % We want to solve the non linear system: \hfill \tiny $N_h$ : number of degrees of freedom.
+\begin{frame}{Enriched space using PINN} %\footnote[frame,1]{The $\bm{\mu}$ parameter is fixed in the FE resolution.}}	
+    Considering the PINN prior $U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$, we define the \textcolor{red}{mixed finite element space additively enriched} by the PINN as follows:
+    
+    \begin{center}
+        \fcolorbox{red}{white}{$M_h^+ = \left\{U_h^+ = U_\theta + C_h^+, \quad C_h^+ \in M_h^{\, 0}\right\}$}
+    \end{center}
 
-    % \normalsize
-    % \vspace{-10pt}
-    % \begin{equation}
-    %     F(\textcolor{red}{p_+ + u_\theta}) = 0 \tag{1}
-    % \end{equation}
+    with $M_h^{\, 0}=[V_h^{\, 0}]^2 \times Q_h \times W_h^0$,
+    $U_h^+ = (\bm{u}_h^+, p_h^+, T_h^+) \in M_h^+$ and $C_h^+ = (\bm{C}_{h,\bm{u}}^+, C_{h,p}^+, C_{h,T}^+)$.
 
-    % \vspace{-2pt}
-    % with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $\textcolor{red}{p_+}\in\mathbb{R}^{N_h}$ the unknown vector.
+    \vspace{8pt}
 
-    % \begin{center}
-    %     \small
-    %     \begin{minipage}{0.9\linewidth}
-    %         \begin{algorithm}[H]
-    %             \SetAlgoLined
-    %             \caption{\textcolor{red}{Additive approach} to solve \eqref{eq:nonlinear} }
-    %             \textbf{Initialization step:} set \textcolor{red}{$p_+^{(0)} = 0$}\;
-    %             \For{\( k \ge 0 \)}{
-    %                 Solve the linear system \( F(\textcolor{red}{p_+^{(k)}+u_\theta}) + F'(\textcolor{red}{p_+^{(k)}+u_\theta}) \delta^{(k+1)} = 0 \) for \( \delta^{(k+1)} \)\;
-    %                 Update \( \textcolor{red}{p_+^{(k+1)}} = \textcolor{red}{p_+^{(k)}} + \delta^{(k+1)} \)\;
-    %             }
-    %         \end{algorithm}
-    %     \end{minipage}
-    % \end{center}
-
-    % \textbf{Advantage compared to DeepPhysics:}
-
-    % \begin{center}
-    % $u_\theta$ is not required to live in the same space as $p_+$.
-    % \end{center}
+    We can then define the three finite element subspaces of $M_h^+$ as follows:
+    \begin{align*}
+        \bm{V}_h^+ &= \left\{\bm{u}_h^+ = \bm{u}_\theta + \bm{C}_{h,\bm{u}}^+, \; \bm{C}_{h,\bm{u}}^+ \in [V_h^{\, 0}]^2\right\}, \quad \text{\footnotesize (vectorial)} \\
+        Q_h^+ &= \left\{p_h^+ = p_\theta + C_{h,p}^+, \; C_{h,p}^+ \in Q_h\right\}, \\
+        W_h^+ &= \left\{T_h^+ = T_\theta + C_{h,T}^+, \; C_{h,T}^+ \in W_h^{\, 0}\right\},
+    \end{align*}
+    where $C_{h,\bm{u}}^+$, $C_{h,p}^+$ and $C_{h,T}^+$ becomes the unknowns of the problem.
+    
+    \vspace{5pt}
+    \hl{à ajouter : dans quoi vit $U_\theta$ ?}
 \end{frame}
 
+\begin{frame}{??}
+    \hl{Schématisation en 1D de la correction... à voir comment présenter.}
+    \begin{center}    
+        \pgfimage[width=0.8\linewidth]{images/efup/correction/correction.pdf}
+    \end{center}
+\end{frame}
 
-% \begin{frame}{Additive approach}
-% 	\textbf{Variational Problem :} Let $u_{\theta} \in H^{k+1}(\Omega)\cap H^1_0(\Omega)$.
-	
-% 	\vspace{-5pt}
-% 	\begin{equation}
-% 		\label{eq:weakplus}
-% 		\text{Find } p_h^+ \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(p_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
-% 	\end{equation}
-	
-% 	\vspace{5pt}
-% 	\begin{minipage}[t]{0.6\linewidth}
-% 		with the \textcolor{red}{enriched trial space $V_h^+$} defined by
-% 		\begin{equation*}
-% 			V_h^+ = \left\{
-% 			u_h^+= u_{\theta} + p_h^+, \quad p_h^+ \in V_h^0
-% 			\right\}.
-% 		\end{equation*}
-	
-% 		\vspace{20pt}
-	
-% 		\textbf{General Dirichlet BC :} If $u=g$ on $\partial \Omega$, then
-% 		\[
-% 			p_h^+ = g - u_{\theta} \text{\quad on } \partial \Omega,
-% 		\]
-% 		with $u_\theta$ the PINN prior. 
-% 	\end{minipage} \qquad \begin{minipage}[t][][b]{0.28\linewidth}
-% 		\vspace{-15pt}
-% 		\centering
-% 		\pgfimage[width=\linewidth]{images/correction/correction.pdf}
-% 	\end{minipage}
-% \end{frame}
+\begin{frame}{Weak formulation - Additive approach}
+    \textbf{Weak problem :} Find $C_h^+=(\bm{C}_{h,\bm{u}}^+, C_{h,p}^+,^+, C_{h,T}^+) \in M_h^{\, 0}$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0}$,
+
+    \vspace{-4pt}
+    \footnotesize
+    \begin{equation}
+        \label{eq:weak_pb_add}
+        \hspace{-2pt}\begin{aligned}
+            &\int_\Omega \big[(\bm{u}_\theta \cdot \nabla)\bm{u}_\theta + (\bm{u}_\theta \cdot \nabla)\bm{C}_{h,\bm{u}}^+ + (\bm{C}_{h,\bm{u}}^+ \cdot \nabla)\bm{u}_\theta + (\bm{C}_{h,\bm{u}}^+ \cdot \nabla)\bm{C}_{h,\bm{u}}^+ \big] \cdot \bm{v_h} \, d\bm{x} \\
+            &\hspace{20pt} -\mu \left(\int_\Omega  \Delta \bm{u}_\theta \bm{v}_h \, d\bm{x} - \int_\Omega \nabla \bm{C}_{h,\bm{u}}^+ : \nabla \bm{v}_h \, d\bm{x}\right) + \left(\int_\Omega \nabla p_\theta \cdot \bm{v}_h \, d\bm{x} - \int_\Omega C_{h,p}^+ \nabla \cdot \bm{v}_h \, d\bm{x}\right)\\
+            &\hspace{50pt} - g \int_\Omega (1 + \beta (T_\theta + C_{h,T}^+)) \bm{e}_y \cdot \bm{v}_h \, d\bm{x} = 0, \,\text{\footnotesize (momentum)}  \\
+            &\int_\Omega q_h \, \big[\nabla \cdot \bm{u}_\theta + \nabla \cdot \bm{C}_{h,\bm{u}}^+\big] \, d\bm{x} \, + \, 10^{-4} \int_\Omega q_h \, (p_\theta + C_{h,p}^+) \, d\bm{x} = 0, \,\text{\footnotesize (incompressibility + penal)} \\
+            & \int_\Omega \big[ \bm{u}_\theta \cdot \nabla T_\theta + \bm{u}_\theta \cdot \nabla C_{h,T}^+ + \bm{C}_{h,\bm{u}}^+ \cdot \nabla T_\theta + \bm{C}_{h,\bm{u}}^+ \cdot \nabla C_{h,T}^+ \big] w_h \, d\bm{x} \\
+            & \hspace{20pt} - k_f \left(\int_\Omega \Delta T_\theta w_h \; d\bm{x}- \int_\Omega \nabla C_{h,T}^+ \cdot \nabla w_h \, d\bm{x} + \int_{\Gamma_\text{ad}} \frac{\partial C_{h,T}^+}{\partial n} \, w_h \, d\bm{s}\right) = 0, \,\text{\footnotesize (energy)}
+        \end{aligned}
+        \tag{$\mathcal{P}_h^+$}
+    \end{equation}
+
+    \vspace{5pt}
+    with $U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$ the PINN prior.
+
+    \hl{Parler des BC modifiés pour l'approche add ?}
+\end{frame}
+
+\begin{frame}{Newton method - Additive approach}
+    \vspace{-5pt}
+    We want to solve the non linear system: %\hfill \tiny $N_h$ : number of degrees of freedom.
+
+    \normalsize
+    \vspace{-10pt}
+    \begin{equation*}
+        % \label{eq:nonlinear}
+        F_\theta(\vec{C}) = 0 
+    \end{equation*}
+
+    \vspace{-2pt}
+    with $F_\theta:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the non linear operator associated to the weak problem \eqref{eq:weak_pb_add} and $\vec{C}\in \mathbb{R}^{N_h}$ the correction vector (unknown).
+
+	\setcounter{algocf}{1}
+    \begin{center}
+        \small
+        \begin{minipage}{0.9\linewidth}
+            \begin{algorithm}[H]
+                \SetAlgoLined
+                \caption{Newton algorithm \citep{newton_accel_2025}}
+                \textbf{Initialization step:} set $\vec{C}^{(0)} = \textcolor{red}{0}$\;
+                \For{\( n \ge 0 \)}{
+                    Solve the linear system \( F_\theta(\vec{C}^{(n)}) + F_\theta'(\vec{C}^{(n)}) \delta^{(n+1)} = 0 \) for \( \delta^{(n+1)} \)\;
+                    Update \( \vec{C}^{(n+1)} = \vec{C}^{(n)} + \delta^{(n+1)} \)\;
+                }
+            \end{algorithm}
+        \end{minipage}
+    \end{center}
+    
+    \vspace{3pt}
+    \textbf{Advantage compared to DeepPhysics\footnote[frame,1]{The additive approach is exactly the same as DeepPhysics if we take $U_\theta$ in the same space as $C_h^+$.}:} \refappendix{frame:comp}
+
+    \vspace{-2pt}
+    \begin{center}
+        \textcolor{red}{$u_\theta$ is not required to live in the same discrete space as $C_h^+$}.
+    \end{center}
+    \vspace{8pt}
+\end{frame}

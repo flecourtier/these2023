@@ -228,11 +228,16 @@
 	\section*{Introduction}
 	\input{sections/intro}
 
+	
+	\renewcommand{\insertsectionheadSubtitle}{The PINN is parametrized by the $\bm{\mu}$ parameter.}
 	\section{Physics-informed neural network (PINN)}
 	\input{sections/pinns}
+	\renewcommand{\insertsectionheadSubtitle}{}
 
+	\renewcommand{\insertsectionheadSubtitle}{The $\bm{\mu}$ parameter is fixed in the FE resolution.}
 	\section{Finite element method (FEM)}
 	\input{sections/fem}
+	\renewcommand{\insertsectionheadSubtitle}{}
 
 	\section{Enriched finite element method using PINN}
 	\input{sections/efup}
@@ -247,6 +252,8 @@
 
 	\begin{frame}{Conclusion}
 		TODO
+
+		\hl{Parler du papier en linéaire et dire que dans ce cadre on a des résultats théoriques de convergence.}
 	\end{frame}
 
 	\BackgroundBiblio

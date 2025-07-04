@@ -1,30 +1,8 @@
-\begin{frame}{Discrete weak formulation I\footnote[frame,1]{The $\bm{\mu}$ parameter is fixed in the FE resolution.}}	
-	Find $U_h=(\bm{u}_h, p_h, T_h) \in [V_h^{\, 0}]^2 \times Q_h \times W_h$ s.t., $\forall (\bm{v}_h, q_h, w_h) \in [V_h^{\, 0}]^2 \times Q_h \times W_h^{\, 0}$,
-
+\begin{frame}{Discrete weak formulation I} %\footnote[frame,1]{The $\bm{\mu}$ parameter is fixed in the FE resolution.}}	
+	\vspace{-2pt}
+	We consider a mixed finite element space \; \fcolorbox{red}{white}{$M_h = [V_h^{\, 0}]^2 \times Q_h \times W_h$} \; and
+	
 	\vspace{-4pt}
-	\footnotesize
-	\begin{equation}
-		\label{eq:weak_pb}
-		\begin{aligned}
-			&\int_\Omega (\bm{u}_h \cdot \nabla)\bm{u}_h \cdot \bm{v}_h \, dx + \mu \int_\Omega \nabla \bm{u}_h : \nabla \bm{v}_h \, dx \\
-			&\hspace{50pt} - \int_\Omega p_h \, \nabla \cdot \bm{v}_h \, dx - g \int_\Omega (1 + \beta T_h) \bm{e}_y \cdot \bm{v}_h \, dx = 0 \qquad\text{\footnotesize (momentum)} \\
-			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, dx \only<2>{\textcolor{red}{\, + \, 10^{-4} \int_\Omega q_h \, p_h \, dx}} = 0 \qquad\text{\footnotesize (incompressibility \only<2>{\textcolor{red}{+ pressure penalization}})}\\
-			&\int_\Omega (\bm{u}_h \cdot \nabla T_h) \, w_h \, dx + \int_\Omega k_f \nabla T_h \cdot \nabla w_h \, dx = 0  \qquad\text{\footnotesize (energy)}
-			% \epsilon \int_\Omega q \, p \, dx = 0
-		\end{aligned}
-		\tag{$\mathcal{P}_h$}
-	\end{equation}
-
-	% \vspace{-65pt}
-	% \begin{flushright}
-	% 	\footnotesize(momentum)
-	% \end{flushright}
-
-	% \vspace{50pt}
-	\normalsize
-	with 
-
-	\vspace{-15pt}
 	\begin{center}
 		\begin{tabular}{ccccccccl}
 		\uncover<0>{\footnotesize \big(dim$(V_h^{\, 0})=N_u$\big)} \qquad & $\bm{u}_h$ & $\in$ & $[V_h^{\, 0}]^2$ & $\subset$ & $[H^1_0(\Omega)]^2$ & : & $\mathbb{P}_2$ & \multirow{2}{*}{$\left. \rule{0pt}{1.7em} \right\} \;$ \footnotesize (Taylor–Hood spaces)} \\
@@ -33,10 +11,28 @@
 		\end{tabular}
 	\end{center}
 
-	and
-	$$W = \{w\in H^1(\Omega), \; w\vert_{x=-1}=1, \; w\vert_{x=1}=-1\}.$$
+	with $\;W = \{w\in H^1(\Omega), \; w\vert_{x=-1}=1, \; w\vert_{x=1}=-1\}$.
 
 	\vspace{5pt}
+
+	\uncover<2>{\textbf{Weak problem :} Find $U_h=(\bm{u}_h, p_h, T_h) \in M_h$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0} $,
+
+	\vspace{-4pt}
+	\footnotesize
+	\begin{equation}
+		\label{eq:weak_pb}
+		\begin{aligned}
+			&\int_\Omega (\bm{u}_h \cdot \nabla)\bm{u}_h \cdot \bm{v}_h \, d\bm{x} + \mu \int_\Omega \nabla \bm{u}_h : \nabla \bm{v}_h \, d\bm{x} \\
+			&\hspace{50pt} - \int_\Omega p_h \, \nabla \cdot \bm{v}_h \, d\bm{x} - g \int_\Omega (1 + \beta T_h) \bm{e}_y \cdot \bm{v}_h \, d\bm{x} = 0, \qquad\text{\footnotesize (momentum)} \\
+			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, d\bm{x} \only<2>{\textcolor{red}{\, + \, 10^{-4} \int_\Omega q_h \, p_h \, d\bm{x}}} = 0, \qquad\text{\footnotesize (incompressibility \only<2>{\textcolor{red}{+ pressure penalization}})}\\
+			&\int_\Omega (\bm{u}_h \cdot \nabla T_h) \, w_h \, d\bm{x} + \int_\Omega k_f \nabla T_h \cdot \nabla w_h \, d\bm{x} = 0,  \qquad\text{\footnotesize (energy)}
+			% \epsilon \int_\Omega q \, p \, dx = 0
+		\end{aligned}
+		\tag{$\mathcal{P}_h$}
+	\end{equation}
+	
+	\vspace{5pt}
+	where $M_h^{\, 0} = [V_h^{\, 0}]^2 \times Q_h \times W_h^{\, 0}$ with $W_h^{\, 0} \subset \{w \in H^1[\Omega], \; w\vert_{x=\pm 1}=0\}$.}
 \end{frame}
 
 \begin{frame}{Discrete weak formulation II}	
@@ -84,11 +80,11 @@
         \begin{minipage}{0.9\linewidth}
             \begin{algorithm}[H]
                 \SetAlgoLined
-                \caption{Newton's algorithm \citep{newton_accel_2025}}
+                \caption{Newton algorithm \citep{newton_accel_2025}}
                 \textbf{Initialization step:} set $\vec{U}_k^{(0)} = \only<1>{\vec{U}_{k,0}}\only<2>{\textcolor{red}{\vec{U}_{k,0}}}$\;
-                \For{\( j \ge 0 \)}{
-                    Solve the linear system \( F(\vec{U}_k^{(j)}) + F'(\vec{U}_k^{(j)}) \delta_k^{(j+1)} = 0 \) for \( \delta_k^{(j+1)} \)\;
-                    Update \( \vec{U}_k^{(j+1)} = \vec{U}_k^{(j)} + \delta_k^{(j+1)} \)\;
+                \For{\( n \ge 0 \)}{
+                    Solve the linear system \( F(\vec{U}_k^{(n)}) + F'(\vec{U}_k^{(n)}) \delta_k^{(n+1)} = 0 \) for \( \delta_k^{(n+1)} \)\;
+                    Update \( \vec{U}_k^{(n+1)} = \vec{U}_k^{(n)} + \delta_k^{(n+1)} \)\;
                 }
             \end{algorithm}
         \end{minipage}
@@ -110,7 +106,7 @@
 
 		\only<3>{Considering a fixed parameter with $k\in\{1,2,3\}$, we can use the following initialization for $i=1,\ldots,N_h$,
 		$$\big(\vec{U}_{k,0}\big)_i = U_\theta(\bm{x}^{(i)},\bm{\mu}^{(k)})$$
-		with $\bm{x}^{(i)}=\big(x^{(i)},y^{(i)}\big)$ the $i$-th dofs coordinates of $[V_h^0]^2 \times Q_h \times W_h$ and $U_\theta$ the PINN.}
+		with $\bm{x}^{(i)}=\big(x^{(i)},y^{(i)}\big)$ the $i$-th dofs coordinates of $M_h$ and $U_\theta$ the PINN.}
 		
 		\item \textbf{Incremental initialization.} \only<4>{Using a coarse FE solution of a simpler parameter.}
 		
