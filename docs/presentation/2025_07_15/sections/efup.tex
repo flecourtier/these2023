@@ -1,8 +1,8 @@
 \begin{frame}{Enriched space using PINN} %\footnote[frame,1]{The $\bm{\mu}$ parameter is fixed in the FE resolution.}}	
-    Considering the PINN prior $U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$, we define the \textcolor{red}{mixed finite element space additively enriched} by the PINN as follows:
+    Considering the PINN prior $U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$, we define the \textcolor{darkred}{mixed finite element space additively enriched} by the PINN as follows:
     
     \begin{center}
-        \fcolorbox{red}{white}{$M_h^+ = \left\{U_h^+ = U_\theta + C_h^+, \quad C_h^+ \in M_h^{\, 0}\right\}$}
+        \fcolorbox{darkred}{white}{$M_h^+ = \left\{U_h^+ = U_\theta + C_h^+, \quad C_h^+ \in M_h^{\, 0}\right\}$}
     \end{center}
 
     with $M_h^{\, 0}=[V_h^{\, 0}]^2 \times Q_h \times W_h^0$,
@@ -12,7 +12,7 @@
 
     We can then define the three finite element subspaces of $M_h^+$ as follows:
     \begin{align*}
-        \bm{V}_h^+ &= \left\{\bm{u}_h^+ = \bm{u}_\theta + \bm{C}_{h,\bm{u}}^+, \; \bm{C}_{h,\bm{u}}^+ \in [V_h^{\, 0}]^2\right\}, \quad \text{\footnotesize (vectorial)} \\
+        \bm{V}_h^+ &= \left\{\bm{u}_h^+ = \bm{u}_\theta + \bm{C}_{h,\bm{u}}^+, \; \bm{C}_{h,\bm{u}}^+ \in [V_h^{\, 0}]^2\right\}, \\
         Q_h^+ &= \left\{p_h^+ = p_\theta + C_{h,p}^+, \; C_{h,p}^+ \in Q_h\right\}, \\
         W_h^+ &= \left\{T_h^+ = T_\theta + C_{h,T}^+, \; C_{h,T}^+ \in W_h^{\, 0}\right\},
     \end{align*}
@@ -30,7 +30,7 @@
 \end{frame}
 
 \begin{frame}{Weak formulation - Additive approach}
-    \textbf{Weak problem :} Find $C_h^+=(\bm{C}_{h,\bm{u}}^+, C_{h,p}^+,^+, C_{h,T}^+) \in M_h^{\, 0}$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0}$,
+    \textbf{Weak problem :} Find $C_h^+=(\bm{C}_{h,\bm{u}}^+, C_{h,p}^+, C_{h,T}^+) \in M_h^{\, 0}$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0}$,
 
     \vspace{-4pt}
     \footnotesize
@@ -74,7 +74,7 @@
             \begin{algorithm}[H]
                 \SetAlgoLined
                 \caption{Newton algorithm \citep{newton_accel_2025}}
-                \textbf{Initialization step:} set $\vec{C}^{(0)} = \textcolor{red}{0}$\;
+                \textbf{Initialization step:} set $\vec{C}^{(0)} = \textcolor{darkred}{0}$\;
                 \For{\( n \ge 0 \)}{
                     Solve the linear system \( F_\theta(\vec{C}^{(n)}) + F_\theta'(\vec{C}^{(n)}) \delta^{(n+1)} = 0 \) for \( \delta^{(n+1)} \)\;
                     Update \( \vec{C}^{(n+1)} = \vec{C}^{(n)} + \delta^{(n+1)} \)\;
@@ -88,7 +88,7 @@
 
     \vspace{-2pt}
     \begin{center}
-        \textcolor{red}{$u_\theta$ is not required to live in the same discrete space as $C_h^+$}.
+        \textcolor{darkred}{$u_\theta$ is not required to live in the same discrete space as $C_h^+$}.
     \end{center}
     \vspace{8pt}
 \end{frame}

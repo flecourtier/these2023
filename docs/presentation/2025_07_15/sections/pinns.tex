@@ -1,13 +1,15 @@
 \begin{frame}{Neural Network considered}
     \vspace{-2pt}
     We consider a parametric NN with 4 inputs and 4 outputs, defined by
-    $$U_\theta(\bm{x},\bm{\mu}) = \big(u_\theta,v_\theta,p_\theta,T_\theta)(\bm{x},\bm{\mu}).$$
+    $$U_\theta(\bm{x},\bm{\mu}) = \big(u_{1,\theta},u_{2,\theta},p_\theta,T_\theta)(\bm{x},\bm{\mu}).$$
     
     The Dirichlet boundary conditions are imposed on the outputs of the MLP by a \textbf{post-processing} step. \citep{Sukumar_2022}
     
     \begin{center}
-        \includegraphics[width=0.74\linewidth]{images/pinn/network/network.pdf}
+        \includegraphics[width=0.85\linewidth]{images/pinn/network/network.pdf}
     \end{center}
+
+    \vspace{-5pt}
     We consider two levelsets functions $\varphi_1$ and $\varphi_2$, and the linear function $g$ defined by
     \begin{equation*}
         \varphi_1(x,y) = (x-1)(x+1)(y-1)(y+1),
@@ -24,7 +26,7 @@
     \vspace{-8pt}
     \begin{equation}
 		\label{eq:opt_pb}
-		\theta^\star = \argmin_{\theta}	\big( J_{inc}(\theta) + J_{mom}(\theta) + J_{ener}(\theta) + J_{ad}(\theta) \big),
+		\theta^\star = \argmin_{\theta}	\big( \; \textcolor{orange}{J_{inc}(\theta)} + \textcolor{orange}{J_{mom}(\theta)} + \textcolor{orange}{J_{ener}(\theta)} + \textcolor{darkred}{J_{ad}(\theta)} \; \big),
 		\tag{$\mathcal{P}_\theta$}
 	\end{equation}
 
@@ -34,14 +36,14 @@
 
 	\begin{minipage}{0.24\linewidth}
 		\centering
-		\textcolor{red}{adiabatic condition}
+		\textcolor{darkred}{adiabatic condition}
         
 		\vspace{12pt}
 		\textcolor{orange}{$3$ residual losses}
 	\end{minipage}
 	\begin{minipage}{0.68\linewidth}
 		\centering
-        \fcolorbox{red}{white}{
+        \fcolorbox{darkred}{white}{
             $J_{ad}(\theta) =
             \int_{\mathcal{M}}\int_{\Gamma_\text{ad}} \big| \frac{\partial T_\theta(\bm{x},\bm{\mu})}{\partial n} \big|^2 d\bm{x} d\bm{\mu},$}
         
@@ -57,48 +59,28 @@
 
     %\footnote[frame,2]{We consider a MLP with 5 hidden layers ($40,60,60,60,40$) and a 'sine' activation function. We train the PINN over $10000$ epochs ($3000$ ADAM / $7000$ LBFGS) with $40000$ collocation points in $\Omega$ and $30000$ points on the boundary $\partial\Omega\vert_{y=\pm 1}$.}
     
+    \vspace{-7pt}
     \vspace{3pt}    
     \begin{center}
-        \begin{minipage}{0.72\linewidth}
-            \centering\footnotesize
-            \begin{table}[htbp]
-                \centering
-                \begin{tabular}{cc}
-                    \toprule
-                    \multicolumn{2}{c}{\textbf{Network - MLP}} \\
-                    \midrule
-                    \textit{layers} & $40,60,60,60,40$ \\
-                    \cmidrule(lr){1-2}
-                    $\sigma$ & sine \\
-                    \bottomrule
-                \end{tabular}
-                \hspace{0.1cm}
-                \begin{tabular}{cccc}
-                    \toprule
-                    \multicolumn{4}{c}{\textbf{Training} (ADAM / LBFGs)} \\
-                    \midrule
-                    \textit{lr} & 7e-3 & \textcolor{red}{$N_\text{col}$} & 40000 \\
-                    \cmidrule(lr){1-2} \cmidrule(lr){3-4}
-                    $n_{epochs}$ & 10000 & \textcolor{orange}{$N_\text{bc}$} & 30000 \\
-                    \bottomrule
-                \end{tabular}
-            \end{table}
-
-        \end{minipage}
-        \begin{minipage}{0.26\linewidth}
+        \begin{minipage}{0.62\linewidth}
             \centering
-            \includegraphics[width=\linewidth]{images/pinn/training/test4_v5.png}
+            \vspace{-8pt}
+            \includegraphics[width=0.94\linewidth]{images/pinn/training_param/training_param.pdf}
+        \end{minipage}
+        \begin{minipage}{0.36\linewidth}
+            \centering
+            \includegraphics[width=0.84\linewidth]{images/pinn/training/test4_v5.png}
         \end{minipage}
     \end{center}
     
-    \vspace{-5pt}
+    \vspace{-8pt}
 \end{frame}
 
 \begin{frame}{PINN solution}
     % TODO (entrainement + solution pour 1 paramètre ?)
     \vspace{-5pt}
     \begin{center}
-        $\bm{\mu}^{(1)} = (0.1,0.1), \; \bm{\mu}^{(2)} = (0.05,0.05) \; \text{and} \;$\fcolorbox{red}{white}{$\bm{\mu}^{(3)} = (0.01,0.01)$}
+        $\bm{\mu}^{(1)} = (0.1,0.1), \; \bm{\mu}^{(2)} = (0.05,0.05) \; \text{and} \;$\fcolorbox{darkred}{white}{$\bm{\mu}^{(3)} = (0.01,0.01)$}
 
         \includegraphics[width=\linewidth]{images/pinn/training/PINN_plot_case4_v5_param3.png}
         

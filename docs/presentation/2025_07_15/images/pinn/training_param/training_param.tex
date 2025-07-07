@@ -1,0 +1,35 @@
+\documentclass[varwidth=10.5cm,border=2mm]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+\definecolor{darkred}{rgb}{0.9, 0, 0}
+
+\begin{document}
+    \begin{center}
+        \begin{table}[htbp]
+            \centering
+            \begin{tabular}{cc}
+                \toprule
+                \multicolumn{2}{c}{\textbf{Network - MLP}} \\
+                \midrule
+                \textit{layers} & $40,60,60,60,40$ \\
+                \cmidrule(lr){1-2}
+                $\sigma$ & sine \\
+                \bottomrule
+            \end{tabular}
+            \hspace{0.1cm}
+            \begin{tabular}{cccc}
+                \toprule
+                \multicolumn{4}{c}{\textbf{Training} (ADAM / LBFGs)} \\
+                \midrule
+                \textit{lr} & 7e-3 & \textcolor{darkred}{$N_\text{col}$} & 40000 \\
+                \cmidrule(lr){1-2} \cmidrule(lr){3-4}
+                $n_{epochs}$ & 10000 & \textcolor{orange}{$N_\text{bc}$} & 30000 \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+    \end{center}
+\end{document}

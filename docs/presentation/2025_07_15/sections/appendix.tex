@@ -1,6 +1,30 @@
-% \appendixsection{Standard methods}
+\appendixsection{Finite element method (FEM)}\labelappendixframe{frame:appfem}
+
+\begin{appendixframe}{Construction of the unknown vector}\labelappendixframe{frame:basis}
+
+	Considering $(\phi_i)_{i=1}^{N_u}$, $(\psi_j)_{j=1}^{N_p}$ and $(\eta_k)_{k=1}^{N_T}$ the basis functions of the finite element spaces $V_h^{\, 0}$, $Q_h$ and $W_h$ respectively, we can write the discrete solutions as:
+	\begin{equation*}
+		\bm{u}_h(\bm{x}) = \sum_{i=1}^{N_u} \begin{pmatrix}
+			u_i \\
+			v_i
+		\end{pmatrix} \phi_i(\bm{x}), \quad p_h(\bm{x}) = \sum_{j=1}^{N_p} p_j \psi_j(\bm{x}) \quad \text{and} \quad T_h(\bm{x}) = \sum_{k=1}^{N_T} T_k \eta_k(\bm{x}),
+	\end{equation*}	
+	with the unknown vectors for velocity, pressure and temperature defined by
+
+	\vspace{-5pt}
+	$$\vec{u} = \big(u_i\big)_{i=1}^{N_u} \in \mathbb{R}^{N_u}, \quad \vec{v} = \big(v_i\big)_{i=1}^{N_u} \in \mathbb{R}^{N_u},$$
+	$$\vec{p} = \big(p_j\big)_{j=1}^{N_p} \in \mathbb{R}^{N_p} \; \text{ and } \; \vec{T} = \big(T_k\big)_{k=1}^{N_T} \in \mathbb{R}^{N_T}.$$
+
+	\vspace{5pt}
+	Considering $N_h = 2N_u + N_p + N_T$, we can define the global vector of unknowns as:
+	\begin{equation*}
+		\vec{U} = \big(\vec{u}, \vec{v}, \vec{p}, \vec{T}) \in \mathbb{R}^{N_h}.
+	\end{equation*}
+	and $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the nonlinear operator associated to the weak formulation \eqref{eq:weak_pb}.
+\end{appendixframe}
 
 \appendixsection{DeepPhysics / Additive approach}\labelappendixframe{frame:comp}
+
 
 \begin{appendixframe}{??}
 

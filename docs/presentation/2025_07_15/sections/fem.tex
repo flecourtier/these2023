@@ -1,13 +1,13 @@
-\begin{frame}{Discrete weak formulation I} %\footnote[frame,1]{The $\bm{\mu}$ parameter is fixed in the FE resolution.}}	
+\begin{frame}{Discrete weak formulation}
 	\vspace{-2pt}
-	We consider a mixed finite element space \; \fcolorbox{red}{white}{$M_h = [V_h^{\, 0}]^2 \times Q_h \times W_h$} \; and
+	We consider a mixed finite element space \; \fcolorbox{darkred}{white}{$M_h = [V_h^{\, 0}]^2 \times Q_h \times W_h$} \; and
 	
 	\vspace{-4pt}
 	\begin{center}
 		\begin{tabular}{ccccccccl}
 		\uncover<0>{\footnotesize \big(dim$(V_h^{\, 0})=N_u$\big)} \qquad & $\bm{u}_h$ & $\in$ & $[V_h^{\, 0}]^2$ & $\subset$ & $[H^1_0(\Omega)]^2$ & : & $\mathbb{P}_2$ & \multirow{2}{*}{$\left. \rule{0pt}{1.7em} \right\} \;$ \footnotesize (Taylor–Hood spaces)} \\
 		\uncover<0>{\footnotesize \big(dim$(Q_h)=N_p$\big)} \qquad & $p_h$ & $\in$ & $Q_h$ & $\subset$ & $L^2_0(\Omega)$ & : & $ \mathbb{P}_1$ & \\ 
-		\uncover<0>{\footnotesize \big(dim$(W_h)=N_T$\big)} \qquad & $T_h$ & $\in$ & $W_h$ & $\subset$ & $W$ & : & $\mathbb{P}_1$ & 
+		\uncover<0>{\footnotesize \big(dim$(W_h)=N_T$\big)} \qquad & $T_h$ & $\in$ & $W_h$ & $\subset$ & $W$ & : & $\mathbb{P}_2$ & 
 		\end{tabular}
 	\end{center}
 
@@ -24,7 +24,7 @@
 		\begin{aligned}
 			&\int_\Omega (\bm{u}_h \cdot \nabla)\bm{u}_h \cdot \bm{v}_h \, d\bm{x} + \mu \int_\Omega \nabla \bm{u}_h : \nabla \bm{v}_h \, d\bm{x} \\
 			&\hspace{50pt} - \int_\Omega p_h \, \nabla \cdot \bm{v}_h \, d\bm{x} - g \int_\Omega (1 + \beta T_h) \bm{e}_y \cdot \bm{v}_h \, d\bm{x} = 0, \qquad\text{\footnotesize (momentum)} \\
-			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, d\bm{x} \only<2>{\textcolor{red}{\, + \, 10^{-4} \int_\Omega q_h \, p_h \, d\bm{x}}} = 0, \qquad\text{\footnotesize (incompressibility \only<2>{\textcolor{red}{+ pressure penalization}})}\\
+			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, d\bm{x} \only<2>{\textcolor{darkred}{\, + \, 10^{-4} \int_\Omega q_h \, p_h \, d\bm{x}}} = 0, \qquad\text{\footnotesize (incompressibility \only<2>{\textcolor{darkred}{+ pressure penalization}})}\\
 			&\int_\Omega (\bm{u}_h \cdot \nabla T_h) \, w_h \, d\bm{x} + \int_\Omega k_f \nabla T_h \cdot \nabla w_h \, d\bm{x} = 0,  \qquad\text{\footnotesize (energy)}
 			% \epsilon \int_\Omega q \, p \, dx = 0
 		\end{aligned}
@@ -35,34 +35,11 @@
 	where $M_h^{\, 0} = [V_h^{\, 0}]^2 \times Q_h \times W_h^{\, 0}$ with $W_h^{\, 0} \subset \{w \in H^1[\Omega], \; w\vert_{x=\pm 1}=0\}$.}
 \end{frame}
 
-\begin{frame}{Discrete weak formulation II}	
-
-	Considering $(\phi_i)_{i=1}^{N_u}$, $(\psi_j)_{j=1}^{N_p}$ and $(\eta_k)_{k=1}^{N_T}$ the basis functions of the finite element spaces $V_h^{\, 0}$, $Q_h$ and $W_h$ respectively, we can write the discrete solutions as:
-	\begin{equation*}
-		\bm{u}_h(\bm{x}) = \sum_{i=1}^{N_u} \begin{pmatrix}
-			u_i \\
-			v_i
-		\end{pmatrix} \phi_i(\bm{x}), \quad p_h(\bm{x}) = \sum_{j=1}^{N_p} p_j \psi_j(\bm{x}) \quad \text{and} \quad T_h(\bm{x}) = \sum_{k=1}^{N_T} T_k \eta_k(\bm{x}),
-	\end{equation*}	
-	with the unknown vectors for velocity, pressure and temperature defined by
-
-	\vspace{-5pt}
-	$$\vec{u} = \big(u_i\big)_{i=1}^{N_u} \in \mathbb{R}^{N_u}, \quad \vec{v} = \big(v_i\big)_{i=1}^{N_u} \in \mathbb{R}^{N_u},$$
-	$$\vec{p} = \big(p_j\big)_{j=1}^{N_p} \in \mathbb{R}^{N_p} \; \text{ and } \; \vec{T} = \big(T_k\big)_{k=1}^{N_T} \in \mathbb{R}^{N_T}.$$
-
-	\vspace{5pt}
-	Considering $N_h = 2N_u + N_p + N_T$, we can define the global vector of unknowns as:
-	\begin{equation*}
-		\vec{U} = \big(\vec{u}, \vec{v}, \vec{p}, \vec{T}) \in \mathbb{R}^{N_h}.
-	\end{equation*}
-	and $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the nonlinear operator associated to the weak formulation \eqref{eq:weak_pb}.
-\end{frame}
-
 \begin{frame}{Newton method}
 	We consider the following three parameters:
 	$$\bm{\mu}^{(1)} = (0.1,0.1), \; \bm{\mu}^{(2)} = (0.05,0.05) \; \text{and} \; \bm{\mu}^{(3)} = (0.01,0.01).$$
 
-	We want to solve the non linear system: %\hfill \tiny $N_h$ : number of degrees of freedom.
+	Denoting $N_h$ the dimension of $M_h$, we want to solve the non linear system: %\hfill \footnotesize $N_h$ : dimension of $M_h$.
 
     \normalsize
     \vspace{-10pt}
@@ -71,8 +48,7 @@
         F(\vec{U}_k) = 0 
     \end{equation*}
 
-    \vspace{-2pt}
-    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $\vec{U}_k\in \mathbb{R}^{N_h}$ the unknown vector associated to the $k$-th parameter $\bm{\mu}^{(k)}$ ($k=1,2,3$).
+    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ a non linear operator and $\vec{U}_k\in \mathbb{R}^{N_h}$ the unknown vector associated to the $k$-th parameter $\bm{\mu}^{(k)}$ ($k=1,2,3$). \quad\refappendix{frame:basis}
 
 	\setcounter{algocf}{0}
     \begin{center}
@@ -81,7 +57,7 @@
             \begin{algorithm}[H]
                 \SetAlgoLined
                 \caption{Newton algorithm \citep{newton_accel_2025}}
-                \textbf{Initialization step:} set $\vec{U}_k^{(0)} = \only<1>{\vec{U}_{k,0}}\only<2>{\textcolor{red}{\vec{U}_{k,0}}}$\;
+                \textbf{Initialization step:} set $\vec{U}_k^{(0)} = \only<1>{\vec{U}_{k,0}}\only<2>{\textcolor{darkred}{\vec{U}_{k,0}}}$\;
                 \For{\( n \ge 0 \)}{
                     Solve the linear system \( F(\vec{U}_k^{(n)}) + F'(\vec{U}_k^{(n)}) \delta_k^{(n+1)} = 0 \) for \( \delta_k^{(n+1)} \)\;
                     Update \( \vec{U}_k^{(n+1)} = \vec{U}_k^{(n)} + \delta_k^{(n+1)} \)\;
@@ -89,7 +65,7 @@
             \end{algorithm}
         \end{minipage}
     \end{center}
-	\only<2>{\textcolor{red}{How to initialize the Newton solver?}}
+	\uncover<2>{\textcolor{darkred}{How to initialize the Newton solver?}}
 \end{frame}
 
 \begin{frame}{3 types of initialization}
