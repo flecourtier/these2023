@@ -73,8 +73,8 @@
 		\item \textbf{Natural initialization :} \only<2-4>{Using constant or linear function.}
 		
 		\only<2>{Considering a fixed parameter with $k\in\{1,2,3\}$, we can use the following initialization:	
-		$$\vec{U}_{k,0} = \big(\bm{0}_{N_u}, \bm{0}_{N_u}, \bm{0}_{N_p}, \vec{T}_0\big)$$
-		where for $i=1,\ldots,N_T$,
+		$$\vec{U}_{k,0} = \big(\vec{0}, \vec{0}, \vec{0}, \vec{T}_0\big)$$
+		where for $i=1,\ldots,\text{dim}(W_h)$,
 		$$(\vec{T}_0)_i = g(\bm{x}^{(i)}) = 1 - (x^{(i)}+1)$$
 		with $\bm{x}^{(i)}=\big(x^{(i)},y^{(i)}\big)$ the $i$-th dofs coordinates of $W_h$.}
 		

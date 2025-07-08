@@ -55,5 +55,29 @@
 		\item $T = 1$ on the left wall ($x=-1$) and $T = -1$ on the right wall ($x=1$) \\
 		$\displaystyle \frac{\partial T}{\partial n} = 0$ on the top and bottom walls ($y=\pm 1$, denoted by $\Gamma_\text{ad}$)	
 	\end{itemize}}
+\end{frame}
+
+\begin{frame}{Evaluate quality of solutions}
+	In the following, we are interested in three parameters (rising in complexity) :
+
+	\begin{center}
+		\textcolor<2>{darkred}{$\bm{\mu}^{(1)} = (0.1,0.1)$}, \textcolor<3>{darkred}{$\bm{\mu}^{(2)} = (0.05,0.05)$} and \textcolor<4>{darkred}{$\bm{\mu}^{(3)} = (0.01,0.01)$}
+	\end{center}
+
+	We evaluate the quality of solutions by comparing them to a reference solution.\footnote[frame,1]{Computed on a over-refined mesh ($h=7.10^{-3}$) on a $\mathbb{P}_3^2\times \mathbb{P}_2 \times \mathbb{P}_3$ continuous Lagrange FE space.}
+
+	\vspace{10pt}
+
+	\only<2-4>{\textbf{Reference solution} \; - \; Rayleigh number :} \only<2>{$Ra = 1\,569.6$}\only<3>{$Ra = 6\,278.4$}\only<4>{$Ra = 156\,960$}
+
+	\vspace{3pt}
+	\only<2-4>{$\hspace{32pt} u_{1,\text{ref}} \hspace{67pt} u_{2,\text{ref}} \hspace{67pt} p_\text{ref} \hspace{67pt} T_\text{ref}$}
+	\vspace{-3pt}
+
+	\begin{center}
+		\only<2>{\includegraphics[width=0.98\linewidth]{images/intro/uref/uref1.png}}
+		\only<3>{\includegraphics[width=0.98\linewidth]{images/intro/uref/uref2.png}}
+		\only<4>{\includegraphics[width=0.98\linewidth]{images/intro/uref/uref3.png}}
+	\end{center}
 
 \end{frame}

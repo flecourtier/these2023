@@ -76,17 +76,40 @@
     \vspace{-8pt}
 \end{frame}
 
-\begin{frame}{PINN solution}
-    % TODO (entrainement + solution pour 1 paramètre ?)
-    \vspace{-5pt}
-    \begin{center}
-        $\bm{\mu}^{(1)} = (0.1,0.1), \; \bm{\mu}^{(2)} = (0.05,0.05) \; \text{and} \;$\fcolorbox{darkred}{white}{$\bm{\mu}^{(3)} = (0.01,0.01)$}
+\begin{frame}{Prediction on $\bm{\mu}^{(1)} = (0.1,0.1)$}
+    \vspace{-4pt}
+    \textbf{Prediction :} \begin{minipage}{0.26\linewidth}
+        \centering
+        $u_{1,\theta}$ \\
+        \includegraphics[width=0.95\linewidth]{images/pinn/training/PINN_plot_case4_v2_param1_u1.png}
+    \end{minipage} \; \begin{minipage}{0.26\linewidth}
+        \centering
+        $u_{2,\theta}$ \\
+        \includegraphics[width=0.95\linewidth]{images/pinn/training/PINN_plot_case4_v2_param1_u2.png}
+    \end{minipage} \; \begin{minipage}{0.26\linewidth}
+        \centering
+        $T_\theta$ \\
+        \includegraphics[width=0.95\linewidth]{images/pinn/training/PINN_plot_case4_v2_param1_T.png}
+    \end{minipage}
 
-        \includegraphics[width=\linewidth]{images/pinn/training/PINN_plot_case4_v5_param3.png}
-        
-        \includegraphics[width=\linewidth]{images/pinn/training/PINN_error_plot_case4_v5_param3.png}
-    \end{center}
+    \vspace{8pt}
 
-    \hl{TODO : renommer figure $u_\theta\dots$ (solutions et erreurs) + ajouter erreurs L2}
+    \textbf{Error map :} \begin{minipage}{0.26\linewidth}
+        \centering
+        $u_{1,\text{ref}}-u_{1,\theta}$ \\
+        \includegraphics[width=0.95\linewidth]{images/pinn/training/PINN_error_plot_case4_v2_param1_u1.png}
+    \end{minipage} \; \begin{minipage}{0.26\linewidth}
+        \centering
+        $u_{2,\text{ref}}-u_{2,\theta}$ \\
+        \includegraphics[width=0.95\linewidth]{images/pinn/training/PINN_error_plot_case4_v2_param1_u2.png}
+    \end{minipage} \; \begin{minipage}{0.26\linewidth}
+        \centering
+        $T_\text{ref}-T_\theta$ \\
+        \includegraphics[width=0.95\linewidth]{images/pinn/training/PINN_error_plot_case4_v2_param1_T.png}
+    \end{minipage}
+
+    \vspace{8pt}
+
+    \textbf{$L^2$ error :} \hspace{25pt} $2.98\times10^{-2} \hspace{42pt} 3.17\times10^{-2} \hspace{42pt}  3.90\times10^{-2}$
 
 \end{frame}

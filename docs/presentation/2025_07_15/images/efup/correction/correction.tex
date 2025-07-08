@@ -37,7 +37,7 @@
 \begin{tikzpicture}
 
 	%% ---------------------------------------------------------------------------------------- %%
-	\begin{groupplot}[group style={group size=2 by 1,
+	\begin{groupplot}[group style={group size=1 by 1,
 					horizontal sep= 1em,group name=mygroupplot},
 			enlargelimits=false, enlarge y limits=false, enlarge x limits=false,
 			height=\plotheight,width=\plotwidth,
@@ -46,41 +46,41 @@
 			legend columns=1,
 			tick label style={font=\scriptsize},
 		]
-		%% ------------------------------------------------------------
-		%% Plot n°1 
-		%% ------------------------------------------------------------
-		\nextgroupplot[% axis on top, separate axis lines,
-			% xlabel={\scriptsize \myxlabel },
-			% ylabel={\scriptsize \myylabel },
-			legend pos={south west},
-			legend style={draw=none},
-			ymin=-0.55,
-			ymax=0.55,
-			xmin=0,
-			xmax=1,
-			ytick={-0.6,0.6},
-			xtick={-0.1,1.1},
-		]
-		\renewcommand{\dataA}{u}
-		\renewcommand{\dataB}{u_theta}
-		\renewcommand{\legendA}{$U$}
-		\renewcommand{\legendB}{$U_\theta$}
+		% %% ------------------------------------------------------------
+		% %% Plot n°1 
+		% %% ------------------------------------------------------------
+		% \nextgroupplot[% axis on top, separate axis lines,
+		% 	% xlabel={\scriptsize \myxlabel },
+		% 	% ylabel={\scriptsize \myylabel },
+		% 	legend pos={south west},
+		% 	legend style={draw=none},
+		% 	ymin=-0.55,
+		% 	ymax=0.55,
+		% 	xmin=0,
+		% 	xmax=1,
+		% 	ytick={-0.6,0.6},
+		% 	xtick={-0.1,1.1},
+		% ]
+		% \renewcommand{\dataA}{u}
+		% \renewcommand{\dataB}{u_theta}
+		% \renewcommand{\legendA}{$U$}
+		% \renewcommand{\legendB}{$U_\theta$}
 
-		\addplot[color=orange, line width=1.5]
-		table[x expr = \thisrow{\dataX},
-				y expr = \thisrow{\dataA}]
-			{\datafileA}; \addlegendentry{\legendA}
-		\addplot[color=blue, line width=1,densely dotted]
-		table[x expr = \thisrow{\dataX},
-				y expr = \thisrow{\dataB}]
-			{\datafileA}; \addlegendentry{\legendB}
+		% \addplot[color=orange, line width=1.5]
+		% table[x expr = \thisrow{\dataX},
+		% 		y expr = \thisrow{\dataA}]
+		% 	{\datafileA}; \addlegendentry{\legendA}
+		% \addplot[color=blue, line width=1,densely dotted]
+		% table[x expr = \thisrow{\dataX},
+		% 		y expr = \thisrow{\dataB}]
+		% 	{\datafileA}; \addlegendentry{\legendB}
 
-            \coordinate (c1) at (axis cs:0.55,-0.15);
-            \coordinate (c2) at (axis cs:0.75,-0.15);
-			\coordinate (c3) at (axis cs:0.55,0.05);
-			\coordinate (c4) at (axis cs:0.75,0.05);
-            % draw a rectangle
-            \draw (c1) rectangle (axis cs:0.75,0.05);
+        %     \coordinate (c1) at (axis cs:0.55,-0.15);
+        %     \coordinate (c2) at (axis cs:0.75,-0.15);
+		% 	\coordinate (c3) at (axis cs:0.55,0.05);
+		% 	\coordinate (c4) at (axis cs:0.75,0.05);
+        %     % draw a rectangle
+        %     \draw (c1) rectangle (axis cs:0.75,0.05);
 
       \nextgroupplot[% axis on top, separate axis lines,
 			% xlabel={\scriptsize \myxlabel },
@@ -115,8 +115,8 @@
 
 	\end{groupplot}
 
-      \draw [dashed] (c4) -- (ax2.north west);
-      \draw [dashed] (c2) -- (ax2.south west);
+    %   \draw [dashed] (c4) -- (ax2.north west);
+    %   \draw [dashed] (c2) -- (ax2.south west);
 	% -------------------------------------------------------------------------------
 \end{tikzpicture}
 

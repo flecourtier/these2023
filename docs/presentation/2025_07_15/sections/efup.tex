@@ -11,46 +11,46 @@
     \vspace{8pt}
 
     We can then define the three finite element subspaces of $M_h^+$ as follows:
-    \begin{align*}
-        \bm{V}_h^+ &= \left\{\bm{u}_h^+ = \bm{u}_\theta + \bm{C}_{h,\bm{u}}^+, \; \bm{C}_{h,\bm{u}}^+ \in [V_h^{\, 0}]^2\right\}, \\
-        Q_h^+ &= \left\{p_h^+ = p_\theta + C_{h,p}^+, \; C_{h,p}^+ \in Q_h\right\}, \\
-        W_h^+ &= \left\{T_h^+ = T_\theta + C_{h,T}^+, \; C_{h,T}^+ \in W_h^{\, 0}\right\},
-    \end{align*}
-    where $C_{h,\bm{u}}^+$, $C_{h,p}^+$ and $C_{h,T}^+$ becomes the unknowns of the problem.
-    
-    \vspace{5pt}
-    \hl{à ajouter : dans quoi vit $U_\theta$ ?}
+    \begin{minipage}{0.6\linewidth}
+        \vspace{-15pt}
+        \begin{align*}
+            \bm{V}_h^+ &= \left\{\bm{u}_h^+ = \bm{u}_\theta + \bm{C}_{h,\bm{u}}^+, \; \bm{C}_{h,\bm{u}}^+ \in [V_h^{\, 0}]^2\right\}, \\
+            Q_h^+ &= \left\{p_h^+ = p_\theta + C_{h,p}^+, \; C_{h,p}^+ \in Q_h\right\}, \\
+            W_h^+ &= \left\{T_h^+ = T_\theta + C_{h,T}^+, \; C_{h,T}^+ \in W_h^{\, 0}\right\},
+        \end{align*}
+        where $\bm{C}_{h,\bm{u}}^+$, $C_{h,p}^+$ and $C_{h,T}^+$ becomes the unknowns.
+        
+        \vspace{5pt}
+        \hl{à ajouter : dans quoi vit $U_\theta$ ?}
+    \end{minipage}
+    \begin{minipage}{0.38\linewidth}
+        \centering
+        \vspace{5pt}
+        \pgfimage[width=0.8\linewidth]{images/efup/correction/correction.pdf}
+    \end{minipage}
 \end{frame}
 
-\begin{frame}{??}
-    \hl{Schématisation en 1D de la correction... à voir comment présenter.}
-    \begin{center}    
-        \pgfimage[width=0.8\linewidth]{images/efup/correction/correction.pdf}
-    \end{center}
-\end{frame}
 
 \begin{frame}{Weak formulation - Additive approach}
-    \textbf{Weak problem :} Find $C_h^+=(\bm{C}_{h,\bm{u}}^+, C_{h,p}^+, C_{h,T}^+) \in M_h^{\, 0}$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0}$,
+    \textbf{Weak problem :} Find $C_h^+=(\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+}, \textcolor{blue}{C_{h,p}^+}, \textcolor{ForestGreen}{C_{h,T}^+}) \in M_h^{\, 0}$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0}$,
 
     \vspace{-4pt}
     \footnotesize
     \begin{equation}
         \label{eq:weak_pb_add}
-        \hspace{-2pt}\begin{aligned}
-            &\int_\Omega \big[(\bm{u}_\theta \cdot \nabla)\bm{u}_\theta + (\bm{u}_\theta \cdot \nabla)\bm{C}_{h,\bm{u}}^+ + (\bm{C}_{h,\bm{u}}^+ \cdot \nabla)\bm{u}_\theta + (\bm{C}_{h,\bm{u}}^+ \cdot \nabla)\bm{C}_{h,\bm{u}}^+ \big] \cdot \bm{v_h} \, d\bm{x} \\
-            &\hspace{20pt} -\mu \left(\int_\Omega  \Delta \bm{u}_\theta \bm{v}_h \, d\bm{x} - \int_\Omega \nabla \bm{C}_{h,\bm{u}}^+ : \nabla \bm{v}_h \, d\bm{x}\right) + \left(\int_\Omega \nabla p_\theta \cdot \bm{v}_h \, d\bm{x} - \int_\Omega C_{h,p}^+ \nabla \cdot \bm{v}_h \, d\bm{x}\right)\\
-            &\hspace{50pt} - g \int_\Omega (1 + \beta (T_\theta + C_{h,T}^+)) \bm{e}_y \cdot \bm{v}_h \, d\bm{x} = 0, \,\text{\footnotesize (momentum)}  \\
-            &\int_\Omega q_h \, \big[\nabla \cdot \bm{u}_\theta + \nabla \cdot \bm{C}_{h,\bm{u}}^+\big] \, d\bm{x} \, + \, 10^{-4} \int_\Omega q_h \, (p_\theta + C_{h,p}^+) \, d\bm{x} = 0, \,\text{\footnotesize (incompressibility + penal)} \\
-            & \int_\Omega \big[ \bm{u}_\theta \cdot \nabla T_\theta + \bm{u}_\theta \cdot \nabla C_{h,T}^+ + \bm{C}_{h,\bm{u}}^+ \cdot \nabla T_\theta + \bm{C}_{h,\bm{u}}^+ \cdot \nabla C_{h,T}^+ \big] w_h \, d\bm{x} \\
-            & \hspace{20pt} - k_f \left(\int_\Omega \Delta T_\theta w_h \; d\bm{x}- \int_\Omega \nabla C_{h,T}^+ \cdot \nabla w_h \, d\bm{x} + \int_{\Gamma_\text{ad}} \frac{\partial C_{h,T}^+}{\partial n} \, w_h \, d\bm{s}\right) = 0, \,\text{\footnotesize (energy)}
+        \hspace{-8pt}\begin{aligned}
+            &\int_\Omega \big[(\textcolor{darkred}{\bm{u}_\theta} \cdot \nabla)\textcolor{darkred}{\bm{u}_\theta} + (\textcolor{darkred}{\bm{u}_\theta} \cdot \nabla)\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} + (\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \cdot \nabla)\textcolor{darkred}{\bm{u}_\theta} + (\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \cdot \nabla)\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \big] \cdot \bm{v_h} \, d\bm{x} \\
+            &\hspace{20pt} +\mu \left(\int_\Omega  \nabla \textcolor{darkred}{\bm{u}_\theta} : \nabla \bm{v}_h \, d\bm{x} + \int_\Omega \nabla \textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} : \nabla \bm{v}_h \, d\bm{x}\right) + \left(\int_\Omega \nabla \textcolor{darkred}{p_\theta} \cdot \bm{v}_h \, d\bm{x} - \int_\Omega \textcolor{blue}{C_{h,p}^+} \nabla \cdot \bm{v}_h \, d\bm{x}\right)\\
+            &\hspace{50pt} - g \int_\Omega (1 + \beta (\textcolor{darkred}{T_\theta} + \textcolor{ForestGreen}{C_{h,T}^+})) \bm{e}_y \cdot \bm{v}_h \, d\bm{x} = 0, \,\text{\footnotesize (momentum)}  \\
+            &\int_\Omega q_h \, \big[\nabla \cdot \textcolor{darkred}{\bm{u}_\theta} + \nabla \cdot \textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+}\big] \, d\bm{x} \, + \, 10^{-4} \int_\Omega q_h \, (\textcolor{darkred}{p_\theta} + \textcolor{blue}{C_{h,p}^+}) \, d\bm{x} = 0, \; \text{\footnotesize (incompressibility + penal)} \\
+            & \int_\Omega \big[ \textcolor{darkred}{\bm{u}_\theta} \cdot \nabla \textcolor{darkred}{T_\theta} + \textcolor{darkred}{\bm{u}_\theta} \cdot \nabla \textcolor{ForestGreen}{C_{h,T}^+} + \textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \cdot \nabla \textcolor{darkred}{T_\theta} + \textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \cdot \nabla \textcolor{ForestGreen}{C_{h,T}^+} \big] w_h \, d\bm{x} \\
+            & \hspace{40pt} + k_f \left(\int_\Omega \nabla \textcolor{darkred}{T_\theta} \cdot \nabla w_h \; d\bm{x} + \int_\Omega \nabla \textcolor{ForestGreen}{C_{h,T}^+} \cdot \nabla w_h \, d\bm{x} \, w_h \, d\bm{s}\right) = 0, \, \text{\footnotesize (energy)}
         \end{aligned}
         \tag{$\mathcal{P}_h^+$}
     \end{equation}
 
     \vspace{5pt}
-    with $U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$ the PINN prior.
-
-    \hl{Parler des BC modifiés pour l'approche add ?}
+    with \textcolor{darkred}{$U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$} the PINN prior and some modified boundary conditions.
 \end{frame}
 
 \begin{frame}{Newton method - Additive approach}
