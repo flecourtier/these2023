@@ -1,0 +1,267 @@
+\documentclass[border=0cm]{standalone}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+% \usepackage{filecontents}
+\usepackage{datatool}
+\usepackage{fp}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{backgrounds}
+
+\pgfplotsset{
+    compat=newest,
+}
+\pgfplotsset{
+    smaller labels/.style={
+        label style={font=\footnotesize},
+        tick label style={font=\footnotesize}
+    }
+}
+\tikzset{font=\small}
+\usetikzlibrary{
+    fpu,
+    fixedpointarithmetic,
+    babel,
+    external,
+    arrows.meta,
+    plotmarks,
+    positioning,
+    angles,
+    quotes,
+    intersections,
+    calc,
+    spy,
+    decorations.pathreplacing,
+    matrix,
+    fit,
+}
+\usepgfplotslibrary{fillbetween}
+
+% Define colors
+\definecolor{femcolor}{RGB}{51, 138, 55} %Green (27,158,119)
+\definecolor{addcolor}{RGB}{217,95,2} %Orange
+\definecolor{feminitcolor}{RGB}{49, 73, 181}%{199,39,34} %Red (sob or other)
+
+% Define line styles according to the method 
+% FEM : solid
+% Add : dashed
+% Mult : dotted
+
+% Define marker styles according to the degree
+% P1 : square
+% P2 : circle
+% P3 : triangle
+
+%________________ error lines (by Ricardo Costa) ________________
+
+% argument 1: slopes (e.g. {4,6})
+% argument 2: x position of the bottom left corner
+% argument 3: y position of the bottom left corner
+% argument 4: x length
+
+\makeatletter
+
+\newcommand{\printslopeinv}[4]{
+    \tikzset{fixed point arithmetic}
+    % get arguments
+    \def\nero@printslope@orderlist{#1}
+    \edef\nero@printslope@xpos{#2}
+    \edef\nero@printslope@ypos{#3}
+    \edef\nero@printslope@width{#4}
+    % get points position
+    \pgfmathparse{\nero@printslope@xpos+\nero@printslope@width}
+    \edef\nero@printslope@px{\pgfmathresult}
+    \edef\nero@printslope@py{\nero@printslope@ypos}
+    \edef\nero@printslope@qx{\pgfmathresult}
+    \edef\nero@printslope@ry{\nero@printslope@ypos}
+    \foreach \nero@printslope@order in {#1}{
+        \pgfmathparse{
+        ((\nero@printslope@px/\nero@printslope@xpos)^(\nero@printslope@order))*\nero@printslope@ypos}
+        \edef\nero@printslope@qy{\pgfmathresult}
+            \edef\nero@aux1{\noexpand\draw[line width=0.6pt]
+            (axis cs:\nero@printslope@xpos,\nero@printslope@ypos)
+            -- (axis cs:\nero@printslope@qx,\nero@printslope@qy)
+            -- (axis cs:\nero@printslope@px,\nero@printslope@py);}
+        \nero@aux1
+        % slope label
+        \pgfmathparse{10^((ln(\nero@printslope@ry)+ln(\nero@printslope@qy))/(ln(10)*2))}
+        \edef\nero@printslope@labelpos{\pgfmathresult}
+        \edef\nero@aux2{\noexpand\node[anchor=west] at
+            (axis cs:\nero@printslope@qx,\nero@printslope@labelpos)
+            {\noexpand\Large \nero@printslope@order};}
+        \nero@aux2
+        \global\edef\nero@printslope@ry{\nero@printslope@qy}
+    }
+    % base line
+    \draw[line width=0.6pt] (axis cs:\nero@printslope@xpos,\nero@printslope@ypos)
+        |- (axis cs:\nero@printslope@px,\nero@printslope@py);
+    % label of base line
+    \pgfmathparse{10^((ln(\nero@printslope@px)+ln(\nero@printslope@xpos))/(ln(10)*2))}
+    \edef\nero@printslope@labelpos{\pgfmathresult}
+    \node[anchor=north] at (axis cs:\nero@printslope@labelpos,\nero@printslope@ypos) {\Large 1};
+}
+
+\makeatother
+
+\newlength{\plotwidth}
+\setlength{\plotwidth}{0.65\textwidth}
+\newlength{\plotheight}
+\setlength{\plotheight}{0.55\textwidth}
+
+\newenvironment{cvgh}[1]{
+    \begin{tikzpicture}
+        \edef\legendcolumns{#1}
+
+        \begin{groupplot}[
+            group style={
+                group size=4 by 1,
+                horizontal sep=1.8cm,
+                vertical sep=1cm,
+                % ylabels at=edge left,
+                % yticklabels at=edge left,
+                % xlabels at=edge bottom,
+                % optional: set all ylabels at far left
+            },
+            width=\plotwidth, height=\plotheight,
+            grid=major,
+            xmode=log,
+            ymode=log,
+            title style={font=\Huge},
+            legend columns=\legendcolumns,
+            legend style={font=\LARGE, /tikz/every even column/.append style={column sep=0.7cm}},
+            % Adapt styles as needed
+            axis lines = left, %%%%
+            enlarge x limits={abs=10pt},
+            enlarge y limits={abs=10pt},
+            tick label style={font=\Large},
+            axis y line shift = -5pt,
+            xtick=data,
+            xticklabels from table={\datatable}{h},
+            xlabel = {$h$},
+            ylabel = {\rotatebox{270}{$L^2$}},
+            xlabel style={font=\LARGE,at={(ticklabel* cs:1.01)},anchor=west},
+            ylabel style={font=\LARGE,at={(ticklabel* cs:1.01)},anchor=west},
+            legend image post style={mark options={solid, scale=1},xscale=0.8},
+            ]
+    }
+    {
+        \end{groupplot}
+        % \node[xshift=60pt] at (left_plot.east) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+        \node[yshift=-20pt] at (current bounding box.south) {\pgfplotslegendfromname{sharedLegend}};
+    \end{tikzpicture}
+}
+
+\newcommand{\cvgunifadapt}[4]{
+    \edef\femUn{#1}
+    \edef\femprevUn{#2}
+    \edef\feminitUn{#3}
+    \edef\addUn{#4}
+
+    % Read the CSV file into a table
+    \pgfplotstableread[col sep=comma]{\feminitUn}\datatable
+
+    % Obtenir le second élément
+    \pgfmathtruncatemacro{\secondrow}{1} % Index de la dernière ligne
+    \pgfplotstablegetelem{\secondrow}{h}\of\datatable
+    \pgfmathsetmacro{\second}{\pgfplotsretval} % Dernière valeur de h_rounded
+
+    % Obtenir le premier élément
+    \pgfmathtruncatemacro{\firstrow}{0} % Index de l'avant-dernière ligne
+    \pgfplotstablegetelem{\firstrow}{h}\of\datatable
+    \pgfmathsetmacro{\first}{\pgfplotsretval} % Avant-dernière valeur de h_rounded
+
+    % Calculer la différence entre les deux
+    \pgfmathsetmacro{\diff}{\first - \second}
+
+    \begin{cvgh}{4}
+
+        %%%% u_1 %%%%
+        \nextgroupplot[title={$u_1$},legend to name=sharedLegend]
+
+        \addplot [style={solid}, mark=square, mark size=4.5, color=lime!80!black, line width=0.8pt, mark options={fill=lime!80!black, draw=lime!80!black, line width=1pt} ]
+        table [x=h, y=err_U_1, col sep=comma]
+        {\femUn}; \addlegendentry{\,Standard\;}
+        
+        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=cyan!60!black, line width=0.8pt, mark options={fill=cyan!60!black, draw=cyan!60!black, line width=1pt, style={solid}} ]
+        table [x=h, y=err_U_1, col sep=comma]
+        {\femprevUn}; \addlegendentry{\,Incremental\;}
+
+        \addplot [style={dashed}, mark=square*, mark size=1, color=black, line width=0.8pt, mark options={fill=black, draw=black, line width=0pt} ]
+        table [x=h, y=err_U_1, col sep=comma]
+        {\feminitUn}; \addlegendentry{\,DeepPhysics\;}
+        
+        \addplot [style={dashed}, mark=square*, mark size=4, color=addcolor, line width=0.8pt, mark options={fill=addcolor, draw=addcolor, line width=0pt} ]
+        table [x=h, y=err_U_1, col sep=comma]
+        {\addUn}; \addlegendentry{\,Additive approach \textbf{(ours)}\;}
+
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-5}{\diff}
+
+        %%%% u_2 %%%%
+        \nextgroupplot[title={$u_2$}]
+
+        \addplot [style={solid}, mark=square, mark size=4.5, color=lime!80!black, line width=0.8pt, mark options={fill=lime!80!black, draw=lime!80!black, line width=1pt} ]
+        table [x=h, y=err_U_2, col sep=comma]
+        {\femUn};
+        
+        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=cyan!60!black, line width=0.8pt, mark options={fill=cyan!60!black, draw=cyan!60!black, line width=1pt, style={solid}} ]
+        table [x=h, y=err_U_2, col sep=comma]
+        {\femprevUn};
+
+        \addplot [style={dashed}, mark=square*, mark size=1, color=black, line width=0.8pt, mark options={fill=black, draw=black, line width=0pt} ]
+        table [x=h, y=err_U_2, col sep=comma]
+        {\feminitUn};
+        
+        \addplot [style={dashed}, mark=square*, mark size=4, color=addcolor, line width=0.8pt, mark options={fill=addcolor, draw=addcolor, line width=0pt} ]
+        table [x=h, y=err_U_2, col sep=comma]
+        {\addUn};
+
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-5}{\diff}
+
+        %%%% p %%%%
+        \nextgroupplot[title={$p$}]
+
+        \addplot [style={solid}, mark=square, mark size=4.5, color=lime!80!black, line width=0.8pt, mark options={fill=lime!80!black, draw=lime!80!black, line width=1pt} ]
+        table [x=h, y=err_p, col sep=comma]
+        {\femUn};
+        
+        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=cyan!60!black, line width=0.8pt, mark options={fill=cyan!60!black, draw=cyan!60!black, line width=1pt, style={solid}} ]
+        table [x=h, y=err_p, col sep=comma]
+        {\femprevUn};
+
+        \addplot [style={dashed}, mark=square*, mark size=1, color=black, line width=0.8pt, mark options={fill=black, draw=black, line width=0pt} ]
+        table [x=h, y=err_p, col sep=comma]
+        {\feminitUn};
+        
+        \addplot [style={dashed}, mark=square*, mark size=4, color=addcolor, line width=0.8pt, mark options={fill=addcolor, draw=addcolor, line width=0pt} ]
+        table [x=h, y=err_p, col sep=comma]
+        {\addUn};
+
+        \expandafter\printslopeinv\expandafter{2}{\second}{3e-6}{\diff}
+
+        %%%% T %%%%
+        \nextgroupplot[title={$T$}]
+        
+        \addplot [style={solid}, mark=square, mark size=4.5, color=lime!80!black, line width=0.8pt, mark options={fill=lime!80!black, draw=lime!80!black, line width=1pt} ]
+        table [x=h, y=err_T, col sep=comma]
+        {\femUn};
+        
+        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=cyan!60!black, line width=0.8pt, mark options={fill=cyan!60!black, draw=cyan!60!black, line width=1pt, style={solid}} ]
+        table [x=h, y=err_T, col sep=comma]
+        {\femprevUn};
+
+        \addplot [style={dashed}, mark=square*, mark size=1, color=black, line width=0.8pt, mark options={fill=black, draw=black, line width=0pt} ]
+        table [x=h, y=err_T, col sep=comma]
+        {\feminitUn};
+        
+        \addplot [style={dashed}, mark=square*, mark size=4, color=addcolor, line width=0.8pt, mark options={fill=addcolor, draw=addcolor, line width=0pt} ]
+        table [x=h, y=err_T, col sep=comma]
+        {\addUn};
+
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-6}{\diff}
+    \end{cvgh}
+}
+
+\begin{document}
+    \cvgunifadapt{param2/FEM_case4_v2_param4_degree1.csv}{param2/FEMPrev_case4_v2_param4_degree1.csv}{param2/FEMNet_case4_v2_param4_degree1.csv}{param2/ADD_case4_v2_param4_degree1.csv}
+\end{document}

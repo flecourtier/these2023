@@ -1,0 +1,29 @@
+\documentclass[varwidth=10.5cm,border=2mm]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+\definecolor{darkred}{rgb}{0.9, 0, 0}
+
+\begin{document}
+    \begin{center}
+        \begin{table}[htbp]
+            \centering
+            \begin{tabular}{cc}
+                \toprule
+                \multicolumn{2}{c}{\textbf{Number of iterations}} \\
+                \midrule
+                Standard & 10 / None \\
+                \cmidrule(lr){1-2}
+                Incremental & 4 \\
+                \cmidrule(lr){1-2}
+                DeepPhysics & 3 \\
+                \cmidrule(lr){1-2}
+                \textbf{Additive} & 3 \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+    \end{center}
+\end{document}
