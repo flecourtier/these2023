@@ -101,23 +101,64 @@
 
 \newcommand{\cvgunifadapt}[0]{
     \begin{cvgh}{4}
-        % %% Third parameter -- V3
-        \nextgroupplot[]%title={$\bm{\mu}^{(3)}=(0.01,0.01)$}]
+        %% First parameter
+        % \nextgroupplot[title={$\bm{\mu}^{(1)}=(0.1,0.1)$}]
 
-        \PreprocessSum{../data/param3/version2/FEMPrev_case4_v2_param9_degree1.csv}{\TableG}
+        % \PreprocessSum{../data/param1/FEM_case4_v2_param1_degree1.csv}{\TableA}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableA};
+        
+        % \PreprocessSum{../data/param1/FEMNet_case4_v2_param1_degree1.csv}{\TableB}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableB};
+        
+        % \PreprocessSum{../data/param1/ADD_case4_v2_param1_degree1.csv}{\TableC}
+        % \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableC};
+
+        %% Second parameter
+        \nextgroupplot[]%legend to name=sharedLegend] %title={$\bm{\mu}^{(2)}=(0.05,0.05)$}
+
+        \PreprocessSum{../data/param2/FEM_case4_v2_param4_degree1.csv}{\TableD}
+        \addplot [style={solid}, mark=square*, mark size=4, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=0pt} ]
+        table [x=times, y=err_sum, col sep=comma]
+        {\TableD};%\addlegendentry{\,Standard\;}
+        
+        \PreprocessSum{../data/param2/FEMPrev_case4_v2_param4_degree1.csv}{\TableE}
         \addplot [style={solid}, mark=square*, mark size=4, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableG};
+        {\TableE};%\addlegendentry{\,Incremental\;}
 
-        \PreprocessSum{../data/param3/version3/FEMNet_case4_v3_param1_degree1.csv}{\TableH}
+        \PreprocessSum{../data/param2/FEMNet_case4_v2_param4_degree1.csv}{\TableF}
         \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableH};
+        {\TableF};%\addlegendentry{\,DeepPhysics\;}
 
-        \PreprocessSum{../data/param3/version3/ADD_case4_v3_param1_degree1.csv}{\TableI}
+        \PreprocessSum{../data/param2/ADD_case4_v2_param4_degree1.csv}{\TableG}
         \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableI};
+        {\TableG};%\addlegendentry{\,Additive approach \textbf{(ours)}\;}
+
+        % % %% Third parameter
+        % \nextgroupplot[title={$\bm{\mu}^{(3)}=(0.01,0.01)$}]
+
+        % \PreprocessSum{../data/param3/version2/FEMPrev_case4_v2_param9_degree1.csv}{\TableG}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableG};
+
+        % \PreprocessSum{../data/param3/version2/FEMNet_case4_v2_param9_degree1.csv}{\TableH}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableH};
+
+        % \PreprocessSum{../data/param3/version2/ADD_case4_v2_param9_degree1.csv}{\TableI}
+        % \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableI};
     \end{cvgh}
 }
 

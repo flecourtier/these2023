@@ -122,6 +122,7 @@
             axis y line shift = -5pt,
             xtick={0.189,0.091,0.045,0.022},
             xticklabels from table={\datatable}{h},
+            ymin=5e-7,ymax=2e-2,
             xlabel = {$h$},
             ylabel = {\rotatebox{270}{$L^2$}},
             xlabel style={font=\LARGE,at={(ticklabel* cs:1.01)},anchor=west},
@@ -177,7 +178,7 @@
         table [x=h, y=err_U_1, col sep=comma]
         {\addUnB};
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{1e-4}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-6}{\diff}
 
         %%%% u_2 %%%%
         \nextgroupplot[title={$u_2$}, legend to name=sharedLegend]
@@ -194,7 +195,7 @@
         table [x=h, y=err_U_2, col sep=comma]
         {\addUnB};\addlegendentry{\,Additive approach \textbf{(ours)}\;}
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{1e-4}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-6}{\diff}
 
         % %%%% p %%%%
         % \nextgroupplot[title={$p$}]
@@ -228,7 +229,7 @@
         table [x=h, y=err_T, col sep=comma]
         {\addUnB};
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{3e-5}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-6}{\diff}
     \end{cvgh}
 }
 

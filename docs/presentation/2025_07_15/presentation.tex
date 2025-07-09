@@ -249,8 +249,15 @@
 	% \input{sections/correction}
 	% \input{sections/newlines}
 
+	\renewcommand{\insertsectionheadSubtitle}{
+		\begin{itemize}
+			\item Results obtained with a laptop GPU.
+			\item The newton solver is the same for all methods (rtol$=10^{-10}$, atol$=10^{-10}$, max\_it$=30$).
+			\item Additive approach : we consider $u_\theta$ in a $\mathbb{P}_3^2\times \mathbb{P}_2 \times \mathbb{P}_3$ continuous Lagrange FE space (defined on the current mesh).
+		\end{itemize}}
 	\section{Numerical results}
 	\input{sections/results}
+	\renewcommand{\insertsectionheadSubtitle}{}
 	% \section{New lines of research}
 
 	\section*{Conclusion}

@@ -120,8 +120,9 @@
             enlarge y limits={abs=10pt},
             tick label style={font=\Large},
             axis y line shift = -5pt,
-            xtick=data,
+            xtick={0.189,0.091,0.045,0.022},
             xticklabels from table={\datatable}{h},
+            ymin=5e-8,ymax=2e-3,
             xlabel = {$h$},
             ylabel = {\rotatebox{270}{$L^2$}},
             xlabel style={font=\LARGE,at={(ticklabel* cs:1.01)},anchor=west},
@@ -165,21 +166,21 @@
 
         \addplot [style={solid}, mark=square, mark size=4.5, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=1pt} ]
         table [x=h, y=err_U_1, col sep=comma]
-        {\femUn}; \addlegendentry{\,Standard\;}
+        {\femUn}; \addlegendentry{\,Standard \textbf{\textcolor{red}{(10/X)}}\;}
         
         \addplot [style={dashdotted}, mark=square, mark size=2.5, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=1pt, style={solid}} ]
         table [x=h, y=err_U_1, col sep=comma]
-        {\femprevUn}; \addlegendentry{\,Incremental\;}
+        {\femprevUn}; \addlegendentry{\,Incremental \textbf{\textcolor{red}{(4)}}\;}
 
         \addplot [style={dashed}, mark=square*, mark size=1, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=h, y=err_U_1, col sep=comma]
-        {\feminitUn}; \addlegendentry{\,DeepPhysics\;}
+        {\feminitUn}; \addlegendentry{\,DeepPhysics \textbf{\textcolor{red}{(3)}}\;}
         
         \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=h, y=err_U_1, col sep=comma]
-        {\addUn}; \addlegendentry{\,Additive approach \textbf{(ours)}\;}
+        {\addUn}; \addlegendentry{\,\textbf{Additive} \textbf{\textcolor{red}{(3)}}\;}
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{1e-5}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-7}{\diff}
 
         %%%% u_2 %%%%
         \nextgroupplot[title={$u_2$}]
@@ -200,7 +201,7 @@
         table [x=h, y=err_U_2, col sep=comma]
         {\addUn};
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{1e-5}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-7}{\diff}
 
         % %%%% p %%%%
         % \nextgroupplot[title={$p$}]
@@ -242,10 +243,10 @@
         table [x=h, y=err_T, col sep=comma]
         {\addUn};
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{1e-6}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-7}{\diff}
     \end{cvgh}
 }
 
 \begin{document}
-    \cvgunifadapt{../data/param2/FEM_case4_v2_param4_degree1.csv}{../data/param2/FEMPrev_case4_v2_param4_degree1.csv}{../data/param2/FEMNet_case4_v2_param4_degree1.csv}{param2/ADD_case4_v2_param4_degree1.csv}
+    \cvgunifadapt{../data/param2/FEM_case4_v2_param4_degree1.csv}{../data/param2/FEMPrev_case4_v2_param4_degree1.csv}{../data/param2/FEMNet_case4_v2_param4_degree1.csv}{../data/param2/ADD_case4_v2_param4_degree1.csv}
 \end{document}

@@ -59,7 +59,7 @@
 
         \begin{groupplot}[
             group style={
-                group size=3 by 1,
+                group size=1 by 1,
                 horizontal sep=1.8cm,
                 vertical sep=1cm,
             },
@@ -86,9 +86,9 @@
     }
     {
         \end{groupplot}
-        \node[yshift=-15pt] at (current bounding box.south) {\pgfplotslegendfromname{sharedLegend}};
+        % \node[yshift=-15pt] at (current bounding box.south) {\pgfplotslegendfromname{sharedLegend}};
 
-        % \draw[black, line width=0.4mm] (0.1,1.9) -- (4.7,1.9) node[anchor=west, xshift=2pt] {$e$};
+        \draw[red, line width=0.6mm] (0.1,1.9) -- (5.9,1.9) node[anchor=west, xshift=2pt] {\LARGE \textbf{$e$}};
     \end{tikzpicture}
 }
 
@@ -102,7 +102,7 @@
 \newcommand{\cvgunifadapt}[0]{
     \begin{cvgh}{4}
         %% First parameter
-        \nextgroupplot[title={$\bm{\mu}^{(1)}=(0.1,0.1)$}]
+        \nextgroupplot[]%title={$\bm{\mu}^{(1)}=(0.1,0.1)$}]
 
         \PreprocessSum{../data/param1/FEM_case4_v2_param1_degree1.csv}{\TableA}
         \addplot [style={solid}, mark=square*, mark size=4, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=0pt} ]
@@ -119,46 +119,46 @@
         table [x=times, y=err_sum, col sep=comma]
         {\TableC};
 
-        %% Second parameter
-        \nextgroupplot[title={$\bm{\mu}^{(2)}=(0.05,0.05)$},legend to name=sharedLegend]
+        % %% Second parameter
+        % \nextgroupplot[title={$\bm{\mu}^{(2)}=(0.05,0.05)$},legend to name=sharedLegend]
 
-        \PreprocessSum{../data/param2/FEM_case4_v2_param4_degree1.csv}{\TableD}
-        \addplot [style={solid}, mark=square*, mark size=4, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=0pt} ]
-        table [x=times, y=err_sum, col sep=comma]
-        {\TableD};\addlegendentry{\,Standard\;}
+        % \PreprocessSum{../data/param2/FEM_case4_v2_param4_degree1.csv}{\TableD}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableD};\addlegendentry{\,Standard\;}
         
-        \PreprocessSum{../data/param2/FEMPrev_case4_v2_param4_degree1.csv}{\TableE}
-        \addplot [style={solid}, mark=square*, mark size=4, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=0pt} ]
-        table [x=times, y=err_sum, col sep=comma]
-        {\TableE};\addlegendentry{\,Incremental\;}
+        % \PreprocessSum{../data/param2/FEMPrev_case4_v2_param4_degree1.csv}{\TableE}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableE};\addlegendentry{\,Incremental\;}
 
-        \PreprocessSum{../data/param2/FEMNet_case4_v2_param4_degree1.csv}{\TableF}
-        \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
-        table [x=times, y=err_sum, col sep=comma]
-        {\TableF};\addlegendentry{\,DeepPhysics\;}
+        % \PreprocessSum{../data/param2/FEMNet_case4_v2_param4_degree1.csv}{\TableF}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableF};\addlegendentry{\,DeepPhysics\;}
 
-        \PreprocessSum{../data/param2/ADD_case4_v2_param4_degree1.csv}{\TableG}
-        \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
-        table [x=times, y=err_sum, col sep=comma]
-        {\TableG};\addlegendentry{\,Additive approach \textbf{(ours)}\;}
+        % \PreprocessSum{../data/param2/ADD_case4_v2_param4_degree1.csv}{\TableG}
+        % \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableG};\addlegendentry{\,Additive approach \textbf{(ours)}\;}
 
-        % %% Third parameter
-        \nextgroupplot[title={$\bm{\mu}^{(3)}=(0.01,0.01)$}]
+        % % %% Third parameter
+        % \nextgroupplot[title={$\bm{\mu}^{(3)}=(0.01,0.01)$}]
 
-        \PreprocessSum{../data/param3/version2/FEMPrev_case4_v2_param9_degree1.csv}{\TableG}
-        \addplot [style={solid}, mark=square*, mark size=4, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=0pt} ]
-        table [x=times, y=err_sum, col sep=comma]
-        {\TableG};
+        % \PreprocessSum{../data/param3/version2/FEMPrev_case4_v2_param9_degree1.csv}{\TableG}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableG};
 
-        \PreprocessSum{../data/param3/version2/FEMNet_case4_v2_param9_degree1.csv}{\TableH}
-        \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
-        table [x=times, y=err_sum, col sep=comma]
-        {\TableH};
+        % \PreprocessSum{../data/param3/version2/FEMNet_case4_v2_param9_degree1.csv}{\TableH}
+        % \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableH};
 
-        \PreprocessSum{../data/param3/version2/ADD_case4_v2_param9_degree1.csv}{\TableI}
-        \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
-        table [x=times, y=err_sum, col sep=comma]
-        {\TableI};
+        % \PreprocessSum{../data/param3/version2/ADD_case4_v2_param9_degree1.csv}{\TableI}
+        % \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
+        % table [x=times, y=err_sum, col sep=comma]
+        % {\TableI};
     \end{cvgh}
 }
 

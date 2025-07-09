@@ -122,6 +122,7 @@
             axis y line shift = -5pt,
             xtick=data,
             xticklabels from table={\datatable}{h},
+            ymin=5e-8,ymax=2e-3,
             xlabel = {$h$},
             ylabel = {\rotatebox{270}{$L^2$}},
             xlabel style={font=\LARGE,at={(ticklabel* cs:1.01)},anchor=west},
@@ -164,17 +165,17 @@
 
         \addplot [style={solid}, mark=square, mark size=4.5, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=1pt} ]
         table [x=h, y=err_U_1, col sep=comma]
-        {\femUn}; \addlegendentry{\,Standard\;}
+        {\femUn}; \addlegendentry{\,Standard \textbf{\textcolor{red}{(6 iterations)}} \;}
 
         \addplot [style={dashed}, mark=square*, mark size=1, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=h, y=err_U_1, col sep=comma]
-        {\feminitUn}; \addlegendentry{\,DeepPhysics\;}
+        {\feminitUn}; \addlegendentry{\,DeepPhysics \textbf{\textcolor{red}{(3)}}\;}
         
         \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=h, y=err_U_1, col sep=comma]
-        {\addUn}; \addlegendentry{\,Additive approach \textbf{(ours)}\;}
+        {\addUn}; \addlegendentry{\,\textbf{Additive} \textbf{\textcolor{red}{(3)}}\;}
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{1e-5}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-7}{\diff}
 
         %%%% u_2 %%%%
         \nextgroupplot[title={$u_2$}]
@@ -191,7 +192,7 @@
         table [x=h, y=err_U_2, col sep=comma]
         {\addUn};
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{1e-5}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-7}{\diff}
 
         %%%% p %%%%
         % \nextgroupplot[title={$p$}]
@@ -225,7 +226,7 @@
         table [x=h, y=err_T, col sep=comma]
         {\addUn};
 
-        \expandafter\printslopeinv\expandafter{3}{\second}{1e-6}{\diff}
+        \expandafter\printslopeinv\expandafter{3}{\second}{1e-7}{\diff}
     \end{cvgh}
 }
 

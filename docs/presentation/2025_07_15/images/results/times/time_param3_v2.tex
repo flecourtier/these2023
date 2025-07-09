@@ -59,7 +59,7 @@
 
         \begin{groupplot}[
             group style={
-                group size=3 by 1,
+                group size=1 by 1,
                 horizontal sep=1.8cm,
                 vertical sep=1cm,
             },
@@ -78,7 +78,7 @@
             axis y line shift = -5pt,
             xmax=10,
             xlabel = {t},
-            ylabel = {\rotatebox{270}{$L^2$}},
+            ylabel = {\rotatebox{270}{$\Sigma L^2\quad$}},
             xlabel style={font=\Large,at={(ticklabel* cs:1.01)},anchor=west},
             ylabel style={font=\Large,at={(ticklabel* cs:1.01)},anchor=west},
             legend image post style={mark options={solid, scale=1},xscale=0.8},
@@ -86,19 +86,21 @@
     }
     {
         \end{groupplot}
-        \node[yshift=-40pt] at (current bounding box.south) {\pgfplotslegendfromname{sharedLegend}};
+        % \node[yshift=-15pt] at (current bounding box.south) {\pgfplotslegendfromname{sharedLegend}};
+
+        % \draw[black, line width=0.4mm] (0.1,1.9) -- (4.7,1.9) node[anchor=west, xshift=2pt] {$e$};
     \end{tikzpicture}
 }
 
 \newcommand{\PreprocessSum}[2]{%
     \pgfplotstableread[col sep=comma]{#1}{#2}%
     \pgfplotstablecreatecol[
-        create col/expr={\thisrow{err_U_1}+\thisrow{err_U_2}+\thisrow{err_p}+\thisrow{err_T}}
+        create col/expr={\thisrow{err_U_1}+\thisrow{err_U_2}+\thisrow{err_T}} %+\thisrow{err_p}
     ]{err_sum}{#2}%
 }
 
 \newcommand{\cvgunifadapt}[0]{
-    \begin{cvgh}{1}
+    \begin{cvgh}{4}
         % %% First parameter
         % \nextgroupplot[title={$\bm{\mu}^{(1)}=(0.1,0.1)$}]
 
@@ -141,22 +143,22 @@
         % {\TableG};\addlegendentry{\,Additive approach \textbf{(ours)}\;}
 
         % %% Third parameter
-        \nextgroupplot[title={$\bm{\mu}^{(3)}=(0.01,0.01)$},legend to name=sharedLegend]
+        \nextgroupplot[]%title={$\bm{\mu}^{(3)}=(0.01,0.01)$}]
 
         \PreprocessSum{../data/param3/version2/FEMPrev_case4_v2_param9_degree1.csv}{\TableG}
         \addplot [style={solid}, mark=square*, mark size=4, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableG};\addlegendentry{\,Incremental\;}
+        {\TableG};
 
         \PreprocessSum{../data/param3/version2/FEMNet_case4_v2_param9_degree1.csv}{\TableH}
         \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableH};\addlegendentry{\,DeepPhysics\;}
+        {\TableH};
 
         \PreprocessSum{../data/param3/version2/ADD_case4_v2_param9_degree1.csv}{\TableI}
         \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableI};\addlegendentry{\,Additive approach \textbf{(ours)}\;}
+        {\TableI};
     \end{cvgh}
 }
 
