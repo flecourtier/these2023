@@ -1,0 +1,39 @@
+\documentclass[border=0.2cm]{standalone}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{pgfplotstable} % <----- AJOUT OBLIGATOIRE !
+
+% costs pour tous les q : N et DoFs
+\newcommand{\coststable}[1]{
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+         & \multicolumn{2}{c}{\textbf{Number of DoFs}} & \multicolumn{3}{c}{\textbf{Execution times}} \\
+		\cmidrule(lr){2-3} \cmidrule(lr){4-6}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-6}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={3}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-6}},
+		% columns/q/.style={column name=\textbf{k}},
+        columns/e/.style={column name=\textbf{e},sci},
+		columns/DoFsFEM/.style={column name=\textbf{Std/DPhy},fixed},
+        % columns/DoFsFEMNet/.style={column name=\textbf{DPhy},fixed},
+        columns/DoFsADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{red}}{},
+        }},
+        columns/TimesFEM/.style={column name=\textbf{Std},fixed},
+        columns/TimesFEMNet/.style={column name=\textbf{DPhy},fixed},
+        columns/TimesADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{red}}{},
+        }},
+        columns={e,DoFsFEM,DoFsADD,TimesFEM,TimesFEMNet,TimesADD},
+        precision=2
+    ]{#1}
+}
+
+\begin{document}
+    \centering
+    \coststable{../data/param1/TabTimes_case4_v2_param1_degree1.csv}
+\end{document}
