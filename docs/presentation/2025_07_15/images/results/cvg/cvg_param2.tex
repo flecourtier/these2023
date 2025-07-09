@@ -39,26 +39,10 @@
 \usepgfplotslibrary{fillbetween}
 
 % Define colors
-\definecolor{femcolor}{RGB}{51, 138, 55} %Green (27,158,119)
-\definecolor{addcolor}{RGB}{217,95,2} %Orange
-\definecolor{feminitcolor}{RGB}{49, 73, 181}%{199,39,34} %Red (sob or other)
-
-% Define line styles according to the method 
-% FEM : solid
-% Add : dashed
-% Mult : dotted
-
-% Define marker styles according to the degree
-% P1 : square
-% P2 : circle
-% P3 : triangle
-
-%________________ error lines (by Ricardo Costa) ________________
-
-% argument 1: slopes (e.g. {4,6})
-% argument 2: x position of the bottom left corner
-% argument 3: y position of the bottom left corner
-% argument 4: x length
+\newcommand{\femcolor}{lime!80!black}
+\newcommand{\feminitcolor}{cyan!60!black}
+\newcommand{\femnetcolor}{black}
+\newcommand{\addcolor}{orange!80!black}
 
 \makeatletter
 
@@ -115,7 +99,7 @@
 
         \begin{groupplot}[
             group style={
-                group size=4 by 1,
+                group size=3 by 1,
                 horizontal sep=1.8cm,
                 vertical sep=1cm,
                 % ylabels at=edge left,
@@ -179,19 +163,19 @@
         %%%% u_1 %%%%
         \nextgroupplot[title={$u_1$},legend to name=sharedLegend]
 
-        \addplot [style={solid}, mark=square, mark size=4.5, color=lime!80!black, line width=0.8pt, mark options={fill=lime!80!black, draw=lime!80!black, line width=1pt} ]
+        \addplot [style={solid}, mark=square, mark size=4.5, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=1pt} ]
         table [x=h, y=err_U_1, col sep=comma]
         {\femUn}; \addlegendentry{\,Standard\;}
         
-        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=cyan!60!black, line width=0.8pt, mark options={fill=cyan!60!black, draw=cyan!60!black, line width=1pt, style={solid}} ]
+        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=1pt, style={solid}} ]
         table [x=h, y=err_U_1, col sep=comma]
         {\femprevUn}; \addlegendentry{\,Incremental\;}
 
-        \addplot [style={dashed}, mark=square*, mark size=1, color=black, line width=0.8pt, mark options={fill=black, draw=black, line width=0pt} ]
+        \addplot [style={dashed}, mark=square*, mark size=1, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=h, y=err_U_1, col sep=comma]
         {\feminitUn}; \addlegendentry{\,DeepPhysics\;}
         
-        \addplot [style={dashed}, mark=square*, mark size=4, color=addcolor, line width=0.8pt, mark options={fill=addcolor, draw=addcolor, line width=0pt} ]
+        \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=h, y=err_U_1, col sep=comma]
         {\addUn}; \addlegendentry{\,Additive approach \textbf{(ours)}\;}
 
@@ -200,61 +184,61 @@
         %%%% u_2 %%%%
         \nextgroupplot[title={$u_2$}]
 
-        \addplot [style={solid}, mark=square, mark size=4.5, color=lime!80!black, line width=0.8pt, mark options={fill=lime!80!black, draw=lime!80!black, line width=1pt} ]
+        \addplot [style={solid}, mark=square, mark size=4.5, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=1pt} ]
         table [x=h, y=err_U_2, col sep=comma]
         {\femUn};
         
-        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=cyan!60!black, line width=0.8pt, mark options={fill=cyan!60!black, draw=cyan!60!black, line width=1pt, style={solid}} ]
+        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=1pt, style={solid}} ]
         table [x=h, y=err_U_2, col sep=comma]
         {\femprevUn};
 
-        \addplot [style={dashed}, mark=square*, mark size=1, color=black, line width=0.8pt, mark options={fill=black, draw=black, line width=0pt} ]
+        \addplot [style={dashed}, mark=square*, mark size=1, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=h, y=err_U_2, col sep=comma]
         {\feminitUn};
         
-        \addplot [style={dashed}, mark=square*, mark size=4, color=addcolor, line width=0.8pt, mark options={fill=addcolor, draw=addcolor, line width=0pt} ]
+        \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=h, y=err_U_2, col sep=comma]
         {\addUn};
 
         \expandafter\printslopeinv\expandafter{3}{\second}{1e-5}{\diff}
 
-        %%%% p %%%%
-        \nextgroupplot[title={$p$}]
+        % %%%% p %%%%
+        % \nextgroupplot[title={$p$}]
 
-        \addplot [style={solid}, mark=square, mark size=4.5, color=lime!80!black, line width=0.8pt, mark options={fill=lime!80!black, draw=lime!80!black, line width=1pt} ]
-        table [x=h, y=err_p, col sep=comma]
-        {\femUn};
+        % \addplot [style={solid}, mark=square, mark size=4.5, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=1pt} ]
+        % table [x=h, y=err_p, col sep=comma]
+        % {\femUn};
         
-        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=cyan!60!black, line width=0.8pt, mark options={fill=cyan!60!black, draw=cyan!60!black, line width=1pt, style={solid}} ]
-        table [x=h, y=err_p, col sep=comma]
-        {\femprevUn};
+        % \addplot [style={dashdotted}, mark=square, mark size=2.5, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=1pt, style={solid}} ]
+        % table [x=h, y=err_p, col sep=comma]
+        % {\femprevUn};
 
-        \addplot [style={dashed}, mark=square*, mark size=1, color=black, line width=0.8pt, mark options={fill=black, draw=black, line width=0pt} ]
-        table [x=h, y=err_p, col sep=comma]
-        {\feminitUn};
+        % \addplot [style={dashed}, mark=square*, mark size=1, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
+        % table [x=h, y=err_p, col sep=comma]
+        % {\feminitUn};
         
-        \addplot [style={dashed}, mark=square*, mark size=4, color=addcolor, line width=0.8pt, mark options={fill=addcolor, draw=addcolor, line width=0pt} ]
-        table [x=h, y=err_p, col sep=comma]
-        {\addUn};
+        % \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
+        % table [x=h, y=err_p, col sep=comma]
+        % {\addUn};
 
-        \expandafter\printslopeinv\expandafter{2}{\second}{3e-6}{\diff}
+        % \expandafter\printslopeinv\expandafter{2}{\second}{3e-6}{\diff}
 
         %%%% T %%%%
         \nextgroupplot[title={$T$}]
         
-        \addplot [style={solid}, mark=square, mark size=4.5, color=lime!80!black, line width=0.8pt, mark options={fill=lime!80!black, draw=lime!80!black, line width=1pt} ]
+        \addplot [style={solid}, mark=square, mark size=4.5, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=1pt} ]
         table [x=h, y=err_T, col sep=comma]
         {\femUn};
         
-        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=cyan!60!black, line width=0.8pt, mark options={fill=cyan!60!black, draw=cyan!60!black, line width=1pt, style={solid}} ]
+        \addplot [style={dashdotted}, mark=square, mark size=2.5, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=1pt, style={solid}} ]
         table [x=h, y=err_T, col sep=comma]
         {\femprevUn};
 
-        \addplot [style={dashed}, mark=square*, mark size=1, color=black, line width=0.8pt, mark options={fill=black, draw=black, line width=0pt} ]
+        \addplot [style={dashed}, mark=square*, mark size=1, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=h, y=err_T, col sep=comma]
         {\feminitUn};
         
-        \addplot [style={dashed}, mark=square*, mark size=4, color=addcolor, line width=0.8pt, mark options={fill=addcolor, draw=addcolor, line width=0pt} ]
+        \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=h, y=err_T, col sep=comma]
         {\addUn};
 
@@ -263,5 +247,5 @@
 }
 
 \begin{document}
-    \cvgunifadapt{param2/FEM_case4_v2_param4_degree1.csv}{param2/FEMPrev_case4_v2_param4_degree1.csv}{param2/FEMNet_case4_v2_param4_degree1.csv}{param2/ADD_case4_v2_param4_degree1.csv}
+    \cvgunifadapt{../data/param2/FEM_case4_v2_param4_degree1.csv}{../data/param2/FEMPrev_case4_v2_param4_degree1.csv}{../data/param2/FEMNet_case4_v2_param4_degree1.csv}{param2/ADD_case4_v2_param4_degree1.csv}
 \end{document}
