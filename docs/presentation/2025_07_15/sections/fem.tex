@@ -56,7 +56,7 @@
         \begin{minipage}{0.9\linewidth}
             \begin{algorithm}[H]
                 \SetAlgoLined
-                \caption{Newton algorithm \citep{newton_accel_2025}}
+                \caption{Newton algorithm} % \citep{newton_accel_2025}}
                 \textbf{Initialization step:} set $\vec{U}_k^{(0)} = \only<1>{\vec{U}_{k,0}}\only<2>{\textcolor{darkred}{\vec{U}_{k,0}}}$\;
                 \For{\( n \ge 0 \)}{
                     Solve the linear system \( F(\vec{U}_k^{(n)}) + F'(\vec{U}_k^{(n)}) \delta_k^{(n+1)} = 0 \) for \( \delta_k^{(n+1)} \)\;
@@ -70,7 +70,7 @@
 
 \begin{frame}{3 types of initialization}
 	\begin{itemize}
-		\item \textbf{Natural initialization :} \only<2-4>{Using constant or linear function.}
+		\item \textbf{Natural :} \only<2-4>{Using constant or linear function.}
 		
 		\only<2>{Considering a fixed parameter with $k\in\{1,2,3\}$, we can use the following initialization:	
 		$$\vec{U}_{k,0} = \big(\vec{0}, \vec{0}, \vec{0}, \vec{T}_0\big)$$
@@ -78,13 +78,13 @@
 		$$(\vec{T}_0)_i = g(\bm{x}^{(i)}) = 1 - (x^{(i)}+1)$$
 		with $\bm{x}^{(i)}=\big(x^{(i)},y^{(i)}\big)$ the $i$-th dofs coordinates of $W_h$.}
 		
-		\item \textbf{DeepPhysics initialization :} \only<3-4>{Using PINN prediction \citep{odot_deepphysics_2021}.}
-
+		\item \textbf{PINN :} \only<3-4>{Using PINN prediction. \\	
+		(UNet : \citep{odot_deepphysics_2021} ; FNO : \citep{newton_accel_2025})} \\
 		\only<3>{Considering a fixed parameter with $k\in\{1,2,3\}$, we can use the following initialization for $i=1,\ldots,N_h$,
 		$$\big(\vec{U}_{k,0}\big)_i = U_\theta(\bm{x}^{(i)},\bm{\mu}^{(k)})$$
 		with $\bm{x}^{(i)}=\big(x^{(i)},y^{(i)}\big)$ the $i$-th dofs coordinates of $M_h$ and $U_\theta$ the PINN.}
 		
-		\item \textbf{Incremental initialization.} \only<4>{Using a coarse FE solution of a simpler parameter.}
+		\item \textbf{Continuation method :} \only<4>{Using a coarse FE solution of a simpler parameter.}
 		
 		\only<4>{\begin{itemize}
 			\item We consider a fixed parameter with $k\in\{2,3\}$.

@@ -1,3 +1,109 @@
+\subsection{Very simple linear test case}
+
+\begin{frame}{What is the purpose of enrichment?}
+
+\vspace{-5pt}
+\only<1>{\textbf{Poisson problem} (with Dirichlet BC) \textbf{:} \; Find $u : \Omega \rightarrow \mathbb{R}$ such that
+\vspace{-5pt}
+\begin{equation*}
+    \left\{
+    \begin{aligned}
+        -\Delta u & = f, \; &  & \text{in } \; \Omega, \\
+        u         & =0, \;  &  & \text{on } \; \partial\Omega.
+    \end{aligned}
+    \right.
+    % \label{eq:Lap2D}\tag{$\mathcal{P}$}
+\end{equation*}}
+
+\only<2>{\textbf{\textcolor{darkred}{Modified} Poisson problem :} \; Find $\textcolor{darkred}{C_{h,u}^+} : \Omega \rightarrow \mathbb{R}$ such that
+\vspace{-5pt}
+\begin{equation*}
+    \left\{
+    \begin{aligned}
+        -\Delta \textcolor{darkred}{C_{h,u}^+} & = f + \textcolor{darkred}{\Delta u_\theta}, \; &  & \text{in } \; \Omega, \\
+        \textcolor{darkred}{C_{h,u}^+} & =0, \;  &  & \text{on } \; \partial\Omega,
+    \end{aligned}
+    \right.
+    % \label{eq:Lap2D}\tag{$\mathcal{P}$}
+\end{equation*}
+with $u_{\theta}$ a PINN prediction.}
+
+\only<1>{\textbf{Variational Problem :} We consider $V_h^0$ a $\mathbb{P}_k$ continuous Lagrange FE space ($k\geq 1$).
+\begin{equation}
+    \label{eq:weakform}
+    \text{Find } u_h\in V_h^0 \;\text{such that}, \forall v_h\in V_h^0, a(u_h,v_h)=l(v_h),
+    \tag{$\mathcal{P}_h$}
+\end{equation}
+\vspace{1pt}
+with $h$ the characteristic mesh size, $a$ and $l$ the associated bilinear and linear forms.}
+
+\only<2-3>{\textbf{\textcolor<2>{darkred}{Modified} variational Problem :} 
+\begin{equation}
+    \label<2>{eq:weakplus}
+    \text{Find } \textcolor<2>{darkred}{C_{h,u}^+} \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(\textcolor<2>{darkred}{C_{h,u}^+},v_h) = l(v_h) \textcolor<2>{darkred}{- a(u_{\theta},v_h)},\tag{$\mathcal{P}_h^+$}
+\end{equation}
+with the \textcolor<2>{darkred}{enriched trial space $V_h^+$} defined by
+\begin{equation*}
+    V_h^+ = \left\{
+    \textcolor<3>{darkred}{u_h^+= u_{\theta} + C_{h,u}^+}, \quad C_{h,u}^+ \in V_h^0
+    \right\}.
+\end{equation*}}
+
+\vspace{-5pt}
+\only<3>{
+    \begin{center}
+        \includegraphics[width=0.6\linewidth]{images/efup/correction_entier/correction.pdf}
+    \end{center}
+}
+
+\vspace{-8pt}
+\only<3>{\begin{center}
+    \textcolor{darkred}{\textbf{We hope that the modified problem will give the same results \\
+    as the standard one on coarser meshes.}}
+\end{center}
+}
+
+\end{frame}
+
+\begin{frame}{Convergence analysis}
+	\vspace{-10pt}
+	\hypersetup{
+		citecolor=white,
+	}
+
+	\begin{mytheo}{Convergence analysis of the standard FEM \footnotesize\citep{Ern2004TheoryAP}\normalsize}{fem}
+		We denote $u_h\in V_h$ the solution of \eqref{eq:weakform} with $V_h$ the standard trial space. Then,
+		\vspace{-5pt}
+		\begin{equation*}
+			| u-u_h|_{H^1} \leqslant C_{H^1} \, h^{k} |u|_{H^{k+1}},
+		\end{equation*}
+		\begin{equation*}
+			\| u-u_h\|_{L^2} \leqslant C_{L^2} \, h^{k+1} |u|_{H^{k+1}}.
+		\end{equation*}
+	\end{mytheo}
+	
+	\begin{mytheo}{Convergence analysis of the enriched FEM \footnotesize\citep{ours_2025}\normalsize}{add}
+		We denote $u_h^+\in V_h^+$ the solution of \eqref{eq:weakplus} with $V_h^+$ the enriched trial space. Then,
+		\vspace{-5pt}
+		\begin{equation*}
+			| u-u_h^+|_{H^1} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{H^1} \, h^{k} |u|_{H^{k+1}}\right),
+		\end{equation*}
+		\begin{equation*}
+			\| u-u_h^+\|_{L^2} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{L^2} \, h^{k+1} |u|_{H^{k+1}}\right).
+		\end{equation*}
+	\end{mytheo}
+
+	\hypersetup{
+		citecolor=other,
+	}
+
+	\footnotesize
+	\textcolor{orange}{Gains of the additive approach.}
+\end{frame}
+
+
+\subsection{The heated cavity test case considered}
+
 \begin{frame}{Enriched space using PINN} %\footnote[frame,1]{The $\bm{\mu}$ parameter is fixed in the FE resolution.}}	
     Considering the PINN prior $U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$, we define the \textcolor{darkred}{mixed finite element space additively enriched} by the PINN as follows:
     
@@ -20,13 +126,13 @@
         \end{align*}
         where $\bm{C}_{h,\bm{u}}^+$, $C_{h,p}^+$ and $C_{h,T}^+$ becomes the unknowns.
         
-        \vspace{5pt}
-        \hl{à ajouter : dans quoi vit $U_\theta$ ?}
+        % \vspace{5pt}
+        % \hl{à ajouter : dans quoi vit $U_\theta$ ?}
     \end{minipage}
     \begin{minipage}{0.38\linewidth}
         \centering
         \vspace{5pt}
-        \pgfimage[width=0.8\linewidth]{images/efup/correction/correction.pdf}
+        \pgfimage[width=0.7\linewidth]{images/efup/correction/correction.pdf}
     \end{minipage}
 \end{frame}
 
@@ -65,7 +171,7 @@
     \end{equation*}
 
     \vspace{-2pt}
-    with $F_\theta:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the non linear operator associated to the weak problem \eqref{eq:weak_pb_add} and $\vec{C}\in \mathbb{R}^{N_h}$ the correction vector (unknown).
+    with $F_\theta:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the non linear operator associated to the weak problem \eqref{eq:weak_pb_add} and $\vec{C}\in \mathbb{R}^{N_h}$ the \textcolor{darkred}{correction vector (unknown)}.
 
 	\setcounter{algocf}{1}
     \begin{center}
@@ -84,7 +190,7 @@
     \end{center}
     
     \vspace{3pt}
-    \textbf{Advantage compared to DeepPhysics\footnote[frame,1]{The additive approach is exactly the same as DeepPhysics if we take $U_\theta$ in the same space as $C_h^+$.}:} \refappendix{frame:comp}
+    \textbf{Advantage compared to PINN initialization\footnote[frame,1]{Taking $U_\theta$ and $C_h^+$ in the same space, additive approach is exactly the same as the PINN initialization.}:} %\refappendix{frame:comp}
 
     \vspace{-2pt}
     \begin{center}

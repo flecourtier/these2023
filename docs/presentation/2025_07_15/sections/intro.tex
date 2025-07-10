@@ -24,12 +24,18 @@
 
 		\includegraphics[width=\linewidth]{images/intro/pipeline/online.pdf}
 	\end{figure}
+
+	\begin{center}
+		\textbf{Complete ONLINE process :} \textcolor{orange}{quick} + \textcolor{darkred}{accurate}
+	\end{center}
 \end{frame}
 
-\begin{frame}{Problem considered}
+\begin{frame}{Heated cavity test case}
+	
+	
 	\only<2>{\textcolor{darkred}{\textbf{Objective:} Simulation on a range of parameters $\bm{\mu} = (\mu,k_f) \in \mathcal{M} = [0.01, 0.1]^2$.}\vspace{5pt}}\only<3>{\textbf{Objective:} Simulation on a range of parameters $\bm{\mu} = (\mu,k_f) \in \mathcal{M} = [0.01, 0.1]^2$.\vspace{5pt}}
 
-	\textbf{Stationary incompressible Navier-Stokes equations (with buoyancy and gravity) :}
+	\textbf{Stationary incompressible Navier-Stokes equations (with buoyancy and gravity)\only<1>{\footnote[frame,1]{\textcolor{darkred}{The approach will be shown on this example, but can be extended to other test cases.}}} :}
 
 	We consider \only<1>{$\Omega = [-1,1]^2$ a squared domain}\only<2>{\textcolor{darkred}{$\bm{x}=(x,y)\in\Omega$}}\only<3>{$\bm{x}=(x,y)\in\Omega$} and $\bm{e}_y = (0,1)$.
 	
@@ -47,14 +53,14 @@
 	with $g=9.81$ the gravity, $\beta=0.1$ the expansion coefficient, $\mu$ the viscosity and $k_f$ the thermal conductivity. \citep{coulaud_investigations_2024}
 
 	\vspace{5pt}
+	
 
 	\only<3>{\textcolor{darkred}{\textbf{Boundary Conditions:}}
 
-	\begin{itemize}
-		\item $\bm{u} = 0$ on $\partial\Omega$
-		\item $T = 1$ on the left wall ($x=-1$) and $T = -1$ on the right wall ($x=1$) \\
-		$\displaystyle \frac{\partial T}{\partial n} = 0$ on the top and bottom walls ($y=\pm 1$, denoted by $\Gamma_\text{ad}$)	
-	\end{itemize}}
+	\textbf{No-slip BC :} $\bm{u} = 0$ on $\partial\Omega$ \qquad \textbf{Isothermal BC :} $T = 1$ on the left wall ($x=-1$)\\
+	\hspace{180pt}$T = -1$ on the right wall ($x=1$) \\
+	\textbf{Adiabatic BC :} $\displaystyle \frac{\partial T}{\partial n} = 0$ on the top and bottom walls ($y=\pm 1$, denoted by $\Gamma_\text{ad}$)
+	}
 \end{frame}
 
 \begin{frame}{Evaluate quality of solutions}
@@ -68,7 +74,7 @@
 
 	\vspace{10pt}
 
-	\only<2-4>{\textbf{Reference solution} \; - \; Rayleigh number :} \only<2>{$Ra = 1\,569.6$}\only<3>{$Ra = 6\,278.4$}\only<4>{$Ra = 156\,960$}
+	\only<2-4>{\textbf{Reference solution} \; - \; Rayleigh number : \textcolor{darkred}{\only<2>{$Ra = 1\,569.6$}\only<3>{$Ra = 6\,278.4$}\only<4>{$Ra = 156\,960$}}}
 
 	\vspace{3pt}
 	\only<2-4>{$\hspace{32pt} u_{1,\text{ref}} \hspace{67pt} u_{2,\text{ref}} \hspace{67pt} p_\text{ref} \hspace{67pt} T_\text{ref}$}
