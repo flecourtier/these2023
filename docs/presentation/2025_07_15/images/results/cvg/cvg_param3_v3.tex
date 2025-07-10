@@ -9,6 +9,8 @@
 \usepgfplotslibrary{groupplots}
 \usetikzlibrary{backgrounds}
 
+\definecolor{darkred}{rgb}{0.9, 0, 0}
+
 \pgfplotsset{
     compat=newest,
 }
@@ -113,7 +115,7 @@
             ymode=log,
             title style={font=\Huge},
             legend columns=\legendcolumns,
-            legend style={font=\LARGE, /tikz/every even column/.append style={column sep=0.7cm}},
+            legend style={font=\Large, /tikz/every even column/.append style={column sep=0.7cm}},
             % Adapt styles as needed
             axis lines = left, %%%%
             enlarge x limits={abs=10pt},
@@ -183,19 +185,19 @@
         %%%% u_2 %%%%
         \nextgroupplot[title={$u_2$}, legend to name=sharedLegend]
         
-        \addlegendimage{style={solid}, mark=square, mark size=4.5, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=1pt} }\addlegendentry{\,Standard \textbf{\textcolor{red}{(X)}}\;}
+        \addlegendimage{style={solid}, mark=square, mark size=4.5, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=1pt} }\addlegendentry{\,Std - Natural init \textbf{\textcolor{red}{(X)}}\;}
 
         \addplot [style={dashdotted}, mark=square, mark size=2.5, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=1pt, style={solid}} ]
         table [x=h, y=err_U_2, col sep=comma]
-        {\femprevUn};\addlegendentry{\,Incremental \textbf{\textcolor{red}{(5)}}\;}
+        {\femprevUn};\addlegendentry{\,Std - Continuation \textbf{\textcolor{darkred}{(5)}}\;}
 
         \addplot [style={dashed}, mark=square*, mark size=1, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=h, y=err_U_2, col sep=comma]
-        {\feminitUnB};\addlegendentry{\,DeepPhysics \textbf{\textcolor{red}{(3)}}\;}
+        {\feminitUnB};\addlegendentry{\,Std - PINN init \textbf{\textcolor{darkred}{(3)}}\;}
         
         \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=h, y=err_U_2, col sep=comma]
-        {\addUnB};\addlegendentry{\,\textbf{Additive} \textbf{\textcolor{red}{(3)}}\;}
+        {\addUnB};\addlegendentry{\,\textbf{Additive} \textbf{\textcolor{darkred}{(3)}}\;}
 
         \expandafter\printslopeinv\expandafter{3}{\second}{1e-6}{\diff}
 

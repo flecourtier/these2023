@@ -70,7 +70,7 @@
             title style={font=\huge},
             % legend to name=sharedLegend,
             legend columns=\legendcolumns,
-            legend style={font=\LARGE, /tikz/every even column/.append style={column sep=0.7cm}},
+            legend style={font=\Large, /tikz/every even column/.append style={column sep=0.7cm}},
             axis lines = left,
             enlarge x limits={abs=10pt},
             enlarge y limits={abs=10pt},
@@ -125,22 +125,22 @@
         \PreprocessSum{../data/param2/FEM_case4_v2_param4_degree1.csv}{\TableD}
         \addplot [style={solid}, mark=square*, mark size=4, color=\femcolor, line width=0.8pt, mark options={fill=\femcolor, draw=\femcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableD};\addlegendentry{\,Standard\;}
+        {\TableD};\addlegendentry{\,Std - Natural init\;}
         
         \PreprocessSum{../data/param2/FEMPrev_case4_v2_param4_degree1.csv}{\TableE}
         \addplot [style={solid}, mark=square*, mark size=4, color=\feminitcolor, line width=0.8pt, mark options={fill=\feminitcolor, draw=\feminitcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableE};\addlegendentry{\,Incremental\;}
+        {\TableE};\addlegendentry{\,Std - Continuation\;}
 
         \PreprocessSum{../data/param2/FEMNet_case4_v2_param4_degree1.csv}{\TableF}
         \addplot [style={solid}, mark=square*, mark size=4, color=\femnetcolor, line width=0.8pt, mark options={fill=\femnetcolor, draw=\femnetcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableF};\addlegendentry{\,DeepPhysics\;}
+        {\TableF};\addlegendentry{\,Std - PINN init\;}
 
         \PreprocessSum{../data/param2/ADD_case4_v2_param4_degree1.csv}{\TableG}
         \addplot [style={dashed}, mark=square*, mark size=4, color=\addcolor, line width=0.8pt, mark options={fill=\addcolor, draw=\addcolor, line width=0pt} ]
         table [x=times, y=err_sum, col sep=comma]
-        {\TableG};\addlegendentry{\,Additive approach \textbf{(ours)}\;}
+        {\TableG};\addlegendentry{\,\textbf{Additive}\;}
 
         % %% Third parameter
         \nextgroupplot[title={$\bm{\mu}^{(3)}=(0.01,0.01)$}]

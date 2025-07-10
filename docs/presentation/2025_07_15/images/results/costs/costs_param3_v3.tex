@@ -4,6 +4,8 @@
 \usepackage{booktabs}
 \usepackage{pgfplotstable} % <----- AJOUT OBLIGATOIRE !
 
+\definecolor{darkred}{rgb}{0.9, 0, 0}
+
 % costs pour tous les q : N et DoFs
 \newcommand{\coststable}[1]{
     \pgfplotstabletypeset[
@@ -11,26 +13,28 @@
         every head row/.style={
         before row={\toprule[1.pt]
          & \multicolumn{3}{c}{\textbf{Number of DoFs}} & \multicolumn{4}{c}{\textbf{Execution times}} \\
-		\cmidrule(lr){2-4} \cmidrule(lr){5-8}
+        \cmidrule(lr){2-4} \cmidrule(lr){5-8}
         },
         after row=\cmidrule(lr){1-1} \cmidrule(lr){2-4} \cmidrule(lr){5-8}},
         every last row/.style={after row=\bottomrule[1.pt]},
         every nth row={3}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-4} \cmidrule(lr){5-8}},
 		% columns/q/.style={column name=\textbf{k}},
         columns/e/.style={column name=\textbf{e},sci},
-		columns/DoFsFEM/.style={column name=\textbf{Std},fixed, string type, postproc cell content/.code={\pgfkeysalso{@cell content=X}}},
-        % columns/DoFsFEMPrev/.style={column name=\textbf{Inc},fixed},
-        columns/DoFsFEMNet/.style={column name=\textbf{Inc/DPhy},fixed},
-        columns/DoFsADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
-            /pgfplots/table/@cell content/.add={\color{red}}{},
+		% columns/DoFsFEM/.style={column name=\textbf{Std},fixed, string type, postproc cell content/.code={\pgfkeysalso{@cell content=X}}},
+        columns/DoFsFEMNet/.style={column name=\textbf{(PINN)},fixed},
+        columns/DoFsADDNP/.style={column name=\textbf{Add},fixed},
+        columns/DoFsADD/.style={column name=\textbf{Add+},fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
         }},
-        columns/TimesFEM/.style={column name=\textbf{Std},fixed, string type, postproc cell content/.code={\pgfkeysalso{@cell content=X}}},
-        columns/TimesFEMPrev/.style={column name=\textbf{Inc},fixed},
-        columns/TimesFEMNet/.style={column name=\textbf{DPhy},fixed},
-        columns/TimesADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
-            /pgfplots/table/@cell content/.add={\color{red}}{},
+        columns/TimesFEMNetNP/.style={column name=\textbf{(PINN)},fixed},
+        columns/TimesFEMNet/.style={column name=\textbf{(PINN)+},fixed,fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
         }},
-        columns={e,DoFsFEM,DoFsFEMNet,DoFsADD,TimesFEM,TimesFEMPrev,TimesFEMNet,TimesADD},
+        columns/TimesADDNP/.style={column name=\textbf{Add},fixed},
+        columns/TimesADD/.style={column name=\textbf{Add+},fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
+        }},
+        columns={e,DoFsFEMNet,DoFsADDNP,DoFsADD,TimesFEMNetNP,TimesFEMNet,TimesADDNP,TimesADD},
         precision=2
     ]{#1}
 }

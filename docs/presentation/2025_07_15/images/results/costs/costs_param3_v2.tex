@@ -4,33 +4,35 @@
 \usepackage{booktabs}
 \usepackage{pgfplotstable} % <----- AJOUT OBLIGATOIRE !
 
+\definecolor{darkred}{rgb}{0.9, 0, 0}
+
 % costs pour tous les q : N et DoFs
 \newcommand{\coststable}[1]{
     \pgfplotstabletypeset[
         col sep=comma,
         every head row/.style={
         before row={\toprule[1.pt]
-         & \multicolumn{3}{c}{\textbf{Number of DoFs}} & \multicolumn{4}{c}{\textbf{Execution times}} \\
-		\cmidrule(lr){2-4} \cmidrule(lr){5-8}
+        \textcolor{darkred}{Std vs Add} & \multicolumn{2}{c}{\textbf{Number of DoFs}} & \multicolumn{4}{c}{\textbf{Execution times}} \\
+		\cmidrule(lr){2-3} \cmidrule(lr){4-7}
         },
-        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-4} \cmidrule(lr){5-8}},
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-7}},
         every last row/.style={after row=\bottomrule[1.pt]},
-        every nth row={3}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-4} \cmidrule(lr){5-8}},
+        every nth row={3}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-7}},
 		% columns/q/.style={column name=\textbf{k}},
         columns/e/.style={column name=\textbf{e},sci},
-		columns/DoFsFEM/.style={column name=\textbf{Std},fixed, string type, postproc cell content/.code={\pgfkeysalso{@cell content=X}}},
-        columns/DoFsFEMPrev/.style={column name=\textbf{Inc/DPhy},fixed},
+		% columns/DoFsFEM/.style={column name=\textbf{(nat)},fixed, string type, postproc cell content/.code={\pgfkeysalso{@cell content=X}}},
+        columns/DoFsFEMPrev/.style={column name=\textbf{Std},fixed},
         % columns/DoFsFEMNet/.style={column name=\textbf{DPhy},fixed},
         columns/DoFsADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
-            /pgfplots/table/@cell content/.add={\color{red}}{},
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
         }},
-        columns/TimesFEM/.style={column name=\textbf{Std},fixed, string type, postproc cell content/.code={\pgfkeysalso{@cell content=X}}},
-        columns/TimesFEMPrev/.style={column name=\textbf{Inc},fixed},
-        columns/TimesFEMNet/.style={column name=\textbf{DPhy},fixed},
+        columns/TimesFEM/.style={column name=\textbf{(nat)},fixed, string type, postproc cell content/.code={\pgfkeysalso{@cell content=X}}},
+        columns/TimesFEMPrev/.style={column name=\textbf{(cont)},fixed},
+        columns/TimesFEMNet/.style={column name=\textbf{(PINN)},fixed},
         columns/TimesADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
-            /pgfplots/table/@cell content/.add={\color{red}}{},
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
         }},
-        columns={e,DoFsFEM,DoFsFEMPrev,DoFsADD,TimesFEM,TimesFEMPrev,TimesFEMNet,TimesADD},
+        columns={e,DoFsFEMPrev,DoFsADD,TimesFEM,TimesFEMPrev,TimesFEMNet,TimesADD},
         precision=2
     ]{#1}
 }
