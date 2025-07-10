@@ -3,7 +3,7 @@
 \begin{frame}{What is the purpose of enrichment?}
 
 \vspace{-5pt}
-\only<1>{\textbf{Poisson problem} (with Dirichlet BC) \textbf{:} \; Find $u : \Omega \rightarrow \mathbb{R}$ such that
+\only<1-2>{\textbf{Poisson problem} (with Dirichlet BC) \textbf{:} \; Find $u : \Omega \rightarrow \mathbb{R}$ such that
 \vspace{-5pt}
 \begin{equation*}
     \left\{
@@ -15,20 +15,20 @@
     % \label{eq:Lap2D}\tag{$\mathcal{P}$}
 \end{equation*}}
 
-\only<2>{\textbf{\textcolor{darkred}{Modified} Poisson problem :} \; Find $\textcolor{darkred}{C_{h,u}^+} : \Omega \rightarrow \mathbb{R}$ such that
-\vspace{-5pt}
-\begin{equation*}
-    \left\{
-    \begin{aligned}
-        -\Delta \textcolor{darkred}{C_{h,u}^+} & = f + \textcolor{darkred}{\Delta u_\theta}, \; &  & \text{in } \; \Omega, \\
-        \textcolor{darkred}{C_{h,u}^+} & =0, \;  &  & \text{on } \; \partial\Omega,
-    \end{aligned}
-    \right.
-    % \label{eq:Lap2D}\tag{$\mathcal{P}$}
-\end{equation*}
-with $u_{\theta}$ a PINN prediction.}
+% \only<2>{\textbf{\textcolor{darkred}{Modified} Poisson problem :} \; Find $\textcolor{darkred}{C_{h,u}^+} : \Omega \rightarrow \mathbb{R}$ such that
+% \vspace{-5pt}
+% \begin{equation*}
+%     \left\{
+%     \begin{aligned}
+%         -\Delta \textcolor{darkred}{C_{h,u}^+} & = f + \textcolor{darkred}{\Delta u_\theta}, \; &  & \text{in } \; \Omega, \\
+%         \textcolor{darkred}{C_{h,u}^+} & =0, \;  &  & \text{on } \; \partial\Omega,
+%     \end{aligned}
+%     \right.
+%     % \label{eq:Lap2D}\tag{$\mathcal{P}$}
+% \end{equation*}
+% with $u_{\theta}$ a PINN prediction.}
 
-\only<1>{\textbf{Variational Problem :} We consider $V_h^0$ a $\mathbb{P}_k$ continuous Lagrange FE space ($k\geq 1$).
+\only<1-2>{\textbf{Variational Problem :} We consider $V_h^0$ a $\mathbb{P}_k$ continuous Lagrange FE space ($k\geq 1$).
 \begin{equation}
     \label{eq:weakform}
     \text{Find } u_h\in V_h^0 \;\text{such that}, \forall v_h\in V_h^0, a(u_h,v_h)=l(v_h),
@@ -37,7 +37,7 @@ with $u_{\theta}$ a PINN prediction.}
 \vspace{1pt}
 with $h$ the characteristic mesh size, $a$ and $l$ the associated bilinear and linear forms.}
 
-\only<2-3>{\textbf{\textcolor<2>{darkred}{Modified} variational Problem :} 
+\only<2-3>{\textbf{\textcolor<2>{darkred}{Modified} variational Problem :} Let $u_{\theta}$ be a PINN prediction. 
 \begin{equation}
     \label<2>{eq:weakplus}
     \text{Find } \textcolor<2>{darkred}{C_{h,u}^+} \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(\textcolor<2>{darkred}{C_{h,u}^+},v_h) = l(v_h) \textcolor<2>{darkred}{- a(u_{\theta},v_h)},\tag{$\mathcal{P}_h^+$}

@@ -15,7 +15,7 @@
 
 	\vspace{5pt}
 
-	\uncover<2>{\textbf{Weak problem :} Find $U_h=(\bm{u}_h, p_h, T_h) \in M_h$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0} $,
+	\textbf{Weak problem :} Find $U_h=(\bm{u}_h, p_h, T_h) \in M_h$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0} $,
 
 	\vspace{-4pt}
 	\footnotesize
@@ -24,7 +24,7 @@
 		\begin{aligned}
 			&\int_\Omega (\bm{u}_h \cdot \nabla)\bm{u}_h \cdot \bm{v}_h \, d\bm{x} + \mu \int_\Omega \nabla \bm{u}_h : \nabla \bm{v}_h \, d\bm{x} \\
 			&\hspace{50pt} - \int_\Omega p_h \, \nabla \cdot \bm{v}_h \, d\bm{x} - g \int_\Omega (1 + \beta T_h) \bm{e}_y \cdot \bm{v}_h \, d\bm{x} = 0, \qquad\text{\footnotesize (momentum)} \\
-			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, d\bm{x} \only<2>{\textcolor{darkred}{\, + \, 10^{-4} \int_\Omega q_h \, p_h \, d\bm{x}}} = 0, \qquad\text{\footnotesize (incompressibility \only<2>{\textcolor{darkred}{+ pressure penalization}})}\\
+			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, d\bm{x} \, + \, 10^{-4} \int_\Omega q_h \, p_h \, d\bm{x} = 0, \qquad\text{\footnotesize (incompressibility + pressure penalization)}\\
 			&\int_\Omega (\bm{u}_h \cdot \nabla T_h) \, w_h \, d\bm{x} + \int_\Omega k_f \nabla T_h \cdot \nabla w_h \, d\bm{x} = 0,  \qquad\text{\footnotesize (energy)}
 			% \epsilon \int_\Omega q \, p \, dx = 0
 		\end{aligned}
@@ -32,7 +32,7 @@
 	\end{equation}
 	
 	\vspace{5pt}
-	where $M_h^{\, 0} = [V_h^{\, 0}]^2 \times Q_h \times W_h^{\, 0}$ with $W_h^{\, 0} \subset \{w \in H^1[\Omega], \; w\vert_{x=\pm 1}=0\}$.}
+	where $M_h^{\, 0} = [V_h^{\, 0}]^2 \times Q_h \times W_h^{\, 0}$ with $W_h^{\, 0} \subset \{w \in H^1[\Omega], \; w\vert_{x=\pm 1}=0\}$.
 \end{frame}
 
 \begin{frame}{Newton method}
