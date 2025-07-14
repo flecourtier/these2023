@@ -18,7 +18,7 @@
     ]
 
     % Entrées
-    \foreach \i/\name in {1/x,2/y,3/{\mu},4/{k_f}} {
+    \foreach \i/\name in {1/x,2/y,3/{\nu},4/{k_f}} {
         \node[inout] (in\i) at (0,-0.5-\i) {$\name$};
         }
         
@@ -84,7 +84,7 @@
 
     % BC
     \node[anchor=west] at (10,-1.5) {\textcolor{darkred}{\Large $u_{1,\theta}=0$ on $\partial\Omega$}};
-    \node[anchor=west] at (10,-2.5) {\textcolor{darkred}{\Large $v_{2,\theta}=0$ on $\partial\Omega$}};
+    \node[anchor=west] at (10,-2.5) {\textcolor{darkred}{\Large $u_{2,\theta}=0$ on $\partial\Omega$}};
 
     \node[anchor=west, align=center] at (9.5,-4.5) {\Large \textcolor{darkred}{$T_\theta=\left\{
         \begin{aligned}

@@ -1,0 +1,183 @@
+%% -------------------------------------------------------------------
+%% TikZ figure standalone: generate a pdf image
+%% --------------------------------------------
+%% \documentclass[varwidth=true, border=0pt, convert={size=640x}]{standalone}
+% \documentclass[varwidth=21cm, border=0pt]{standalone}
+\documentclass[varwidth=21cm,border=0mm]{standalone}
+
+%\usepackage[a4paper]{geometry}
+\usepackage{amsfonts,amsmath,amssymb,amsthm}
+\usepackage{float,xcolor,fancyhdr,siunitx,ifthen}
+
+\usepackage{tikz,pgfplots}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{positioning,arrows,fit,patterns}
+\newcommand{\myblue} {blue!80!white}
+\newcommand{\mygreen}{green!50!black}
+\newcommand{\myred}  {red}
+\pgfplotsset{compat=newest}
+
+\newlength{\plotwidth}  \newlength{\modelwidth}
+\newlength{\plotheight} \newlength{\modelheight}
+\newcommand{\datafileA}{}
+\newcommand{\datafileB}{}
+\newcommand{\legendA}{}
+\newcommand{\legendB}{}
+\newcommand  {\dataX}{}
+\newcommand  {\dataA}{}
+\newcommand  {\dataB}{}
+
+\begin{document}
+\newcommand{\myxlabel}{$x$}
+\newcommand{\myylabel}{}
+\newcommand{\legendpos}{south east}
+\renewcommand{\datafileA}{derivatives_mu1_PINN.txt}
+\renewcommand{\dataX}{x}
+\setlength{\plotwidth}  {3.25cm}
+\setlength{\plotheight} {3.00cm}
+
+\begin{tikzpicture}
+
+%% ---------------------------------------------------------------------------------------- %%
+\begin{groupplot}[group style={group size=4 by 1,
+                  vertical sep= 0.1em, group name=mygroupplot},
+                  enlargelimits=false, enlarge y limits=false, enlarge x limits=false,
+                  % common to all:
+                  height=\plotheight,width=\plotwidth, scale only axis,
+                  yminorticks=true,clip mode=individual,
+                  ylabel style = {yshift=-0.0em, xshift=0mm},
+                  xlabel style = {yshift =0.0em, xshift=0mm},
+                  minor grid style={line width=.5pt, draw=gray!50, densely dotted},
+                  major grid style={line width=.5pt, draw=gray!50, densely dashed},
+                  xmajorgrids=true,
+                  xminorgrids=true,
+                  yminorgrids=true,
+                  ymajorgrids=true,
+                  legend columns=1,
+                  label style={font=\scriptsize},
+                  tick label style={font=\scriptsize},
+                  legend style={font=\scriptsize\selectfont},
+                  ]
+%% ------------------------------------------------------------
+%% Plot n°1 
+%% ------------------------------------------------------------
+  \nextgroupplot[% axis on top, separate axis lines,
+                 xlabel={\scriptsize \myxlabel },
+                 ylabel={\scriptsize \myylabel },
+                 legend pos={north east}
+                ]
+     \renewcommand{\dataA}{u}
+     \renewcommand{\dataB}{u_theta} 
+     \renewcommand{\legendA}{$u$}
+     \renewcommand{\legendB}{$u_\theta$}
+
+     \addplot[color=orange, line width=1.5]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = \thisrow{\dataA}]
+              {\datafileA}; \addlegendentry{\legendA}
+     \addplot[color=blue, line width=1,densely dotted]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = \thisrow{\dataB}]
+              {\datafileA}; \addlegendentry{\legendB}
+
+%% ------------------------------------------------------------
+%% Plot n°2
+%% ------------------------------------------------------------
+  \nextgroupplot[% axis on top, separate axis lines,
+                 xlabel={\scriptsize \myxlabel },
+                 ylabel={\scriptsize \myylabel },
+                 % legend pos={north east},
+                 legend style={at={(0.75,0.97)}},
+                ]
+     \renewcommand{\dataA}{du_dx}
+     \renewcommand{\dataB}{du_theta_dx} 
+     \renewcommand{\legendA}{$\partial_x u$}
+     \renewcommand{\legendB}{$\partial_x u_\theta$}
+
+     \addplot[color=orange, line width=1.5]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = \thisrow{\dataA}]
+              {\datafileA}; \addlegendentry{\legendA}
+     \addplot[color=blue, line width=1,densely dotted]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = \thisrow{\dataB}]
+              {\datafileA}; \addlegendentry{\legendB}
+
+%% ------------------------------------------------------------
+%% Plot n°3
+%% ------------------------------------------------------------
+  \nextgroupplot[% axis on top, separate axis lines,
+                 xlabel={\scriptsize \myxlabel },
+                 ylabel={\scriptsize \myylabel },
+                 legend pos={north west},
+                 ymin=-80,ymax=95,
+                 % legend style={at={(0.80,0.95)}},
+                ]
+     \renewcommand{\dataA}{d2u_dx2}
+     \renewcommand{\dataB}{d2u_theta_dx2} 
+     \renewcommand{\legendA}{$\partial^2_{xx} u$}
+     \renewcommand{\legendB}{$\partial^2_{xx} u_\theta$}
+
+     \addplot[color=orange, line width=1.5]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = \thisrow{\dataA}]
+              {\datafileA}; \addlegendentry{\legendA}
+     \addplot[color=blue, line width=1,densely dotted]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = \thisrow{\dataB}]
+              {\datafileA}; \addlegendentry{\legendB}
+
+
+%% ------------------------------------------------------------
+%% Plot n°4: error
+%% ------------------------------------------------------------
+  \nextgroupplot[% axis on top, separate axis lines,
+                 xlabel={\scriptsize \myxlabel },
+                 ylabel={\scriptsize \myylabel },
+            %      legend pos={south west},
+                 legend style={row sep=-3pt,inner xsep=1pt, inner ysep=0.5pt,legend image post style={xscale=0.7},at={(0.9,0.35)}},
+                 ymode=log,
+                 ymin=1e-10,ymax=1e1,
+                 ytick={1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1e0,1e1},
+                 yticklabels={,1e-9,,1e-7,,1e-5,,1e-3,,1e-1,,1e1},
+                 % legend style={at={(0.80,0.95)}},
+                ]
+     \renewcommand{\dataA}{u}
+     \renewcommand{\dataB}{u_theta} 
+     \addplot[color=blue, line width=1]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = abs(\thisrow{\dataA}-\thisrow{\dataB})]
+              {\datafileA}; \addlegendentry{$\vert u-u_\theta\vert$}
+     \renewcommand{\dataA}{du_dx}
+     \renewcommand{\dataB}{du_theta_dx} 
+     \addplot[color=orange, line width=1]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = abs(\thisrow{\dataA}-\thisrow{\dataB})]
+              {\datafileA}; \addlegendentry{$\vert \partial_x u - \partial_x u_\theta\vert$}
+     \renewcommand{\dataA}{d2u_dx2}
+     \renewcommand{\dataB}{d2u_theta_dx2} 
+     \addplot[color=\mygreen, line width=1]
+              table[x expr = \thisrow{\dataX}, 
+                    y expr = abs(\thisrow{\dataA}-\thisrow{\dataB})]
+              {\datafileA}; \addlegendentry{$\vert \partial^2_{xx} u - \partial^2_{xx} u_\theta\vert$}
+
+% -------------------------------------------------------------------------------
+  \end{groupplot}
+% -------------------------------------------------------------------------------
+
+\node[anchor=south] at  
+     (1+\plotwidth/2,\plotheight) {\scriptsize Solutions};
+\node[anchor=south] at  
+     (1.8*\plotwidth,\plotheight) 
+     {\scriptsize First-order derivatives};
+\node[anchor=south] at  
+     (3.1*\plotwidth,\plotheight) 
+     {\scriptsize Second-order derivatives};
+\node[anchor=south] at  
+     (4.4*\plotwidth,\plotheight) 
+     {\scriptsize Absolute errors};
+
+
+\end{tikzpicture}
+
+\end{document}

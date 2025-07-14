@@ -164,6 +164,18 @@
 % star command
 \newcommand{\filledstar}{\textcolor{Goldenrod}{\ding{72}}\hspace{-8pt}\ding{73}\,}
 
+\definecolor{flechecolor}{rgb}{0, 0, 1}
+\newcommand{\flechecourbe}[5]{%
+  % #1 = abscisse de départ (x)
+  % #2 = ordonnée de départ (y)
+  % #3 = taille en abscisse de la flèche (x)
+  % #4 = taille en ordonnée de la flèche (y)
+  % #5 = texte à mettre au centre
+  \draw[thick,->,flechecolor]
+    (#1,#2) .. controls (#1+0.4*#3,#2+#4) and (#1+0.6*#3,#2+#4) .. (#1+#3,#2)
+    node[midway, sloped, fill=white, inner sep=1pt] {\tiny #5};
+}
+
 % algorithm
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage{multirow}
@@ -235,7 +247,7 @@
 
 	
 	\renewcommand{\insertsectionheadSubtitle}{The PINN is parametrized by the $\bm{\mu}$ parameter.}
-	\section{Parametric Physics-Informed Neural Network (PINN)}
+	\section[Parametric PINN]{Parametric Physics-Informed Neural Network (PINN)}
 	\input{sections/pinns}
 	\renewcommand{\insertsectionheadSubtitle}{}
 
@@ -266,9 +278,9 @@
 		\begin{itemize}
 			\item The enriched approach provides the same results as the standard FEM method, but with \textbf{coarser meshes}. \\
 			$\Rightarrow$ Reduction of the computational cost : DoFs, iterations, execution times.
-			\item Theory on linear problems shows that it's the \textbf{derivatives} of the prior that are the most crucial. \\
+			\item Theory on linear problems shows that it's the \textbf{derivatives} of the prior that are the most crucial. \; \reappendix{frame:datavspinns} \\
 			$\Rightarrow$ PINNs are good candidates for the enriched approach.
-			\item The gains obtained on linear problems were much higher. \\
+			\item The gains obtained on linear problems were much higher. \; \refappendix{frame:linear} \\
 			$\Rightarrow$ \textbf{Improved training} of parametric PINN (or Neural Operators).
 		\end{itemize}
 
@@ -287,6 +299,14 @@
 	\begin{frame}{References}
 		\scriptsize
 		\bibliography{biblio}
+
+		\flushright
+		\begin{minipage}{0.05\linewidth}
+			\flushright
+			\rotatebox{90}{\textbf{Preprint (linear)}}
+		\end{minipage} \; \begin{minipage}{0.28\linewidth}
+		\includegraphics[width=\linewidth]{images/qrcode_paper.pdf}
+		\end{minipage}
 	\end{frame}
 	}
 	\addtocounter{framenumber}{-1} 
