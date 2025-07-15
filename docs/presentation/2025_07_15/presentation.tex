@@ -111,9 +111,9 @@
 }
 \makeatother
 
-\newcommand{\appendixsection}[1]{%
+\newcommand{\appendixsection}[2]{%
 	\addtocounter{appendixframenumber}{1}%
-	\section{\appendixname~\theappendixframenumber~: #1}%\labelappendixframe{frame:#2}%
+	\section{\appendixname~\theappendixframenumber~: #1}%[A\theappendixframenumber~: #2]%\labelappendixframe{frame:#2}%
 	\setcounter{subappendixframenumber}{1}% Réinitialiser le compteur des sous-appendices
 }
 
