@@ -4,7 +4,7 @@ Après un stage dans l'équipe INRIA MIMESIS dans le cadre de mon master (Master
 
 == Rapport
 
-Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$report.pdf[PDF]) :
+Vous trouverez un rapport et des résultats obtenus (au format xref:attachment$report.pdf[PDF]) :
 
 === Introduction
 * xref:1_introduction/1_application.adoc[Domaine applicatif]
@@ -36,11 +36,5 @@ Vous pouvez trouver les contenus supplémentaires suivants:
 
 * différentes xref:slides.adoc[présentations]
 
-* des xref:abstracts.adoc[résumés hebdomadaires] (au format xref:attachment$abstracts.pdf[PDF])
-
-Vous trouverez également:
-
-* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine
-
-* une documentation du code (à rajouter)
+* différentes xref:posters.adoc[posters]
 

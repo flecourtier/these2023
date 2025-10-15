@@ -1,9 +1,9 @@
 # Slides
 
-* 15/07/2025 : xref:attachment$presentation/2025_07_15.pdf[Enriching continuous Lagrange finite element approximation spaces using neural networks]
-* 17/06/2025 : xref:attachment$presentation/2025_06_17_CS2.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
-* 20/02/2025 : xref:attachment$presentation/2025_02_20.pdf[Combining Finite Element Methods and Neural Networks to Solve Elliptic Problems on 2D Geometries]
-* 14/06/2024 : xref:attachment$presentation/2024_06_14_CS1.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
-* 26/03/2024 : xref:attachment$presentation/2024_03_26.pdf[How to work with complex geometries in PINNs ?]
-* 06/02/2024 : xref:attachment$presentation/2024_02_06.pdf[Mesh-based methods and physically informed learning]
-* 12/12/2023 : xref:attachment$presentation/2023_12_12.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
+* *ICOSAHOM, Montréal 2025 (15/07/2025)* : xref:attachment$presentation/2025_07_15.pdf[Enriching continuous Lagrange finite element approximation spaces using neural networks]
+* *Second CSI (17/06/2025)* : xref:attachment$presentation/2025_06_17_CS2.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
+* *DTE & AICOMAS, Paris 2025 (20/02/2025)* : xref:attachment$presentation/2025_02_20.pdf[Combining Finite Element Methods and Neural Networks to Solve Elliptic Problems on 2D Geometries]
+* *First CSI (14/06/2024)* : xref:attachment$presentation/2024_06_14_CS1.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]
+* *Exama project, WP2 reunion (26/03/2024)* : xref:attachment$presentation/2024_03_26.pdf[How to work with complex geometries in PINNs ?]
+* *Macaron/Tonus retreat (06/02/2024)* : xref:attachment$presentation/2024_02_06.pdf[Mesh-based methods and physically informed learning]
+* *Mimesis meeting (12/12/2023)* : xref:attachment$presentation/2023_12_12.pdf[Development of hybrid finite element/neural network methods to help create digital surgical twins]

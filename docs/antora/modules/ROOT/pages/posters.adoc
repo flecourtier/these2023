@@ -1,8 +1,8 @@
 # Posters
 
-* 24/03/2025 : xref:attachment$poster/2025_03_24.pdf[Enriching continuous Lagrange finite element\\approximation spaces using neural networks
+* *SciML workshop (EMS-TAG), Milano 2025 (24/03/2025)* : xref:attachment$poster/2025_03_24.pdf[Enriching continuous Lagrange finite element approximation spaces using neural networks
 ]
-* 24/10/2024 : xref:attachment$poster/2024_10_24.pdf[Combining Finite Element methods and Neural Networks to solve elliptic problem on complex 2D geometries
+* *Poster day organized by the doctoral school, Strasbourg 2024 (24/10/2024)* : xref:attachment$poster/2024_10_24.pdf[Combining Finite Element methods and Neural Networks to solve elliptic problem on complex 2D geometries
 ]
-* 08/07/2024 : xref:attachment$poster/2024_07_08.pdf[Combining Finite Element methods and Neural Networks to solve elliptic problem on complex 2D geometries
+* *SciML workshop, Strasbourg 2024 (08/07/2024)* : xref:attachment$poster/2024_07_08.pdf[Combining Finite Element methods and Neural Networks to solve elliptic problem on complex 2D geometries
 ]
