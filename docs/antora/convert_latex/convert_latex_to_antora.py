@@ -76,29 +76,30 @@ shutil.copyfile(rapport_dir + "report.pdf",attachments_dir + "report.pdf")
 ####
 
 nav_file.write("\n.Contenus supplémentaires\n")
-presentation_name = cp_slides()
-create_presentation_file(presentation_name)
+presentation_name,presentation_occ = cp_slides()
+create_presentation_file(presentation_name,presentation_occ)
 nav_file.write("* xref:slides.adoc[Mes slides]\n")
-poster_name = cp_posters()
-create_poster_file(poster_name)
+poster_name,poster_occ = cp_posters()
+print(poster_name)
+create_poster_file(poster_name,poster_occ)
 nav_file.write("* xref:posters.adoc[Mes posters]\n")
 
 ####
 # Create Abstracts
 ####
 
-abstract_dir = root_dir + "abstracts/"
-abstract_file = abstract_dir + "abstracts.tex"
+# abstract_dir = root_dir + "abstracts/"
+# abstract_file = abstract_dir + "abstracts.tex"
 
-section_files,section_names = get_sections(abstract_file)
-sections,section_names = get_subsections(section_files,section_names,abstract_dir)
+# section_files,section_names = get_sections(abstract_file)
+# sections,section_names = get_subsections(section_files,section_names,abstract_dir)
 
-cp_all_sections(section_files,section_names,sections,abstract_dir,"abstracts/")
-section_files,section_names,sections = group_by_months(section_files,section_names,sections,"abstracts/")
-create_abstract_file(section_files,section_names)
+# cp_all_sections(section_files,section_names,sections,abstract_dir,"abstracts/")
+# section_files,section_names,sections = group_by_months(section_files,section_names,sections,"abstracts/")
+# create_abstract_file(section_files,section_names)
 
-nav_file.write("* xref:abstracts.adoc[Résumés hebdomadaires]\n")
-write_in_nav_file(nav_file,section_files,sections,level=2)
+# nav_file.write("* xref:abstracts.adoc[Résumés hebdomadaires]\n")
+# write_in_nav_file(nav_file,section_files,sections,level=2)
 
 #####
 # Finish

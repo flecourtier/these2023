@@ -45,6 +45,7 @@ def cp_slides():
     os.mkdir(pres_attachments_dir)
 
     presentation_name = {}
+    presentation_occ = {}
     for file in os.listdir(presentation_dir):
         if file!="georgia_files":
             pdf_to_copy = presentation_dir + file + "/presentation.pdf"
@@ -53,11 +54,16 @@ def cp_slides():
             latex_file = presentation_dir + file + "/presentation.tex"
             file_read = open(latex_file, 'r')
             while line := file_read.readline():
+                if search_word_in_line("%% OCCASION", line):
+                    name = line.split("= ")[1].split("}")[0]
+                    name = name.strip()
+                    presentation_occ[file] = name
+                
                 if search_word_in_line("\\title[PhiFEM]", line):
                     name = line.split("{")[1].split("}")[0]
                     presentation_name[file] = name
 
-    return presentation_name
+    return presentation_name,presentation_occ
 
 ## Cp posters
 def cp_posters():
@@ -68,6 +74,7 @@ def cp_posters():
     os.mkdir(pres_attachments_dir)
 
     poster_name = {}
+    poster_occ = {}
     for file in os.listdir(poster_dir):
         if file!="georgia_files":
             pdf_to_copy = poster_dir + file + "/poster.pdf"
@@ -76,13 +83,18 @@ def cp_posters():
             latex_file = poster_dir + file + "/poster.tex"
             file_read = open(latex_file, 'r')
             while line := file_read.readline():
+                if search_word_in_line("%% OCCASION", line):
+                    name = line.split("= ")[1].split("}")[0]
+                    name = name.strip()
+                    poster_occ[file] = name
+                    
                 if search_word_in_line("% Titre : ", line):
                     name = line.split(": ")[1]
                     poster_name[file] = name
                 else:
                     ValueError("Poster file " + latex_file + " does not contain the title line '% Titre : '")
 
-    return poster_name
+    return poster_name,poster_occ
 
 # copy all the images of the tex report in the antora documentation
 def cp_assets(section_files,rapport_dir):
@@ -103,7 +115,7 @@ def cp_assets(section_files,rapport_dir):
             if os.path.isfile(attachments_dir + file):
                 os.remove(attachments_dir + file)
     # os.mkdir(attachments_dir)
-    shutil.copyfile(root_dir + "abstracts/abstracts.pdf",attachments_dir + "abstracts.pdf")
+    # shutil.copyfile(root_dir + "abstracts/abstracts.pdf",attachments_dir + "abstracts.pdf")
     
 
 # create the nav.adoc file
@@ -150,7 +162,7 @@ def create_main_page_file(nav_filename):
 
     # Résultats
     file_write.write("== Rapport\n\n")
-    file_write.write("Vous trouverez un rapport complété au fur et à mesure des avancements et des résultats obtenus (au format xref:attachment$report.pdf[PDF]) :\n\n")
+    file_write.write("Vous trouverez un rapport et des résultats obtenus (au format xref:attachment$report.pdf[PDF]) :\n\n")
     
     write_results = False
     while line := nav_file.readline():
@@ -168,26 +180,29 @@ def create_main_page_file(nav_filename):
     # file_write.write(attach)
     file_write.write("Vous pouvez trouver les contenus supplémentaires suivants:\n\n")
     file_write.write("* différentes xref:slides.adoc[présentations]\n\n")
-    file_write.write("* des xref:abstracts.adoc[résumés hebdomadaires] (au format xref:attachment$abstracts.pdf[PDF])\n\n")
+    file_write.write("* différentes xref:posters.adoc[posters]\n\n")
+    # file_write.write("* des xref:abstracts.adoc[résumés hebdomadaires] (au format xref:attachment$abstracts.pdf[PDF])\n\n")
     
-    file_write.write("Vous trouverez également:\n\n")
-    file_write.write("* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine\n\n")
-    file_write.write("* une documentation du code (à rajouter)\n\n")
+    # file_write.write("Vous trouverez également:\n\n")
+    # file_write.write("* une https://drive.google.com/file/d/1mA1_JrBOlv6OsjKCtzuZGMHcKeHAZ4s9/view?usp=drive_link[ToDo List] des travaux à effectuer chaque semaine\n\n")
+    # file_write.write("* une documentation du code (à rajouter)\n\n")
 
     file_write.close()  
 
 # create the presentation page
-def create_presentation_file(presentation_name):
+def create_presentation_file(presentation_name,presentation_occ):
     # create the nav.adoc file
     presentation_file = page_dir + "slides.adoc"
     
-    date,name = [],[]
+    date,name,occ = [],[],[]
     for key,value in presentation_name.items():
         date.append(key)
         name.append(value)
-    date,name = np.array(date), np.array(name)
+        if presentation_occ[key]:
+            occ.append(presentation_occ[key])
+    date,name,occ = np.array(date), np.array(name), np.array(occ)
     index = np.argsort(date)[::-1]
-    date,name = date[index],name[index]
+    date,name,occ = date[index],name[index],occ[index]
 
     date_fr = []
     for d in date:
@@ -197,22 +212,24 @@ def create_presentation_file(presentation_name):
     file_write.write("# Slides\n\n")
 
     for i in range(len(date)):
-        file_write.write("* "+date_fr[i]+" : xref:attachment$presentation/" + date[i] + ".pdf[" + name[i] + "]\n")
+        file_write.write(f"* *{occ[i]} ({date_fr[i]})* : xref:attachment$presentation/{date[i]}.pdf[{name[i]}]\n")
     
     file_write.close() 
     
 # create the poster page
-def create_poster_file(poster_name):
+def create_poster_file(poster_name,poster_occ):
     # create the nav.adoc file
     poster_file = page_dir + "posters.adoc"
     
-    date,name = [],[]
+    date,name,occ = [],[],[]
     for key,value in poster_name.items():
         date.append(key)
         name.append(value)
-    date,name = np.array(date), np.array(name)
+        if poster_occ[key]:
+            occ.append(poster_occ[key])
+    date,name,occ = np.array(date), np.array(name), np.array(occ)
     index = np.argsort(date)[::-1]
-    date,name = date[index],name[index]
+    date,name,occ = date[index],name[index],occ[index]
 
     date_fr = []
     for d in date:
@@ -222,21 +239,21 @@ def create_poster_file(poster_name):
     file_write.write("# Posters\n\n")
 
     for i in range(len(date)):
-        file_write.write("* "+date_fr[i]+" : xref:attachment$poster/" + date[i] + ".pdf[" + name[i] + "]\n")
+        file_write.write(f"* *{occ[i]} ({date_fr[i]})* : xref:attachment$poster/{date[i]}.pdf[{name[i]}]\n")
     
     file_write.close() 
 
 # create the presentation page
-def create_abstract_file(section_files,section_names):
-    # create the nav.adoc file
-    abstract_file = page_dir + "abstracts.adoc"
+# def create_abstract_file(section_files,section_names):
+#     # create the nav.adoc file
+#     abstract_file = page_dir + "abstracts.adoc"
 
-    file_write = open(abstract_file, 'w')
-    file_write.write("# Résumés hebdomadaires\n\n")
-    file_write.write("Vous trouverez ici des résumés des travaux effectués chaque semaine :\n\n")
+#     file_write = open(abstract_file, 'w')
+#     file_write.write("# Résumés hebdomadaires\n\n")
+#     file_write.write("Vous trouverez ici des résumés des travaux effectués chaque semaine :\n\n")
 
-    for i in range(len(section_files)):
-        section_file_name = section_files[i]
-        file_write.write("* xref:" + section_file_name + ".adoc[" + section_names[i] + "]\n")
+#     for i in range(len(section_files)):
+#         section_file_name = section_files[i]
+#         file_write.write("* xref:" + section_file_name + ".adoc[" + section_names[i] + "]\n")
 
-    file_write.close() 
+#     file_write.close() 

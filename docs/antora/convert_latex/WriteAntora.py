@@ -313,73 +313,73 @@ def cp_all_sections(section_files,section_names,sections,read_dir,write_dir):
         subsections = sections[section_names[i]]        
         cp_section(section_files[i],section_names[i],subsections,label_sections,read_dir,write_dir)
 
-def group_by_months(section_files,section_names,sections,write_dir):
-    # locale.setlocale(locale.LC_TIME, "fr_FR")
+# def group_by_months(section_files,section_names,sections,write_dir):
+#     # locale.setlocale(locale.LC_TIME, "fr_FR")
 
-    def trad_month(en_month):
-        fr_months = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"]
-        en_months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-        for i in range(len(en_months)):
-            if en_month==en_months[i]:
-                return fr_months[i]
+#     def trad_month(en_month):
+#         fr_months = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"]
+#         en_months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+#         for i in range(len(en_months)):
+#             if en_month==en_months[i]:
+#                 return fr_months[i]
 
-    def get_values():
-        monday = date(2023, 10, 2)
-        friday = monday + timedelta(days=4)
-        week = timedelta(days=7) # 7 days 
+#     def get_values():
+#         monday = date(2023, 10, 2)
+#         friday = monday + timedelta(days=4)
+#         week = timedelta(days=7) # 7 days 
 
-        today = date.today()
-        delta = today - monday
-        current_week_num = int(np.ceil((delta.days+1) / 7))
+#         today = date.today()
+#         delta = today - monday
+#         current_week_num = int(np.ceil((delta.days+1) / 7))
 
-        return monday, friday, week, current_week_num
+#         return monday, friday, week, current_week_num
     
-    monday, friday, week, current_week_num = get_values()
-    previous_month = monday.month
+#     monday, friday, week, current_week_num = get_values()
+#     previous_month = monday.month
 
-    new_section_files = []
-    new_section_names = []
-    new_sections = {}
-    file_exists = False
-    for i in range(1,current_week_num+1):
-        current_month = monday.month
-        current_year = monday.year
+#     new_section_files = []
+#     new_section_names = []
+#     new_sections = {}
+#     file_exists = False
+#     for i in range(1,current_week_num+1):
+#         current_month = monday.month
+#         current_year = monday.year
 
-        if os.path.exists(page_dir + write_dir + "week_" + str(i) + ".adoc"):
-            file_read = open(page_dir + write_dir + "week_" + str(i) + ".adoc", 'r')
-            file_exists = True
-        else:
-            file_exists = False
+#         if os.path.exists(page_dir + write_dir + "week_" + str(i) + ".adoc"):
+#             file_read = open(page_dir + write_dir + "week_" + str(i) + ".adoc", 'r')
+#             file_exists = True
+#         else:
+#             file_exists = False
 
-        if i==1 or previous_month!=current_month:
-            file_write = open(page_dir + write_dir + str(current_year) + "_" + str(current_month) + ".adoc", 'w')
+#         if i==1 or previous_month!=current_month:
+#             file_write = open(page_dir + write_dir + str(current_year) + "_" + str(current_month) + ".adoc", 'w')
 
-            name_month = monday.strftime("%B")
-            name_month = trad_month(name_month)
-            name_month = name_month[0].upper() + name_month[1:]
-            title = "= " + name_month + " - " + str(current_year) + "\n"
-            file_write.write(title+"\n")
+#             name_month = monday.strftime("%B")
+#             name_month = trad_month(name_month)
+#             name_month = name_month[0].upper() + name_month[1:]
+#             title = "= " + name_month + " - " + str(current_year) + "\n"
+#             file_write.write(title+"\n")
 
-            new_section_files.append(write_dir + str(current_year) + "_" + str(current_month))
-            new_section_names.append(name_month + " " + str(current_year))
-            new_sections[name_month + " " + str(current_year)] = {}
+#             new_section_files.append(write_dir + str(current_year) + "_" + str(current_month))
+#             new_section_names.append(name_month + " " + str(current_year))
+#             new_sections[name_month + " " + str(current_year)] = {}
 
-        subtitle = "== Week " + str(i) + " : " + monday.strftime("%d/%m/%Y") + " - " + friday.strftime("%d/%m/%Y") + "\n"
-        file_write.write(subtitle)
+#         subtitle = "== Week " + str(i) + " : " + monday.strftime("%d/%m/%Y") + " - " + friday.strftime("%d/%m/%Y") + "\n"
+#         file_write.write(subtitle)
 
-        if file_exists:
-            while line := file_read.readline():
-                if line[0]!="=":
-                    file_write.write(line)
+#         if file_exists:
+#             while line := file_read.readline():
+#                 if line[0]!="=":
+#                     file_write.write(line)
                     
-            os.remove(page_dir + write_dir + "week_" + str(i) + ".adoc")
-        else:
-            file_write.write("TO DO\n")
+#             os.remove(page_dir + write_dir + "week_" + str(i) + ".adoc")
+#         else:
+#             file_write.write("TO DO\n")
 
             
-        previous_month = current_month
+#         previous_month = current_month
             
-        monday+=week
-        friday+=week
+#         monday+=week
+#         friday+=week
 
-    return new_section_files,new_section_names,new_sections
+#     return new_section_files,new_section_names,new_sections
