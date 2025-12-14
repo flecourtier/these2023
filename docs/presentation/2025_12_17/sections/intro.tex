@@ -1,0 +1,91 @@
+\begin{frame}{Scientific context}
+	\begin{minipage}{0.75\linewidth}
+		\textbf{Context :} Create real-time digital twins of an organ (e.g. liver).
+	\end{minipage}
+	\begin{minipage}{0.21\linewidth}
+		\vspace{-20pt}
+		\includegraphics[width=\linewidth]{images/intro/liver.png}
+	\end{minipage}
+	
+	\vspace{5pt}
+	\textbf{Objective :} Develop an hybrid \fcolorbox{red}{white}{finite element} / \fcolorbox{orange}{white}{neural network} method.
+	
+	\vspace{1pt}
+	\small
+	\hspace{130pt} \begin{minipage}{0.14\linewidth}
+		\textcolor{red}{accurate}
+	\end{minipage} \hspace{8pt} \begin{minipage}{0.3\linewidth}
+		\textcolor{orange}{quick + parameterized}
+	\end{minipage}
+
+	\normalsize
+	\vspace{5pt}
+	\textbf{Parametric elliptic convection/diffusion PDE :}
+	For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
+	\begin{equation}
+		\label{eq:ob_pde}
+		\mathcal{L}\big(u\,;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
+		\tag{$\mathcal{P}$}
+	\end{equation}
+	where $\mathcal{L}$ is the parametric differential operator defined  by
+	\begin{equation*}
+		\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u),
+	\end{equation*}
+	and some Dirichlet, Neumann or Robin BC (which can also depend on $\bm{\mu}$).
+\end{frame}
+
+\begin{frame}{Pipeline of the Enriched FEM}
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=\linewidth]{images/intro/offline.pdf}
+
+		\includegraphics[width=\linewidth]{images/intro/online.pdf}
+	\end{figure}
+
+	\begin{center}
+		\textbf{Complete ONLINE process :} \textcolor{orange}{quick} + \textcolor{darkred}{accurate}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Physics-Informed Neural Networks}
+	\textbf{Standard PINNs\footcite{RAISSI2019686} (Weak BC) :} Find the optimal weights $\theta^\star$, such that
+	\begin{equation}
+		\label{eq:opt_pb}
+		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \omega_b \; J_b(\theta) \big),
+		\tag{$\mathcal{P}_\theta$}
+	\end{equation}
+
+	\vspace{-5pt}
+	with
+	\vspace{5pt}
+
+	\begin{minipage}{0.2\linewidth}
+		\flushright
+		\textcolor{orange}{residual loss}
+
+		\vspace{12pt}
+		\textcolor{red}{boundary loss}
+	\end{minipage}
+	\begin{minipage}{0.68\linewidth}
+		\centering
+		\fcolorbox{orange}{white}{
+			$J_r(\theta) =
+			\int_{\mathcal{M}}\int_{\Omega}
+			\big| \mathcal{L}\big(u_\theta(\bm{x},\bm{\mu});\bm{x},\bm{\mu}\big)-f(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},$}
+		
+		\vspace{3pt}
+		\fcolorbox{red}{white}{
+			$J_b(\theta) =
+			\int_{\mathcal{M}}\int_{\partial \Omega} \big| u_\theta(\bm{x},\bm{\mu}) - g(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},$}
+	\end{minipage}
+	
+	\vspace{5pt}
+	where $u_\theta$ is a neural network, $g=0$ is the Dirichlet BC. 
+
+	\vspace{2pt}
+	In \eqref{eq:opt_pb}, $\omega_r$ and $\omega_b$ are some weights.
+
+	\vspace{5pt}
+	\textbf{Monte-Carlo method :} Discretize the cost functions by random process.
+	\vspace{15pt}
+\end{frame}
