@@ -28,7 +28,7 @@
 
 	\vspace{2pt}
 	\textbf{PINN training:} MLP with Fourier Features\footcite{TanSri2020} of 5 layers (tanh - 40, 60, 60, 60, 40). \\
-	LBFGs optimizer (15000 epochs - 8000 col. pts). \\
+	Adam optimizer (15000 epochs - 8000 col. pts). \\
 	Imposing the Dirichlet BC exactly in the PINN with the a level-set function.
 
 	\vspace{5pt}
@@ -36,7 +36,7 @@
 
 \begin{frame}{Online phase}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 set of parameters.
+		\textbf{Error estimates :} 1 parameters instance.
 		$$\bm{\mu}^{(1)}=(0.51,0.54,0.52,0.55)$$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -69,5 +69,5 @@
 	\end{figure}
 
 	\vspace{-8pt}
-	$$\bm{\mu}^{(2)}=(0.46,0.52,0.05,0.12)$$
+	$$\bm{\mu}^{(2)}=(0.46,0.52,0.05,0.12) \quad\small(k=2, N=16)$$
 \end{frame}
