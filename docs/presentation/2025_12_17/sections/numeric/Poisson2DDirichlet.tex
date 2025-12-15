@@ -33,13 +33,13 @@
 	% Training time : less than 1 hour on a laptop GPU.
 \end{frame}
 
-\begin{frame}{Online costs - 1 set of parameters}
+\begin{frame}{Online phase - 1 set of parameters}
 	\vspace{-12pt}
 	$$\bm{\mu}^{(1)}=(0.05, 0.22) $$
 	% \vspace{2pt}
 
 	\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 set of parameters.
+		\textbf{Error estimates in $L^2$ norm:}
 		\vspace{-10pt}
 		% \vspace{-35pt}
 		\begin{figure}[H]
@@ -48,7 +48,7 @@
 		\end{figure}
 	\end{minipage} \qquad \small
 	\begin{minipage}[t]{0.48\linewidth}
-		\only<2>{\textbf{$N_\text{dofs}$ required to reach the same error $e$ :}
+		\only<2>{\textbf{$N_\text{dofs}$ required to reach the same error $e$:}
 
 			\vspace{10pt}
 			\begin{table}[H]
@@ -63,7 +63,7 @@
 		Considering the set of $n_p=50$ parameter instances
 		$$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}.$$
 		
-		\textbf{Gains achieved :} $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$
+		\textbf{Gains achieved:} $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$
 
 		\begin{table}[H]
 			\GainsTableAlldeg{images/numeric/Poisson2DDirichlet/gains/Tab_stats_case1_v1.csv}

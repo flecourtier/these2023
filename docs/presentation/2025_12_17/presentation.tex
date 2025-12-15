@@ -31,6 +31,7 @@
 \usepackage{cancel}
 \usepackage{booktabs}
 \usepackage{bm}
+\usepackage{ulem}
 % pour indentation des itemize
 % \usepackage{enumitem}
 
@@ -164,18 +165,19 @@
 \newcommand*{\footcite}[1]{\footnote[frame,1]{\citep{#1}}}
 
 % star command
-\newcommand{\filledstar}{\textcolor{Goldenrod}{\ding{72}}\hspace{-8pt}\ding{73}\,}
+% \newcommand{\filledstar}{\textcolor{Goldenrod}{\ding{72}}\hspace{-8pt}\ding{73}\,}
 
-\definecolor{flechecolor}{rgb}{0, 0, 1}
-\newcommand{\flechecourbehorizontale}[5]{%
+% \definecolor{flechecolor}{rgb}{0, 0, 1}
+\newcommand{\flechecourbehorizontale}[6]{%
   % #1 = abscisse de départ (x)
   % #2 = ordonnée de départ (y)
   % #3 = taille en abscisse de la flèche (x)
   % #4 = taille en ordonnée de la flèche (y)
   % #5 = texte à mettre au centre
-  \draw[thick,->,flechecolor]
+  % #6 = couleur de la flèche
+  \draw[thick,->,#6]
     (#1,#2) .. controls (#1+0.4*#3,#2+#4) and (#1+0.6*#3,#2+#4) .. (#1+#3,#2)
-    node[midway, sloped, fill=white, inner sep=1pt] {\tiny #5};
+    node[midway, sloped, fill=white, inner sep=1pt] {#5};
 }
 % \definecolor{flechecolorvert}{rgb}{0, 0.5, 0}
 % \newcommand{\flechecourbeverticale}[5]{%
@@ -199,6 +201,7 @@
 \input{preamble/convergences_h}
 \input{preamble/gains}
 \input{preamble/costs}
+\input{preamble/times}
 
 \begin{document}
 	\pgfkeys{/pgf/number format/.cd,1000 sep={\,}} % spacing between thousands in numbers

@@ -29,37 +29,88 @@
 	Imposing the Dirichlet BC exactly in the PINN with the levelset $\varphi$ defined by
 	$$\varphi(\bm{x})=(x+0.5\pi)(x-0.5\pi)(y+0.5\pi)(y-0.5\pi)(z+0.5\pi)(z-0.5\pi).$$
 	
-	% \small\vspace{4pt}
-	% Training time : less than 1 hour on a laptop GPU.
+	\small
+	Training time : 12 minutes on NVIDIA RTX 2000 (8GB VRAM).
 \end{frame}
 
-% \begin{frame}{Online costs - 1 set of parameters}
-% 	\vspace{-12pt}
-% 	$$\bm{\mu}^{(1)}=(0.05, 0.22) $$
-% 	% \vspace{2pt}
+\begin{frame}{Online phase - 1 set of parameters I}
+	\vspace{-12pt}
+	$$\bm{\mu}^{(1)}=(0.05, 0.22, 0.1) $$
+	% \vspace{2pt}
 
-% 	\begin{minipage}[t]{0.46\linewidth}
-% 		\textbf{Error estimates :} 1 set of parameters.
-% 		\vspace{-10pt}
-% 		% \vspace{-35pt}
-% 		\begin{figure}[H]
-% 			\only<1>{\cvgFEMCorrAlldeg{images/numeric/Poisson2DDirichlet/cvg/FEM_case1_v1_param1.csv}{images/numeric/Poisson2DDirichlet/cvg/Corr_case1_v1_param1.csv}{1e-10}{false}}
-% 			\only<2>{\cvgFEMCorrAlldeg{images/numeric/Poisson2DDirichlet/cvg/FEM_case1_v1_param1.csv}{images/numeric/Poisson2DDirichlet/cvg/Corr_case1_v1_param1.csv}{1e-10}{true}}
-% 		\end{figure}
-% 	\end{minipage} \qquad \small
-% 	\begin{minipage}[t]{0.48\linewidth}
-% 		\only<2>{\textbf{$N_\text{dofs}$ required to reach the same error $e$ :}
+	\begin{minipage}[t]{0.4\linewidth}
+		\textbf{Error estimates in $L^2$ norm:}
+		\vspace{-10pt}
+		\begin{figure}[H]
+			\only<1-2>{\cvgFEMCorrOnedeg{images/numeric/Poisson3DDirichlet/cvg/FEM_case1_v2_param1_degree1.csv}{images/numeric/Poisson3DDirichlet/cvg/Corr_case1_v2_param1_degree1.csv}{2e-5}{false}}
+			\only<3>{\cvgFEMCorrOnedeg{images/numeric/Poisson3DDirichlet/cvg/FEM_case1_v2_param1_degree1.csv}{images/numeric/Poisson3DDirichlet/cvg/Corr_case1_v2_param1_degree1.csv}{2e-5}{true}}
+		\end{figure}
+	\end{minipage} \hspace{1cm}
+	\begin{minipage}[t]{0.5\linewidth}
+		\only<2-3>{
+			\textbf{$L^2$ error w.r.t. execution time$^*$:}
+			\vspace{-14pt}
+			\begin{figure}[H]
+				\only<2>{
+					\cvgtimeerror{images/numeric/Poisson3DDirichlet/time_error/FEM_case1_v2_param1_degree1_time_error.csv}{images/numeric/Poisson3DDirichlet/time_error/Corr_case1_v2_param1_degree1_time_error.csv}{false}
+				}
+				\only<3>{
+					\cvgtimeerror{images/numeric/Poisson3DDirichlet/time_error/FEM_case1_v2_param1_degree1_time_error.csv}{images/numeric/Poisson3DDirichlet/time_error/Corr_case1_v2_param1_degree1_time_error.csv}{true}
+				}
+			\end{figure}
+			\vspace{-20pt}
 
-% 			\vspace{10pt}
-% 			\begin{table}[H]
-% 				\centering
-% 				\coststableallq{images/numeric/Poisson2DDirichlet/costs/TabDoFs_case1_v1_param1.csv}
-% 			\end{table}
-% 		}
-% 	\end{minipage}
-% \end{frame}
+			$^*$ mesh + assembly + solve \\
+			\textcolor{addcolor}{\; + prior derivatives evaluation} \\
+			\textcolor{addcolor}{\; \sout{+ training time}}	}
+	\end{minipage}
+\end{frame}
 
-% \begin{frame}{Parametric framework}
+\begin{frame}{Online phase - 1 set of parameters II}
+	\vspace{-12pt}
+	$$\bm{\mu}^{(1)}=(0.05, 0.22, 0.1) $$
+
+	\textbf{$N_\text{dofs}$ and computation time required to reach the same error $e$:}
+
+	\begin{table}[ht!]
+		\centering
+		\timerequired{images/numeric/Poisson3DDirichlet/timerequired/TabTimes_case1_v2_param1_degree1.csv}
+	\end{table}
+	\hspace{240pt}\begin{tikzpicture}
+		\flechecourbehorizontale{2.5}{0.1}{2}{-0.2}{$\div 1471$}{darkred}
+	\end{tikzpicture}
+
+	Cartesian mesh : $N^3$ nodes; $\mathbb{P}_1$ elements.
+
+	\vfill
+	\footnotesize
+	$^*$ The results in brackets are extrapolations.
+
+\end{frame}
+
+\begin{frame}{Parametric framework}
+	\textbf{How many parameters $n_p$ are needed to balance training?}
+
+	\vspace{-15pt}
+	\begin{figure}[H]
+		\hspace{-15pt}\begin{minipage}[t]{0.43\linewidth}
+			\centering
+			\cvgtimeerrorparam{images/numeric/Poisson3DDirichlet/parametric_framework/output13.csv}
+		\end{minipage} \hspace{20pt}
+		\begin{minipage}[t]{0.49\linewidth}
+			\centering
+			\cvgtimeerrorparamD{images/numeric/Poisson3DDirichlet/parametric_framework/output54.csv}
+		\end{minipage}
+	\end{figure}
+
+	\vspace{-15pt}
+	\hspace{50pt} To achieve $e=10^{-3}$ \hspace{75pt} To achieve $e=5\cdot 10^{-4}$
+
+	\vspace{10pt}
+	\textbf{Online:} assembly + solve \textcolor{addcolor}{\; + prior derivatives evaluation} \\
+
+	\textbf{Offline:} mesh	\textcolor{addcolor}{\; + training time}
+
 % 		Considering the set of $n_p=50$ parameter instances
 % 		$$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}.$$
 		
@@ -70,4 +121,4 @@
 % 		\end{table}
 
 % 		Cartesian mesh : $N^2$ nodes with $N=20$.
-% \end{frame}
+\end{frame}

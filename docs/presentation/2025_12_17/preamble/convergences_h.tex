@@ -205,3 +205,25 @@
 \newcommand{\cvgFEMCorrAlldeg}[4]{
     \cvgFEMCorrAlldegGeneral{#1}{#2}{2,3,4}{#3}{$L^2$}{#4}
 }
+
+
+\newcommand{\cvgFEMCorrOnedeg}[4]{
+    \edef\fem{#1}
+    \edef\add{#2}
+
+    \begin{cvgh}[xticklabel style={rotate=20, anchor=east, yshift=-1pt}]{\fem}{3}{2}{#3}{$L^2$}{#4}
+        % Complete the legend
+        \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+        \addlegendentry{\,Add $\mathbb{P}_1$\;}
+
+        % Plot FEM
+        \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt ]
+        table [x=h, y=P1, col sep=comma]
+            {\fem};
+        
+        % Plot Add
+        \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt ]
+        table [x=h, y=P1, col sep=comma]
+            {\add};
+    \end{cvgh}
+}
