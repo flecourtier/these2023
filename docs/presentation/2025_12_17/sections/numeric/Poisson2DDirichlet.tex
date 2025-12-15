@@ -1,7 +1,5 @@
-\subsection{2D Poisson problem on Square - Dirichlet BC}
-
 \begin{frame}{Problem considered} 
-	\textbf{Problem statement:} Consider the Poisson problem with Dirichlet BC:
+	\textbf{Problem statement:} Consider the Poisson problem in 2D with Dirichlet BC:
 	\vspace{-5pt}
 	\begin{equation*}
 		\left\{
@@ -26,12 +24,13 @@
 	\end{equation*}
 
 	\vspace{12pt}
-	\textbf{PINN training:} MLP of 5 layers; LBFGs optimizer (5000 epochs). \\
+	\textbf{PINN training:} \\
+	MLP 5 layers (sine - 40, 60, 60, 60, 40); LBFGs optimizer (5000 epochs - 6000 col. pts). \\
 	Imposing the Dirichlet BC exactly in the PINN with the levelset $\varphi$ defined by
 	$$\varphi(\bm{x})=(x+0.5\pi)(x-0.5\pi)(y+0.5\pi)(y-0.5\pi).$$
 	
-	\small\vspace{4pt}
-	Training time : less than 1 hour on a laptop GPU.
+	% \small\vspace{4pt}
+	% Training time : less than 1 hour on a laptop GPU.
 \end{frame}
 
 \begin{frame}{Online costs - 1 set of parameters}
