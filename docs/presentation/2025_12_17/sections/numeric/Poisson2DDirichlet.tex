@@ -1,0 +1,74 @@
+\subsection{2D Poisson problem on Square - Dirichlet BC}
+
+\begin{frame}{Problem considered} 
+	\textbf{Problem statement:} Consider the Poisson problem with Dirichlet BC:
+	\vspace{-5pt}
+	\begin{equation*}
+		\left\{
+		\begin{aligned}
+			-\Delta u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M}, \\
+			u         & =0, \;  &  & \text{on } \; \partial\Omega \times \mathcal{M},
+		\end{aligned}
+		\right.
+		% \label{eq:Lap2D}\tag{$\mathcal{P}$}
+	\end{equation*}
+
+	\vspace{-5pt}
+	with $\Omega=[-0.5 \pi, 0.5 \pi]^2$ and $\mathcal{M}=[-0.5,0.5]^2$ ($p=2$ parameters).
+		
+	\vspace{8pt}
+	\textbf{Analytical solution :}
+
+	\vspace{-5pt}
+	\begin{equation*}
+		% \label{eq:analytical_solution_Lap2D}
+		u(\bm{x},\bm{\mu})=\exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{2}\right)\sin(2 x)\sin(2 y).
+	\end{equation*}
+
+	\vspace{12pt}
+	\textbf{PINN training:} MLP of 5 layers; LBFGs optimizer (5000 epochs). \\
+	Imposing the Dirichlet BC exactly in the PINN with the levelset $\varphi$ defined by
+	$$\varphi(\bm{x})=(x+0.5\pi)(x-0.5\pi)(y+0.5\pi)(y-0.5\pi).$$
+	
+	\small\vspace{4pt}
+	Training time : less than 1 hour on a laptop GPU.
+\end{frame}
+
+\begin{frame}{Online costs - 1 set of parameters}
+	\vspace{-12pt}
+	$$\bm{\mu}^{(1)}=(0.05, 0.22) $$
+	% \vspace{2pt}
+
+	\begin{minipage}[t]{0.46\linewidth}
+		\textbf{Error estimates :} 1 set of parameters.
+		\vspace{-10pt}
+		% \vspace{-35pt}
+		\begin{figure}[H]
+			\only<1>{\cvgFEMCorrAlldeg{images/numeric/Poisson2DDirichlet/cvg/FEM_case1_v1_param1.csv}{images/numeric/Poisson2DDirichlet/cvg/Corr_case1_v1_param1.csv}{1e-10}{false}}
+			\only<2>{\cvgFEMCorrAlldeg{images/numeric/Poisson2DDirichlet/cvg/FEM_case1_v1_param1.csv}{images/numeric/Poisson2DDirichlet/cvg/Corr_case1_v1_param1.csv}{1e-10}{true}}
+		\end{figure}
+	\end{minipage} \qquad \small
+	\begin{minipage}[t]{0.48\linewidth}
+		\only<2>{\textbf{$N_\text{dofs}$ required to reach the same error $e$ :}
+
+			\vspace{10pt}
+			\begin{table}[H]
+				\centering
+				\coststableallq{images/numeric/Poisson2DDirichlet/costs/TabDoFs_case1_v1_param1.csv}
+			\end{table}
+		}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Parametric framework}
+		Considering the set of $n_p=50$ parameter instances
+		$$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}.$$
+		
+		\textbf{Gains achieved :} $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$
+
+		\begin{table}[H]
+			\GainsTableAlldeg{images/numeric/Poisson2DDirichlet/gains/Tab_stats_case1_v1.csv}
+		\end{table}
+
+		Cartesian mesh : $N^2$ nodes with $N=20$.
+\end{frame}
