@@ -222,7 +222,9 @@
             \end{algorithm}
         \end{minipage}
         
-        \uncover<2>{\textcolor{darkred}{\warning \; The choice of the $\vec{U}_0$ is crucial for the convergence of the Newton method.}}
+        \uncover<2>{\textcolor{darkred}{\warning \; The choice of the $\vec{U}_0$ is crucial for the convergence of the Newton method.}
+        
+        Solution: Continuation method where we progressively increase the non-linearity of the problem.}
     \end{center}
 
 \end{frame}
@@ -313,4 +315,18 @@
             \end{algorithm}
         \end{minipage}
     \end{center}
+\end{frame}
+
+\begin{frame}{Numerical results}
+    \textbf{$N_\text{dofs}$ and computation time required to reach the same error $e$:}
+    \vspace{-5pt}
+
+    \begin{figure}[H]
+        \centering
+        \cvgtimeerrorNL{images/nonlinear/results/version2/FEMPrev_case4_v2_param9_degree1.csv}{images/nonlinear/results/version3/ADD_case4_v3_param1_degree1.csv}{false}
+    \end{figure}
+
+    \begin{table}
+        \timerequiredNL{images/nonlinear/results/version3/TabTimes_case4_v3_param1_degree1.csv}
+    \end{table}
 \end{frame}

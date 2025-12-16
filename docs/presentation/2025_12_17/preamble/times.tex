@@ -141,6 +141,83 @@
     \end{tikzpicture}
 }
 
+%%% NON LINEAIRE
+\newcommand{\PreprocessSum}[2]{%
+    \pgfplotstableread[col sep=comma]{#1}{#2}%
+    \pgfplotstablecreatecol[
+        create col/expr={\thisrow{err_U_1}+\thisrow{err_U_2}+\thisrow{err_T}} %+\thisrow{err_p}
+    ]{err_sum}{#2}%
+}
+
+\newcommand{\cvgtimeerrorNL}[3]{
+    \begin{tikzpicture}
+        \edef\fem{#1}
+        \edef\add{#2}
+        \edef\drawline{#3} % to draw a horizontal line at error e
+
+        % Read the CSV file into a table
+        % \pgfplotstableread[col sep=comma]{\filename}\datatable
+
+        \begin{loglogaxis}[
+            smaller labels,
+            name = left_plot,
+            % axis lines
+            axis lines = left,
+            enlarge x limits={abs=10pt},
+            enlarge y limits={abs=10pt},
+            % axis x line shift = -5pt,
+            % axis y line shift = -5pt,
+            % labels
+            yminorticks=false,
+            xminorticks=false,
+			xmode=log,
+            xlabel = {Time (s)},
+            ylabel = {\rotatebox{270}{$\Sigma L^2$}},
+            xlabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            ylabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            % ticks and labels
+            % xtick=data,
+            % xticklabels from table={\datatable}{h},
+            % size
+            width=0.40\textwidth, height=0.35\textwidth,
+            % marks
+            mark options={solid, scale=1},
+            % grid
+            grid = major,
+            legend columns=1,
+            legend to name=leg:legendFEMCORR_\iterator,
+            legend image post style={mark options={solid, scale=1}},
+        ]
+
+            \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+            \addlegendentry{\,Add $\mathbb{P}_1$\;}
+
+            % Plot FEM
+            \PreprocessSum{\fem}{\TableFEM}
+            \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt ]
+            table [x=times, y=err_sum, col sep=comma]
+                {\TableFEM};
+            
+            % Plot Add
+            \PreprocessSum{\add}{\TableADD}
+            \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt ]
+            table [x=times, y=err_sum, col sep=comma]
+                {\TableADD};
+
+        \end{loglogaxis}
+        
+        \node[yshift=-20pt,xshift=20pt] at (left_plot.north east) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+
+        % \node[yshift=-20pt] at (left_plot.outer south) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+        \ifthenelse{\equal{\drawline}{true}}{
+            \draw[black, line width=0.4mm] (0.1,1.9) -- (4.7,1.9) node[anchor=west, xshift=2pt] {$e$};
+        }{}
+
+    \end{tikzpicture}
+}
+
+%% Time vs number of parameters
+
 \newcommand{\cvgtimeerrorparam}[1]{
     \begin{tikzpicture}
         \edef\tps{#1}
@@ -282,7 +359,6 @@
     \end{tikzpicture}
 }
 
-
 % costs pour tous les q : N et DoFs
 % Style global pour cibler une cellule spécifique (ligne, colonne)
 \pgfplotstableset{
@@ -344,5 +420,31 @@
         % \fi
         % }
         % every row 3 column 1/.style = {highlight bold 4},
+    ]{#1}
+}
+
+% costs pour tous les q : N et DoFs
+\newcommand{\timerequiredNL}[1]{
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+         & \multicolumn{2}{c}{\textbf{$N_\text{dofs}$}} & \multicolumn{2}{c}{\textbf{Online time}} \\
+		\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={3}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}},
+        columns/e/.style={column name=\textbf{e},sci},
+        columns/DoFsFEMPrev/.style={column name=\textbf{FEM},fixed},
+        columns/DoFsADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
+        }},
+        columns/TimesFEMPrev/.style={column name=\textbf{FEM},fixed},
+        columns/TimesADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
+        }},
+        columns={e,DoFsFEMPrev,DoFsADD,TimesFEMPrev,TimesADD},
+        precision=2
     ]{#1}
 }
