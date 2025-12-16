@@ -1,5 +1,5 @@
 \begin{frame}{Additive approach}
-	\textbf{Variational Problem :} Let $u_{\theta} \in H^{k+1}(\Omega)\cap H^1_0(\Omega)$ be a PINN prior.
+	\textbf{Variational Problem:} Let $u_{\theta} \in H^{k+1}(\Omega)\cap H^1_0(\Omega)$ be a PINN prior.
 	
 	\vspace{-5pt}
 	\begin{equation}
@@ -18,7 +18,7 @@
 	
 		\vspace{5pt}
 	
-		\textbf{General Dirichlet BC :} If $u=g$ on $\partial \Omega$, then
+		\textbf{General Dirichlet BC:} If $u=g$ on $\partial \Omega$, then
 		\[
 			C_h^+ = g - u_{\theta} \text{\quad on } \partial \Omega,
 		\]
@@ -27,7 +27,7 @@
 		\vspace{10pt}
 
 		\begin{center}
-			\textcolor{darkred}{\textbf{We hope that the modified problem will give the same results
+			\textcolor{darkred}{\textbf{We expect that the modified problem will give the same results
 			as the standard one on coarser meshes.}}
 		\end{center}
 	\end{minipage} \qquad \begin{minipage}[t][][b]{0.26\linewidth}
@@ -46,9 +46,9 @@
 	\begin{mytheo}{Convergence analysis of the standard FEM \footnotesize\citep{Ern2004TheoryAP}\normalsize}{fem}
 		We denote $u_h\in V_h$ the solution of \eqref{eq:weakform} with $V_h$ the standard trial space. Then,
 		\vspace{-5pt}
-		\begin{equation*}
-			| u-u_h|_{H^1} \leqslant C_{H^1} \, h^{k} |u|_{H^{k+1}},
-		\end{equation*}
+		% \begin{equation*}
+		% 	| u-u_h|_{H^1} \leqslant C_{H^1} \, h^{k} |u|_{H^{k+1}},
+		% \end{equation*}
 		\begin{equation*}
 			\| u-u_h\|_{L^2} \leqslant C_{L^2} \, h^{k+1} |u|_{H^{k+1}}.
 		\end{equation*}
@@ -57,9 +57,9 @@
 	\begin{mytheo}{Convergence analysis of the enriched FEM \footnotesize\citep{ours_2025}\normalsize}{add}
 		We denote $u_h^+\in V_h^+$ the solution of \eqref{eq:weakplus} with $V_h^+$ the enriched trial space. Then,
 		\vspace{-5pt}
-		\begin{equation*}
-			| u-u_h^+|_{H^1} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{H^1} \, h^{k} |u|_{H^{k+1}}\right),
-		\end{equation*}
+		% \begin{equation*}
+		% 	| u-u_h^+|_{H^1} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{H^1} \, h^{k} |u|_{H^{k+1}}\right),
+		% \end{equation*}
 		\begin{equation*}
 			\| u-u_h^+\|_{L^2} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{L^2} \, h^{k+1} |u|_{H^{k+1}}\right).
 		\end{equation*}
@@ -69,6 +69,7 @@
 		citecolor=other,
 	}
 
-	\footnotesize
-	\textcolor{orange}{Gains of the additive approach.}
+	\begin{center}
+		$\fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$}<1 \; \Rightarrow \;$ Gains of the additive approach.
+	\end{center}
 \end{frame}

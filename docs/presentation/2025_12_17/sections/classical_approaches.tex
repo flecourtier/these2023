@@ -1,6 +1,6 @@
 
 \begin{frame}{Physics-Informed Neural Networks}
-	\textbf{Standard PINNs\footcite{RAISSI2019686} (Weak BC) :} Find the optimal weights $\theta^\star$, such that
+	\textbf{Standard PINNs\footcite{RAISSI2019686} (Weak BC):} Find the optimal weights $\theta^\star$, such that
 	\begin{equation}
 		\label{eq:opt_pb}
 		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \omega_b \; J_b(\theta) \big),
@@ -38,12 +38,12 @@
 	In \eqref{eq:opt_pb}, $\omega_r$ and $\omega_b$ are some weights.
 
 	\vspace{5pt}
-	\textbf{Monte-Carlo method :} Discretize the cost functions by random process.
+	\textbf{Monte-Carlo method:} Discretize the cost functions by random process.
 	\vspace{15pt}
 \end{frame}
 
 \begin{frame}[noframenumbering]{Physics-Informed Neural Networks}
-	\textbf{\textcolor{red}{Improved PINNs\footcite{LagLikFot1998,FraMicNav2024} (Strong BC)} :} Find the optimal weights $\theta^\star$ such that
+	\textbf{\textcolor{red}{Improved PINNs\footcite{LagLikFot1998,FraMicNav2024} (Strong BC)}:} Find the optimal weights $\theta^\star$ such that
 	\begin{equation*}
 		% \label{eq:opt_pb_nobc}
 		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \Ccancel[red]{\omega_b \; J_b(\theta)} \big),%\tag{$\mathcal{P}_\theta$}
@@ -79,7 +79,7 @@
 	\end{minipage}
 
 	\vspace{5pt}
-	Thus, the Dirichlet BC is imposed exactly in the PINN : \textcolor{red}{$u_{\theta} = g$ on $\partial \Omega$}.
+	Thus, the Dirichlet BC is imposed exactly in the PINN: \textcolor{red}{$u_{\theta} = g$ on $\partial \Omega$}.
 
 	\vspace{15pt}
 \end{frame}
@@ -115,7 +115,7 @@
 		where $\mathbb{P}_k$ is the space of polynomials of degree at most $k$.
 
 		\vspace{10pt}
-		\textbf{Linear system :} Let $(\phi_1,\dots,\phi_{N_h})$ a basis of $V_h^0$.
+		\textbf{Linear system:} Let $(\phi_1,\dots,\phi_{N_\text{dofs}})$ a basis of $V_h^0$.
 	\end{minipage} \qquad \begin{minipage}[t][][b]{0.2\linewidth}
 		% \vspace{-5pt}
 		\centering
@@ -125,15 +125,15 @@
 		$\mathcal{T}_h = \left\{K_1,\dots,K_{N_e}\right\}$
 		
 		\tiny
-		($N_e$ : number of elements)
+		($N_e$: number of elements)
 	\end{minipage}
 
 	\vspace{-5pt}
-	Find $U\in\mathbb{R}^{N_h}$ such that \hspace{40pt} $AU=b$
+	Find $U\in\mathbb{R}^{N_\text{dofs}}$ such that \hspace{40pt} $AU=b$
 
 	with 
 	\begin{equation*}
-		A=\big(a(\phi_i,\phi_j)\big)_{1\le i,j\le N_h} \quad \text{and} \quad b=\big(l(\phi_j)\big)_{1\le j\le N_h}.
+		A=\big(a(\phi_i,\phi_j)\big)_{1\le i,j\le N_\text{dofs}} \quad \text{and} \quad b=\big(l(\phi_j)\big)_{1\le j\le N_\text{dofs}}.
 	\end{equation*}
 	\vspace{-3pt}
 \end{frame}
