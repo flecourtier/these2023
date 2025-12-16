@@ -223,7 +223,7 @@
 				\vfill
 				\centering
 				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
-					\usebeamerfont{title}\insertsectionhead\par%
+					\usebeamerfont{title}\insertsection\par%
 					\vspace{0.5cm} % Ajustez l'espacement selon vos besoins
 					% \usebeamerfont{classic}\usebeamercolor[fg]{classic}\insertsectionheadSubtitle
 				\end{beamercolorbox}
@@ -264,11 +264,15 @@
 	\section{Classical approaches}
 	\input{sections/classical_approaches}
 
-	\section{Enriched finite element method using PINN}
+	\section[Enriched FEM using PINNs]{Enriched finite element method using PINNs}%
 	\input{sections/correction}
 
 	\section{Numerical results}
 	\input{sections/numerical_results}
+
+	\section{Extension to non-linear problems}
+
+	\input{sections/navier_stokes}
 
 	\section*{Conclusion}
 
