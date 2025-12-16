@@ -4,7 +4,7 @@
 	\vspace{-5pt}
 	\begin{equation}
 		\label{eq:weakplus}
-		\text{Find } p_h^+ \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(p_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
+		\text{Find } C_h^+ \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(C_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
 	\end{equation}
 	
 	\vspace{5pt}
@@ -12,7 +12,7 @@
 		with the \textcolor{red}{enriched trial space $V_h^+$} defined by
 		\begin{equation*}
 			V_h^+ = \left\{
-			u_h^+= u_{\theta} + p_h^+, \quad p_h^+ \in V_h^0
+			u_h^+= u_{\theta} + C_h^+, \quad C_h^+ \in V_h^0
 			\right\}.
 		\end{equation*}
 	
@@ -20,7 +20,7 @@
 	
 		\textbf{General Dirichlet BC :} If $u=g$ on $\partial \Omega$, then
 		\[
-			p_h^+ = g - u_{\theta} \text{\quad on } \partial \Omega,
+			C_h^+ = g - u_{\theta} \text{\quad on } \partial \Omega,
 		\]
 		with $u_\theta$ the PINN prior. 
 

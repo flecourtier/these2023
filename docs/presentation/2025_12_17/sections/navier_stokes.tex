@@ -164,3 +164,153 @@
 
     \vspace{10pt}
 \end{frame}
+
+\subsection[FEM]{Finite Element Method (FEM)}
+
+\begin{frame}{Discrete variational formulation}
+	\vspace{-2pt}
+	We consider a mixed finite element space $M_h = [V_h^{\, 0}]^2 \times Q_h \times W_h$ (4 unknowns).
+
+    \vspace{5pt}
+	\textbf{Variational Problem:} Find $U_h=(\bm{u}_h, p_h, T_h) \in M_h$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0} $,
+
+	% \vspace{-4pt}
+	\footnotesize
+	\begin{equation}
+		\label{eq:weakform_nl}
+		\begin{aligned}
+			&\int_\Omega (\only<1>{\bm{u}_h}\only<2>{\textcolor{darkred}{\bm{u}_h}} \cdot \nabla)\only<1>{\bm{u}_h}\only<2>{\textcolor{darkred}{\bm{u}_h}} \cdot \bm{v}_h \, d\bm{x} + \mu \int_\Omega \nabla \bm{u}_h : \nabla \bm{v}_h \, d\bm{x} \\
+			&\hspace{50pt} - \int_\Omega p_h \, \nabla \cdot \bm{v}_h \, d\bm{x} - g \int_\Omega (1 + \beta T_h) \bm{e}_y \cdot \bm{v}_h \, d\bm{x} = 0, \qquad\text{\footnotesize (momentum)} \\
+			&\int_\Omega q_h \, \nabla \cdot \bm{u}_h \, d\bm{x} \, + \, 10^{-4} \int_\Omega q_h \, p_h \, d\bm{x} = 0, \qquad\text{\footnotesize (incompressibility + pressure penalization)}\\
+			&\int_\Omega (\only<1>{\bm{u}_h}\only<2>{\textcolor{darkred}{\bm{u}_h}} \cdot \nabla \only<1>{T_h}\only<2>{\textcolor{darkred}{T_h}}) \, w_h \, d\bm{x} + \int_\Omega k_f \nabla T_h \cdot \nabla w_h \, d\bm{x} = 0,  \qquad\text{\footnotesize (energy)}
+			% \epsilon \int_\Omega q \, p \, dx = 0
+		\end{aligned}
+		\tag{$\mathcal{P}_h$}
+	\end{equation}
+
+    \normalsize
+    \only<2>{
+        \begin{center}    
+            \textcolor{darkred}{Non-linear terms \; $\Rightarrow$ \; Non-linear system to solve.}
+        \end{center}    
+    }
+\end{frame}
+
+\begin{frame}{Newton method}
+	Denoting $N_h$ the dimension of $M_h$, we want to solve the-non linear system:
+
+    \normalsize
+    \vspace{-10pt}
+    \begin{equation*}
+        F(\vec{U}) = 0 
+    \end{equation*}
+
+    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the non-linear operator associated to \eqref{eq:weakform_nl} and $\vec{U}\in \mathbb{R}^{N_h}$ the unknown vector. \quad\refappendix{frame:basis}
+
+	\setcounter{algocf}{0}
+    \begin{center}
+        \small
+        \begin{minipage}{0.9\linewidth}
+            \begin{algorithm}[H]
+                \SetAlgoLined
+                \caption{Newton algorithm} % \citep{newton_accel_2025}}
+                \textbf{Initialization step:} set $\vec{U}^{(0)} = \only<1>{\vec{U}_0}\only<2>{\textcolor{darkred}{\vec{U}_0}}$\;
+                \For{\( n \ge 0 \)}{
+                    Solve the linear system \( F(\vec{U}^{(n)}) + F'(\vec{U}^{(n)}) \delta^{(n+1)} = 0 \) for \( \delta^{(n+1)} \)\;
+                    Update \( \vec{U}^{(n+1)} = \vec{U}^{(n)} + \delta^{(n+1)} \)\;
+                }
+            \end{algorithm}
+        \end{minipage}
+        
+        \uncover<2>{\textcolor{darkred}{\warning \; The choice of the $\vec{U}_0$ is crucial for the convergence of the Newton method.}}
+    \end{center}
+
+\end{frame}
+
+\subsection[Enriched FEM using PINNs]{Enriched finite element method using PINNs}
+
+\begin{frame}{Additive approach} %\footnote[frame,1]{The $\bm{\mu}$ parameter is fixed in the FE resolution.}}	
+    Considering the PINN prior $U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$, we define the \textcolor{darkred}{mixed finite element space additively enriched} by the PINN as follows:
+    
+    \begin{center}
+        \fcolorbox{darkred}{white}{$M_h^+ = \left\{U_h^+ = U_\theta + C_h^+, \quad C_h^+ \in M_h^{\, 0}\right\}$}
+    \end{center}
+
+    with $M_h^{\, 0}=[V_h^{\, 0}]^2 \times Q_h \times W_h^0$,
+    $U_h^+ = (\bm{u}_h^+, p_h^+, T_h^+) \in M_h^+$ and $C_h^+ = (\bm{C}_{h,\bm{u}}^+, C_{h,p}^+, C_{h,T}^+)$.
+
+    \vspace{8pt}
+
+    We can then define the three finite element subspaces of $M_h^+$ as follows:
+    \begin{minipage}{0.6\linewidth}
+        \vspace{-15pt}
+        \begin{align*}
+            \bm{V}_h^+ &= \left\{\bm{u}_h^+ = \bm{u}_\theta + \bm{C}_{h,\bm{u}}^+, \; \bm{C}_{h,\bm{u}}^+ \in [V_h^{\, 0}]^2\right\}, \\
+            Q_h^+ &= \left\{p_h^+ = p_\theta + C_{h,p}^+, \; C_{h,p}^+ \in Q_h\right\}, \\
+            W_h^+ &= \left\{T_h^+ = T_\theta + C_{h,T}^+, \; C_{h,T}^+ \in W_h^{\, 0}\right\},
+        \end{align*}
+        where $\bm{C}_{h,\bm{u}}^+$, $C_{h,p}^+$ and $C_{h,T}^+$ becomes the unknowns.
+        
+        % \vspace{5pt}
+        % \hl{à ajouter : dans quoi vit $U_\theta$ ?}
+    \end{minipage}
+    \begin{minipage}{0.38\linewidth}
+        \centering
+        \vspace{5pt}
+        \pgfimage[width=0.7\linewidth]{images/correction/correction.pdf}
+    \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Modified variational formulation}
+    \textbf{Weak problem :} Find $C_h^+=(\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+}, \textcolor{blue}{C_{h,p}^+}, \textcolor{ForestGreen}{C_{h,T}^+}) \in M_h^{\, 0}$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0}$,
+
+    \vspace{-4pt}
+    \footnotesize
+    \begin{equation}
+        \label{eq:weak_pb_add}
+        \hspace{-8pt}\begin{aligned}
+            &\int_\Omega \big[(\textcolor{darkred}{\bm{u}_\theta} \cdot \nabla)\textcolor{darkred}{\bm{u}_\theta} + (\textcolor{darkred}{\bm{u}_\theta} \cdot \nabla)\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} + (\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \cdot \nabla)\textcolor{darkred}{\bm{u}_\theta} + (\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \cdot \nabla)\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \big] \cdot \bm{v_h} \, d\bm{x} \\
+            &\hspace{20pt} +\mu \left(\int_\Omega  \nabla \textcolor{darkred}{\bm{u}_\theta} : \nabla \bm{v}_h \, d\bm{x} + \int_\Omega \nabla \textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} : \nabla \bm{v}_h \, d\bm{x}\right) + \left(\int_\Omega \nabla \textcolor{darkred}{p_\theta} \cdot \bm{v}_h \, d\bm{x} - \int_\Omega \textcolor{blue}{C_{h,p}^+} \nabla \cdot \bm{v}_h \, d\bm{x}\right)\\
+            &\hspace{50pt} - g \int_\Omega (1 + \beta (\textcolor{darkred}{T_\theta} + \textcolor{ForestGreen}{C_{h,T}^+})) \bm{e}_y \cdot \bm{v}_h \, d\bm{x} = 0, \,\text{\footnotesize (momentum)}  \\
+            &\int_\Omega q_h \, \big[\nabla \cdot \textcolor{darkred}{\bm{u}_\theta} + \nabla \cdot \textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+}\big] \, d\bm{x} \, + \, 10^{-4} \int_\Omega q_h \, (\textcolor{darkred}{p_\theta} + \textcolor{blue}{C_{h,p}^+}) \, d\bm{x} = 0, \; \text{\footnotesize (incompressibility + penal)} \\
+            & \int_\Omega \big[ \textcolor{darkred}{\bm{u}_\theta} \cdot \nabla \textcolor{darkred}{T_\theta} + \textcolor{darkred}{\bm{u}_\theta} \cdot \nabla \textcolor{ForestGreen}{C_{h,T}^+} + \textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \cdot \nabla \textcolor{darkred}{T_\theta} + \textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+} \cdot \nabla \textcolor{ForestGreen}{C_{h,T}^+} \big] w_h \, d\bm{x} \\
+            & \hspace{40pt} + k_f \left(\int_\Omega \nabla \textcolor{darkred}{T_\theta} \cdot \nabla w_h \; d\bm{x} + \int_\Omega \nabla \textcolor{ForestGreen}{C_{h,T}^+} \cdot \nabla w_h \, d\bm{x} \, w_h \, d\bm{s}\right) = 0, \, \text{\footnotesize (energy)}
+        \end{aligned}
+        \tag{$\mathcal{P}_h^+$}
+    \end{equation}
+
+    \vspace{5pt}
+    with \textcolor{darkred}{$U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$} the PINN prior and some modified boundary conditions.
+\end{frame}
+
+\begin{frame}{Newton method - Additive approach}
+    \vspace{-5pt}
+    Denoting $N_h$ the dimension of $M_h^+$, we want to solve the non-linear system: %\hfill \tiny $N_h$ : number of degrees of freedom.
+
+    \normalsize
+    \vspace{-10pt}
+    \begin{equation*}
+        % \label{eq:nonlinear}
+        F_\theta(\vec{C}) = 0 
+    \end{equation*}
+
+    \vspace{-2pt}
+    with $F_\theta:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the non linear operator associated to the weak problem \eqref{eq:weak_pb_add} and $\vec{C}\in \mathbb{R}^{N_h}$ the \textcolor{darkred}{correction vector (unknown)}.
+
+	\setcounter{algocf}{1}
+    \begin{center}
+        \small
+        \begin{minipage}{0.9\linewidth}
+            \begin{algorithm}[H]
+                \SetAlgoLined
+                \caption{Newton algorithm}
+                \textbf{Initialization step:} set $\vec{C}^{(0)} = \textcolor{darkred}{0}$\;
+                \For{\( n \ge 0 \)}{
+                    Solve the linear system \( F_\theta(\vec{C}^{(n)}) + F_\theta'(\vec{C}^{(n)}) \delta^{(n+1)} = 0 \) for \( \delta^{(n+1)} \)\;
+                    Update \( \vec{C}^{(n+1)} = \vec{C}^{(n)} + \delta^{(n+1)} \)\;
+                }
+            \end{algorithm}
+        \end{minipage}
+    \end{center}
+\end{frame}
