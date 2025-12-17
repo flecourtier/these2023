@@ -279,9 +279,29 @@
 	\section*{Conclusion}
 
 	\begin{frame}{Conclusion}
-		\hl{TODO}
+		\begin{itemize}
+			\item \textbf{Offline/online framework:} 
+			\begin{itemize}
+				\item \textbf{Offline phase:} Training a PINN over a parametric space.
+				\item \textbf{Online phase:} (fixed parameter instance) \\
+				Quick and accurate resolution of the FEM correction problem using the PINN prior.
+			\end{itemize}
+			\item \textbf{Numerical results:} Several parametrics PDEs. 
+			\item \textbf{Extension to non-linear problems} : \\
+			First promising results for the incompressible Navier-Stokes equations.
+		\end{itemize}
 
-		\flushright
+		\begin{minipage}{0.6\linewidth}
+			\textbf{Perspectives:}
+			\begin{itemize}
+				\item Improve Navier-Stokes results:
+				\begin{itemize}
+					\item Improved parametric PINN training.
+					\item Different meshes by unknowns (+ parameter dependency).
+				\end{itemize}
+				\item Extend the approach to more complex geometries.
+			\end{itemize}
+		\end{minipage}\hfill
 		\begin{minipage}{0.05\linewidth}
 			\flushright
 			\rotatebox{90}{\textbf{Preprint (linear)}}

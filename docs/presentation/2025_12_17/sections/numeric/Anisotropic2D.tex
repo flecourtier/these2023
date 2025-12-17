@@ -10,7 +10,7 @@
 		\right.
 	\end{equation*}
 
-	with $\Omega=[0,1]^2$ and $\mathcal{M}=[0.4, 0.6]^2\times [0.01,1]\times [0.1,0.8]$ ($p=4$ parameters).
+	with $\Omega=(0,1)^2$ and $\mathcal{M}=[0.4, 0.6]^2\times [0.01,1]\times [0.1,0.8]$ ($p=4$ parameters).
 	
 	\vspace{8pt}
 	\textbf{Right-hand side and diffusion matrix:} \; $\bm{\mu}=(\mu_1,\mu_2,\sigma,\epsilon)\in\mathcal{M}$
@@ -27,8 +27,7 @@
 	\end{equation*}
 
 	\vspace{2pt}
-	\textbf{PINN training:} MLP with Fourier Features\footcite{TanSri2020} of 5 layers (tanh - 40, 60, 60, 60, 40). \\
-	Adam optimizer (15000 epochs - 8000 col. pts). \\
+	\textbf{Parametric PINN training:} \\ MLP\footnote[frame,1]{with Fourier Features, \cite{TanSri2020}} 5 layers (tanh - 40, 60, 60, 60, 40).	Adam optimizer (15000 epochs - 8000 col. pts). \\
 	Imposing the Dirichlet BC exactly in the PINN with the a level-set function.
 
 	\vspace{5pt}

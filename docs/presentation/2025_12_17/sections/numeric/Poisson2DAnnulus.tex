@@ -11,7 +11,7 @@
 		\right.
 	\end{equation*}
 
-	with $\Omega=\{(x,y)\in\mathbb{R}^2, 0.25\le x^2+y^2\le 1\}$ and $\mathcal{M}=[2.4,2.6]$ ($p=1$ parameter).
+	with $\Omega=\{(x,y)\in\mathbb{R}^2, 0.25 < x^2+y^2 < 1\}$ and $\mathcal{M}=[2.4,2.6]$ ($p=1$ parameter).
 		
 	\vspace{8pt}
 	\textbf{Analytical solution and boundary conditions:} $\bm{\mu}=\mu_1 \in \mathcal{M}$
@@ -27,7 +27,7 @@
 	\end{equation*}
 
 	\vspace{2pt}
-	\textbf{PINN training:} \\
+	\textbf{Parametric PINN training:} \\
     MLP 5 layers (tanh - 5$\times$40); LBFGs optimizer (4000 epochs - 6000 col. pts). \\
 	Imposing the mixed BC exactly in the PINN\footcite{Sukumar_2022} (+ Sobolev training).
 

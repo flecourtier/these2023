@@ -12,7 +12,7 @@
 	\end{equation*}
 
 	\vspace{-5pt}
-	with $\Omega=[-0.5 \pi, 0.5 \pi]^3$ and $\mathcal{M}=[-0.5,0.5]^3$ ($p=3$ parameters).
+	with $\Omega=(-0.5 \pi, 0.5 \pi)^3$ and $\mathcal{M}=[-0.5,0.5]^3$ ($p=3$ parameters).
 		
 	\vspace{8pt}
 	\textbf{Analytical solution:} $\bm{\mu}=(\mu_1,\mu_2,\mu_3) \in \mathcal{M}$
@@ -24,7 +24,7 @@
 	\end{equation*}
 
 	\vspace{12pt}
-	\textbf{PINN training:} \\
+	\textbf{Parametric PINN training:} \\
 	MLP 5 layers (tanh - 40, 60, 60, 60, 40); LBFGs optimizer (5000 epochs - 40000 col. pts). \\
 	Imposing the Dirichlet BC exactly in the PINN with the levelset $\varphi$ defined by
 	$$\varphi(\bm{x})=(x+0.5\pi)(x-0.5\pi)(y+0.5\pi)(y-0.5\pi)(z+0.5\pi)(z-0.5\pi).$$
@@ -48,7 +48,7 @@
 	\end{minipage} \hspace{1cm}
 	\begin{minipage}[t]{0.5\linewidth}
 		\only<2-3>{
-			\textbf{$L^2$ error w.r.t. execution time$^*$:}
+			\textbf{$L^2$ error w.r.t. online time$^*$:}
 			\vspace{-14pt}
 			\begin{figure}[H]
 				\only<2>{
@@ -70,7 +70,7 @@
 	\vspace{-12pt}
 	$$\bm{\mu}^{(1)}=(0.05, 0.22, 0.1) $$
 
-	\textbf{$N_\text{dofs}$ and computation time required to reach the same error $e$:}
+	\textbf{$N_\text{dofs}$ and online time required to reach the same error $e$:}
 
 	\begin{table}[ht!]
 		\centering
@@ -80,12 +80,19 @@
 		\flechecourbehorizontale{2.5}{0.1}{2}{-0.2}{$\div 1471$}{darkred}
 	\end{tikzpicture}
 
-	Cartesian mesh: $N^3$ nodes; $\mathbb{P}_1$ elements.
+	\begin{minipage}[t]{0.6\linewidth}
+		Cartesian mesh: $N_\text{dofs} = N^3$ nodes ($\mathbb{P}_1$ elements).
 
-	\vfill
-	\footnotesize
-	$^*$ The results in brackets are extrapolations.
-
+		\vspace{10pt}
+		\footnotesize
+		$^*$ The results in brackets are extrapolations.
+	\end{minipage} \hfill \begin{minipage}[t]{0.35\linewidth}
+		\centering
+		
+		\vspace{15pt}
+		\Large
+		\only<2>{\textcolor{darkred}{\warning Training time !}}
+	\end{minipage}
 \end{frame}
 
 \begin{frame}{Parametric framework}

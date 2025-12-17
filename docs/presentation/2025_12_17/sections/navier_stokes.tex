@@ -1,7 +1,7 @@
 \begin{frame}{Heated cavity test case\footnote[frame,1]{Non-parametric study.}}
 	\textbf{Stationary incompressible Navier-Stokes equations (with buoyancy and gravity):}
 
-	We consider \only<1>{$\Omega = [-1,1]^2$ a squared domain}\only<2>{\textcolor{darkred}{$\bm{x}=(x,y)\in\Omega$}} and $\bm{e}_y = (0,1)$.
+	We consider \only<1>{$\Omega = (-1,1)^2$ a squared domain}\only<2>{\textcolor{darkred}{$\bm{x}=(x,y)\in\Omega$}} and $\bm{e}_y = (0,1)$.
 	
 	Find \only<1>{the velocity $\bm{u}=(u_1,u_2)$, the pressure $p$ and the temperature $T$}\only<2>{\textcolor{darkred}{$\bm{U} = (\bm{u},p,T) = (u_1,u_2,p,T)$}} such that
 	\begin{equation} \label{eq:Pb}
@@ -197,7 +197,7 @@
 \end{frame}
 
 \begin{frame}{Newton method}
-	Denoting $N_h$ the dimension of $M_h$, we want to solve the-non linear system:
+	Denoting $N_\text{dofs}$ the dimension of $M_h$, we want to solve the-non linear system:
 
     \normalsize
     \vspace{-10pt}
@@ -205,7 +205,7 @@
         F(\vec{U}) = 0 
     \end{equation*}
 
-    with $F:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the non-linear operator associated to \eqref{eq:weakform_nl} and $\vec{U}\in \mathbb{R}^{N_h}$ the unknown vector. %\quad\refappendix{frame:basis}
+    with $F:\mathbb{R}^{N_\text{dofs}} \to \mathbb{R}^{N_\text{dofs}}$ the non-linear operator associated to \eqref{eq:weakform_nl} and $\vec{U}\in \mathbb{R}^{N_\text{dofs}}$ the unknown vector. %\quad\refappendix{frame:basis}
 
 	\setcounter{algocf}{0}
     \begin{center}
@@ -288,7 +288,7 @@
 
 \begin{frame}{Newton method - Additive approach}
     \vspace{-5pt}
-    Denoting $N_h$ the dimension of $M_h^+$, we want to solve the non-linear system: %\hfill \tiny $N_h$ : number of degrees of freedom.
+    Denoting $N_\text{dofs}$ the dimension of $M_h^+$, we want to solve the non-linear system: %\hfill \tiny $N_\text{dofs}$ : number of degrees of freedom.
 
     \normalsize
     \vspace{-10pt}
@@ -298,7 +298,7 @@
     \end{equation*}
 
     \vspace{-2pt}
-    with $F_\theta:\mathbb{R}^{N_h} \to \mathbb{R}^{N_h}$ the non linear operator associated to the weak problem \eqref{eq:weak_pb_add} and $\vec{C}\in \mathbb{R}^{N_h}$ the \textcolor{darkred}{correction vector (unknown)}.
+    with $F_\theta:\mathbb{R}^{N_\text{dofs}} \to \mathbb{R}^{N_\text{dofs}}$ the non linear operator associated to the weak problem \eqref{eq:weak_pb_add} and $\vec{C}\in \mathbb{R}^{N_\text{dofs}}$ the \textcolor{darkred}{correction vector (unknown)}.
 
 	\setcounter{algocf}{1}
     \begin{center}
@@ -318,7 +318,7 @@
 \end{frame}
 
 \begin{frame}{Numerical results}
-    \textbf{$N_\text{dofs}$ and computation time required to reach the same error $e$:}
+    \textbf{$N_\text{dofs}$ and online time required to reach the same error $e$:}
     \vspace{-5pt}
 
     \begin{figure}[H]

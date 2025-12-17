@@ -392,15 +392,21 @@
         before row={\toprule[1.pt]
         & \multicolumn{2}{c}{\textbf{$N$}} &
 		\multicolumn{2}{c}{\textbf{$N_\text{dofs}$}} &
-		\multicolumn{2}{c}{\textbf{Computation time$^*$}} \\
+		\multicolumn{2}{c}{\textbf{Online time$^*$}} \\
 		\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
         },
         after row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}},
         every last row/.style={after row=\bottomrule[1.pt]},
         % every nth row={1}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}},
         columns/e/.style={column name=\textbf{e},sci},
-		columns/FEM_N/.style={column name=\textbf{FEM},fixed},
-        columns/ADD_N/.style={column name=\textbf{Add},fixed},
+		columns/FEM_N/.style={column name=\textbf{FEM},fixed,
+            postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{gray}}{},
+        }},
+        columns/ADD_N/.style={column name=\textbf{Add},fixed,
+            postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{gray}}{},
+        }},
         columns/FEM_dofs/.style={column name=\textbf{FEM},sci},
 		columns/ADD_dofs/.style={column name=\textbf{Add},sci},
         columns/FEM_time/.style={column name=\textbf{FEM},sci,bracket darkred cell=0,bracket cell=1,bracket cell=2},
