@@ -20,30 +20,27 @@
 
 	\normalsize
 	\vspace{5pt}
-	\textbf{Parametric elliptic convection/diffusion PDE:}
+	% \textbf{Parametric elliptic convection/diffusion PDE:}
+	% For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
+	% \begin{equation}
+	% 	\label{eq:ob_pde}
+	% 	\mathcal{L}\big(u\,;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
+	% 	\tag{$\mathcal{P}$}
+	% \end{equation}
+	% where $\mathcal{L}$ is the parametric differential operator defined  by
+	% \begin{equation*}
+	% 	\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u),
+	% \end{equation*}
+	% and some Dirichlet, Neumann or Robin BC (which can also depend on $\bm{\mu}$).
+	\only<2>{\textbf{Parametric Poisson problem (with homogeneous Dirichlet BC):} \\
 	For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
-	\begin{equation}
-		\label{eq:ob_pde}
-		\mathcal{L}\big(u\,;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
-		\tag{$\mathcal{P}$}
+	\begin{equation}\label{eq:ob_pde}\tag{$\mathcal{P}$}
+		\left\{
+		\begin{aligned}
+			-\Delta u(\bm{x};\bm{\mu}) & = f(\bm{x};\bm{\mu}), \; &  & (\bm{x},\bm{\mu}) \in \Omega \times \mathcal{M}, \\
+			u(\bm{x};\bm{\mu}) & =0, \;  &  & (\bm{x},\bm{\mu}) \in \partial \Omega \times \mathcal{M},
+		\end{aligned}
+		\right.
 	\end{equation}
-	where $\mathcal{L}$ is the parametric differential operator defined  by
-	\begin{equation*}
-		\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u),
-	\end{equation*}
-	and some Dirichlet, Neumann or Robin BC (which can also depend on $\bm{\mu}$).
-\end{frame}
-
-\begin{frame}{Pipeline of the Enriched FEM}
-	\begin{figure}[!ht]
-		\centering
-		\includegraphics[width=\linewidth]{images/intro/offline.pdf}
-
-		\uncover<2>{\includegraphics[width=\linewidth]{images/intro/online.pdf}}
-	\end{figure}
-
-	\uncover<2>{\begin{center}
-			\textbf{Complete ONLINE process :} \textcolor{darkred}{quick} + \textcolor{orange}{accurate}
-		\end{center}
-	}
+	with $\Omega \subset \mathbb{R}^d$ a domain ($d$ the spatial dimension).}
 \end{frame}
