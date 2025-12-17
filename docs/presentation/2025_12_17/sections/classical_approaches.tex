@@ -62,10 +62,10 @@
 		a(u_h,v_h)=
 		\int_{\Omega} \nabla u_h \cdot  \nabla v_h, \quad l(v_h)=\int_{\Omega} f \, v_h,
 	\end{equation*}
-	and $V_h^0$ a continuous, piecewise polynomial space of degree $k$.
+	and $V_h^0$ a continuous, piecewise polynomial space of degree $k$. \hfill \only<6>{\textcolor{red}{($k=1$)}}\only<7>{\textcolor{red}{($k=2$)}}\only<8>{\textcolor{red}{($k=3$)}}
 
 	\begin{minipage}[t]{0.57\linewidth}
-		\uncover<2-5>{\vspace{2pt}
+		\uncover<2-8>{\vspace{2pt}
 		\textbf{Linear system:} Let $(\phi_1,\dots,\phi_{N_\text{dofs}})$ a basis of $V_h^0$.
 
 		Find $U\in\mathbb{R}^{N_\text{dofs}}$ such that 
@@ -91,17 +91,22 @@
 		
 		Cartesian mesh
 		}
-		\only<3>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P1.png}
+		\only<3-5>{\only<3>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P1.png}}
+		\only<4>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh2_P1.png}}
+		\only<5>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh3_P1.png}}
 
-		\textcolor{red}{Degrees of freedom ($k=1$)}
+		% h flèche vers e bas implique N_dofs flèche vers le haut
+		% dessiner un petit carré rouge avec ding
+		\only<3>{\textcolor{red}{\ding{110}} degrees of freedom}
+		\only<4-5>{\textcolor{red}{$h \searrow \; \Rightarrow \; N_\text{dofs} \nearrow$}}
 		}
-		\only<4>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P2.png}
+		\only<6-8>{\only<6>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P1.png}}
+		\only<7>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P2.png}}
+		\only<8>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P3.png}}
 
-		\textcolor{red}{Degrees of freedom ($k=2$)}
-		}
-		\only<5>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P3.png}
-
-		\textcolor{red}{Degrees of freedom ($k=3$)}
+		% h flèche vers e bas implique N_dofs flèche vers le haut
+		\only<6>{\textcolor{red}{\ding{110}} degrees of freedom}
+		\only<7-8>{\textcolor{red}{$k \nearrow \; \Rightarrow \; N_\text{dofs} \nearrow$}}
 		}
 	\end{minipage}
 
