@@ -15,7 +15,7 @@
 	with $\Omega=[-0.5 \pi, 0.5 \pi]^2$ and $\mathcal{M}=[-0.5,0.5]^2$ ($p=2$ parameters).
 		
 	\vspace{8pt}
-	\textbf{Analytical solution :} $\bm{\mu}=(\mu_1,\mu_2) \in \mathcal{M}$
+	\textbf{Analytical solution:} $\bm{\mu}=(\mu_1,\mu_2) \in \mathcal{M}$
 
 	\vspace{-5pt}
 	\begin{equation*}
@@ -28,12 +28,9 @@
 	MLP 5 layers (sine - 40, 60, 60, 60, 40); LBFGs optimizer (5000 epochs - 6000 col. pts). \\
 	Imposing the Dirichlet BC exactly in the PINN with the levelset $\varphi$ defined by
 	$$\varphi(\bm{x})=(x+0.5\pi)(x-0.5\pi)(y+0.5\pi)(y-0.5\pi).$$
-	
-	% \small\vspace{4pt}
-	% Training time : less than 1 hour on a laptop GPU.
 \end{frame}
 
-\begin{frame}{Online phase - 1 set of parameters}
+\begin{frame}{Online phase - 1 parameters instance}
 	\vspace{-12pt}
 	$$\bm{\mu}^{(1)}=(0.05, 0.22) $$
 	% \vspace{2pt}
@@ -60,7 +57,7 @@
 \end{frame}
 
 \begin{frame}{Parametric framework}
-		Considering the set of $n_p=50$ parameter instances
+		Considering the set of $n_p=50$ parameters instances
 		$$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}.$$
 		
 		\textbf{Gains achieved:} $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$
@@ -69,5 +66,5 @@
 			\GainsTableAlldeg{images/numeric/Poisson2DDirichlet/gains/Tab_stats_case1_v1.csv}
 		\end{table}
 
-		Cartesian mesh : $N^2$ nodes with $N=20$.
+		Cartesian mesh: $N^2$ nodes with $N=20$.
 \end{frame}

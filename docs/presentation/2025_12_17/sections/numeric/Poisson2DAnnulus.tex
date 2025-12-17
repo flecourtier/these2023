@@ -14,11 +14,10 @@
 	with $\Omega=\{(x,y)\in\mathbb{R}^2, 0.25\le x^2+y^2\le 1\}$ and $\mathcal{M}=[2.4,2.6]$ ($p=1$ parameter).
 		
 	\vspace{8pt}
-	\textbf{Analytical solution and boundary conditions:} \\
+	\textbf{Analytical solution and boundary conditions:} $\bm{\mu}=\mu_1 \in \mathcal{M}$
 
 	\vspace{-12pt}
 	\begin{equation*}
-		% \label{eq:analytical_solution_Lap2D}
 		u(\bm{x};\bm{\mu})= 1 - \frac{\ln\big(\mu_1\sqrt{x^2+y^2}\big)}{\ln(4)},
 	\end{equation*}
 
@@ -37,7 +36,7 @@
 
 \begin{frame}{Online phase}
 	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
-		\textbf{Error estimates :} 1 parameters instance.
+		\textbf{Error estimates:} \small 1 parameters instance \normalsize
 		$$\bm{\mu}^{(1)}=2.51$$
 		\vspace{-35pt}
 		\begin{figure}[H]
@@ -45,10 +44,10 @@
 		\end{figure}
 	\end{minipage} \qquad \small
 	\begin{minipage}[t]{0.48\linewidth}
-		\textbf{Gains achieved :} $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$ \\
+		\textbf{Gains achieved:} $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$ \\
 
         \vspace{-5pt}
-        Considering $n_p=50$ parameter instances
+        Considering $n_p=50$ parameters instances
         $$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}.$$
 		\vspace{-15pt}
 		\begin{table}[H]
