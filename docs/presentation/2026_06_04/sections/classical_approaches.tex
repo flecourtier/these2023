@@ -1,0 +1,183 @@
+
+\begin{frame}{Physics-Informed Neural Networks}
+	\textbf{Standard PINNs:} Find the optimal weights $\theta^\star$, such that
+	\begin{equation}
+		\label{eq:opt_pb}
+		\theta^\star = \argmin_{\theta}	\big( \omega_r \; J_r(\theta) + \omega_b \; J_b(\theta) \big),
+		\tag{$\mathcal{P}_\theta$}
+	\end{equation}
+
+	\vspace{-5pt}
+	with
+	\vspace{-6pt}
+
+	\hspace{15pt}\begin{minipage}{0.2\linewidth}
+		\flushright
+		\textcolor{orange}{residual loss}
+
+		\vspace{12pt}
+		\textcolor{red}{boundary loss}
+	\end{minipage}
+	\begin{minipage}{0.58\linewidth}
+		\centering
+		\fcolorbox{orange}{white}{
+			$J_r(\theta) =
+			\int_{\mathcal{M}}\int_{\Omega}
+			\big| \Delta u_\theta(\bm{x},\bm{\mu})+f(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},$}
+		
+		\vspace{3pt}
+		\fcolorbox{red}{white}{
+			$J_b(\theta) =
+			\int_{\mathcal{M}}\int_{\partial \Omega} \big| u_\theta(\bm{x},\bm{\mu}) \big|^2 d\bm{x} d\bm{\mu},$}
+	\end{minipage}
+	
+	\vspace{5pt}
+	\begin{minipage}{0.55\linewidth}
+		with $\omega_r$ and $\omega_b$ are some weights.
+		
+		\vspace{12pt}
+		$u_\theta$ is a neural network, e.g. fully-connected NN. \\
+		(see example in 2D with 2 parameters)
+	\end{minipage} \hfill
+	\begin{minipage}{0.38\linewidth}
+		\flushright
+		\pgfimage[width=\linewidth]{images/classical_approaches/network/network.pdf}
+	\end{minipage}
+	\vspace{5pt}
+	\textbf{Monte-Carlo method:} Discretize the cost functions by random process.
+	\vspace{3pt}
+\end{frame}
+
+% \begin{frame}{Finite Element Method\only<1>{\footcite{Ern2004TheoryAP}}}	
+% 	\textbf{Variational Problem:} 
+% 	\begin{equation}
+% 		\label{eq:weakform}
+% 		\text{Find } u_h\in V_h^0 \;\text{such that}, \forall v_h\in V_h^0, a(u_h,v_h)=l(v_h),
+% 		\tag{$\mathcal{P}_h$}
+% 	\end{equation}
+% 	\vspace{1pt}
+% 	with $h$ the characteristic mesh size, $a$ and $l$ the bilinear and linear forms given by
+% 	\vspace{-3pt}
+% 	\begin{equation*}
+% 		a(u_h,v_h)=
+% 		\int_{\Omega} \nabla u_h \cdot  \nabla v_h, \quad l(v_h)=\int_{\Omega} f \, v_h,
+% 	\end{equation*}
+% 	and $V_h^0$ a continuous, piecewise polynomial space of degree $k$. \hfill \only<5>{\textcolor{red}{($k=1$)}}\only<6>{\textcolor{red}{($k=2$)}}\only<7>{\textcolor{red}{($k=3$)}}
+
+% 	\begin{minipage}[t]{0.52\linewidth}
+% 		\uncover<2-8>{\vspace{2pt}
+% 		\textbf{Linear system:}
+		
+% 		Let $(\phi_1,\dots,\phi_{N_\text{dofs}})$ a basis of $V_h^0$.
+
+% 		Find $U\in\mathbb{R}^{\textcolor{red}{N_\text{dofs}}}$ such that 
+
+% 		\vspace{-8pt}
+% 		\begin{equation*}
+% 			AU=b,
+% 		\end{equation*}
+
+% 		\vspace{-20pt}
+% 		\begin{equation*}
+% 			A=\big(a(\phi_i,\phi_j)\big)_{1\le i,j\le N_\text{dofs}} \in \mathbb{R}^{N_\text{dofs}\times N_\text{dofs}},
+% 		\end{equation*}
+% 		\begin{equation*}
+% 			b=\big(l(\phi_j)\big)_{1\le j\le N_\text{dofs}} \in \mathbb{R}^{N_\text{dofs}}.
+% 		\end{equation*}}
+% 	\end{minipage} \hfill \begin{minipage}[t][][b]{0.38\linewidth}
+% 		\vspace{-5pt}
+% 		\centering
+% 		\only<1>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh.png}
+		
+% 		Cartesian mesh
+% 		}
+% 		\only<2-5>{\only<2>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P1.png}}
+% 		\only<3>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh2_P1.png}}
+% 		\only<4>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh3_P1.png}}
+
+% 		% h flèche vers e bas implique N_dofs flèche vers le haut
+% 		% dessiner un petit carré rouge avec ding
+% 		\only<2>{\textcolor{red}{\ding{110}} degrees of freedom}
+% 		\only<3-4>{\textcolor{red}{$h \searrow \; \Rightarrow \; N_\text{dofs} \nearrow$}}
+% 		}
+% 		\only<5-7>{\only<5>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P1.png}}
+% 		\only<6>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P2.png}}
+% 		\only<7>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P3.png}}
+
+% 		% h flèche vers e bas implique N_dofs flèche vers le haut
+% 		\only<5>{\textcolor{red}{\ding{110}} degrees of freedom}
+% 		\only<6-7>{\textcolor{red}{$k \nearrow \; \Rightarrow \; N_\text{dofs} \nearrow$}}
+% 		}
+% 	\end{minipage}
+
+	
+% 	\only<1>{\vspace{-15pt}}
+% \end{frame}
+
+\begin{frame}{Finite Element Method\footcite{Ern2004TheoryAP}}	
+	\textbf{Variational Problem:} 
+	\begin{equation}
+		\label{eq:weakform}
+		\text{Find } u_h\in V_h^0 \;\text{such that}, \forall v_h\in V_h^0, a(u_h,v_h)=l(v_h),
+		\tag{$\mathcal{P}_h$}
+	\end{equation}
+	\vspace{1pt}
+	with \coloredonly<2>{$h$ the characteristic mesh size}, $a$ and $l$ the bilinear and linear forms given by
+	\vspace{-3pt}
+	\begin{equation*}
+		a(u_h,v_h)=
+		\int_{\Omega} \nabla u_h \cdot  \nabla v_h, \quad l(v_h)=\int_{\Omega} f \, v_h,
+	\end{equation*}
+	and $V_h^0$ a continuous, piecewise polynomial space of \coloredonly<2>{degree $k$}.
+
+	\begin{minipage}[t]{0.56\linewidth}
+		\uncover<2-3>{\vspace{2pt}
+		\textbf{Linear system:} Let $(\phi_1,\dots,\phi_{N_\text{dofs}})$ a basis of $V_h^0$.
+
+		Find $U\in\mathbb{R}^{\coloredonly<2>{N_\text{dofs}}}$ such that 
+
+		\vspace{-8pt}
+		\begin{equation*}
+			AU=b,
+		\end{equation*}
+
+		\vspace{-15pt}
+		\begin{equation*}
+			A=\big(a(\phi_i,\phi_j)\big)_{1\le i,j\le N_\text{dofs}} \in \mathbb{R}^{N_\text{dofs}\times N_\text{dofs}},
+		\end{equation*}
+		\begin{equation*}
+			b=\big(l(\phi_j)\big)_{1\le j\le N_\text{dofs}} \in \mathbb{R}^{N_\text{dofs}}.
+		\end{equation*}}
+	\end{minipage} \hfill \begin{minipage}[t][][b]{0.42\linewidth}
+		\vspace{-5pt}
+		\centering
+		\only<1>{
+			\pgfimage[width=0.6\linewidth]{images/classical_approaches/mesh.png}
+		
+			Cartesian mesh
+		}
+		\only<2>{
+			\pgfimage[width=0.6\linewidth]{images/classical_approaches/mesh_P2.png}
+
+			\textcolor{red}{\ding{110}} degrees of freedom \footnotesize ($k=2$)
+		}
+		\only<3>{
+			\vspace{10pt}
+			\color{red}
+			\centering
+			\fcolorbox{red}{white}{$h \searrow \quad \& \qquad k \nearrow$}
+			\begin{center}
+				\begin{tikzpicture}[scale=0.7]
+					\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (-0.5,0.3) -- (-0.9,-0.3);
+					\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (0.5,0.3) -- (0.9,-0.3);
+				\end{tikzpicture}
+			\end{center}
+			\begin{center}
+				\begin{tabular}{c@{\qquad\qquad}c}
+					$u_h \text{ accuracy } \nearrow$ & $N_\text{dofs} \nearrow$ \\
+					\LARGE\smiley \;\; & \LARGE\frownie \;
+				\end{tabular}
+			\end{center}
+		}
+	\end{minipage}
+\end{frame}

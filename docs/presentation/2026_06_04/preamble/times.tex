@@ -1,0 +1,456 @@
+\usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{datatool}
+\usepackage{fp}
+
+\pgfplotsset{
+    compat=newest,
+}
+\pgfplotsset{
+    smaller labels/.style={
+        label style={font=\footnotesize},
+        tick label style={font=\footnotesize}
+    }
+}
+\tikzset{font=\small}
+\usetikzlibrary{
+    fpu,
+    fixedpointarithmetic,
+    babel,
+    external,
+    arrows.meta,
+    plotmarks,
+    positioning,
+    angles,
+    quotes,
+    intersections,
+    calc,
+    spy,
+    decorations.pathreplacing,
+    matrix,
+    fit,
+}
+\usepgfplotslibrary{fillbetween}
+
+% Define colors
+\definecolor{femcolor}{RGB}{51, 138, 55} %Green (27,158,119)
+\definecolor{addcolor}{RGB}{217,95,2} %Orange
+\definecolor{addsobcolor}{RGB}{199,39,34} %Red (sob or other)
+\definecolor{multcolor3}{RGB}{117,112,179} %Purple 
+%{RGB}{231,41,138} %Pink
+\definecolor{multcolor100}{RGB}{0,0,0} %Black (+ empty marker)
+\definecolor{multcolor0weak}{RGB}{49, 73, 181} %Blue
+\definecolor{multcolor0strong}{RGB}{49, 181, 161} %Cyan
+
+% % Define plot sizes
+% \newlength{\plotwidth}
+% \setlength{\plotwidth}{0.54\textwidth}
+% \newlength{\plotheight}
+% \setlength{\plotheight}{0.4\textwidth}
+
+% \newcommand{\timesstepfem}[1]{
+% 	\pgfplotstabletypeset[
+% 		col sep=comma,
+% 		every head row/.style={
+% 		before row={\toprule[1.pt]
+% 		& & & \multicolumn{6}{c}{\textbf{Computation times}} \\
+%         \cmidrule(lr){4-9}
+% 		},
+% 		after row=\cmidrule(lr){1-1} \cmidrule(lr){2-2} \cmidrule(lr){3-3} \cmidrule(lr){4-9}},
+% 		every last row/.style={after row=\bottomrule[1.pt]},
+%         every nth row={2}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-2} \cmidrule(lr){3-3} \cmidrule(lr){4-9}},
+% 		columns/N/.style={column name=\textbf{$N$},fixed},
+% 		columns/Ndofs/.style={column name=\textbf{$N_\text{dofs}$},fixed},
+%         columns/method/.style={column name=\textbf{method},string type},
+% 		columns/mesh/.style={column name=\textbf{mesh},fixed}, 
+% 		columns/u_theta/.style={column name=\textbf{prior},fixed,empty cells with={--}}, 
+%         columns/f_h/.style={column name=\textbf{rhd},fixed},
+%         columns/system/.style={column name=\textbf{assembly},fixed},
+%         columns/solve/.style={column name=\textbf{solve},fixed},
+%         columns/total/.style={column name=\textbf{TOTAL},fixed},
+%         columns={N,Ndofs,method,mesh,u_theta,f_h,system,solve,total},
+% 		precision=2
+% 	]{#1}
+% }
+
+\newcommand{\cvgtimeerror}[3]{
+    \begin{tikzpicture}
+        \edef\fem{#1}
+        \edef\add{#2}
+        \edef\drawline{#3} % to draw a horizontal line at error e
+
+        % Read the CSV file into a table
+        % \pgfplotstableread[col sep=comma]{\filename}\datatable
+
+        \begin{loglogaxis}[
+            smaller labels,
+            name = left_plot,
+            % axis lines
+            axis lines = left,
+            enlarge x limits={abs=10pt},
+            enlarge y limits={abs=10pt},
+            % axis x line shift = -5pt,
+            % axis y line shift = -5pt,
+            % labels
+            yminorticks=false,
+            xminorticks=false,
+			xmode=log,
+            xlabel = {Time (s)},
+            ylabel = {\rotatebox{270}{$L^2$}},
+            xlabel style={at={(ticklabel* cs:1.01)},anchor=north},
+            ylabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            % ticks and labels
+            % xtick=data,
+            % xticklabels from table={\datatable}{h},
+            % size
+            width=\plotwidth, height=\plotheight,
+            % marks
+            mark options={solid, scale=1},
+            % grid
+            grid = major,
+            legend columns=1,
+            legend to name=leg:legendFEMCORR_\iterator,
+            legend image post style={mark options={solid, scale=1}},
+        ]
+
+            \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+            \addlegendentry{\,Add $\mathbb{P}_1$\;}
+
+            % Plot FEM
+            \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt ]
+            table [x=time, y=err, col sep=comma]
+                {\fem};
+            
+            % Plot Add
+            \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt ]
+            table [x=time, y=err, col sep=comma]
+                {\add};
+
+        \end{loglogaxis}
+        
+        % \node[yshift=-10pt,xshift=20pt] at (left_plot.outer north) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+
+        % \node[yshift=-20pt] at (left_plot.outer south) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+        \ifthenelse{\equal{\drawline}{true}}{
+            \draw[black, line width=0.4mm] (0.1,1.9) -- (4.7,1.9) node[anchor=west, xshift=2pt] {$e$};
+        }{}
+
+    \end{tikzpicture}
+}
+
+%%% NON LINEAIRE
+\newcommand{\PreprocessSum}[2]{%
+    \pgfplotstableread[col sep=comma]{#1}{#2}%
+    \pgfplotstablecreatecol[
+        create col/expr={\thisrow{err_U_1}+\thisrow{err_U_2}+\thisrow{err_T}} %+\thisrow{err_p}
+    ]{err_sum}{#2}%
+}
+
+\newcommand{\cvgtimeerrorNL}[3]{
+    \begin{tikzpicture}
+        \edef\fem{#1}
+        \edef\add{#2}
+        \edef\drawline{#3} % to draw a horizontal line at error e
+
+        % Read the CSV file into a table
+        % \pgfplotstableread[col sep=comma]{\filename}\datatable
+
+        \begin{loglogaxis}[
+            smaller labels,
+            name = left_plot,
+            % axis lines
+            axis lines = left,
+            enlarge x limits={abs=10pt},
+            enlarge y limits={abs=10pt},
+            % axis x line shift = -5pt,
+            % axis y line shift = -5pt,
+            % labels
+            yminorticks=false,
+            xminorticks=false,
+			xmode=log,
+            xlabel = {Time (s)},
+            ylabel = {\rotatebox{270}{$\Sigma L^2$}},
+            xlabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            ylabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            % ticks and labels
+            % xtick=data,
+            % xticklabels from table={\datatable}{h},
+            % size
+            width=0.40\textwidth, height=0.35\textwidth,
+            % marks
+            mark options={solid, scale=1},
+            % grid
+            grid = major,
+            legend columns=1,
+            legend to name=leg:legendFEMCORR_\iterator,
+            legend image post style={mark options={solid, scale=1}},
+        ]
+
+            \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+            \addlegendentry{\,Add $\mathbb{P}_1$\;}
+
+            % Plot FEM
+            \PreprocessSum{\fem}{\TableFEM}
+            \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt ]
+            table [x=times, y=err_sum, col sep=comma]
+                {\TableFEM};
+            
+            % Plot Add
+            \PreprocessSum{\add}{\TableADD}
+            \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt ]
+            table [x=times, y=err_sum, col sep=comma]
+                {\TableADD};
+
+        \end{loglogaxis}
+        
+        \node[yshift=-20pt,xshift=20pt] at (left_plot.north east) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+
+        % \node[yshift=-20pt] at (left_plot.outer south) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+        \ifthenelse{\equal{\drawline}{true}}{
+            \draw[black, line width=0.4mm] (0.1,1.9) -- (4.7,1.9) node[anchor=west, xshift=2pt] {$e$};
+        }{}
+
+    \end{tikzpicture}
+}
+
+%% Time vs number of parameters
+
+\newcommand{\cvgtimeerrorparam}[1]{
+    \begin{tikzpicture}
+        \edef\tps{#1}
+        \begin{loglogaxis}[
+            smaller labels,
+            name = left_plot,
+            axis lines = left,
+            enlarge x limits={abs=5pt},
+            enlarge y limits={lower,abs=5pt},
+			ymode=normal,
+            xmode=normal,
+            xlabel = {$n_p$},
+            ylabel = {\rotatebox{270}{Time (s)}},
+            % xtick={0,10,30,50},
+            xlabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            ylabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            width=\plotwidth, height=\plotheight,
+            mark options={solid, scale=1},
+            grid = major,
+            legend columns=1,
+            legend to name=leg:legendFEMCORR_\iterator,
+            legend image post style={mark options={solid, scale=1}},
+            ymin=0, ymax=1860,
+            xmin=0, xmax=50,
+        ]
+
+            \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+            \addlegendentry{\,Add $\mathbb{P}_1$\;}
+            
+
+            % Plot FEM
+            \addplot [style={solid}, mark size=2, color=femcolor, line width=1pt ]
+            table [x=np, y=tfem, col sep=comma]
+                {\tps};
+            
+            % Plot Add
+            \addplot [style={dashed}, mark size=2, color=addcolor, line width=1pt ]
+            table [x=np, y=tadd, col sep=comma]
+                {\tps};
+                
+            % Ajout d'une entrée de légende personnalisée pour "Offline costs"
+            % \addlegendimage{area legend, 
+            %     path picture={
+            %         \fill[femcolor] (0,0) rectangle (0.07,0.15);
+            %         \fill[addcolor] (0.07,0) rectangle (0.14,0.15);
+            %         \draw[black, thick, rounded corners=2pt] (0,0) rectangle (0.14,0.15);
+            %     }
+            % }
+            \addlegendimage{
+                /pgfplots/legend image code/.code={
+                    % \draw[black, thick, rounded corners=2pt, path picture={\fill[red] (path picture bounding box.south west) -- (path picture bounding box.north east) |-cycle;}] (0,-0.05) rectangle ++ (0.5,0.2);
+                    % \draw[black, thick] (0,-0.1) rectangle (0.5,0.1);
+                    \draw[femcolor,very thick] (0, -0.1) -- (0, 0.15);
+                    \draw[femcolor,very thick] (-0.02, 0.15) -- (0.55, 0.15);
+                    \draw[addcolor,very thick] (-0.02, -0.1) -- (0.57, -0.1);
+                    \draw[addcolor,very thick] (0.55, -0.1) -- (0.55, 0.17);
+                },
+                % legend style={inner sep=1pt}
+            }
+            % \addlegendimage{area legend, draw=black, fill=none, thick, rounded corners=2pt}
+            \addlegendentry{Offline cost}
+
+            % Tracer vertical line at np=19
+            \addplot [style={dotted}, line width=1.5pt, gray, clip=false]
+            coordinates {(19,-200) (19,1900)};
+        \end{loglogaxis}
+        
+        % \node[yshift=0pt, xshift=0pt] at (left_plot.outer north east) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+
+        \node[xshift=-17pt, yshift=6pt, gray] at (left_plot.outer south) {\normalsize\bfseries $19$};
+        \node[draw=femcolor, thick, rectangle, xshift=16pt, yshift=-30pt, femcolor, inner sep=1.2pt] at (left_plot.outer west) {\normalsize\bfseries $40$};
+        \node[draw=addcolor, thick, rectangle, xshift=15pt, yshift=-8pt, addcolor, inner sep=1.2pt] at (left_plot.outer west) {\normalsize\bfseries $708$};
+    \end{tikzpicture}
+}
+
+\newcommand{\cvgtimeerrorparamD}[1]{
+    \begin{tikzpicture}
+        \edef\tps{#1}
+        \begin{loglogaxis}[
+            smaller labels,
+            name = left_plot,
+            axis lines = left,
+            enlarge x limits={abs=5pt},
+            enlarge y limits={lower,abs=5pt},
+			ymode=normal,
+            xmode=normal,
+            xlabel = {$n_p$},
+            ylabel = {\rotatebox{270}{Time (s)}},
+            xlabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            ylabel style={at={(ticklabel* cs:1.01)},anchor=west},
+            width=\plotwidth, height=\plotheight,
+            mark options={solid, scale=1},
+            grid = major,
+            legend columns=1,
+            legend to name=leg:legendFEMCORR_\iterator,
+            legend image post style={mark options={solid, scale=1}},
+            ymin=0, ymax=6500,
+            xmin=0, xmax=50,
+        ]
+
+            \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+            \addlegendentry{\,Add $\mathbb{P}_1$\;}
+            
+
+            % Plot FEM
+            \addplot [style={solid}, mark size=2, color=femcolor, line width=1pt ]
+            table [x=np, y=tfem, col sep=comma]
+                {\tps};
+            
+            % Plot Add
+            \addplot [style={dashed}, mark size=2, color=addcolor, line width=1pt ]
+            table [x=np, y=tadd, col sep=comma]
+                {\tps};
+                
+            \addlegendimage{
+                /pgfplots/legend image code/.code={
+                    % \draw[black, thick, rounded corners=2pt, path picture={\fill[red] (path picture bounding box.south west) -- (path picture bounding box.north east) |-cycle;}] (0,-0.05) rectangle ++ (0.5,0.2);
+                    % \draw[black, thick] (0,-0.1) rectangle (0.5,0.1);
+                    \draw[femcolor,very thick] (0, -0.1) -- (0, 0.15);
+                    \draw[femcolor,very thick] (-0.02, 0.15) -- (0.55, 0.15);
+                    \draw[addcolor,very thick] (-0.02, -0.1) -- (0.57, -0.1);
+                    \draw[addcolor,very thick] (0.55, -0.1) -- (0.55, 0.17);
+                },
+                % legend style={inner sep=1pt}
+            }
+            % \addlegendimage{area legend, draw=black, fill=none, thick, rounded corners=2pt}
+            \addlegendentry{Offline cost}
+
+            % Tracer vertical line at np=19
+            \addplot [style={dotted}, line width=1.5pt, gray, clip=false]
+            coordinates {(5,-200) (5,6500)};
+        \end{loglogaxis}
+        
+        \node[yshift=0pt, xshift=-40pt] at (left_plot.outer north east) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
+
+        \node[xshift=-42pt, yshift=6pt, gray] at (left_plot.outer south) {\normalsize\bfseries $5$};
+        \node[draw=femcolor, thick, rectangle, xshift=16pt, yshift=-31pt, femcolor, inner sep=1.2pt] at (left_plot.outer west) {\normalsize\bfseries $98$};
+        \node[draw=addcolor, thick, rectangle, xshift=15pt, yshift=-22pt, addcolor, inner sep=1.2pt] at (left_plot.outer west) {\normalsize\bfseries $708$};
+    \end{tikzpicture}
+}
+
+% costs pour tous les q : N et DoFs
+% Style global pour cibler une cellule spécifique (ligne, colonne)
+\pgfplotstableset{
+    bracket cell/.style={
+        every row #1 column \pgfplotstablecol/.style={
+            postproc cell content/.append code={
+                \pgfkeysalso{@cell content/.add={(}{)}}%
+            }
+        }
+    },
+    darkred cell/.style={
+        every row #1 column \pgfplotstablecol/.style={
+            postproc cell content/.append code={
+                \pgfkeysalso{@cell content/.add={\color{darkred}}{}}%
+            }
+        }
+    },
+    bracket darkred cell/.style={
+        every row #1 column \pgfplotstablecol/.style={
+            postproc cell content/.append code={
+                \pgfkeysalso{@cell content/.add={\color{darkred}(}{)}}%
+            }
+        }
+    }
+}
+
+\newcommand{\timerequired}[1]{
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+        & \multicolumn{2}{c}{\textbf{$N$}} &
+		\multicolumn{2}{c}{\textbf{$N_\text{dofs}$}} &
+		\multicolumn{2}{c}{\textbf{Online time$^*$}} \\
+		\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        % every nth row={1}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}},
+        columns/e/.style={column name=\textbf{e},sci},
+		columns/FEM_N/.style={column name=\textbf{FEM},fixed,
+            postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{gray}}{},
+        }},
+        columns/ADD_N/.style={column name=\textbf{Add},fixed,
+            postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{gray}}{},
+        }},
+        columns/FEM_dofs/.style={column name=\textbf{FEM},sci},
+		columns/ADD_dofs/.style={column name=\textbf{Add},sci},
+        columns/FEM_time/.style={column name=\textbf{FEM},sci,bracket darkred cell=0,bracket cell=1,bracket cell=2},
+        columns/ADD_time/.style={column name=\textbf{Add},sci,bracket cell=2,darkred cell=0},
+        columns={e,FEM_N,ADD_N,FEM_dofs,ADD_dofs,FEM_time,ADD_time},
+        precision=2,
+        % postproc cell content/.append code={%
+        % \pgfkeysgetvalue{/pgfplots/table/@preprocessed cell content}\valueIn
+        % \pgfmathfloatparsenumber{\valueIn}%
+        % \pgfmathfloattofixed{\pgfmathresult}%
+        % \let\value=\pgfmathresult
+        % \ifdim \value pt = 0 pt%  if value is zero
+        %     \begingroup\edef\temp{\endgroup\noexpand
+        %                 \pgfkeyssetvalue{/pgfplots/table/@cell content}{\noexpand\color{gray!75}
+        %                 \pgfkeysvalueof{/pgfplots/table/@cell content}
+        %                 }}\temp
+        % \fi
+        % }
+        % every row 3 column 1/.style = {highlight bold 4},
+    ]{#1}
+}
+
+% costs pour tous les q : N et DoFs
+\newcommand{\timerequiredNL}[1]{
+    \pgfplotstabletypeset[
+        col sep=comma,
+        every head row/.style={
+        before row={\toprule[1.pt]
+         & \multicolumn{2}{c}{\textbf{$N_\text{dofs}$}} & \multicolumn{2}{c}{\textbf{Online time}} \\
+		\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        },
+        after row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}},
+        every last row/.style={after row=\bottomrule[1.pt]},
+        every nth row={3}{before row=\cmidrule(lr){1-1} \cmidrule(lr){2-3} \cmidrule(lr){4-5}},
+        columns/e/.style={column name=\textbf{e},sci},
+        columns/DoFsFEMPrev/.style={column name=\textbf{FEM},fixed},
+        columns/DoFsADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
+        }},
+        columns/TimesFEMPrev/.style={column name=\textbf{FEM},fixed},
+        columns/TimesADD/.style={column name=\textbf{Add},fixed,postproc cell content/.append style={
+            /pgfplots/table/@cell content/.add={\color{darkred}}{},
+        }},
+        columns={e,DoFsFEMPrev,DoFsADD,TimesFEMPrev,TimesADD},
+        precision=2
+    ]{#1}
+}

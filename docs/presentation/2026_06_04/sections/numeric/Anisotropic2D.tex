@@ -1,0 +1,72 @@
+\begin{frame}{Problem considered} 
+	\textbf{Problem statement:} Considering an Anisotropic Elliptic problem with Dirichlet BC:
+	\vspace{-5pt}
+	\begin{equation*}
+		\left\{
+		\begin{aligned}
+			-\text{div}(D\nabla u) & = f, \; &  & \text{in } \; \Omega\times \mathcal{M}, \\
+			u         & =0, \;  &  & \text{on } \; \partial\Omega\times \mathcal{M},
+		\end{aligned}
+		\right.
+	\end{equation*}
+
+	with $\Omega=(0,1)^2$ and $\mathcal{M}=[0.4, 0.6]^2\times [0.01,1]\times [0.1,0.8]$ ($p=4$ parameters).
+	
+	\vspace{8pt}
+	\textbf{Right-hand side and diffusion matrix:} \; $\bm{\mu}=(\mu_1,\mu_2,\sigma,\epsilon)\in\mathcal{M}$
+
+	\begin{equation*}
+		f(\bm{x},\bm{\mu})=\exp\left(-\frac{(x-\mu_1)^2+(y-\mu_2)^2}{0.025\sigma^2}\right).
+	\end{equation*}
+	
+	\begin{equation*}
+		D(\bm{x},\bm{\mu})=\begin{pmatrix}
+			\epsilon x^2+y^2 & (\epsilon-1)xy \\
+			(\epsilon-1)xy & x^2+\epsilon y^2
+		\end{pmatrix}.
+	\end{equation*}
+
+	\vspace{2pt}
+	\textbf{Parametric PINN training:} \\ MLP\footnote[frame,1]{with Fourier Features, \cite{TanSri2020}} 5 layers (tanh - 40, 60, 60, 60, 40).	Adam optimizer (15000 epochs - 8000 col. pts). \\
+	Imposing the Dirichlet BC exactly in the PINN with the a level-set function.
+
+	\vspace{5pt}
+\end{frame}
+
+\begin{frame}{Online phase}
+	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
+		\textbf{Error estimates:} \small 1 parameter instance \normalsize
+		$$\bm{\mu}^{(1)}=(0.51,0.54,0.52,0.55)$$
+		\vspace{-35pt}
+		\begin{figure}[H]
+			\cvgFEMCorrAlldeg{images/numeric/Anisotropic2D/cvg/FEM_case3_v1_param1.csv}{images/numeric/Anisotropic2D/cvg/Corr_case3_v1_param1.csv}{1e-9}{false}
+		\end{figure}
+	\end{minipage} \qquad \small
+	\begin{minipage}[t]{0.48\linewidth}
+		\only<2>{\textbf{Gains achieved:} $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$ \\
+
+			\vspace{-5pt}
+			Considering $n_p=50$ parameters instances
+			$$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}.$$
+			\vspace{-15pt}
+			\begin{table}[H]
+				\GainsTableAlldeg{images/numeric/Anisotropic2D/gains/Tab_stats_case3_v1.csv}
+			\end{table}
+			
+			\small\centering%\vspace{8pt}
+			Cartesian mesh: $N^2$ nodes with $N=20$.
+		}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Numerical solutions and errors}
+	\begin{figure}[!ht] \centering
+		\includegraphics[width=\linewidth]{images/numeric/Anisotropic2D/plots/standalone_solutions.pdf}
+		
+		\vspace{8pt}
+		\includegraphics[width=0.7\linewidth]{images/numeric/Anisotropic2D/plots/standalone_errors.pdf}
+	\end{figure}
+
+	\vspace{-8pt}
+	$$\bm{\mu}^{(2)}=(0.46,0.52,0.05,0.12) \quad\small(k=2, N=16)$$
+\end{frame}
