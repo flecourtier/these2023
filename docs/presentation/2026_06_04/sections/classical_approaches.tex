@@ -162,22 +162,39 @@
 			\textcolor{red}{\ding{110}} degrees of freedom \footnotesize ($k=2$)
 		}
 		\only<3>{
-			\vspace{10pt}
+			\flushleft
 			\color{red}
-			\centering
+			\vspace{10pt}
+
+			\hspace{15pt}
 			\fcolorbox{red}{white}{$h \searrow \quad \& \qquad k \nearrow$}
-			\begin{center}
-				\begin{tikzpicture}[scale=0.7]
-					\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (-0.5,0.3) -- (-0.9,-0.3);
-					\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (0.5,0.3) -- (0.9,-0.3);
-				\end{tikzpicture}
-			\end{center}
-			\begin{center}
-				\begin{tabular}{c@{\qquad\qquad}c}
-					$u_h \text{ accuracy } \nearrow$ & $N_\text{dofs} \nearrow$ \\
-					\LARGE\smiley \;\; & \LARGE\frownie \;
-				\end{tabular}
-			\end{center}
+
+			% \vspace{-5pt}
+			\hspace{25pt}
+			\begin{tikzpicture}[scale=0.7]
+				\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (-0.7,0.3) -- (-1.1,-0.3);
+				\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (0.7,0.3) -- (1.1,-0.3);
+			\end{tikzpicture}
+
+			% \vspace{-5pt}
+			\hspace{-10pt}
+			\begin{tabular}{c@{\quad}c}
+				$u_h \text{ accuracy } \nearrow$ \; & $N_\text{dofs} \nearrow$ \\
+				\LARGE\smiley \;\;\; &
+			\end{tabular}
+
+			\vspace{-15pt}
+			\hspace{80pt}
+			\begin{tikzpicture}[scale=0.7]
+				% \draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (-0.7,0.3) -- (-1.1,-0.3);
+				\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (0.7,0.3) -- (1.1,-0.3);
+			\end{tikzpicture}
+
+			\hspace{39pt}
+			\begin{tabular}{c@{\qquad}c}
+				& numerical cost $\nearrow$ \\
+				& \LARGE\frownie \;
+			\end{tabular}
 		}
 	\end{minipage}
 \end{frame}
