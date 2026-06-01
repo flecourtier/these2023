@@ -1,5 +1,5 @@
 
-\begin{frame}{Physics-Informed Neural Networks}
+\begin{frame}{Physics-Informed Neural Networks\footcite{RAISSI2019686}}
 	\textbf{Standard PINNs:} Find the optimal weights $\theta^\star$, such that
 	\begin{equation}
 		\label{eq:opt_pb}
@@ -48,72 +48,6 @@
 	\vspace{3pt}
 \end{frame}
 
-% \begin{frame}{Finite Element Method\only<1>{\footcite{Ern2004TheoryAP}}}	
-% 	\textbf{Variational Problem:} 
-% 	\begin{equation}
-% 		\label{eq:weakform}
-% 		\text{Find } u_h\in V_h^0 \;\text{such that}, \forall v_h\in V_h^0, a(u_h,v_h)=l(v_h),
-% 		\tag{$\mathcal{P}_h$}
-% 	\end{equation}
-% 	\vspace{1pt}
-% 	with $h$ the characteristic mesh size, $a$ and $l$ the bilinear and linear forms given by
-% 	\vspace{-3pt}
-% 	\begin{equation*}
-% 		a(u_h,v_h)=
-% 		\int_{\Omega} \nabla u_h \cdot  \nabla v_h, \quad l(v_h)=\int_{\Omega} f \, v_h,
-% 	\end{equation*}
-% 	and $V_h^0$ a continuous, piecewise polynomial space of degree $k$. \hfill \only<5>{\textcolor{red}{($k=1$)}}\only<6>{\textcolor{red}{($k=2$)}}\only<7>{\textcolor{red}{($k=3$)}}
-
-% 	\begin{minipage}[t]{0.52\linewidth}
-% 		\uncover<2-8>{\vspace{2pt}
-% 		\textbf{Linear system:}
-		
-% 		Let $(\phi_1,\dots,\phi_{N_\text{dofs}})$ a basis of $V_h^0$.
-
-% 		Find $U\in\mathbb{R}^{\textcolor{red}{N_\text{dofs}}}$ such that 
-
-% 		\vspace{-8pt}
-% 		\begin{equation*}
-% 			AU=b,
-% 		\end{equation*}
-
-% 		\vspace{-20pt}
-% 		\begin{equation*}
-% 			A=\big(a(\phi_i,\phi_j)\big)_{1\le i,j\le N_\text{dofs}} \in \mathbb{R}^{N_\text{dofs}\times N_\text{dofs}},
-% 		\end{equation*}
-% 		\begin{equation*}
-% 			b=\big(l(\phi_j)\big)_{1\le j\le N_\text{dofs}} \in \mathbb{R}^{N_\text{dofs}}.
-% 		\end{equation*}}
-% 	\end{minipage} \hfill \begin{minipage}[t][][b]{0.38\linewidth}
-% 		\vspace{-5pt}
-% 		\centering
-% 		\only<1>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh.png}
-		
-% 		Cartesian mesh
-% 		}
-% 		\only<2-5>{\only<2>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P1.png}}
-% 		\only<3>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh2_P1.png}}
-% 		\only<4>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh3_P1.png}}
-
-% 		% h flèche vers e bas implique N_dofs flèche vers le haut
-% 		% dessiner un petit carré rouge avec ding
-% 		\only<2>{\textcolor{red}{\ding{110}} degrees of freedom}
-% 		\only<3-4>{\textcolor{red}{$h \searrow \; \Rightarrow \; N_\text{dofs} \nearrow$}}
-% 		}
-% 		\only<5-7>{\only<5>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P1.png}}
-% 		\only<6>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P2.png}}
-% 		\only<7>{\pgfimage[width=0.7\linewidth]{images/classical_approaches/mesh_P3.png}}
-
-% 		% h flèche vers e bas implique N_dofs flèche vers le haut
-% 		\only<5>{\textcolor{red}{\ding{110}} degrees of freedom}
-% 		\only<6-7>{\textcolor{red}{$k \nearrow \; \Rightarrow \; N_\text{dofs} \nearrow$}}
-% 		}
-% 	\end{minipage}
-
-	
-% 	\only<1>{\vspace{-15pt}}
-% \end{frame}
-
 \begin{frame}{Finite Element Method\footcite{Ern2004TheoryAP}}	
 	\textbf{Variational Problem:} 
 	\begin{equation}
@@ -122,7 +56,7 @@
 		\tag{$\mathcal{P}_h$}
 	\end{equation}
 	\vspace{1pt}
-	with \coloredonly<2>{$h$ the characteristic mesh size}, $a$ and $l$ the bilinear and linear forms given by
+	with \coloredonly<2>{$h$ the mesh size}, $a$ and $l$ the bilinear and linear forms given by
 	\vspace{-3pt}
 	\begin{equation*}
 		a(u_h,v_h)=
@@ -163,37 +97,37 @@
 		}
 		\only<3>{
 			\flushleft
-			\color{red}
+			% \color{red}
 			\vspace{10pt}
 
 			\hspace{15pt}
-			\fcolorbox{red}{white}{$h \searrow \quad \& \qquad k \nearrow$}
+			\fcolorbox{black}{white}{$h \searrow \quad \& \qquad k \nearrow$}
 
 			% \vspace{-5pt}
 			\hspace{25pt}
 			\begin{tikzpicture}[scale=0.7]
-				\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (-0.7,0.3) -- (-1.1,-0.3);
-				\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (0.7,0.3) -- (1.1,-0.3);
+				\draw[double equal sign distance, -{Implies}, line width=0.5pt, black] (-0.7,0.3) -- (-1.1,-0.3);
+				\draw[double equal sign distance, -{Implies}, line width=0.5pt, black] (0.7,0.3) -- (1.1,-0.3);
 			\end{tikzpicture}
 
 			% \vspace{-5pt}
 			\hspace{-10pt}
 			\begin{tabular}{c@{\quad}c}
 				$u_h \text{ accuracy } \nearrow$ \; & $N_\text{dofs} \nearrow$ \\
-				\LARGE\smiley \;\;\; &
+				\color{ForestGreen}\LARGE\smiley \;\;\; &
 			\end{tabular}
 
 			\vspace{-15pt}
 			\hspace{80pt}
 			\begin{tikzpicture}[scale=0.7]
 				% \draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (-0.7,0.3) -- (-1.1,-0.3);
-				\draw[double equal sign distance, -{Implies}, line width=0.5pt, red] (0.7,0.3) -- (1.1,-0.3);
+				\draw[double equal sign distance, -{Implies}, line width=0.5pt, black] (0.7,0.3) -- (1.1,-0.3);
 			\end{tikzpicture}
 
 			\hspace{39pt}
 			\begin{tabular}{c@{\qquad}c}
 				& numerical cost $\nearrow$ \\
-				& \LARGE\frownie \;
+				& \color{red}\LARGE\frownie \;
 			\end{tabular}
 		}
 	\end{minipage}

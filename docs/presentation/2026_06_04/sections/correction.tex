@@ -18,7 +18,7 @@
 	\vspace{-5pt}
 	\begin{equation}
 		\label{eq:weakplus}
-		\text{Find } C_h^+ \in V_h^0 \text{ such that}, \forall v_h \in V_h^0, a(C_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
+		\text{Find } C_h^+ \in V_h \text{ such that}, \forall v_h \in V_h^0, a(C_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
 	\end{equation}
 	
 	\vspace{5pt}
@@ -58,15 +58,15 @@
 		citecolor=white,
 	}
 
-	\begin{mytheo}{Convergence analysis of the standard FEM \footnotesize\citep{Ern2004TheoryAP}\normalsize}{fem}
-		We denote $u_h\in V_h$ the solution of \eqref{eq:weakform} with $V_h$ the standard trial space. Then,
+	\begin{mytheo}{Convergence analysis of the standard FEM \footnotesize\parencite{Ern2004TheoryAP}\normalsize}{fem}
+		Let $u_h\in V_h$ be the solution of \eqref{eq:weakform} with $V_h$ the standard trial space. Then,
 		\begin{equation*}
 			\| u-u_h\|_{L^2} \leqslant C_{L^2} \, h^{k+1} |u|_{H^{k+1}}.
 		\end{equation*}
 	\end{mytheo}
 	
-	\only<2>{\begin{mytheo}{Convergence analysis of the enriched FEM \footnotesize\citep{ours_2025}\normalsize}{add}
-		We denote $u_h^+\in V_h^+$ the solution of \eqref{eq:weakplus} with $V_h^+$ the enriched trial space. Then,
+	\only<2>{\begin{mytheo}{Convergence analysis of the enriched FEM \footnotesize\parencite{ours_2025}\normalsize}{add}
+		Let $u_h^+\in V_h^+$ be the solution of \eqref{eq:weakplus} with $V_h^+$ the enriched trial space. Then,
 		\begin{equation*}
 			\| u-u_h^+\|_{L^2} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{L^2} \, h^{k+1} |u|_{H^{k+1}}\right).
 		\end{equation*}

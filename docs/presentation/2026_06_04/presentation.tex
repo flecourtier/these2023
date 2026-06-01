@@ -19,9 +19,16 @@
 \usetikzlibrary{arrows.meta}
 \usepackage{paralist}
 \usepackage{appendixnumberbeamer}
-%\usepackage[style=authoryear,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
-\usepackage[square]{natbib}
-\bibliographystyle{plainnat}
+\usepackage[style=authoryear,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
+% \usepackage[square]{natbib}
+% \bibliographystyle{plainnat}
+\addbibresource{biblio.bib}
+\setbeamertemplate{bibliography item}{}
+\AtEveryBibitem{\iffieldequalstr{entrykey}{ours_2025}{\bfseries}{}}
+\defbibenvironment{bibliography}
+  {\list{}{\leftmargin\bibhang\itemindent-\bibhang\itemsep\bibitemsep\parsep\bibparsep}}
+  {\endlist}
+  {\item[]}
 \usepackage{etoolbox}
 % box colorée dans équation
 \usepackage[most]{tcolorbox}
@@ -165,7 +172,7 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 	opacityback=0.1
 	}{th}
 
-\newcommand*{\footcite}[1]{\footnote[frame,1]{\citep{#1}}}
+\newcommand*{\myfootcite}[1]{\footnote[frame,1]{\parencite{#1}}}
 
 % star command
 % \newcommand{\filledstar}{\textcolor{Goldenrod}{\ding{72}}\hspace{-8pt}\ding{73}\,}
@@ -293,13 +300,14 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 			\begin{itemize}
 				\item \textbf{Offline phase:} Training a PINN over a parametric space.
 				\item \textbf{Online phase:} (fixed parameter instance) \\
-				Quick and accurate resolution of the FEM correction problem using the PINN prior.
+				Resolution of the FEM correction problem using the PINN prior.
 			\end{itemize}
-			\item \textbf{Numerical results:} Several parametrics PDEs. 
+			\item \textbf{Numerical results:} Quick and accurate on several parametrics PDEs. 
+			\item \textbf{Theoretical results:} Convergence analysis showing the PINN prior can improve the FEM convergence rate.
 		\end{itemize}
 
 		\begin{minipage}{0.71\linewidth}
-			\textbf{Some extensions:}
+			\textbf{Ongoing works:}
 			\begin{itemize}
 				\item Extension to non-linear problems : First promising results for the incompressible Navier-Stokes equations.
 				\item Extensions to DG methods and non-conforming FEM, currently under development in ScimBa (SciML’s Python library) using auto-differentiation
@@ -317,10 +325,10 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 
 	\BackgroundBiblio
 	
-	{\setbeamertemplate{footline}{} 	
+	{\setbeamertemplate{footline}{}
 	\begin{frame}{References}
 		\scriptsize
-		\bibliography{biblio}
+		\printbibliography
 
 		\begin{minipage}{0.7\linewidth}
 			\centering
