@@ -231,6 +231,18 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 	\alt<#1>{\textcolor{#2}{#3}}{{\color{black}#3}}%
 }
 
+\definecolor{flechecolor}{rgb}{0, 0, 1}
+\newcommand{\flechecourbe}[5]{%
+  % #1 = abscisse de départ (x)
+  % #2 = ordonnée de départ (y)
+  % #3 = taille en abscisse de la flèche (x)
+  % #4 = taille en ordonnée de la flèche (y)
+  % #5 = texte à mettre au centre
+  \draw[thick,->,flechecolor]
+    (#1,#2) .. controls (#1+0.4*#3,#2+#4) and (#1+0.6*#3,#2+#4) .. (#1+#3,#2)
+    node[midway, sloped, fill=white, inner sep=1pt] {\tiny #5};
+}
+
 \begin{document}
 	\pgfkeys{/pgf/number format/.cd,1000 sep={\,}} % spacing between thousands in numbers
 	% \nocite{*}

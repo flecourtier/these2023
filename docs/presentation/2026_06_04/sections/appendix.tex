@@ -60,7 +60,7 @@
 	
     \vspace{-8pt}
     \begin{equation}
-		\label{eq:opt_pb}
+		% \label{eq:opt_pb}
 		\theta^\star = \argmin_{\theta}	\big( \; \textcolor{orange}{J_{inc}(\theta)} + \textcolor{orange}{J_{mom}(\theta)} + \textcolor{orange}{J_{ener}(\theta)} + \textcolor{darkred}{J_{ad}(\theta)} \; \big),
 		\tag{$\mathcal{P}_\theta$}
 	\end{equation}
@@ -207,4 +207,42 @@
     with \textcolor{darkred}{$U_\theta = (\bm{u}_\theta, p_\theta, T_\theta)$} the PINN prior and some modified boundary conditions.
 \end{appendixframe}
 
+% \renewcommand{\insertsectionheadSubtitle}{
+%     \begin{itemize}
+%         \item Results obtained with a laptop GPU.
+%         \item The newton solver is the same for all methods (rtol$=10^{-10}$, atol$=10^{-10}$, max\_it$=30$).
+%         \item Additive approach : we consider $u_\theta$ in a $\mathbb{P}_3^2\times \mathbb{P}_2 \times \mathbb{P}_3$ continuous Lagrange FE space (defined on the current mesh).
+%     \end{itemize}}
 \appendixsubsection{Numerical results}
+
+\begin{appendixframe}{Numerical costs}	
+    $\bm{\mu}^{(1)}$ :
+
+    \vspace{-20pt}
+    \flushright
+    \includegraphics[width=0.9\linewidth]{images/appendix/cvg_param1.pdf}
+
+    \flushleft
+    % Defining the global error as the sum of the $L^2$ relatives errors on $\bm{u}$ and $T$.
+
+    % \vspace{-5pt}
+    $N_\text{dofs}$ and execution time required to reach the same global $L^2$ relative error $e$ :\footnote[frame,1]{Error defined as the sum of the $L^2$ relatives errors on $\bm{u}$ and $T$.}
+
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        % \qquad $\bm{\mu}^{(1)}=(0.1,0.1)$ \\
+        \includegraphics[width=0.9\linewidth]{images/appendix/time_param1_line.pdf}
+    \end{minipage}
+    \begin{minipage}{0.66\linewidth}
+        \begin{tikzpicture}
+            \node[anchor=south west, inner sep=0] (img) at (0,0) {\includegraphics[height=2.4cm]{images/appendix/costs_param1.pdf}};
+            \flechecourbe{2.5}{0.1}{1.4}{-0.1}{$\div 2.5$}
+            \flechecourbe{6.3}{0.1}{1.2}{-0.1}{$\div 2$}
+            \draw[thick,-,flechecolor]
+            (5.3,0.1) .. controls (4.5+2.4,-0.3) and (4.5+2.4,-0.3) .. (7.5,0.1)
+            node[midway, sloped, fill=white, inner sep=1pt] {\tiny $\div 4$};
+        \end{tikzpicture}
+    \end{minipage}
+
+    \vspace{5pt}
+\end{appendixframe}
