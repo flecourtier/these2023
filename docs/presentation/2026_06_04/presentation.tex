@@ -9,7 +9,6 @@
 \usepackage{xparse} %for \NewDocumentEnvironment
 \usepackage{amssymb}
 \usepackage{xcolor}
-\usepackage[bottom]{footmisc}
 \usepackage{multirow}
 \usepackage{setspace}
 \usepackage{caption}
@@ -51,6 +50,9 @@
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
 \renewcommand*{\bibfont}{\footnotesize}
+\renewrobustcmd*{\bibopenparen}{[}
+\renewrobustcmd*{\bibcloseparen}{]}
+\renewcommand*{\nameyeardelim}{\addcomma\space}
 \useoutertheme[subsection=false]{miniframes}
 \makeatletter
 %\patchcmd{\slideentry}{\advance\beamer@xpos by1\relax}{}{}{}
@@ -105,7 +107,7 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 \newcounter{appendixframenumber}
 \setcounter{appendixframenumber}{0}
 \newcounter{subappendixframenumber}
-\setcounter{subappendixframenumber}{1}
+\setcounter{subappendixframenumber}{0}
 
 \makeatletter
 \newcommand{\labelappendixframe}[1]{%
@@ -116,7 +118,6 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 }	
 \makeatother
 
-% Ce compteur temporaire stockera "x.y" (1.1, 1.2, etc.) pour les sous-appendices
 \makeatletter
 \newcommand{\labelsubappendixframe}[1]{%
 	\edef\@currentlabel{\theappendixframenumber.\thesubappendixframenumber}%
@@ -124,28 +125,33 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 }
 \makeatother
 
-\newcommand{\appendixsection}[2]{%
+\newif\ifsubappendix
+\subappendixfalse
+
+\newcommand{\appendixsection}[1]{%
+	\subappendixfalse
 	\addtocounter{appendixframenumber}{1}%
-	\section{\appendixname~\theappendixframenumber~: #1}%[A\theappendixframenumber~: #2]%\labelappendixframe{frame:#2}%
-	\setcounter{subappendixframenumber}{1}% Réinitialiser le compteur des sous-appendices
+	\section{\appendixname~\theappendixframenumber~: #1}
+	\setcounter{subappendixframenumber}{0}% Réinitialiser le compteur des sous-appendices
 }
 
-\NewDocumentEnvironment{subappendixframe}{mo+b} 
-{%
-	% Optionnal : noframenumbering
-	\IfNoValueTF{#2}
-	{\begin{frame}{A\theappendixframenumber.\thesubappendixframenumber~– #1}}
-	{\begin{frame}[#2]{A\theappendixframenumber.\thesubappendixframenumber~– #1}}
-		#3
-	\end{frame}
-}{}
+\newcommand{\appendixsubsection}[1]{%
+	\subappendixtrue
+	\addtocounter{subappendixframenumber}{1}%
+	\subsection{#1}
+}
 
-\NewDocumentEnvironment{appendixframe}{mo+b} 
+\NewDocumentEnvironment{appendixframe}{mo+b}
 {%
 	% Optionnal : noframenumbering
+	\ifsubappendix
+		\def\appendixtitle{A\theappendixframenumber.\thesubappendixframenumber~– #1}%
+	\else
+		\def\appendixtitle{A\theappendixframenumber~– #1}%
+	\fi
 	\IfNoValueTF{#2}
-	{\begin{frame}{A\theappendixframenumber~– #1}}
-	{\begin{frame}[#2]{A\theappendixframenumber~– #1}}
+	{\begin{frame}{\appendixtitle}}
+	{\begin{frame}[#2]{\appendixtitle}}
 		#3
 	\end{frame}
 }{}
@@ -309,7 +315,8 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 		\begin{minipage}{0.71\linewidth}
 			\textbf{Ongoing works:}
 			\begin{itemize}
-				\item Extension to non-linear problems : First promising results for the incompressible Navier-Stokes equations.
+				\item Extension to non-linear problems : First promising results for the incompressible Navier-Stokes\\
+				equations. \refappendix{frame:app-Navier_Stokes}
 				\item Extensions to DG methods and non-conforming FEM, currently under development in ScimBa (SciML’s Python library) using auto-differentiation
 			\end{itemize}
 		\end{minipage}\hfill
@@ -354,8 +361,8 @@ pour la résolution numérique d'équations aux dérivées partielles"}
 	
 	\Background
 
-	% \appendix
+	\appendix
 	
-	% \input{sections/appendix}
+	\input{sections/appendix}
 	
 \end{document}
