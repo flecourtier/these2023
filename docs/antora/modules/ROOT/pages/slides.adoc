@@ -1,5 +1,6 @@
 # Slides
 
+* *PhD student seminar, Montpellier 2025 (03/07/2026)* : xref:attachment$presentation/2026_07_03.pdf[Enriching continuous Lagrange finite element approximation spaces using neural networks]
 * *PhD student seminar, Montpellier 2025 (04/06/2026)* : xref:attachment$presentation/2026_06_04.pdf[Enriching continuous Lagrange finite element approximation spaces using neural networks]
 * *PhD student seminar, Montpellier 2025 (17/12/2025)* : xref:attachment$presentation/2025_12_17.pdf[Enriching continuous Lagrange finite element approximation spaces using neural networks]
 * *ICOSAHOM, Montréal 2025 (15/07/2025)* : xref:attachment$presentation/2025_07_15.pdf[Enriching continuous Lagrange finite element approximation spaces using neural networks]
