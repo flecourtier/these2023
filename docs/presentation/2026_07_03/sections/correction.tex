@@ -1,0 +1,83 @@
+\begin{frame}{Pipeline of the Enriched FEM}
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=\linewidth]{images/correction/pipeline/offline.pdf}
+
+		\uncover<2>{\includegraphics[width=\linewidth]{images/correction/pipeline/online.pdf}}
+	\end{figure}
+
+	\uncover<2>{\begin{center}
+			\textbf{Complete ONLINE process :} \textcolor{darkred}{quick} + \textcolor{orange}{accurate}
+		\end{center}
+	}
+\end{frame}
+
+\begin{frame}{Additive approach}
+	\textbf{Variational Problem:} Let $u_{\theta} \in H^{k+1}(\Omega)$ be a PINN prior.
+	
+	\vspace{-5pt}
+	\begin{equation}
+		\label{eq:weakplus}
+		\text{Find } C_h^+ \in V_h \text{ such that}, \forall v_h \in V_h^0, a(C_h^+,v_h) = l(v_h) - a(u_{\theta},v_h),\tag{$\mathcal{P}_h^+$}
+	\end{equation}
+	
+	\vspace{5pt}
+	\begin{minipage}[t]{0.62\linewidth}
+		with the \textcolor{red}{enriched trial space $V_h^+$} defined by
+		\begin{equation*}
+			V_h^+ = \left\{
+			u_h^+= u_{\theta} + C_h^+, \quad C_h^+ \in V_h^0
+			\right\}.
+		\end{equation*}
+	
+		\vspace{5pt}
+	
+		\textbf{General Dirichlet BC:} If $u=g$ on $\partial \Omega$, then
+		\[
+			C_h^+ = g - u_{\theta} \text{\quad on } \partial \Omega,
+		\]
+		with $u_\theta$ the PINN prior. 
+
+		\vspace{10pt}
+
+		\begin{center}
+			\textcolor{darkred}{\textbf{We expect that the modified problem will give the same results
+			as the standard one on \\
+			\underline{coarser meshes}.}}
+		\end{center}
+	\end{minipage} \qquad \begin{minipage}[t][][b]{0.26\linewidth}
+		\vspace{-8pt}
+		\centering
+		\pgfimage[width=\linewidth]{images/correction/correction.pdf}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}{Convergence analysis}
+	\vspace{-10pt}
+	\hypersetup{
+		citecolor=white,
+	}
+
+	\begin{mytheo}{Convergence analysis of the standard FEM \footnotesize\parencite{Ern2004TheoryAP}\normalsize}{fem}
+		Let $u_h\in V_h$ be the solution of \eqref{eq:weakform} with $V_h$ the standard trial space. Then,
+		\begin{equation*}
+			\| u-u_h\|_{L^2} \leqslant C_{L^2} \, h^{k+1} |u|_{H^{k+1}}.
+		\end{equation*}
+	\end{mytheo}
+	
+	\only<2>{\begin{mytheo}{Convergence analysis of the enriched FEM \footnotesize\parencite{ours_2025}\normalsize}{add}
+		Let $u_h^+\in V_h^+$ be the solution of \eqref{eq:weakplus} with $V_h^+$ the enriched trial space. Then,
+		\begin{equation*}
+			\| u-u_h^+\|_{L^2} \leqslant \fcolorbox{orange}{other!10!white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} \left(C_{L^2} \, h^{k+1} |u|_{H^{k+1}}\right).
+		\end{equation*}
+	\end{mytheo}
+
+	\hypersetup{
+		citecolor=other,
+	}
+
+	\Large
+	\begin{center}
+		$\fcolorbox{orange}{white}{$\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$}<1 \; \Rightarrow \;$ Gains of the additive approach.
+	\end{center}}
+\end{frame}

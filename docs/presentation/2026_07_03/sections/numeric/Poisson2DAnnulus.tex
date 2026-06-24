@@ -1,0 +1,73 @@
+\begin{frame}{Problem considered} 
+	\textbf{Problem statement:} Considering the Poisson problem with mixed BC:
+	\vspace{-5pt}
+	\begin{equation*}
+		\left\{
+		\begin{aligned}
+			-\Delta u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M}, \\
+			u         & = g, \;  &  & \text{on } \; \Gamma_E \times \mathcal{M}, \\
+			\smash{\frac{\partial u}{\partial n}}+u  & = g_R, \;  &  & \text{on } \; \Gamma_I \times \mathcal{M},
+		\end{aligned}
+		\right.
+	\end{equation*}
+
+	with $\Omega=\{(x,y)\in\mathbb{R}^2, 0.25 < x^2+y^2 < 1\}$ and $\mathcal{M}=[2.4,2.6]$ ($p=1$ parameter).
+		
+	\vspace{8pt}
+	\textbf{Analytical solution and boundary conditions:} $\bm{\mu}=\mu_1 \in \mathcal{M}$
+
+	\vspace{-12pt}
+	\begin{equation*}
+		u(\bm{x};\bm{\mu})= 1 - \frac{\ln\big(\mu_1\sqrt{x^2+y^2}\big)}{\ln(4)},
+	\end{equation*}
+
+    \vspace{-5pt}
+	\begin{equation*}
+		g(\bm{x};\bm{\mu})=1 - \frac{\ln(\mu_1)}{\ln(4)} \quad \text{and} \quad g_R(\bm{x};\bm{\mu})=2 + \frac{4-\ln(\mu_1)}{\ln(4)}.
+	\end{equation*}
+
+	\vspace{2pt}
+	\textbf{Parametric PINN training:} \\
+    MLP 5 layers (tanh - 5$\times$40); LBFGs optimizer (4000 epochs - 6000 col. pts). \\
+	Imposing the mixed BC exactly in the PINN\footcite{Sukumar_2022} (+ Sobolev training).
+
+	\vspace{8pt}
+\end{frame}
+
+\begin{frame}{Online phase}
+	\hspace{-5pt}\begin{minipage}[t]{0.46\linewidth}
+		\textbf{Error estimates:} \small 1 parameters instance \normalsize
+		$$\bm{\mu}^{(1)}=2.51$$
+		\vspace{-35pt}
+		\begin{figure}[H]
+			\cvgFEMCorrAlldeg{images/numeric/Poisson2DAnnulus/cvg/FEM_case5_v2_param1.csv}{images/numeric/Poisson2DAnnulus/cvg/Corr_case5_v2_param1.csv}{1e-10}{false}
+		\end{figure}
+	\end{minipage} \qquad \small
+	\begin{minipage}[t]{0.48\linewidth}
+		\textbf{Gains achieved:} $\| u-u_h\|_{L^2} / \| u-u_h^+\|_{L^2}$ \\
+
+        \vspace{-5pt}
+        Considering $n_p=50$ parameters instances
+        $$\mathcal{S}=\left\{\bm{\mu}^{(1)},\dots,\bm{\mu}^{(n_p)}\right\}.$$
+		\vspace{-15pt}
+		\begin{table}[H]
+			\GainsTableAlldeg{images/numeric/Poisson2DAnnulus/gains/Tab_stats_case5_v2.csv}
+		\end{table}
+
+		\small\centering%\vspace{8pt}
+        Mesh size: $h=1.33\cdot 10^{-1}$
+
+		\end{minipage}
+\end{frame}
+
+\begin{frame}{Numerical solutions and errors}
+	\begin{figure}[!ht] \centering
+		\includegraphics[width=\linewidth]{images/numeric/Poisson2DAnnulus/plots/standalone_solutions.pdf}
+		
+		\vspace{8pt}
+		\includegraphics[width=0.7\linewidth]{images/numeric/Poisson2DAnnulus/plots/standalone_errors.pdf}
+	\end{figure}
+
+	\vspace{-8pt}
+	$$\bm{\mu}^{(1)}=2.51 \quad\small(k=1, h=1.67\cdot 10^{-1})$$
+\end{frame}

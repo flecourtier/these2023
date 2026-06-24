@@ -1,0 +1,47 @@
+\begin{frame}{Scientific context}
+	\begin{minipage}{0.75\linewidth}
+		\textbf{Context:} Create real-time digital twins of an organ (e.g. liver).
+	\end{minipage}
+	\begin{minipage}{0.21\linewidth}
+		\vspace{-20pt}
+		\includegraphics[width=\linewidth]{images/intro/liver.png}
+	\end{minipage}
+	
+	\vspace{5pt}
+	\textbf{Objective:} Develop an hybrid \fcolorbox{orange}{white}{finite element} / \fcolorbox{darkred}{white}{neural network} method.
+	
+	\vspace{1pt}
+	\small
+	\hspace{130pt} \begin{minipage}{0.14\linewidth}
+		\textcolor{orange}{accurate}
+	\end{minipage} \hspace{8pt} \begin{minipage}{0.3\linewidth}
+		\textcolor{darkred}{quick + parameterized}
+	\end{minipage}
+
+	\normalsize
+	\vspace{5pt}
+	% \textbf{Parametric elliptic convection/diffusion PDE:}
+	% For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
+	% \begin{equation}
+	% 	\label{eq:ob_pde}
+	% 	\mathcal{L}\big(u\,;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}),
+	% 	\tag{$\mathcal{P}$}
+	% \end{equation}
+	% where $\mathcal{L}$ is the parametric differential operator defined  by
+	% \begin{equation*}
+	% 	\mathcal{L}(\cdot;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu}) u + C(\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot (D(\bm{x},\bm{\mu}) \nabla u),
+	% \end{equation*}
+	% and some Dirichlet, Neumann or Robin BC (which can also depend on $\bm{\mu}$).
+	\only<2>{\textbf{Parametric Poisson problem (with homogeneous Dirichlet BC):} \\
+	For one or several  $\bm{\mu}\in \mathcal{M}$, find $u: \Omega\to \mathbb{R}$ such that
+	\begin{equation}\label{eq:ob_pde}\tag{$\mathcal{P}$}
+		\left\{
+		\begin{aligned}
+			-\Delta u(\bm{x};\bm{\mu}) & = f(\bm{x};\bm{\mu}), \; &  & (\bm{x},\bm{\mu}) \in \Omega \times \mathcal{M}, \\
+			u(\bm{x};\bm{\mu}) & =0, \;  &  & (\bm{x},\bm{\mu}) \in \partial \Omega \times \mathcal{M},
+		\end{aligned}
+		\right.
+	\end{equation}
+	with $\Omega \subset \mathbb{R}^d$ a domain ($d=1,2,3$) and $\mathcal{M} \subset \mathbb{R}^p$ the parameter space ($p$ the number of parameters).
+	}
+\end{frame}
