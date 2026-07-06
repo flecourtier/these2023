@@ -3,7 +3,7 @@
 \begin{appendixframe}{Heated cavity test case}
 	\only<2>{\textcolor{darkred}{\textbf{Objective:} Simulation on a range of parameters $\bm{\mu} = (\nu,k_f) \in \mathcal{M} = [0.01, 0.1]^2$.}\vspace{5pt}}\only<3>{\textbf{Objective:} Simulation on a range of parameters $\bm{\mu} = (\nu,k_f) \in \mathcal{M} = [0.01, 0.1]^2$.\vspace{5pt}}
 
-	\textbf{Stationary incompressible Navier-Stokes equations (with buoyancy and gravity)\only<1>{\footnote[frame,1]{\textcolor{darkred}{The approach can be extended to other test cases.}}} :}
+	\textbf{Stationary incompressible Navier-Stokes equations (with buoyancy and gravity)\only<1>{\myfootcite{\textcolor{darkred}{The approach can be extended to other test cases.}}} :}
 
 	We consider \only<1>{$\Omega = [-1,1]^2$ a squared domain}\only<2>{\textcolor{darkred}{$\bm{x}=(x,y)\in\Omega$}}\only<3>{$\bm{x}=(x,y)\in\Omega$} and $\bm{e}_y = (0,1)$.
 	
@@ -66,7 +66,7 @@
 	\end{equation}
 
     \vspace{-2pt}
-	where the different cost functions\footnote[frame,1]{Discretized by a random process using Monte-Carlo method.} are defined by
+	where the different cost functions\myfootcite{Discretized by a random process using Monte-Carlo method.} are defined by
 	\vspace{5pt}
 
 	\begin{minipage}{0.24\linewidth}
@@ -186,7 +186,7 @@
 \end{appendixframe}
 
 \begin{appendixframe}{Weak form - Additive approach}
-    \textbf{Weak problem\footnote[frame,1]{Problem solved using Newton's algorithm with the correction vector initialized to $0$.} :} Find $C_h^+=(\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+}, \textcolor{blue}{C_{h,p}^+}, \textcolor{ForestGreen}{C_{h,T}^+}) \in M_h^{\, 0}$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0}$,
+    \textbf{Weak problem\myfootcite{Problem solved using Newton's algorithm with the correction vector initialized to $0$.} :} Find $C_h^+=(\textcolor{Cyan}{\bm{C}_{h,\bm{u}}^+}, \textcolor{blue}{C_{h,p}^+}, \textcolor{ForestGreen}{C_{h,T}^+}) \in M_h^{\, 0}$ s.t., \; $\forall (\bm{v}_h, q_h, w_h) \in M_h^{\, 0}$,
 
     \vspace{-4pt}
     \footnotesize
@@ -226,7 +226,7 @@
     % Defining the global error as the sum of the $L^2$ relatives errors on $\bm{u}$ and $T$.
 
     % \vspace{-5pt}
-    $N_\text{dofs}$ and execution time required to reach the same global $L^2$ relative error $e$ :\footnote[frame,1]{Error defined as the sum of the $L^2$ relatives errors on $\bm{u}$ and $T$.}
+    $N_\text{dofs}$ and execution time required to reach the same global $L^2$ relative error $e$ :\myfootcite{Error defined as the sum of the $L^2$ relatives errors on $\bm{u}$ and $T$.}
 
     \begin{minipage}{0.32\linewidth}
         \centering
