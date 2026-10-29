@@ -1,7 +1,7 @@
 %% OCCASION = MACS seminar, Montpellier 2026
 
 %% Requires compilation with XeLaTeX or LuaLaTeX
-\documentclass[compress,10pt,xcolor={table,dvipsnames},t]{beamer} %aspectratio=169
+\documentclass[compress,10pt,xcolor={table,dvipsnames},t,aspectratio=169]{beamer}
 \usetheme{diapo}
 
 \usepackage{amsmath}
@@ -9,8 +9,6 @@
 \usepackage{xcolor}
 \usepackage{tikz}
 \usepackage{etoolbox}
-% boîtes colorées (théorèmes)
-\usepackage[most]{tcolorbox}
 
 \setlength{\parindent}{0pt}
 
@@ -28,13 +26,6 @@
 \renewcommand*{\nameyeardelim}{\addcomma\space}
 \newcommand*{\myfootcite}[1]{\footnote[frame,1]{\parencite{#1}}}
 
-% barre de navigation (mini frames)
-\useoutertheme[subsection=false]{miniframes}
-\makeatletter
-\def\beamer@subsectionentry#1#2#3#4#5{\advance\beamer@xpos by1\relax}%
-\makeatother
-\setbeamercolor*{mini frame}{fg=bulles,bg=bulles}
-
 \hypersetup{
 	colorlinks=true,
 	urlcolor=blue,
@@ -42,22 +33,11 @@
 	linkcolor=title,
 }
 
-% boîte théorème
-\newtcbtheorem{mytheo}{Theorem}{colback=other,
-	colframe=other,
-	arc=2mm,
-	boxrule=0.5pt,
-	breakable, enhanced jigsaw,
-	width=\linewidth,
-	opacityback=0.1
-	}{th}
-\resetcounteronoverlays{tcb@cnt@mytheo}
-
-\title[]{Hybrid finite element and neural network methods for parametric PDEs}
+\title[Hybrid FE and NN methods for parametric PDEs]{Hybrid finite element and neural network methods for parametric PDEs}
 \subtitle{\small MACS seminar \\
 (``Modélisation, Analyse et Calcul Scientifique'')}
 
-\author{%
+\author[LECOURTIER Frédérique]{%
 	Michel Duprez\inst{1},
 	Emmanuel Franck\inst{2}, \\
 	\textbf{Frédérique Lecourtier}\inst{1} and
@@ -75,7 +55,8 @@
 \begin{document}
 	\pgfkeys{/pgf/number format/.cd,1000 sep={\,}} % spacing between thousands in numbers
 
-	% page de titre
+	% page de titre (palette duo : triangles bleu et vert)
+	\SetPalette{duo}
 	{\setbeamertemplate{footline}{}
 		\BackgroundTitle
 		\begin{frame}[plain]
@@ -84,40 +65,30 @@
 	}
 	\addtocounter{framenumber}{-1}
 
-	% pages de début de section
-	\AtBeginSection[]{
-		{\setbeamertemplate{footline}{}
-			\begin{frame}
-				\vfill
-				\centering
-				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
-					\usebeamerfont{title}\insertsection\par%
-					\vspace{0.5cm}
-				\end{beamercolorbox}
-				\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
-				\vfill
-			\end{frame}
-		}
-		\addtocounter{framenumber}{-1}
-	}
-
-	% pages de début de sous-section
-	\AtBeginSubsection[]{
-		{\setbeamertemplate{footline}{}
-			\begin{frame}
-				\vfill
-				\centering
-				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
-					\usebeamerfont{title}\insertsectionhead\par%
-					\vspace{0.5cm}
-				\end{beamercolorbox}
-				\tableofcontents[sectionstyle=hide,subsectionstyle=show/shaded/hide]
-				\vfill
-			\end{frame}
-		}
-		\addtocounter{framenumber}{-1}
-	}
-
 	\Background
+
+	%% ---------- Partie commune ----------
+	\Chapter*{duo}
+	\input{sections/common/intro}
+	\input{sections/common/background}
+
+	%% ---------- Contribution 1 (bleu) ----------
+	\Chapter{blue}{1st hybridization}{Enriched finite element method using PINNs}
+	\input{sections/contrib1/main}
+
+	%% ---------- Contribution 2 (vert) ----------
+	\Chapter{green}{2nd hybridization}{Learnable Galerkin methods}
+	\input{sections/contrib2/main}
+
+	%% ---------- Conclusion ----------
+	\Chapter*{duo}
+	\input{sections/common/conclusion}
+
+	%% ---------- Annexes (une par hybridation) ----------
+	\Appendix{blue}{1st hybridization}{Enriched finite element method using PINNs}
+	\input{sections/contrib1/appendix}
+
+	\Appendix{green}{2nd hybridization}{Learnable Galerkin methods}
+	\input{sections/contrib2/appendix}
 
 \end{document}

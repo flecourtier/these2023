@@ -6,20 +6,63 @@
 \RequirePackage{fontspec}
 \WarningsOff[mathdesign/mdbch]
 
-% couleurs utilisées
-\definecolor{bulles}{RGB}{19, 23, 42}
-\definecolor{title}{RGB}{56, 69, 108}
-\definecolor{other}{RGB}{79, 127, 151}
-\definecolor{triangleinf}{RGB}{167, 199, 231}
-\definecolor{trianglesup}{RGB}{167, 199, 231}
-\definecolor{appendix}{RGB}{138, 164, 189}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PALETTES
+%% Une palette par type de chapitre, choisie avec \SetPalette{<nom>}
+%% (appelée par \Chapter, voir presentation.tex). Les couleurs portent le même
+%% nom dans toutes les palettes : bulles, title, other, triangleinf,
+%% trianglesup, appendix.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- palette "blue" : contribution 1 ---
+\def\palette@blue{%
+	\definecolor{bulles}{RGB}{19, 27, 42}%
+	\definecolor{title}{RGB}{56, 78, 108}%
+	\definecolor{other}{RGB}{79, 139, 151}%
+	\definecolor{triangleinf}{RGB}{179, 212, 230}%
+	\definecolor{trianglesup}{RGB}{179, 212, 230}%
+	\definecolor{appendix}{RGB}{138, 172, 189}%
+}
+
+% --- palette "green" : contribution 2 (accordée au bleu : même luminosité et saturation) ---
+\def\palette@green{%
+	\definecolor{bulles}{RGB}{19, 42, 30}%
+	\definecolor{title}{RGB}{70, 108, 56}%
+	\definecolor{other}{RGB}{98, 151, 79}%
+	\definecolor{triangleinf}{RGB}{195, 230, 179}%
+	\definecolor{trianglesup}{RGB}{195, 230, 179}%
+	\definecolor{appendix}{RGB}{154, 189, 138}%
+}
+
+% --- palette "duo" : parties communes (titre, introduction, background, conclusion) ---
+% textes en noir et gris, triangle du haut bleu et triangle du bas vert
+\def\palette@duo{%
+	\definecolor{bulles}{RGB}{30, 30, 30}%
+	\definecolor{title}{RGB}{40, 40, 40}%
+	\definecolor{other}{RGB}{110, 110, 110}%
+	\definecolor{trianglesup}{RGB}{179, 212, 230}%
+	\definecolor{triangleinf}{RGB}{195, 230, 179}%
+	\definecolor{appendix}{RGB}{160, 160, 160}%
+}
+
+% couleurs fixes des contributions (pastilles, cadres), indépendantes de la palette courante
+\definecolor{cblue}{RGB}{79, 139, 151}
+\definecolor{cgreen}{RGB}{98, 151, 79}
+
+\newcommand{\SetPalette}[1]{%
+	\csname palette@#1\endcsname
+	\ifdefined\hypersetup\hypersetup{citecolor=other,linkcolor=title}\fi
+}
+
+% palette par défaut
+\SetPalette{duo}
 
 % color
 \setbeamercolor{classic}{fg=black}
 \setbeamercolor{title}{fg=title}
 \setbeamercolor{author}{fg=other}
 \setbeamercolor{institute}{fg=other}
-\setbeamercolor{date}{fg=other}
+\setbeamercolor{date}{fg=black!76}
 \setbeamercolor{frametitle}{fg=title}
 \setbeamercolor{normal text}{fg=black}
 \setbeamercolor{structure}{fg=black}
@@ -94,33 +137,47 @@
 	\end{flushright}
 }
 
-% triangles et logo
+% triangles et signature (éléments communs aux fonds)
+\newcommand{\bg@triangles}{%
+	\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.107\paperheight) -- (current page.north east) -- cycle;
+	\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;
+}
+\newcommand{\bg@signature}{%
+	\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.07\paperheight] at (current page.south east) {\normalsize\textbf{\insertshortauthor}};%
+	\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.05\paperheight,yshift=0.03\paperheight] at (current page.south east) {\textbf{\beamer@shorttitle}};% % texte brut : \insertshorttitle est un lien (coloré par hyperref)
+}
+\newcommand{\bg@pagenumber}{%
+	\node[anchor=south west,inner sep=0pt,draw=none,xshift=0.05\paperheight,yshift=0.03\paperheight] at (current page.south west) {\usebeamerfont{footline}\usebeamercolor[fg]{footline}\ifcsname diapo@alab@\the\c@part\endcsname A\insertframenumber\else\insertframenumber\small/\insertmainframenumber\fi};%
+}
+
+% page de titre : triangles seuls
 \newcommand{\BackgroundTitle}{
 	\setbeamertemplate{background}{%
 		\begin{tikzpicture}[overlay,remember picture]
-			\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
-			\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;  
+			\bg@triangles
 		\end{tikzpicture}
 	}
 }
 
+% pages de chapitre : triangles + signature, sans numéro de page
+\newcommand{\BackgroundChapter}{
+	\setbeamertemplate{background}{%
+		\begin{tikzpicture}[overlay,remember picture]
+			\bg@triangles
+			\bg@signature
+		\end{tikzpicture}%
+	}
+	\setbeamertemplate{navigation symbols}{}
+}
+
+% diapos normales : triangles + signature + numéro de page
 \newcommand{\Background}{
 	\setbeamertemplate{background}{%
 		\begin{tikzpicture}[overlay,remember picture]
-			\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
-			\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;  
-			\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.07\paperheight] at (current page.south east) {\normalsize\textbf{LECOURTIER Frédérique}};%
-			\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.05\paperheight,yshift=0.03\paperheight] at (current page.south east) {\textbf{Hybrid FE and NN methods for parametric PDEs}};%
+			\bg@triangles
+			\bg@signature
+			\bg@pagenumber
 		\end{tikzpicture}%
-		\usebeamerfont{footline}%
-		\usebeamercolor[fg]{footline}%
-		\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
-	}
-	% page number
-	\addtobeamertemplate{navigation symbols}{}{%
-		\usebeamerfont{footline}%
-		\usebeamercolor[fg]{footline}%
-		\vspace{-4em}\hspace{-42em}\insertframenumber\small/\inserttotalframenumber\hfill\null
 	}
 }
 
@@ -128,7 +185,7 @@
 \newcommand{\BackgroundBiblio}{
     \setbeamertemplate{background}{%
         \begin{tikzpicture}[overlay,remember picture]
-            \fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.08\paperwidth) -- (current page.north east) -- cycle;
+            \fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.107\paperheight) -- (current page.north east) -- cycle;
             % \fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;
         \end{tikzpicture}%
     }
@@ -136,3 +193,272 @@
 
 \setbeamercolor{footline}{fg=black}
 \setbeamerfont{footline}{series=\bfseries,size=\normalsize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CHAPITRES
+%% \Chapter{<palette>}{<libellé>}{<titre>} : \part dans la palette choisie (blue,
+%%     green, duo), avec une page de chapitre : libellé et titre suivis d'un
+%%     filet de couleur.
+%% \Chapter*{<palette>} : nouveau \part dans la palette choisie, sans page de chapitre.
+%% \Section*{<titre>} : \section sans page de début de section (elle reste dans
+%%     les bulles). \Section{<titre>} équivaut à \section{<titre>}.
+%% Toutes ces pages n'ont pas de numéro et ne sont pas comptées dans la numérotation.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{xparse}
+
+\newcommand{\chapterlabel}{}
+\def\Chapter@full#1#2#3{\SetPalette{#1}\def\chapterlabel{#2}%
+	\protected@write\@auxout{}{\string\diapo@setlabel{\the\numexpr\value{part}+1\relax}{#1}{#2}}%
+	\part{#3}}
+% \Appendix{<palette>}{<libellé>}{<titre>} : annexe d'une hybridation (après la conclusion).
+% Page de chapitre « Appendix – <libellé> », diapos numérotées A1, A2, … (recommencent à
+% chaque annexe), barre du haut limitée à l'annexe courante.
+\newif\ifdiapo@appendixstarted
+\NewDocumentCommand{\Appendix}{m m m}{%
+	\ifdiapo@appendixstarted\else\global\diapo@appendixstartedtrue\global\chapterpagefalse\appendix\fi
+	\SetPalette{#1}\def\chapterlabel{Appendix -- #2}%
+	\protected@write\@auxout{}{\string\diapo@setalabel{\the\numexpr\value{part}+1\relax}{#1}{Appendix -- #2}}%
+	\setcounter{framenumber}{0}%
+	\part{#3}}
+\def\diapo@setalabel#1#2#3{\diapo@setlabel{#1}{#2}{#3}\global\expandafter\let\csname diapo@alab@#1\endcsname\relax}
+% libellé (coloré) du chapitre n, relu par les pages de la partie commune
+\def\diapo@setlabel#1#2#3{\global\expandafter\def\csname diapo@lab@#1\endcsname{#3}}
+\newif\ifchapterpage
+\chapterpagetrue
+% \Chapter* ouvre quand même un \part (sections et bulles séparées du chapitre précédent)
+\NewDocumentCommand{\Chapter}{s m}{\IfBooleanTF{#1}{\SetPalette{#2}\global\chapterpagefalse\gdef\chapterlabel{}\part{}}{\Chapter@full{#2}}}
+
+\newif\ifsectionpage
+\sectionpagetrue
+\NewDocumentCommand{\Section}{s m}{\IfBooleanT{#1}{\global\sectionpagefalse}\section{#2}}
+
+% page de chapitre
+\AtBeginPart{
+	\ifchapterpage
+	{\setbeamertemplate{footline}{}
+		\BackgroundChapter
+		\begin{frame}[c]
+			\raggedright
+			\ifx\chapterlabel\empty\else
+				{\color{other}\sffamily\bfseries\Large\chapterlabel\par}
+				\vspace{0.3cm}
+			\fi
+			{\usebeamerfont{title}\usebeamercolor[fg]{title}\LARGE\insertpart\par}
+			\vspace{0.4cm}
+			{\color{other}\rule{3cm}{1.5pt}}
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1}
+	\fi
+	\global\chapterpagetrue
+}
+
+% pages de début de section (style des présentations précédentes)
+\AtBeginSection[]{
+	\ifsectionpage
+	{\setbeamertemplate{footline}{}
+		\BackgroundChapter
+		\begin{frame}
+			\vfill
+			\centering
+			\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+				\usebeamerfont{title}\insertsection\par%
+				\vspace{0.5cm}
+			\end{beamercolorbox}
+			\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
+			\vfill
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1}
+	\fi
+	\global\sectionpagetrue
+}
+
+% pages de début de sous-section
+\AtBeginSubsection[]{
+	{\setbeamertemplate{footline}{}
+		\BackgroundChapter
+		\begin{frame}
+			\vfill
+			\centering
+			\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+				\usebeamerfont{title}\insertsectionhead\par%
+				\vspace{0.5cm}
+			\end{beamercolorbox}
+			\tableofcontents[sectionstyle=hide,subsectionstyle=show/shaded/hide]
+			\vfill
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1}
+}
+
+% barre de navigation, limitée au chapitre courant (plus de bulles : une par diapo faisait trop) :
+%% - une seule ligne : tous les chapitres (voir plus bas) ;
+%%   Pour une hybridation, ses sections suivent son nom (section courante en gras) ;
+%%   titre court dans la barre avec \section[<court>]{<long>}. Pas de sous-sections.
+\useoutertheme[subsection=false]{miniframes}
+\newif\ifdiapo@cur
+\newif\ifdiapo@first
+\gdef\diapo@lastpart{0}
+\let\diapo@sectionentry\sectionentry
+\def\sectionentry#1#2#3#4#5{%
+	\ifnum#5=\c@part\relax
+		\diapo@sectionentry{#1}{#2}{#3}{#4}{#5}%
+	\fi}
+% pas de bulles
+\def\slideentry#1#2#3#4#5#6{}
+% rangée du bas : section courante en gras
+\defbeamertemplate*{section in head/foot}{diapo}{\bfseries\insertsectionhead}
+\defbeamertemplate*{section in head/foot shaded}{diapo}{\insertsectionhead}
+
+% rangée du haut : tous les chapitres, séparés par un trait ; le chapitre courant prend
+% toute la place restante. \diapo@items est construite depuis le fichier .nav :
+% une entrée par section de la partie commune et une par hybridation.
+\newdimen\diapo@acc \newdimen\diapo@fixed \newdimen\diapo@xcur \newdimen\diapo@wcur
+\gdef\diapo@items{}
+\def\diapo@collect{%
+	\gdef\diapo@items{}\gdef\diapo@lastpart{0}%
+	\def\slideentry##1##2##3##4##5##6{}%
+	\def\sectionentry##1##2##3##4##5{%
+		\ifcsname diapo@alab@\the\c@part\endcsname
+			% page d'annexe : seulement l'annexe courante
+			\ifnum##5=\c@part\relax
+				\ifnum\diapo@lastpart=##5\relax\else
+					\gdef\diapo@lastpart{##5}%
+					\xdef\diapo@items{\unexpanded\expandafter{\diapo@items}\noexpand\diapo@it{0}{##1}{}{##3}{##5}}%
+				\fi
+			\fi
+		\else\ifcsname diapo@alab@##5\endcsname\else
+			\ifcsname diapo@lab@##5\endcsname
+				\ifnum\diapo@lastpart=##5\relax\else
+					\gdef\diapo@lastpart{##5}%
+					\xdef\diapo@items{\unexpanded\expandafter{\diapo@items}\noexpand\diapo@it{0}{##1}{}{##3}{##5}}%
+				\fi
+			\else
+				\xdef\diapo@items{\unexpanded\expandafter{\diapo@items}\noexpand\diapo@it{1}{##1}{\unexpanded{##2}}{##3}{##5}}%
+			\fi
+		\fi\fi}%
+	\dohead}
+\def\diapo@iscur#1#2#3{%
+	\ifnum#1=1\relax\ifnum#2=\c@section\ifnum#3=\c@part\diapo@curtrue\else\diapo@curfalse\fi\else\diapo@curfalse\fi
+	\else\ifnum#3=\c@part\diapo@curtrue\else\diapo@curfalse\fi\fi}
+\newsavebox{\diapo@b}
+\newdimen\diapo@w
+\def\diapo@underline#1#2{%
+	\sbox{\diapo@b}{#2}\diapo@w=\wd\diapo@b
+	\hbox{\usebox{\diapo@b}\kern-\diapo@w\lower1.1ex\hbox{\vrule width\diapo@w height #1 depth 0pt}}}
+% tous les noms de chapitre sont soulignés (le courant en gras et trait plus épais), pas les sections
+\def\diapo@itembox#1#2#3#4#5{%
+	\diapo@iscur{#1}{#2}{#5}%
+	\hbox{\usebeamerfont{section in head/foot}\usebeamercolor[fg]{section in head/foot}%
+		\ifnum#1=1\relax
+			\ifdiapo@cur\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{#3}}\else\diapo@underline{0.3pt}{\hyperlink{Navigation#4}{#3}}\fi%
+		\else
+			\ifdiapo@cur
+				% nom du chapitre à gauche, ses sections alignées à droite de sa cellule
+				\hbox to \diapo@wcur{\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}%
+					\hfil\diapo@seclist}%
+			\else
+				\diapo@underline{0.3pt}{\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}%
+			\fi
+		\fi}}
+\def\diapo@sep{\hskip.2cm\vrule width 0.4pt height 1.5ex depth 0.7ex\hskip.2cm}
+\newcommand{\diapo@toprow}{%
+	\diapo@acc=0pt \diapo@fixed=0pt \diapo@xcur=0pt \diapo@firsttrue
+	{\usebeamercolor[fg]{section in head/foot}%
+	 \setbox0\hbox{\diapo@sep}\dimen0=\wd0
+	 \def\diapo@it##1##2##3##4##5{%
+		\diapo@iscur{##1}{##2}{##5}%
+		\ifdiapo@first\diapo@firstfalse\else\global\advance\diapo@acc by\dimen0 \global\advance\diapo@fixed by\dimen0 \fi
+		\ifdiapo@cur
+			\global\diapo@xcur=\diapo@acc
+		\else
+			\setbox2\hbox{\diapo@itembox{##1}{##2}{##3}{##4}{##5}}%
+			\global\advance\diapo@fixed by\wd2
+			\global\advance\diapo@acc by\wd2
+		\fi}%
+	 \setbox4\hbox{\diapo@items}}%
+	\global\diapo@wcur=\dimexpr\paperwidth-0.6cm-\diapo@fixed\relax
+	\diapo@firsttrue
+	\hbox to \paperwidth{\hskip.3cm
+		\usebeamercolor[fg]{section in head/foot}%
+		\def\diapo@it##1##2##3##4##5{%
+			\ifdiapo@first\diapo@firstfalse\else\diapo@sep\fi
+			\diapo@iscur{##1}{##2}{##5}%
+			\ifdiapo@cur\hbox to \diapo@wcur{\diapo@itembox{##1}{##2}{##3}{##4}{##5}\hfil}%
+			\else\diapo@itembox{##1}{##2}{##3}{##4}{##5}\fi}%
+		\diapo@items\hss}}
+% sections du chapitre courant (titres courts de la barre), à la suite de son nom
+\newif\ifdiapo@sfirst
+\gdef\diapo@secs{}
+\def\diapo@collectsecs{%
+	\gdef\diapo@secs{}%
+	\def\slideentry##1##2##3##4##5##6{}%
+	\def\sectionentry##1##2##3##4##5{%
+		\ifnum##5=\c@part\relax
+			\xdef\diapo@secs{\unexpanded\expandafter{\diapo@secs}\noexpand\diapo@sec{##1}{\unexpanded{##2}}{##3}}%
+		\fi}%
+	\dohead}
+\def\diapo@seclist{%
+	\diapo@sfirsttrue
+	\def\diapo@sec##1##2##3{%
+		\ifdiapo@sfirst\diapo@sfirstfalse\else\hskip.25cm\textperiodcentered\hskip.25cm\fi
+		{\itshape\ifnum##1=\c@section\bfseries\else\mdseries\fi\hyperlink{Navigation##3}{##2}}}%
+	\diapo@secs}
+\setbeamertemplate{headline}{%
+	\begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+	\end{beamercolorbox}
+	\begin{beamercolorbox}{section in head/foot}
+		\vskip2pt
+		{\diapo@collect}%
+		{\diapo@collectsecs}%
+		{\hypersetup{linkcolor=black}\diapo@toprow}%
+		\vskip2pt
+	\end{beamercolorbox}%
+	\begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+	\end{beamercolorbox}
+}
+\setbeamercolor*{section in head/foot}{fg=black}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BOÎTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[most]{tcolorbox}
+
+% boîte théorème (couleur de la palette courante)
+\newtcbtheorem{mytheo}{Theorem}{colback=other,
+	colframe=other,
+	arc=2mm,
+	boxrule=0.5pt,
+	breakable, enhanced jigsaw,
+	width=\linewidth,
+	opacityback=0.1
+	}{th}
+\resetcounteronoverlays{tcb@cnt@mytheo}
+
+% pastille colorée devant une contribution : \contribdot{cblue} ou \contribdot{cgreen}
+\newcommand{\contribdot}[1]{\tikz[baseline=-0.6ex]\fill[#1] (0,0) circle (0.13cm);}
+
+% cadre d'une contribution : \begin{contribbox}{<couleur>}{<titre>} (cblue ou cgreen)
+\newtcolorbox{contribbox}[2]{colback=#1!10, colframe=#1,
+	arc=2mm, boxrule=0.5pt, title={#2},
+	fonttitle=\rmfamily\large, coltitle=white}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TODO
+%% \todo : écrit TODO en gros, au centre de la diapo (sans décaler le contenu).
+%% \todo[<note>] : idem, avec une note en dessous (\\ pour changer de ligne).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{todored}{RGB}{200, 30, 30}
+\NewDocumentCommand{\todo}{o}{%
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[text=todored,opacity=0.85,text opacity=0.85] at (current page.center) {%
+			\parbox{0.85\paperwidth}{\centering
+				{\fontsize{60}{64}\selectfont\sffamily\bfseries TODO}%
+				\IfValueT{#1}{\par\vspace{0.3cm}{\large\sffamily #1}}}%
+		};
+	\end{tikzpicture}%
+}
