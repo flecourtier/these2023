@@ -1,0 +1,123 @@
+%% OCCASION = MACS seminar, Montpellier 2026
+
+%% Requires compilation with XeLaTeX or LuaLaTeX
+\documentclass[compress,10pt,xcolor={table,dvipsnames},t]{beamer} %aspectratio=169
+\usetheme{diapo}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{etoolbox}
+% boîtes colorées (théorèmes)
+\usepackage[most]{tcolorbox}
+
+\setlength{\parindent}{0pt}
+
+% bibliographie
+\usepackage[style=authoryear,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
+\addbibresource{biblio.bib}
+\setbeamertemplate{bibliography item}{}
+\defbibenvironment{bibliography}
+  {\list{}{\leftmargin\bibhang\itemindent-\bibhang\itemsep\bibitemsep\parsep\bibparsep}}
+  {\endlist}
+  {\item[]}
+\renewcommand*{\bibfont}{\footnotesize}
+\renewrobustcmd*{\bibopenparen}{[}
+\renewrobustcmd*{\bibcloseparen}{]}
+\renewcommand*{\nameyeardelim}{\addcomma\space}
+\newcommand*{\myfootcite}[1]{\footnote[frame,1]{\parencite{#1}}}
+
+% barre de navigation (mini frames)
+\useoutertheme[subsection=false]{miniframes}
+\makeatletter
+\def\beamer@subsectionentry#1#2#3#4#5{\advance\beamer@xpos by1\relax}%
+\makeatother
+\setbeamercolor*{mini frame}{fg=bulles,bg=bulles}
+
+\hypersetup{
+	colorlinks=true,
+	urlcolor=blue,
+	citecolor=other,
+	linkcolor=title,
+}
+
+% boîte théorème
+\newtcbtheorem{mytheo}{Theorem}{colback=other,
+	colframe=other,
+	arc=2mm,
+	boxrule=0.5pt,
+	breakable, enhanced jigsaw,
+	width=\linewidth,
+	opacityback=0.1
+	}{th}
+\resetcounteronoverlays{tcb@cnt@mytheo}
+
+\title[]{Hybrid finite element and neural network methods for parametric PDEs}
+\subtitle{\small MACS seminar \\
+(``Modélisation, Analyse et Calcul Scientifique'')}
+
+\author{%
+	Michel Duprez\inst{1},
+	Emmanuel Franck\inst{2}, \\
+	\textbf{Frédérique Lecourtier}\inst{1} and
+	Vanessa Lleras\inst{3}
+}
+
+\institute{%
+	\inst{1} Project-Team MIMESIS, Inria, Strasbourg \\
+	\inst{2} Project-Team MACARON, Inria, Strasbourg \\
+	\inst{3} IMAG, University of Montpellier, Montpellier
+}
+
+\date{November 10, 2026}
+
+\begin{document}
+	\pgfkeys{/pgf/number format/.cd,1000 sep={\,}} % spacing between thousands in numbers
+
+	% page de titre
+	{\setbeamertemplate{footline}{}
+		\BackgroundTitle
+		\begin{frame}[plain]
+			\maketitle
+		\end{frame}
+	}
+	\addtocounter{framenumber}{-1}
+
+	% pages de début de section
+	\AtBeginSection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsection\par%
+					\vspace{0.5cm}
+				\end{beamercolorbox}
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1}
+	}
+
+	% pages de début de sous-section
+	\AtBeginSubsection[]{
+		{\setbeamertemplate{footline}{}
+			\begin{frame}
+				\vfill
+				\centering
+				\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
+					\usebeamerfont{title}\insertsectionhead\par%
+					\vspace{0.5cm}
+				\end{beamercolorbox}
+				\tableofcontents[sectionstyle=hide,subsectionstyle=show/shaded/hide]
+				\vfill
+			\end{frame}
+		}
+		\addtocounter{framenumber}{-1}
+	}
+
+	\Background
+
+\end{document}
