@@ -35,15 +35,20 @@
 }
 
 % --- palette "duo" : parties communes (titre, introduction, background, conclusion) ---
-% textes en noir et gris, triangle du haut bleu et triangle du bas vert
+% textes en noir et gris, triangle du haut gris clair neutre (la page de titre garde ses triangles bleu et vert,
+% voir \BackgroundTitle)
 \def\palette@duo{%
 	\definecolor{bulles}{RGB}{30, 30, 30}%
 	\definecolor{title}{RGB}{40, 40, 40}%
 	\definecolor{other}{RGB}{110, 110, 110}%
-	\definecolor{trianglesup}{RGB}{179, 212, 230}%
-	\definecolor{triangleinf}{RGB}{195, 230, 179}%
+	\definecolor{trianglesup}{RGB}{246, 241, 232}% ivoire ; autres essais : 250,241,222 crème, 245,242,236 blanc cassé, 238,234,228 greige clair, 247,231,206 champagne, 240,230,215 beige, 243,232,208 sable pâle, 236,226,212 lin, 230,206,160 ocre sable, 232,196,122 ocre jaune, 226,184,140 ocre sienne, 228,190,160 ocre rosé, 222,190,130 ocre terre, 240,200,150 ambre, 238,212,150 ocre plus clair, 220,178,98 ocre soutenu, 200,205,212 ardoise (gardée de côté), 250,215,185 pêche, 250,200,140 mandarine, 248,205,160 abricot, 248,200,180 corail, 205,205,205 gris neutre, 222,216,206 gris chaud
+	\definecolor{triangleinf}{RGB}{246, 241, 232}%
 	\definecolor{appendix}{RGB}{160, 160, 160}%
 }
+
+% triangles de la page de titre (bleu en haut, vert en bas), indépendants de la palette
+\definecolor{titletrisup}{RGB}{179, 212, 230}
+\definecolor{titletriinf}{RGB}{195, 230, 179}
 
 % couleurs fixes des contributions (pastilles, cadres), indépendantes de la palette courante
 \definecolor{cblue}{RGB}{79, 139, 151}
@@ -138,13 +143,28 @@
 }
 
 % triangles et signature (éléments communs aux fonds)
+% hauteur du triangle du haut (à gauche / à droite) : agrandi si la barre de navigation a deux lignes
+\newif\ifdiapo@navtwo
+% séparateur entre le nom du chapitre courant et ses sections
+\def\diapo@namesep{\hskip.25cm\raisebox{-1.5ex}{\Large\textperiodcentered}\hskip.25cm}
+\newif\ifdiapo@secparen
+\diapo@secparenfalse % <- true : sections du chapitre courant entre parenthèses (hors version 2 lignes)
+\newif\ifdiapo@navswap
+\diapo@navswapfalse % <- (si navtwo=false) true : sections à gauche de la cellule, nom du chapitre courant à droite (prioritaire sur navcenter)
+\newif\ifdiapo@navleft
+\diapo@navlefttrue % <- (avec navcenter) true : le groupe nom + sections est aligné à gauche de sa cellule au lieu d'être centré
+\newif\ifdiapo@navcenter
+\diapo@navcentertrue % <- (si navtwo=false) true : nom du chapitre courant + ses sections centrés entre les 2 flèches ; false : nom à gauche, sections à droite
+\diapo@navtwofalse % <- true : chapitre courant centré + sections sur une 2e ligne ; false : version une ligne
+\newcommand{\bg@trL}{0.14}
+\newcommand{\bg@trR}{0.107}
+\ifdiapo@navtwo\renewcommand{\bg@trL}{0.17}\renewcommand{\bg@trR}{0.137}\fi
 \newcommand{\bg@triangles}{%
-	\fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.107\paperheight) -- (current page.north east) -- cycle;
-	\fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;
+	\fill[trianglesup] (current page.north west) -- +(0, -\bg@trL\paperheight) -- +(\paperwidth, -\bg@trR\paperheight) -- (current page.north east) -- cycle;
 }
+% signature : titre court seul, en petit italique (le triangle du bas n'existe plus qu'à la page de titre)
 \newcommand{\bg@signature}{%
-	\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.055\paperheight,yshift=0.07\paperheight] at (current page.south east) {\normalsize\textbf{\insertshortauthor}};%
-	\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.05\paperheight,yshift=0.03\paperheight] at (current page.south east) {\textbf{\beamer@shorttitle}};% % texte brut : \insertshorttitle est un lien (coloré par hyperref)
+	\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.05\paperheight,yshift=0.03\paperheight] at (current page.south east) {\footnotesize\itshape\beamer@shorttitle};% % texte brut : \insertshorttitle est un lien (coloré par hyperref)
 }
 \newcommand{\bg@pagenumber}{%
 	\node[anchor=south west,inner sep=0pt,draw=none,xshift=0.05\paperheight,yshift=0.03\paperheight] at (current page.south west) {\usebeamerfont{footline}\usebeamercolor[fg]{footline}\ifcsname diapo@alab@\the\c@part\endcsname A\insertframenumber\else\insertframenumber\small/\insertmainframenumber\fi};%
@@ -154,7 +174,9 @@
 \newcommand{\BackgroundTitle}{
 	\setbeamertemplate{background}{%
 		\begin{tikzpicture}[overlay,remember picture]
-			\bg@triangles
+			\renewcommand{\bg@trL}{0.14}\renewcommand{\bg@trR}{0.107}%
+			\fill[titletrisup] (current page.north west) -- +(0, -\bg@trL\paperheight) -- +(\paperwidth, -\bg@trR\paperheight) -- (current page.north east) -- cycle;
+			\fill[titletriinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;
 		\end{tikzpicture}
 	}
 }
@@ -185,7 +207,7 @@
 \newcommand{\BackgroundBiblio}{
     \setbeamertemplate{background}{%
         \begin{tikzpicture}[overlay,remember picture]
-            \fill[trianglesup] (current page.north west) -- +(0, -0.14\paperheight) -- +(\paperwidth, -0.107\paperheight) -- (current page.north east) -- cycle;
+            \fill[trianglesup] (current page.north west) -- +(0, -\bg@trL\paperheight) -- +(\paperwidth, -\bg@trR\paperheight) -- (current page.north east) -- cycle;
             % \fill[triangleinf] (current page.south west) -- +(0, 0.08\paperheight) -- +(\paperwidth, 0.14\paperheight) -- (current page.south east) -- cycle;
         \end{tikzpicture}%
     }
@@ -356,14 +378,30 @@
 			\ifdiapo@cur\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{#3}}\else\diapo@underline{0.3pt}{\hyperlink{Navigation#4}{#3}}\fi%
 		\else
 			\ifdiapo@cur
+				\ifdiapo@navtwo
+				% nom du chapitre centré, ses sections sur une 2e ligne répartie sur toute la cellule
+				\vtop{\hbox to \diapo@wcur{\hfil\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}\hfil}%
+					\vskip3pt\hbox to \diapo@wcur{\diapo@seclistw}}%
+				\else
 				% nom du chapitre à gauche, ses sections alignées à droite de sa cellule
+				\ifdiapo@navswap
+				\hbox to \diapo@wcur{\diapo@seclist\hfil\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}}%
+				\else
+				\ifdiapo@navcenter
+				\hbox to \diapo@wcur{\ifdiapo@navleft\else\hfil\fi\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}%
+					\diapo@namesep\diapo@seclist\hfil}%
+				\else
 				\hbox to \diapo@wcur{\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}%
 					\hfil\diapo@seclist}%
+				\fi
+				\fi
+				\fi
 			\else
 				\diapo@underline{0.3pt}{\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}%
 			\fi
 		\fi}}
-\def\diapo@sep{\hskip.2cm\vrule width 0.4pt height 1.5ex depth 0.7ex\hskip.2cm}
+\RequirePackage{pifont}
+\def\diapo@sep{\hskip.25cm\raisebox{-0.4ex}{\ding{228}}\hskip.25cm}
 \newcommand{\diapo@toprow}{%
 	\diapo@acc=0pt \diapo@fixed=0pt \diapo@xcur=0pt \diapo@firsttrue
 	{\usebeamercolor[fg]{section in head/foot}%
@@ -386,7 +424,7 @@
 		\def\diapo@it##1##2##3##4##5{%
 			\ifdiapo@first\diapo@firstfalse\else\diapo@sep\fi
 			\diapo@iscur{##1}{##2}{##5}%
-			\ifdiapo@cur\hbox to \diapo@wcur{\diapo@itembox{##1}{##2}{##3}{##4}{##5}\hfil}%
+			\ifdiapo@cur\hbox to \diapo@wcur{\ifdiapo@navtwo\hfil\else\ifdiapo@navswap\hfil\else\ifdiapo@navcenter\ifdiapo@navleft\else\hfil\fi\fi\fi\fi\diapo@itembox{##1}{##2}{##3}{##4}{##5}\ifdiapo@navswap\ifdiapo@navtwo\hfil\fi\else\hfil\fi}%
 			\else\diapo@itembox{##1}{##2}{##3}{##4}{##5}\fi}%
 		\diapo@items\hss}}
 % sections du chapitre courant (titres courts de la barre), à la suite de son nom
@@ -405,7 +443,14 @@
 	\def\diapo@sec##1##2##3{%
 		\ifdiapo@sfirst\diapo@sfirstfalse\else\hskip.25cm\textperiodcentered\hskip.25cm\fi
 		{\itshape\ifnum##1=\c@section\bfseries\else\mdseries\fi\hyperlink{Navigation##3}{##2}}}%
-	\diapo@secs}
+	\raisebox{-0.4ex}{\ifdiapo@secparen(\hskip.08cm\fi\diapo@secs\ifdiapo@secparen\hskip.08cm)\fi}}
+% version 2 lignes : sections réparties sur la largeur de la cellule
+\def\diapo@seclistw{%
+	\diapo@sfirsttrue
+	\def\diapo@sec##1##2##3{%
+		\ifdiapo@sfirst\diapo@sfirstfalse\else\hfil\textperiodcentered\fi\hfil
+		{\itshape\ifnum##1=\c@section\bfseries\else\mdseries\fi\hyperlink{Navigation##3}{##2}}}%
+	\hfil\diapo@secs\hfil}
 \setbeamertemplate{headline}{%
 	\begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
 	\end{beamercolorbox}
