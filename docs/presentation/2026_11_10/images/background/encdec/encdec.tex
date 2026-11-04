@@ -1,0 +1,59 @@
+%% Figure standalone : principe d'une méthode numérique, en bandeau horizontal (encodage -> approximation -> décodage).
+%% Boîtes « function » (fond gris) et « vector » (fond blanc) : on quitte l'espace des fonctions, on résout, on y revient.
+%% Page 1 : problème + encodage. Page 2 : + approximation. Page 3 : + décodage. L'étape courante est en rouge, puis noire.
+%% Même cadre sur les trois pages. Figure commune : neutre.
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/background/encdec/encdec.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+
+\tikzset{
+	box/.style={draw=neutral, thick, rounded corners=3pt, minimum width=2.7cm, minimum height=0.95cm, align=center, font=\footnotesize},
+	fn/.style={box, fill=neutrallight}, % espace de fonctions (dimension infinie)
+	vec/.style={box, fill=white},       % espace de vecteurs (dimension finie)
+	arr/.style={-{Stealth[length=2.4mm]}, very thick},
+	steplabel/.style={font=\footnotesize\bfseries, anchor=south}
+}
+
+% #1 : nombre d'étapes affichées (1 à 3) ; #2, #3, #4 : couleur de l'encodage, de l'approximation, du décodage
+\newcommand{\encdec}[4]{
+	\useasboundingbox (-0.1,-0.85) rectangle (13.9,1.1);
+
+	\node[fn] (pde) at (1.35,0) {PDE\\(function)};
+	\node[vec] (disc) at (5.05,0) {discrete problem\\(vector)};
+	\draw[arr, #2] (pde.east) -- (disc.west);
+	\node[steplabel, #2] at (3.2,0.52) {Encoding};
+
+	\ifnum#1>1
+		\node[vec] (sol) at (8.75,0) {discrete solution\\(vector)};
+		\draw[arr, #3] (disc.east) -- (sol.west);
+		\node[steplabel, #3] at (6.9,0.52) {Approximation};
+		\node[font=\footnotesize, #3, anchor=north] at (6.9,-0.52) {(solve)};
+	\fi
+
+	\ifnum#1>2
+		\node[fn] (uh) at (12.45,0) {approx. solution\\(function)};
+		\draw[arr, #4] (sol.east) -- (uh.west);
+		\node[steplabel, #4] at (10.6,0.52) {Decoding};
+	\fi
+}
+
+\begin{document}
+
+\begin{tikzpicture}[x=1cm,y=1cm]
+	\encdec{1}{red}{neutral}{neutral}
+\end{tikzpicture}
+
+\begin{tikzpicture}[x=1cm,y=1cm]
+	\encdec{2}{black}{red}{neutral}
+\end{tikzpicture}
+
+\begin{tikzpicture}[x=1cm,y=1cm]
+	\encdec{3}{black}{black}{red}
+\end{tikzpicture}
+
+\end{document}

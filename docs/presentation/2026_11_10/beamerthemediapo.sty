@@ -114,7 +114,7 @@
 }
 % signature : titre court seul, en petit italique (le triangle du bas n'existe plus qu'à la page de titre)
 \newcommand{\bg@signature}{%
-	\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.05\paperheight,yshift=0.03\paperheight] at (current page.south east) {\footnotesize\itshape\beamer@shorttitle};% % texte brut : \insertshorttitle est un lien (coloré par hyperref)
+	\node[anchor=south east,inner sep=0pt,draw=none,xshift=-0.05\paperheight,yshift=0.03\paperheight] at (current page.south east) {\footnotesize\itshape\color{black!40}\beamer@shorttitle};% % texte brut : \insertshorttitle est un lien (coloré par hyperref)
 }
 \newcommand{\bg@pagenumber}{%
 	\node[anchor=south west,inner sep=0pt,draw=none,xshift=0.05\paperheight,yshift=0.03\paperheight] at (current page.south west) {\usebeamerfont{footline}\usebeamercolor[fg]{footline}\ifcsname diapo@alab@\the\c@part\endcsname A\insertframenumber\else\insertframenumber\small/\insertmainframenumber\fi};%

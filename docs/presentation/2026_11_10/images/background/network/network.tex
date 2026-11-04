@@ -1,0 +1,41 @@
+%% Figure standalone : réseau entièrement connecté u_theta(x, mu) (entrées x, mu ; 2 couches cachées ; sortie u_theta). Neutre (figure commune).
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/background/network/network.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+\usetikzlibrary{decorations.pathreplacing}
+
+\begin{document}
+
+\begin{tikzpicture}[
+		neuron/.style={circle, draw=neutral, thick, minimum size=0.36cm, inner sep=0pt},
+		inout/.style={circle, draw=neutral, thick, minimum size=0.52cm, inner sep=0pt, font=\footnotesize},
+		edge/.style={neutral!60, line width=0.25pt}
+	]
+	% entrées : x_1, x_2, mu_1, mu_2 ; espacement 0.62 cm
+	\foreach \i/\name in {1/x_1,2/x_2,3/\mu_1,4/\mu_2} {
+			\node[inout] (in\i) at (0,{(2.5-\i)*0.62}) {$\name$};
+		}
+	% deux couches cachées de 5 neurones
+	\foreach \l/\px in {1/1.4, 2/2.7} {
+			\foreach \j in {1,...,5} { \node[neuron] (h\l\j) at (\px,{(3-\j)*0.65}) {}; }
+		}
+	% sortie
+	\node[inout] (out) at (4.1,0) {$u_\theta$};
+
+	\foreach \i in {1,...,4} { \foreach \j in {1,...,5} { \draw[edge] (in\i) -- (h1\j); } }
+	\foreach \i in {1,...,5} { \foreach \j in {1,...,5} { \draw[edge] (h1\i) -- (h2\j); } }
+	\foreach \i in {1,...,5} { \draw[edge] (h2\i) -- (out); }
+
+	% accolades sur les entrées : x (espace), mu (paramètres)
+	\draw[decorate, decoration={brace, amplitude=3pt}, neutral, thick] (-0.42,0.05) -- (-0.42,1.2);
+	\node[font=\footnotesize] at (-0.95,0.62) {$\bm{x}$};
+	\draw[decorate, decoration={brace, amplitude=3pt}, neutral, thick] (-0.42,-1.2) -- (-0.42,-0.05);
+	\node[font=\footnotesize] at (-0.95,-0.62) {$\bm{\mu}$};
+\end{tikzpicture}
+
+\end{document}

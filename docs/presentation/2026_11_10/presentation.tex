@@ -51,7 +51,8 @@
 
 % bibliographie
 \usepackage[style=authoryear,sorting=nyt,doi=false,url=false,maxbibnames=99,date=year]{biblatex}
-\addbibresource{biblio.bib}
+\addbibresource{biblio.bib} % entrées copiées du manuscrit (skill slides-bibliography)
+\AtEveryBibitem{\iffieldequalstr{entrykey}{Ours2026}{\bfseries}{}}% références de l'auteure en gras
 \setbeamertemplate{bibliography item}{}
 \defbibenvironment{bibliography}
 {\list{}{\leftmargin\bibhang\itemindent-\bibhang\itemsep\bibitemsep\parsep\bibparsep}}
