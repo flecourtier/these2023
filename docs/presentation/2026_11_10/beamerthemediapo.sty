@@ -6,61 +6,7 @@
 \RequirePackage{fontspec}
 \WarningsOff[mathdesign/mdbch]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% PALETTES
-%% Une palette par type de chapitre, choisie avec \SetPalette{<nom>}
-%% (appelée par \Chapter, voir presentation.tex). Les couleurs portent le même
-%% nom dans toutes les palettes : bulles, title, other, triangleinf,
-%% trianglesup, appendix.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% --- palette "blue" : contribution 1 ---
-\def\palette@blue{%
-	\definecolor{bulles}{RGB}{19, 27, 42}%
-	\definecolor{title}{RGB}{56, 78, 108}%
-	\definecolor{other}{RGB}{79, 139, 151}%
-	\definecolor{triangleinf}{RGB}{179, 212, 230}%
-	\definecolor{trianglesup}{RGB}{179, 212, 230}%
-	\definecolor{appendix}{RGB}{138, 172, 189}%
-}
-
-% --- palette "green" : contribution 2 (accordée au bleu : même luminosité et saturation) ---
-\def\palette@green{%
-	\definecolor{bulles}{RGB}{19, 42, 30}%
-	\definecolor{title}{RGB}{70, 108, 56}%
-	\definecolor{other}{RGB}{98, 151, 79}%
-	\definecolor{triangleinf}{RGB}{195, 230, 179}%
-	\definecolor{trianglesup}{RGB}{195, 230, 179}%
-	\definecolor{appendix}{RGB}{154, 189, 138}%
-}
-
-% --- palette "duo" : parties communes (titre, introduction, background, conclusion) ---
-% textes en noir et gris, triangle du haut gris clair neutre (la page de titre garde ses triangles bleu et vert,
-% voir \BackgroundTitle)
-\def\palette@duo{%
-	\definecolor{bulles}{RGB}{30, 30, 30}%
-	\definecolor{title}{RGB}{40, 40, 40}%
-	\definecolor{other}{RGB}{110, 110, 110}%
-	\definecolor{trianglesup}{RGB}{246, 241, 232}% ivoire ; autres essais : 250,241,222 crème, 245,242,236 blanc cassé, 238,234,228 greige clair, 247,231,206 champagne, 240,230,215 beige, 243,232,208 sable pâle, 236,226,212 lin, 230,206,160 ocre sable, 232,196,122 ocre jaune, 226,184,140 ocre sienne, 228,190,160 ocre rosé, 222,190,130 ocre terre, 240,200,150 ambre, 238,212,150 ocre plus clair, 220,178,98 ocre soutenu, 200,205,212 ardoise (gardée de côté), 250,215,185 pêche, 250,200,140 mandarine, 248,205,160 abricot, 248,200,180 corail, 205,205,205 gris neutre, 222,216,206 gris chaud
-	\definecolor{triangleinf}{RGB}{246, 241, 232}%
-	\definecolor{appendix}{RGB}{160, 160, 160}%
-}
-
-% triangles de la page de titre (bleu en haut, vert en bas), indépendants de la palette
-\definecolor{titletrisup}{RGB}{179, 212, 230}
-\definecolor{titletriinf}{RGB}{195, 230, 179}
-
-% couleurs fixes des contributions (pastilles, cadres), indépendantes de la palette courante
-\definecolor{cblue}{RGB}{79, 139, 151}
-\definecolor{cgreen}{RGB}{98, 151, 79}
-
-\newcommand{\SetPalette}[1]{%
-	\csname palette@#1\endcsname
-	\ifdefined\hypersetup\hypersetup{citecolor=other,linkcolor=title}\fi
-}
-
-% palette par défaut
-\SetPalette{duo}
+\RequirePackage{diapocolors} % toutes les couleurs (palettes, hybridations, neutre...)
 
 % color
 \setbeamercolor{classic}{fg=black}
@@ -75,6 +21,7 @@
 
 % font
 \setromanfont{Georgia}
+\usefonttheme{professionalfonts} % maths entièrement en Computer Modern (sinon lettres en Open Sans italique + symboles CM)
 %\usefonttheme{serif} %fonctionne
 \setsansfont[Scale=MatchLowercase]{Open Sans}
 \setbeamerfont{classic}{family=\sffamily,series=\mdseries,size=\small}
@@ -99,7 +46,10 @@
 % \setlength{\leftmargini}{1.25em}
 % \setlength{\leftmarginii}{1em}
 % \setlength{\leftmarginiii}{1em}
-\setbeamertemplate{footline}{\vskip0.15\paperheight}
+% note de bas de frame : sur la ligne du numéro de page et du titre court, entre les deux, avec un filet court et clair
+\setbeamertemplate{footline}{\vskip0.017\paperheight}
+\renewcommand*{\footnoterule}{\kern-3pt\hbox to \textwidth{\hspace*{1.2cm}\textcolor{black!30}{\rule{2.5cm}{0.4pt}}\hfil}\kern2.6pt}
+\setbeamertemplate{footnote}{\noindent\hspace*{1.2cm}\hbox to 1.2em{\hfil\insertfootnotemark}\insertfootnotetext\par}
 
 % titlepage
 \pgfdeclareimage[height=0.05\paperheight]{logomimesis}{images/logos/logo-mimesis}
@@ -222,6 +172,8 @@
 %%     green, duo), avec une page de chapitre : libellé et titre suivis d'un
 %%     filet de couleur.
 %% \Chapter*{<palette>} : nouveau \part dans la palette choisie, sans page de chapitre.
+%% \Chapter*[<libellé>]{<palette>} : idem, mais le chapitre porte un nom dans la barre de navigation
+%%     (ses sections s'affichent à la suite, comme pour une hybridation).
 %% \Section*{<titre>} : \section sans page de début de section (elle reste dans
 %%     les bulles). \Section{<titre>} équivaut à \section{<titre>}.
 %% Toutes ces pages n'ont pas de numéro et ne sont pas comptées dans la numérotation.
@@ -246,10 +198,15 @@
 \def\diapo@setalabel#1#2#3{\diapo@setlabel{#1}{#2}{#3}\global\expandafter\let\csname diapo@alab@#1\endcsname\relax}
 % libellé (coloré) du chapitre n, relu par les pages de la partie commune
 \def\diapo@setlabel#1#2#3{\global\expandafter\def\csname diapo@lab@#1\endcsname{#3}}
+% lien d'un nom de chapitre : vers sa page de chapitre si elle existe (cible diapo@chap<n>, repérée
+% dans le .aux par \diapo@cp), sinon vers la 1re page de sa 1re section
+\def\diapo@cp#1{\global\expandafter\let\csname diapo@cp@#1\endcsname\relax}
+\def\diapo@chaplink#1#2#3{\ifcsname diapo@cp@#2\endcsname\hyperlink{diapo@chap#2}{#3}\else\hyperlink{Navigation#1}{#3}\fi}
 \newif\ifchapterpage
 \chapterpagetrue
 % \Chapter* ouvre quand même un \part (sections et bulles séparées du chapitre précédent)
-\NewDocumentCommand{\Chapter}{s m}{\IfBooleanTF{#1}{\SetPalette{#2}\global\chapterpagefalse\gdef\chapterlabel{}\part{}}{\Chapter@full{#2}}}
+\NewDocumentCommand{\Chapter}{s o m}{\IfBooleanTF{#1}{\SetPalette{#3}\global\chapterpagefalse\gdef\chapterlabel{}%
+	\IfValueT{#2}{\protected@write\@auxout{}{\string\diapo@setlabel{\the\numexpr\value{part}+1\relax}{#3}{#2}}}\part{}}{\Chapter@full{#3}}}
 
 \newif\ifsectionpage
 \sectionpagetrue
@@ -260,7 +217,9 @@
 	\ifchapterpage
 	{\setbeamertemplate{footline}{}
 		\BackgroundChapter
+		\protected@write\@auxout{}{\string\diapo@cp{\the\c@part}}%
 		\begin{frame}[c]
+			\hypertarget{diapo@chap\the\c@part}{}%
 			\raggedright
 			\ifx\chapterlabel\empty\else
 				{\color{other}\sffamily\bfseries\Large\chapterlabel\par}
@@ -380,24 +339,24 @@
 			\ifdiapo@cur
 				\ifdiapo@navtwo
 				% nom du chapitre centré, ses sections sur une 2e ligne répartie sur toute la cellule
-				\vtop{\hbox to \diapo@wcur{\hfil\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}\hfil}%
+				\vtop{\hbox to \diapo@wcur{\hfil\diapo@underline{0.9pt}{\bfseries\diapo@chaplink{#4}{#5}{\csname diapo@lab@#5\endcsname}}\hfil}%
 					\vskip3pt\hbox to \diapo@wcur{\diapo@seclistw}}%
 				\else
 				% nom du chapitre à gauche, ses sections alignées à droite de sa cellule
 				\ifdiapo@navswap
-				\hbox to \diapo@wcur{\diapo@seclist\hfil\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}}%
+				\hbox to \diapo@wcur{\diapo@seclist\hfil\diapo@underline{0.9pt}{\bfseries\diapo@chaplink{#4}{#5}{\csname diapo@lab@#5\endcsname}}}%
 				\else
 				\ifdiapo@navcenter
-				\hbox to \diapo@wcur{\ifdiapo@navleft\else\hfil\fi\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}%
-					\diapo@namesep\diapo@seclist\hfil}%
+				\hbox to \diapo@wcur{\ifdiapo@navleft\else\hfil\fi\diapo@underline{0.9pt}{\bfseries\diapo@chaplink{#4}{#5}{\csname diapo@lab@#5\endcsname}}%
+					\ifx\diapo@secs\@empty\else\diapo@namesep\diapo@seclist\fi\hfil}%
 				\else
-				\hbox to \diapo@wcur{\diapo@underline{0.9pt}{\bfseries\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}%
+				\hbox to \diapo@wcur{\diapo@underline{0.9pt}{\bfseries\diapo@chaplink{#4}{#5}{\csname diapo@lab@#5\endcsname}}%
 					\hfil\diapo@seclist}%
 				\fi
 				\fi
 				\fi
 			\else
-				\diapo@underline{0.3pt}{\hyperlink{Navigation#4}{\csname diapo@lab@#5\endcsname}}%
+				\diapo@underline{0.3pt}{\diapo@chaplink{#4}{#5}{\csname diapo@lab@#5\endcsname}}%
 			\fi
 		\fi}}
 \RequirePackage{pifont}
@@ -435,7 +394,10 @@
 	\def\slideentry##1##2##3##4##5##6{}%
 	\def\sectionentry##1##2##3##4##5{%
 		\ifnum##5=\c@part\relax
-			\xdef\diapo@secs{\unexpanded\expandafter{\diapo@secs}\noexpand\diapo@sec{##1}{\unexpanded{##2}}{##3}}%
+			\edef\diapo@tmpA{\unexpanded{##2}}\edef\diapo@tmpB{\csname diapo@lab@\the\c@part\endcsname}%
+			\ifx\diapo@tmpA\diapo@tmpB\else
+				\xdef\diapo@secs{\unexpanded\expandafter{\diapo@secs}\noexpand\diapo@sec{##1}{\unexpanded{##2}}{##3}}%
+			\fi
 		\fi}%
 	\dohead}
 \def\diapo@seclist{%
@@ -497,7 +459,6 @@
 %% \todo[<note>] : idem, avec une note en dessous (\\ pour changer de ligne).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\definecolor{todored}{RGB}{200, 30, 30}
 \NewDocumentCommand{\todo}{o}{%
 	\begin{tikzpicture}[remember picture,overlay]
 		\node[text=todored,opacity=0.85,text opacity=0.85] at (current page.center) {%

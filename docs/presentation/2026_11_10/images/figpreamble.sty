@@ -1,0 +1,14 @@
+% Préambule commun des figures standalone (images/<section>/<fig>/<fig>.tex).
+% Même polices et mêmes couleurs que les slides.
+\ProvidesPackage{figpreamble}
+\RequirePackage{fontspec}
+\setmainfont[Scale=MatchLowercase]{Open Sans} % corps des slides : Open Sans
+\RequirePackage{amsmath,amssymb,bm}
+\RequirePackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\RequirePackage{diapocolors} % hybone/hybtwo/neutral... (à la racine de la présentation)
+
+% notations des slides
+\newcommand{\jump}[1]{[\![#1]\!]}
+\newcommand{\avg}[1]{\{#1\}}
+\newcommand{\gradh}{\nabla_{\!h}}

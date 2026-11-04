@@ -1,0 +1,24 @@
+{
+    // Compile tout fichier LaTeX à l'enregistrement, y compris les figures standalone
+    // (images/<section>/<fig>/<fig>.tex, qui ne sont pas incluses dans presentation.tex :
+    // le réglage par défaut "onFileChange" ne les voit pas).
+    "latex-workshop.latex.autoBuild.run": "onSave",
+
+    // Mise en page automatique à l'enregistrement (latexindent), comme dans le manuscrit.
+    // Indentation par tabulations, comme dans les slides.
+    "latex-workshop.formatting.latex": "latexindent",
+    // Arguments par défaut de LaTeX Workshop + indentPreamble : sans lui latexindent n'indente pas
+    // le préambule (corps des \newcommand des figures standalone et de presentation.tex).
+    "latex-workshop.formatting.latexindent.args": [
+        "-c",
+        "%DIR%/",
+        "%TMPFILE%",
+        "-y=defaultIndent: '%INDENT%',indentPreamble: 1"
+    ],
+    "[latex]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "James-Yu.latex-workshop",
+        "editor.insertSpaces": false,
+        "editor.detectIndentation": false
+    }
+}

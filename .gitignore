@@ -42,3 +42,5 @@ docs/antora/node_modules
 *.out
 *.toc
 *.synctex.gz
+# Skills et réglages Claude Code (outils personnels)
+.claude/

@@ -8,7 +8,43 @@
 \usepackage{amssymb}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage{bm}
 \usepackage{etoolbox}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\gradh}{\nabla_{\!h}} % gradient par morceaux (DG), comme dans le manuscrit
+\newcommand{\jump}[1]{[\![#1]\!]}
+\newcommand{\avg}[1]{\{#1\}}
+\NewDocumentCommand{\coloredonly}{D<>{} O{darkred} m}{% mise en évidence à l'overlay donné
+	\alt<#1>{\textcolor{#2}{#3}}{{\color{black}#3}}%
+}
+% bloc de texte qui apparaît à l'overlay #2 ; une barre verticale fine dans la marge gauche marque le bloc courant
+% (de l'overlay #2 à celui qui précède le bloc suivant). \blk*{n}{...} : la barre reste jusqu'à la fin (dernier bloc).
+% Un \blk contient des paragraphes et des équations ; ne pas le commencer par un \vspace (le mettre avant le \blk).
+% La barre est dessinée hors mise en page (TikZ overlay) : elle ne change aucun espacement.
+\newlength{\blkbarx} \setlength{\blkbarx}{8pt} % distance de la barre au bord gauche du texte
+\newlength{\blkbarshrink} \setlength{\blkbarshrink}{0pt} % raccourcissement de la barre en haut et en bas (elle suit les boîtes de lignes, pas les glyphes)
+\newcommand{\blkbarstyle}{title!40!white,line width=0.6pt} % aspect de la barre (discrète)
+\newsavebox{\blkbox}
+\pgfkeys{/blk/.cd, shrink/.store in=\blkshrinkopt, until/.store in=\blkuntilopt}
+% \blk[<clés>]{n}{...} ; clés : shrink=<longueur> (remplace \blkbarshrink pour ce bloc),
+% until=<m> (le bloc disparaît après l'overlay m ; sans cette clé il reste jusqu'à la fin)
+\NewDocumentCommand{\blk}{s O{} m +m}{%
+	\pgfkeys{/blk/.cd, shrink=\blkbarshrink, until={}, #2}%
+	\setbox\blkbox\vtop{#4\par\unskip}% mesure : hauteur de la 1re ligne (ht) et du reste du bloc (dp), sans l'espace sous un display final (\unskip)
+	\edef\blkbar{\noexpand\leavevmode\noexpand\tikz[overlay]\noexpand\draw[\blkbarstyle] (-\the\blkbarx,\the\dimexpr\ht\blkbox-\blkshrinkopt\relax) -- (-\the\blkbarx,\the\dimexpr-\dp\blkbox+\blkshrinkopt\relax);}%
+	\IfBooleanTF{#1}{%
+		\only<#3->{\blkbar#4}%
+	}{%
+		\ifx\blkuntilopt\empty
+			\edef\blknext{\noexpand\only<\the\numexpr#3+1\relax->}%
+		\else
+			\edef\blknext{\noexpand\only<\the\numexpr#3+1\relax-\blkuntilopt>}%
+		\fi
+		\only<#3>{\blkbar#4}\blknext{#4}%
+	}%
+}
 
 \setlength{\parindent}{0pt}
 
@@ -17,9 +53,9 @@
 \addbibresource{biblio.bib}
 \setbeamertemplate{bibliography item}{}
 \defbibenvironment{bibliography}
-  {\list{}{\leftmargin\bibhang\itemindent-\bibhang\itemsep\bibitemsep\parsep\bibparsep}}
-  {\endlist}
-  {\item[]}
+{\list{}{\leftmargin\bibhang\itemindent-\bibhang\itemsep\bibitemsep\parsep\bibparsep}}
+{\endlist}
+{\item[]}
 \renewcommand*{\bibfont}{\footnotesize}
 \renewrobustcmd*{\bibopenparen}{[}
 \renewrobustcmd*{\bibcloseparen}{]}
@@ -35,7 +71,7 @@
 
 \title[Hybrid FE and NN methods for parametric PDEs]{Hybrid finite element and neural network methods for parametric PDEs}
 \subtitle{\small MACS seminar \\
-(``Modélisation, Analyse et Calcul Scientifique'')}
+	(``Modélisation, Analyse et Calcul Scientifique'')}
 
 \author[LECOURTIER Frédérique]{%
 	Michel Duprez\inst{1},
@@ -53,42 +89,44 @@
 \date{November 10, 2026}
 
 \begin{document}
-	\pgfkeys{/pgf/number format/.cd,1000 sep={\,}} % spacing between thousands in numbers
+\pgfkeys{/pgf/number format/.cd,1000 sep={\,}} % spacing between thousands in numbers
 
-	% page de titre (palette duo : triangles bleu et vert)
-	\SetPalette{duo}
-	{\setbeamertemplate{footline}{}
-		\BackgroundTitle
-		\begin{frame}[plain]
-			\maketitle
-		\end{frame}
-	}
-	\addtocounter{framenumber}{-1}
+% page de titre (palette duo : triangles bleu et vert)
+\SetPalette{duo}
+{\setbeamertemplate{footline}{}
+	\BackgroundTitle
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}
+}
+\addtocounter{framenumber}{-1}
 
-	\Background
+\Background
 
-	%% ---------- Partie commune ----------
-	\Chapter*{duo}
-	\input{sections/common/intro}
-	\input{sections/common/background}
+%% ---------- Partie commune ----------
+\Chapter*[Introduction]{duo}
+\input{sections/common/intro}
 
-	%% ---------- Contribution 1 (bleu) ----------
-	\Chapter{blue}{1st hybridization}{Enriched finite element method using PINNs}
-	\input{sections/contrib1/main}
+\Chapter{duo}{Numerical methods}{Numerical methods for parametric PDEs}
+\input{sections/common/background}
 
-	%% ---------- Contribution 2 (vert) ----------
-	\Chapter{green}{2nd hybridization}{Learnable Galerkin methods}
-	\input{sections/contrib2/main}
+%% ---------- Contribution 1 (bleu) ----------
+\Chapter{blue}{1st hybridization}{Enriched finite element method using PINNs}
+\input{sections/contrib1/main}
 
-	%% ---------- Conclusion ----------
-	\Chapter*{duo}
-	\input{sections/common/conclusion}
+%% ---------- Contribution 2 (vert) ----------
+\Chapter{green}{2nd hybridization}{Learnable Galerkin methods}
+\input{sections/contrib2/main}
 
-	%% ---------- Annexes (une par hybridation) ----------
-	\Appendix{blue}{1st hybridization}{Enriched finite element method using PINNs}
-	\input{sections/contrib1/appendix}
+%% ---------- Conclusion ----------
+\Chapter*{duo}
+\input{sections/common/conclusion}
 
-	\Appendix{green}{2nd hybridization}{Learnable Galerkin methods}
-	\input{sections/contrib2/appendix}
+%% ---------- Annexes (une par hybridation) ----------
+\Appendix{blue}{1st hybridization}{Enriched finite element method using PINNs}
+\input{sections/contrib1/appendix}
+
+\Appendix{green}{2nd hybridization}{Learnable Galerkin methods}
+\input{sections/contrib2/appendix}
 
 \end{document}
