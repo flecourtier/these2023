@@ -1,9 +1,9 @@
 \Section*{Galerkin approaches}
 
 % \fcolorbox comme dans les anciennes présentations, coloré seulement à l'overlay 4 (cadre blanc avant, pour ne rien décaler)
-\newcommand{\dgbox}[2]{\alt<3>{\fcolorbox{#1}{white}{$\displaystyle #2$}}{\fcolorbox{white}{white}{$\displaystyle #2$}}}
+\newcommand{\dgbox}[2]{\alt<3->{\fcolorbox{#1}{white}{$\displaystyle #2$}}{\fcolorbox{white}{white}{$\displaystyle #2$}}}
 % étiquette de même couleur que son cadre, visible à l'overlay 4
-\newcommand{\dglabel}[2]{\text{\uncover<3>{\textcolor{#1}{\footnotesize #2}}}}
+\newcommand{\dglabel}[2]{\text{\uncover<3->{\textcolor{#1}{\footnotesize #2}}}}
 
 \begin{frame}{Discontinuous Galerkin (DG) method\myfootcite{Arnold2002}}
 	\begin{minipage}[t]{0.62\linewidth}
@@ -87,7 +87,7 @@
 		% Dirichlet condition strongly on the dofs: here $V_h^0\subset V_h$ vanishing on $\Gamma$
 	}
 
-	\blk*{3}{%
+	\blk{3}{%
 		\textbf{Variational problem:} \quad Find $u_h\in V_h^0$ such that, $\forall v_h\in V_h^0$, $a(u_h,v_h;\bm{\mu})=l(v_h;\bm{\mu})=\int_\Omega f\,v_h$,
 
 		\vspace{-3pt}
@@ -97,33 +97,15 @@
 
 		with $V_h^0\subset V_h$ vanishing on $\Gamma$ and \coloredonly<3>{no interface terms, no penalty}.
 	}
+
+	\vspace{5pt}
+	\blk*{4}{%
+		\textbf{Linear system (\coloredonly<4>{in both Galerkin methods}):} \quad $A_h(\bm{\mu})\,\bm{\beta}_h(\bm{\mu})=\bm{b}_h(\bm{\mu})$
+	}
 \end{frame}
 
-% colonnes communes aux deux tableaux de la slide de comparaison (alignés l'un sous l'autre)
-\newenvironment{cmptab}{\begin{tabular}{@{}p{0.2\linewidth}>{\centering\arraybackslash}p{0.36\linewidth}>{\centering\arraybackslash}p{0.38\linewidth}@{}}}{\end{tabular}}
-% idem avec une colonne étroite à gauche pour la pastille d'étape (\multirow centrée sur le bloc de lignes)
+% tableau de la slide « Link between Galerkin and PINNs » : colonne étroite à gauche pour la pastille d'étape (\multirow centrée sur le bloc de lignes)
 \newenvironment{cmptabn}{\begin{tabular}{@{}>{\centering\arraybackslash}p{0.03\linewidth}@{\hspace{5pt}}p{0.16\linewidth}>{\centering\arraybackslash}p{0.36\linewidth}>{\centering\arraybackslash}p{0.38\linewidth}@{}}}{\end{tabular}}
-
-\begin{frame}{Link between DG and CG}
-	\vspace{15pt}
-	\renewcommand{\arraystretch}{1.3}
-	\begin{cmptab}
-		\toprule
-		& \textbf{DG}                           & \textbf{CG}                                         \\
-		\midrule
-		Space                               & discontinuous, $V_h^\text{disc}$      & continuous, $V_h\subset V_h^\text{disc}$ \\
-		Dofs                                & independent                           & shared (connectivity table)                         \\
-		& $\bm{\beta}_h(\bm{\mu})=(\beta_{c,i}(\bm{\mu}))_{c,i}$ & $\bm{\beta}_h(\bm{\mu})=(\beta_I(\bm{\mu}))_I$ \\
-		$N_\text{dofs}$                     & $\text{dim}\, V_h^\text{disc}=N_\text{cells}\cdot N_b$ & $\text{dim}\, V_h<N_\text{cells}\cdot N_b$ \\
-		\midrule
-		Continuity                          & weak, via numerical fluxes            & strong, in the space                                \\
-		Interface terms                     & consistency, penalty                  & none (cell terms only)             \\
-		Dirichlet condition                 & weak, via numerical fluxes                    & strong, on the dofs                                \\
-		\midrule
-		Linear system & \multicolumn{2}{c}{$A_h(\bm{\mu})\,\bm{\beta}_h(\bm{\mu})=\bm{b}_h(\bm{\mu})$ in both cases (but different sizes)} \\
-		\bottomrule
-	\end{cmptab}%
-\end{frame}
 
 \Section*{Learning-based approaches}
 
@@ -175,9 +157,9 @@
 	\vspace{4pt}
 	\begin{cmptabn}
 		\toprule
-		& & \textbf{Galerkin}                     & \textbf{PINN}                                       \\
+		& & \textbf{Galerkin (DG/CG)}                     & \textbf{PINN}                                       \\
 		\midrule
-		\multirow{3}{*}{\stepcirc{1}} & Space                      & vector space $V_h$                    & manifold of the $u_\theta$                          \\
+		\multirow{3}{*}{\stepcirc{1}} & Space                      & vector space ($V_h^\text{disc}$/$V_h$)                    & manifold of the $u_\theta$                          \\
 		& Unknowns                   & dofs $\bm{\beta}_h(\bm{\mu})$           & weights $\theta$                                    \\
 		& Integrals                  & quadrature on cells                   & Monte Carlo on collocation points                   \\
 	\end{cmptabn}%
