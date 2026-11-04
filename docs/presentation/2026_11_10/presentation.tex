@@ -12,6 +12,7 @@
 \usepackage{bm}
 \usepackage{etoolbox}
 \usepackage{booktabs} % tableaux (slide de comparaison DG / CG)
+\usepackage{multirow} % pastille d'étape centrée sur un bloc de lignes (slide « Link between Galerkin and PINNs »)
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\gradh}{\nabla_{\!h}} % gradient par morceaux (DG), comme dans le manuscrit
@@ -46,6 +47,9 @@
 		\only<#3>{\blkbar#4}\blknext{#4}%
 	}%
 }
+
+% pastille numérotée d'une étape (encodage 1, approximation 2, décodage 3) ; reprend la couleur courante ; définie aussi dans images/figpreamble.sty
+\newcommand{\stepcirc}[1]{\leavevmode\smash{\tikz[baseline={([yshift=-1.2pt]c.base)}]\node[circle,draw,line width=0.4pt,inner sep=0pt,minimum size=3.3mm,font=\scriptsize\bfseries](c){#1};}}
 
 \setlength{\parindent}{0pt}
 

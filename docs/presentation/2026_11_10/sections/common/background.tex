@@ -101,6 +101,8 @@
 
 % colonnes communes aux deux tableaux de la slide de comparaison (alignés l'un sous l'autre)
 \newenvironment{cmptab}{\begin{tabular}{@{}p{0.2\linewidth}>{\centering\arraybackslash}p{0.36\linewidth}>{\centering\arraybackslash}p{0.38\linewidth}@{}}}{\end{tabular}}
+% idem avec une colonne étroite à gauche pour la pastille d'étape (\multirow centrée sur le bloc de lignes)
+\newenvironment{cmptabn}{\begin{tabular}{@{}>{\centering\arraybackslash}p{0.03\linewidth}@{\hspace{5pt}}p{0.16\linewidth}>{\centering\arraybackslash}p{0.36\linewidth}>{\centering\arraybackslash}p{0.38\linewidth}@{}}}{\end{tabular}}
 
 \begin{frame}{Link between DG and CG}
 	\vspace{15pt}
@@ -160,40 +162,39 @@
 \Section*{Common framework}
 
 \begin{frame}{Link between Galerkin and PINNs}
-	\renewcommand{\arraystretch}{1.1}
+	\renewcommand{\arraystretch}{1.15}
+	\textbf{Numerical method (three steps):} \hfill \only<4>{\coloredonly<4>{\textbf{Same philosophy, different approximation space}}}
+
+	\vspace{-8pt}
 	\centering
 	\only<1>{\includegraphics[page=1]{images/background/encdec/encdec.pdf}}%
 	\only<2>{\includegraphics[page=2]{images/background/encdec/encdec.pdf}}%
-	\only<3->{\includegraphics[page=3]{images/background/encdec/encdec.pdf}}
+	\only<3>{\includegraphics[page=3]{images/background/encdec/encdec.pdf}}%
+	\only<4->{\includegraphics[page=4]{images/background/encdec/encdec.pdf}}
 
-	\vspace{6pt}
-	\begin{cmptab}
+	\vspace{4pt}
+	\begin{cmptabn}
 		\toprule
-		& \textbf{Galerkin}                     & \textbf{PINN}                                       \\
+		& & \textbf{Galerkin}                     & \textbf{PINN}                                       \\
 		\midrule
-		Space                               & vector space $V_h$                    & manifold of the $u_\theta$                          \\
-		Unknowns                            & dofs $\bm{\beta}_h(\bm{\mu})$           & weights $\theta$                                    \\
-	\end{cmptab}%
+		\multirow{3}{*}{\stepcirc{1}} & Space                      & vector space $V_h$                    & manifold of the $u_\theta$                          \\
+		& Unknowns                   & dofs $\bm{\beta}_h(\bm{\mu})$           & weights $\theta$                                    \\
+		& Integrals                  & quadrature on cells                   & Monte Carlo on collocation points                   \\
+	\end{cmptabn}%
 
 	\only<2->{%
-		\begin{cmptab}
+		\begin{cmptabn}
 			\midrule
-			Parameters                          & \leavevmode\coloredonly<2>{fixed $\bm{\mu}$}, one solve per $\bm{\mu}$ & \leavevmode\coloredonly<2>{$\bm{\mu}\in\mathcal{M}$ as input}, one training \\
-			Resolution                          & linear system $A_h(\bm{\mu})\bm{\beta}_h(\bm{\mu})=\bm{b}_h(\bm{\mu})$ & optimization on $\theta$                        \\
-			Integrals                           & quadrature on cells                   & Monte Carlo on collocation points                   \\
-		\end{cmptab}%
+			\multirow{2}{*}{\stepcirc{2}} & Parameters                  & \leavevmode\coloredonly<2>{fixed $\bm{\mu}$}, one solve per $\bm{\mu}$ & \leavevmode\coloredonly<2>{$\bm{\mu}\in\mathcal{M}$ as input}, one training \\
+			& Resolution                  & linear system $A_h(\bm{\mu})\bm{\beta}_h(\bm{\mu})=\bm{b}_h(\bm{\mu})$ & optimization on $\theta$                        \\
+		\end{cmptabn}%
 	}
 
 	\only<3->{%
-		\begin{cmptab}
+		\begin{cmptabn}
 			\midrule
-			Decoder                             & $u_h(\bm{x},\bm{\mu})$, \coloredonly<3>{linear} in $\bm{\beta}_h$ & $u_\theta(\bm{x},\bm{\mu})$, \coloredonly<3>{non-linear} in $\theta$ \\
+			\stepcirc{3} & Solution                    & $u_h(\bm{x},\bm{\mu})$, \coloredonly<3>{linear} in $\bm{\beta}_h$ & $u_\theta(\bm{x},\bm{\mu})$, \coloredonly<3>{non-linear} in $\theta$ \\
 			\bottomrule
-		\end{cmptab}%
-	}
-
-	\only<4->{%
-		\vspace{6pt}
-		\makebox[\linewidth][c]{\textcolor{darkred}{\textbf{Same philosophy, different approximation space}}}
+		\end{cmptabn}%
 	}
 \end{frame}
