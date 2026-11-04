@@ -11,6 +11,7 @@
 \usetikzlibrary{positioning,arrows.meta}
 \usepackage{bm}
 \usepackage{etoolbox}
+\usepackage{booktabs} % tableaux (slide de comparaison DG / CG)
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\gradh}{\nabla_{\!h}} % gradient par morceaux (DG), comme dans le manuscrit
@@ -107,6 +108,7 @@
 \Chapter*[Introduction]{duo}
 \input{sections/common/intro}
 
+\def\chapternote{presented with homogeneous Dirichlet boundary conditions}
 \Chapter{duo}{Numerical methods}{Numerical methods for parametric PDEs}
 \input{sections/common/background}
 

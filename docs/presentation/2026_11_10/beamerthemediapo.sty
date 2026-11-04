@@ -182,6 +182,10 @@
 \RequirePackage{xparse}
 
 \newcommand{\chapterlabel}{}
+% note facultative de la page de chapitre : \def\chapternote{...} avant \Chapter ; « * » sur le titre, texte en bas (remise à zéro après la page)
+\newcommand{\chapternote}{}
+% même astérisque (Open Sans, maigre) sur le titre et dans la note, malgré la police du titre
+\newcommand{\notestar}{{\sffamily\mdseries *}}
 \def\Chapter@full#1#2#3{\SetPalette{#1}\def\chapterlabel{#2}%
 	\protected@write\@auxout{}{\string\diapo@setlabel{\the\numexpr\value{part}+1\relax}{#1}{#2}}%
 	\part{#3}}
@@ -225,14 +229,19 @@
 				{\color{other}\sffamily\bfseries\Large\chapterlabel\par}
 				\vspace{0.3cm}
 			\fi
-			{\usebeamerfont{title}\usebeamercolor[fg]{title}\LARGE\insertpart\par}
+			{\usebeamerfont{title}\usebeamercolor[fg]{title}\LARGE\insertpart\ifx\chapternote\empty\else\textsuperscript{\notestar}\fi\par}
 			\vspace{0.4cm}
-			{\color{other}\rule{3cm}{1.5pt}}
+			{\color{other}\rule{3cm}{1.5pt}\par}
+			\ifx\chapternote\empty\else
+				\vspace{0.8cm}
+				{\footnotesize\color{black!60}\notestar\,\chapternote\par}
+			\fi
 		\end{frame}
 	}
 	\addtocounter{framenumber}{-1}
 	\fi
 	\global\chapterpagetrue
+	\gdef\chapternote{}
 }
 
 % pages de début de section (style des présentations précédentes)

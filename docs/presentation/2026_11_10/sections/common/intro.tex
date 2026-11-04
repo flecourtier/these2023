@@ -13,20 +13,20 @@
 \end{frame}
 
 \begin{frame}{Parametric elliptic PDEs}
-	Let $\Omega \subset \mathbb{R}^d$ be the spatial domain ($d=1,2,3$) and $\mathcal{M} \subset \mathbb{R}^p$ the parameter space. 
+	Let $\Omega \subset \mathbb{R}^d$ be the spatial domain ($d=1,2,3$) and $\mathcal{M} \subset \mathbb{R}^p$ the parameter space.
 
 	For one or several $\bm{\mu}\in \mathcal{M}$, find $u(\,\cdot\,;\bm{\mu}): \Omega\to \mathbb{R}$ such that
 
 	\begin{equation}\label{eq:pde}\tag{$\mathcal{P}$}
 		\left\{
 		\begin{aligned}
-			& \mathcal{L}\big(u\,;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}), \; &  & (\bm{x},\bm{\mu}) \in \Omega \times \mathcal{M}, \\
-			& \text{Dirichlet, Neumann or Robin BC}, \;  &  & (\bm{x},\bm{\mu}) \in \partial \Omega \times \mathcal{M},
+			 & \mathcal{L}\big(u\,;\bm{x},\bm{\mu}\big) = f(\bm{x},\bm{\mu}), \; &  & (\bm{x},\bm{\mu}) \in \Omega \times \mathcal{M}, \\
+			 & \text{Dirichlet, Neumann or Robin BC}, \;                         &  & (\bm{x},\bm{\mu}) \in \Gamma \times \mathcal{M},
 		\end{aligned}
 		\right.
 	\end{equation}
 
-	with $f$ the source term and $\mathcal{L}$ the linear differential operator defined by
+	with $\Gamma:=\partial \Omega$ the boundary of $\Omega$,	$f$ the source term and $\mathcal{L}$ the linear differential operator defined by
 
 	\begin{equation*}
 		\mathcal{L}(\cdot\,;\bm{x},\bm{\mu}) : u \mapsto R(\bm{x},\bm{\mu})\, u + \bm{C}(\bm{x},\bm{\mu}) \cdot \nabla u - \frac{1}{\text{Pe}} \nabla \cdot \big(D(\bm{x},\bm{\mu}) \nabla u\big).

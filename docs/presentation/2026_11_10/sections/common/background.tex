@@ -5,9 +5,9 @@
 % étiquette de même couleur que son cadre, visible à l'overlay 4
 \newcommand{\dglabel}[2]{\text{\uncover<3>{\textcolor{#1}{\footnotesize #2}}}}
 
-\begin{frame}{Discontinuous Galerkin method\myfootcite{Arnold2002}}
+\begin{frame}{Discontinuous Galerkin (DG) method\myfootcite{Arnold2002}}
 	\begin{minipage}[t]{0.62\linewidth}
-		\blk{1}{%
+		% \blk{1}{%
 		Let $\mathcal{T}_h$ be a mesh of $\Omega$ of cells $(K_c)_{0\le c<N_\text{cells}}$ and $\mathcal{F}_h$ its set of faces.
 
 		\vspace{5pt}
@@ -18,7 +18,8 @@
 		\vspace{-9pt}
 		\[
 			u_h(\bm{x}) = \sum_{c,i}\beta_{c,i}\,\phi_{c,i}(\bm{x}).
-		\]}%
+		\]
+		% }%
 	\end{minipage} \hfill \begin{minipage}[t]{0.36\linewidth}
 		\vspace{-6pt}
 		\raggedleft
@@ -27,19 +28,19 @@
 		\only<3->{\includegraphics[page=3]{images/background/dg_basis/dg_basis.pdf}}
 	\end{minipage}
 
-	\vspace{3pt}
+	\vspace{8pt}
 	\blk[until=2]{2}{%
-		\textbf{Coupling the cells:} \coloredonly<2>{ambiguous traces on the interfaces $\Rightarrow$ numerical flux}
+		\textbf{Coupling the cells:} \coloredonly<2>{ambiguous traces on the interfaces $\Rightarrow$ numerical flux} (it defines the method)
 
-		The flux defines the method: here \coloredonly<2>{SIPG} (Symmetric Interior Penalty Galerkin)
+		\vspace{5pt}
+
+		Diffusion-dominated regimes: flux for the diffusion term only, here \coloredonly<2>{SIPG} (Symmetric Interior Penalty Galerkin)
 	}
 
 	\blk*{3}{%
 	\textbf{Variational problem (SIPG):} \quad Find $u_h\in V_h^{\text{disc}}$ such that, $\forall v_h\in V_h^{\text{disc}}$, $a_h^{\text{disc}}(u_h,v_h)=l(v_h)=\int_\Omega f\,v_h$,
 
-	with
-
-	\vspace{-6pt}
+	\vspace{-3pt}
 	\begin{equation*}
 		\begin{aligned}
 			a_h^{\text{disc}}(u_h,v_h) =                        & \qquad \dgbox{black!50}{\int_\Omega \Big(R\, u_h v_h + \bm{C}\cdot\gradh u_h\, v_h + \frac{1}{\text{Pe}} D\gradh u_h\cdot\gradh v_h\Big)} \; \raisebox{1.5ex}{$\dglabel{black!50}{cell terms}$} \\[-12pt]
@@ -52,8 +53,68 @@
 	}
 \end{frame}
 
-\begin{frame}{Continuous Galerkin method}
-	\todo[Problème modèle, formulation faible\\Espace $\mathbb{P}_k$ de Lagrange continu]
+\begin{frame}{Continuous Galerkin (CG) method\myfootcite{Ern2004TheoryAP}}
+	\begin{minipage}[t]{0.62\linewidth}
+		Same mesh $\mathcal{T}_h$ as DG.
+		Let $V_h:=V_h^{\text{disc}}\cap C^0(\Omega)$ be a \coloredonly<1>{continuous space} of piecewise polynomials of degree $k$ on the mesh $\mathcal{T}_h$. Its basis functions $(\phi_I)_I$, with $\phi_I$ supported on the cells sharing the dof $I$, decompose the discrete solution:
+		\vspace{-4pt}
+		\[
+			u_h(\bm{x}) = \sum_{I=1}^{N_\text{dofs}}\coloredonly<2->[orange]{\beta_I}\,\coloredonly<2->[orange]{\phi_I}(\bm{x}).
+		\]
+	\end{minipage} \hfill \begin{minipage}[t]{0.36\linewidth}
+		\vspace{-6pt}
+		\raggedleft
+		\only<1>{\includegraphics[page=1]{images/background/cg_basis/cg_basis.pdf}}%
+		\only<2>{\includegraphics[page=2]{images/background/cg_basis/cg_basis.pdf}}%
+		\only<3->{\includegraphics[page=3]{images/background/cg_basis/cg_basis.pdf}}
+	\end{minipage}
+
+	\vspace{8pt}
+	\blk[until=2]{2}{%
+		\textbf{Coupling the cells:} \coloredonly<2>{shared dofs via the connectivity table $\Rightarrow$ no jumps, no numerical flux}
+
+		\vspace{5pt}
+		\centering
+		$\text{conn}:(c,i)\mapsto I$, \quad \coloredonly<2>[orange]{$\beta_I=\beta_{c,i}$}, \quad \coloredonly<2>[orange]{$\phi_I=\sum_{\text{conn}(c,i)=I}\phi_{c,i}$}
+
+		% \flushleft
+		% \vspace{5pt}
+		% Dirichlet condition strongly on the dofs: here $V_h^0\subset V_h$ vanishing on $\Gamma$
+	}
+
+	\blk*{3}{%
+		\textbf{Variational problem:} \quad Find $u_h\in V_h^0$ such that, $\forall v_h\in V_h^0$, $a(u_h,v_h)=l(v_h)=\int_\Omega f\,v_h$,
+
+		\vspace{-3pt}
+		\begin{equation*}
+			a(u_h,v_h) = \qquad \dgbox{black!50}{\int_\Omega \Big(R\, u_h v_h + \bm{C}\cdot\nabla u_h\, v_h + \frac{1}{\text{Pe}} D\nabla u_h\cdot\nabla v_h\Big)} \; \raisebox{1.5ex}{$\dglabel{black!50}{cell terms}$}
+		\end{equation*}
+
+		with $V_h^0\subset V_h$ vanishing on $\Gamma$ and \coloredonly<3>{no interface terms, no penalty}.
+	}
+\end{frame}
+
+% colonnes communes aux deux tableaux de la slide de comparaison (alignés l'un sous l'autre)
+\newenvironment{cmptab}{\begin{tabular}{@{}p{0.2\linewidth}>{\centering\arraybackslash}p{0.36\linewidth}>{\centering\arraybackslash}p{0.38\linewidth}@{}}}{\end{tabular}}
+
+\begin{frame}{Link between DG and CG}
+	\renewcommand{\arraystretch}{1.3}
+	\begin{cmptab}
+		\toprule
+		& \textbf{DG}                           & \textbf{CG}                                         \\
+		\midrule
+		Space                               & discontinuous, $V_h^\text{disc}$      & continuous, $V_h\subset V_h^\text{disc}$ \\
+		Dofs                                & independent                           & shared (connectivity table)                         \\
+		& $\bm{\beta}_h=(\bm{\beta}_{c,i})_{c,i}$ & $\bm{\beta}_h=(\beta_I)_I$ \\
+		$N_\text{dofs}$                     & $\text{dim} V_h^\text{disc}=N_\text{cells}\cdot N_b$ & $\text{dim} V_h<N_\text{cells}\cdot N_b$ \\
+		\midrule
+		Continuity                          & weak, via numerical fluxes            & strong, in the space                                \\
+		Interface terms                     & consistency, penalty                  & none (cell terms only)             \\
+		Dirichlet condition                 & weak (in the flux)                    & strong (on the dofs)                                \\
+		\midrule
+		Linear system & \multicolumn{2}{c}{$A_h\,\bm{\beta}_h=\bm{b}_h$ in both cases (but different sizes)} \\
+		\bottomrule
+	\end{cmptab}%
 \end{frame}
 
 \Section*{Learning-based approaches}
