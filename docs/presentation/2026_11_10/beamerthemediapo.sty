@@ -39,7 +39,8 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{caption}[numbered]
 % \setbeamertemplate{title page}[default][left]
-\setbeamertemplate{frametitle}{\vskip0.01\paperheight\usebeamercolor[fg]{frametitle}\insertframetitle} 
+% \vphantom{gÉ} : hauteur et profondeur de la ligne du titre fixes, sinon le contenu monte ou descend de ~3 pt selon que le titre a des lettres qui descendent
+\setbeamertemplate{frametitle}{\vskip0.01\paperheight\usebeamercolor[fg]{frametitle}\insertframetitle\vphantom{g\'E}} 
 \setbeamertemplate{itemize item}{\textbullet}
 \setbeamertemplate{itemize subitem}{--}
 \setbeamertemplate{itemize subsubitem}{\textbullet}
@@ -244,6 +245,10 @@
 	\gdef\chapternote{}
 }
 
+% note facultative de la page de section : \SectionNote{texte} juste avant \section ; « * » sur le titre, texte sous le titre (comme \chapternote pour un chapitre)
+\gdef\sectionnote{}
+\NewDocumentCommand{\SectionNote}{m}{\gdef\sectionnote{#1}}
+
 % pages de début de section (style des présentations précédentes)
 \AtBeginSection[]{
 	\ifsectionpage
@@ -253,9 +258,13 @@
 			\vfill
 			\centering
 			\begin{beamercolorbox}[sep=5pt,shadow=true,rounded=true]{subtitle}
-				\usebeamerfont{title}\insertsection\par%
+				\usebeamerfont{title}\insertsection\ifx\sectionnote\empty\else\textsuperscript{\notestar}\fi\par%
 				\vspace{0.5cm}
 			\end{beamercolorbox}
+			\ifx\sectionnote\empty\else
+				\vspace{0.4cm}
+				{\raggedright\footnotesize\color{black!60}\leftskip=5pt \notestar\,\sectionnote\par}
+			\fi
 			\tableofcontents[sectionstyle=hide,subsectionstyle=show/show/hide]
 			\vfill
 		\end{frame}
@@ -263,6 +272,7 @@
 	\addtocounter{framenumber}{-1}
 	\fi
 	\global\sectionpagetrue
+	\gdef\sectionnote{}
 }
 
 % pages de début de sous-section

@@ -61,8 +61,8 @@
 
 		\vspace{5pt}
 
-		Let $V_h:=V_h^{\text{disc}}\cap C^0(\Omega)$ be a \coloredonly<1>{continuous space} of piecewise polynomials of degree $k$ on the mesh $\mathcal{T}_h$. Its basis functions $(\phi_I)_I$, with $\phi_I$ supported on the cells sharing the dof $I$, decompose the discrete solution:
-		\vspace{-4pt}
+		Let $V_h:=V_h^{\text{disc}}\cap C^0(\Omega)$ be a \coloredonly<1>{continuous space} of piecewise polynomials of degree $k$ on $\mathcal{T}_h$. Its basis functions $(\phi_I)_I$, with $\phi_I$ supported on the cells sharing the dof $I$, decompose the discrete solution:
+		\vspace{-8pt}
 		\[
 			u_h(\bm{x},\bm{\mu}) = \sum_{I=1}^{N_\text{dofs}}\coloredonly<2->[orange]{\beta_I}(\bm{\mu})\,\coloredonly<2->[orange]{\phi_I}(\bm{x}).
 		\]
@@ -74,7 +74,7 @@
 		\only<3->{\includegraphics[page=3]{images/background/cg_basis/cg_basis.pdf}}
 	\end{minipage}
 
-	\vspace{8pt}
+	\vspace{4pt}
 	\blk[until=2]{2}{%
 		\textbf{Coupling the cells:} \coloredonly<2>{shared dofs via the connectivity table $\Rightarrow$ no jumps, no numerical flux}
 
@@ -87,7 +87,7 @@
 		% Dirichlet condition strongly on the dofs: here $V_h^0\subset V_h$ vanishing on $\Gamma$
 	}
 
-	\blk{3}{%
+	\blk*{3}{%
 		\textbf{Variational problem:} \quad Find $u_h\in V_h^0$ such that, $\forall v_h\in V_h^0$, $a(u_h,v_h;\bm{\mu})=l(v_h;\bm{\mu})=\int_\Omega f\,v_h$,
 
 		\vspace{-3pt}
@@ -97,10 +97,46 @@
 
 		with $V_h^0\subset V_h$ vanishing on $\Gamma$ and \coloredonly<3>{no interface terms, no penalty}.
 	}
+\end{frame}
 
-	\vspace{5pt}
-	\blk*{4}{%
-		\textbf{Linear system (\coloredonly<4>{in both Galerkin methods}):} \quad $A_h(\bm{\mu})\,\bm{\beta}_h(\bm{\mu})=\bm{b}_h(\bm{\mu})$
+% tableau de la slide « Galerkin scheme » : DG et CG côte à côte (une ligne par objet du système linéaire)
+\newenvironment{lintab}{\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.08\linewidth}>{\centering\arraybackslash}p{0.41\linewidth}>{\centering\arraybackslash}p{0.44\linewidth}@{}}}{\end{tabular}}
+
+\begin{frame}{Galerkin scheme}
+	\textbf{Linear system (in both methods):}
+	\vspace{-3pt}
+	\[
+		\underset{\text{\footnotesize matrix}}{A_h(\bm{\mu})}\;\underset{\text{\footnotesize dofs}}{\bm{\beta}_h(\bm{\mu})}=\underset{\text{\footnotesize right-hand side}}{\bm{b}_h(\bm{\mu})}
+	\]
+
+	\vspace{-2pt}
+	\footnotesize
+	\renewcommand{\arraystretch}{1.6}
+	\begin{lintab}
+		\toprule
+		& \textbf{DG} & \textbf{CG} \\
+		\midrule
+		coupling & \leavevmode\coloredonly<1>{weak}, via numerical fluxes & \leavevmode\coloredonly<1>{strong}, in the space \\
+		\midrule
+		$\bm{\beta}_h(\bm{\mu})$ & $\big(\bm{\beta}_c(\bm{\mu})\big)_c$\; , \; $\bm{\beta}_c(\bm{\mu})=(\beta_{c,i}(\bm{\mu}))_i$ & $\big(\beta_I(\bm{\mu})\big)_I$\; , \; $I=\text{conn}(c,i)$ \\
+	\end{lintab}%
+
+	\only<2->{%
+		\begin{lintab}
+			\midrule
+			$A_h(\bm{\mu})$ & $A_{(c,i),(c',j)}(\bm{\mu})=\coloredonly<2>{a_h^{\text{disc}}}(\phi_{c',j},\phi_{c,i};\bm{\mu})$ & $A_{IJ}(\bm{\mu})=\coloredonly<2>{a}(\phi_J,\phi_I;\bm{\mu})$ \\
+			\midrule
+			$\bm{b}_h(\bm{\mu})$ & $b_{(c,i)}(\bm{\mu})=l(\phi_{c,i};\bm{\mu})$ & $b_I(\bm{\mu})=l(\phi_I;\bm{\mu})$ \\
+		\end{lintab}%
+	}
+
+	\only<3->{%
+		\begin{lintab}
+			\midrule
+			structure & larger system, \coloredonly<3>{one block per cell} & smaller system, \coloredonly<3>{dofs shared between cells} \\
+			& size: $N_\text{cells}\cdot N_b$ & size: $N_\text{dofs}$ \\
+			\bottomrule
+		\end{lintab}%
 	}
 \end{frame}
 

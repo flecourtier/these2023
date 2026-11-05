@@ -1,0 +1,51 @@
+%% Figure standalone : schéma de Galerkin apprenable (2nde hybridation), de gauche à droite : réseau -> espace enrichi -> solveur de Galerkin -> solution. 6 pages, pour les deux slides « Neural-enriched Galerkin scheme » (pages 1 à 4) et « Learning theta: differentiating through the solver » (pages 5 et 6).
+%% Mêmes boîtes et mots que le schéma de l'intro (images/common/outline), macros communes dans images/hybscheme.sty.
+%% Pages 1 à 4 : un élément de plus à chaque page (même cadre sur toutes), sans perte. Page 5 : le schéma complet, plus la perte J placée en dessous, branchée sur u_{h,theta}. Page 6 : le gradient remonte au réseau (pointillés), à travers le solveur.
+%% Les pages 1 à 4 et les pages 5 et 6 n'ont pas la même hauteur (cadre plus haut pour la perte), mais les mêmes positions horizontales.
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/contrib2/learnable_scheme/learnable_scheme.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty, hybscheme.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+\usepackage{hybscheme}
+
+\hslargesize
+\makeatletter % \hs@font, \hs@rc... de hybscheme.sty
+
+% cadres : trois boîtes à 3.3 cm d'écart (centre à centre), sortie à droite ; \framefig pour les pages 1 à 4, \framefigloss (plus haut) pour les pages 5 et 6
+\newcommand{\framefig}{\hybstyle{two}\useasboundingbox (-1.45,-0.55) rectangle (11.85,0.55);}
+\newcommand{\framefigloss}{\hybstyle{two}\useasboundingbox (-1.45,-1.3) rectangle (11.85,0.55);}
+\newcommand{\boxa}{\hsbox{a}{0}{neural network}}
+\newcommand{\boxb}{\hsbox{b}{3.3}{enriched space}\draw[hsarrow] (a) -- (b);}
+\newcommand{\boxc}{\hsbox{c}{6.6}{Galerkin solver}\draw[hsarrow] (b) -- (c);}
+% sortie : une seule flèche neutre, les dofs beta_h au-dessus (page 3), puis la solution reconstruite u_{h,theta} au bout (page 4)
+\newcommand{\boxd}{\draw[hsneutral] (c.east) -- ++(2,0) node[midway, above=1pt, font=\hs@font, text=black] {$\bm{\beta}_h(\theta)$} coordinate (e);}
+\newcommand{\boxe}{\node[anchor=west, font=\hs@font, text=black, inner sep=3pt] (u) at (e) {$u_{h,\theta}$};}
+% perte sous u_{h,theta}, branchée sur la solution (page 5)
+\newcommand{\lossbox}{%
+	\path (u.center) ++(0,-1.0) coordinate (lc);
+	\node[draw=hs@c, fill=white, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=1.8cm, minimum height=\hs@ph cm, align=center, font=\hs@font, text=black] (l) at (lc) {loss $\mathcal{J}$};
+	\draw[hsneutral] (u.south) -- (l.north);
+}
+% retour du gradient : de la perte vers le réseau, sous les boîtes (page 6)
+\newcommand{\backward}{\draw[hsdash] (l.west) -- node[midway, above=1pt, font=\hs@font, text=hs@d] {gradient} (a.south |- l.west) -- (a.south);}
+\makeatother
+
+\begin{document}
+
+\begin{tikzpicture}\framefig \boxa \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \boxa \boxb \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \boxa \boxb \boxc \boxd \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \boxa \boxb \boxc \boxd \boxe \end{tikzpicture}
+
+\begin{tikzpicture}\framefigloss \boxa \boxb \boxc \boxd \boxe \lossbox \end{tikzpicture}
+
+\begin{tikzpicture}\framefigloss \boxa \boxb \boxc \boxd \boxe \lossbox \backward \end{tikzpicture}
+
+\end{document}

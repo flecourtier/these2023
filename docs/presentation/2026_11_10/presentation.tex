@@ -13,6 +13,8 @@
 \usepackage{etoolbox}
 \usepackage{booktabs} % tableaux (slide de comparaison DG / CG)
 \usepackage{multirow} % pastille d'étape centrée sur un bloc de lignes (slide « Link between Galerkin and PINNs »)
+\usepackage{animate} % animation de coupes 3D (slide « 3D test case »), lue par Acrobat Reader
+\usepackage{pgfplotstable} % tableaux lus depuis un CSV (slide « 3D: gain and cost »)
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\gradh}{\nabla_{\!h}} % gradient par morceaux (DG), comme dans le manuscrit
@@ -29,12 +31,13 @@
 \newlength{\blkbarshrink} \setlength{\blkbarshrink}{0pt} % raccourcissement de la barre en haut et en bas (elle suit les boîtes de lignes, pas les glyphes)
 \newcommand{\blkbarstyle}{title!40!white,line width=0.6pt} % aspect de la barre (discrète)
 \newsavebox{\blkbox}
+\NewDocumentCommand{\blkgobblefootnote}{O{} m}{}% la mesure du bloc ne doit pas enregistrer les notes de bas de page (sinon doublées)
 \pgfkeys{/blk/.cd, shrink/.store in=\blkshrinkopt, until/.store in=\blkuntilopt}
 % \blk[<clés>]{n}{...} ; clés : shrink=<longueur> (remplace \blkbarshrink pour ce bloc),
 % until=<m> (le bloc disparaît après l'overlay m ; sans cette clé il reste jusqu'à la fin)
 \NewDocumentCommand{\blk}{s O{} m +m}{%
 	\pgfkeys{/blk/.cd, shrink=\blkbarshrink, until={}, #2}%
-	\setbox\blkbox\vtop{#4\par\unskip}% mesure : hauteur de la 1re ligne (ht) et du reste du bloc (dp), sans l'espace sous un display final (\unskip)
+	\setbox\blkbox\vtop{\let\footnote\blkgobblefootnote #4\par\unskip}% mesure : hauteur de la 1re ligne (ht) et du reste du bloc (dp), sans l'espace sous un display final (\unskip)
 	\edef\blkbar{\noexpand\leavevmode\noexpand\tikz[overlay]\noexpand\draw[\blkbarstyle] (-\the\blkbarx,\the\dimexpr\ht\blkbox-\blkshrinkopt\relax) -- (-\the\blkbarx,\the\dimexpr-\dp\blkbox+\blkshrinkopt\relax);}%
 	\IfBooleanTF{#1}{%
 		\only<#3->{\blkbar#4}%

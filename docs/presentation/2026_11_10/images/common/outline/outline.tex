@@ -1,41 +1,47 @@
 %% Figure standalone : schéma de chaque hybridation (slide « Two hybridizations »), placé dans un cadre contribbox.
 %% Page 1 : 1ère hybridation (bleu). Page 2 : 2nde (vert). Même cadre sur les deux pages.
-%% Même ossature (réseau -> base -> solveur) ; seul change le lien réseau/solveur :
-%% prior figé (bleu, pas de retour) ou réseau appris à travers le solveur (boucle en pointillés, verte).
-%% Pas d'étiquette : la ligne « Network » de la carte dit la même chose.
+%% Même ossature (réseau -> espace enrichi -> solveur), macros communes dans images/hybscheme.sty :
+%%   1ère : perte PINN à gauche, hors ligne (réseau figé ensuite, pas de retour)
+%%   2nde : perte à droite, gradient qui remonte au réseau (pointillés)
+%% Pas d'étiquette longue : les lignes de la carte disent la même chose.
 %% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
 %% ou images/build_fig.sh images/common/outline/outline.tex
 % !TEX program = lualatex
 \documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
 
-\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty (images/) et diapocolors.sty (racine)
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty, hybscheme.sty (images/) et diapocolors.sty (racine)
 
 \usepackage{figpreamble}
+\usepackage{hybscheme}
 
-\newcommand{\frameandschema}{\useasboundingbox (-0.05,-0.95) rectangle (5.95,0.55);}
-
-% boîte du schéma : #1 trait, #2 nom, #3 x, #4 texte
-\newcommand{\schbox}[4]{\node[draw=#1, fill=white, rounded corners=2pt, thick, minimum width=1.6cm, minimum height=0.95cm, align=center, font=\scriptsize, text=black] (#2) at (#3,0) {#4};}
+\hscompactsize
+\newcommand{\frameandschema}{\useasboundingbox (-0.05,-1.45) rectangle (5.95,0.55);}
 
 \begin{document}
 
 \begin{tikzpicture}
+	\hybstyle{one}
 	\frameandschema
-	\schbox{hybone}{b1}{0.85}{neural\\prior}
-	\schbox{hybone}{b2}{2.95}{enriched\\space}
-	\schbox{hybone}{b3}{5.05}{FE\\solve}
-	\draw[hybone, very thick, -{Stealth[length=2.2mm]}] (b1) -- (b2);
-	\draw[hybone, very thick, -{Stealth[length=2.2mm]}] (b2) -- (b3);
+	\hsbox{b1}{0.85}{neural\\prior}
+	\hsbox{b2}{2.95}{enriched\\space}
+	\hsbox{b3}{5.05}{Galerkin\\solver}
+	\draw[hsarrow] (b1) -- (b2);
+	\draw[hsarrow] (b2) -- (b3);
+	\hsloss{l}{0.85}{PINN loss}
+	\draw[hsarrow] (l) -- (b1) node[midway, right=2pt, font=\scriptsize, text=hs@d] {offline};
 \end{tikzpicture}
 
 \begin{tikzpicture}
+	\hybstyle{two}
 	\frameandschema
-	\schbox{hybtwo}{g1}{0.85}{neural\\network}
-	\schbox{hybtwo}{g2}{2.95}{learned\\basis}
-	\schbox{hybtwo}{g3}{5.05}{Galerkin\\solver}
-	\draw[hybtwo, very thick, -{Stealth[length=2.2mm]}] (g1) -- (g2);
-	\draw[hybtwo, very thick, -{Stealth[length=2.2mm]}] (g2) -- (g3);
-	\draw[hybtwo, thick, dashed, -{Stealth[length=2.2mm]}] (g3.south) -- ++(0,-0.4) coordinate (loop) -- (g1.south |- loop) -- (g1.south);
+	\hsbox{g1}{0.85}{neural\\network}
+	\hsbox{g2}{2.95}{enriched\\space}
+	\hsbox{g3}{5.05}{Galerkin\\solver}
+	\draw[hsarrow] (g1) -- (g2);
+	\draw[hsarrow] (g2) -- (g3);
+	\hsloss{l}{5.05}{loss}
+	\draw[hsarrow] (g3) -- (l);
+	\draw[hsdash] (l.west) -- (g1.south |- l.west) node[midway, above, font=\scriptsize, text=hs@d] {gradient} -- (g1.south);
 \end{tikzpicture}
 
 \end{document}

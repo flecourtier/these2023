@@ -1,0 +1,37 @@
+%% Macros communes des schémas d'hybridation (intro, 1ère et 2nde hybridation, transition).
+%% Ossature unique : réseau -> espace enrichi -> solveur de Galerkin, plus un repère de perte :
+%%   1ère hybridation : perte PINN à gauche (hors ligne, réseau figé ensuite)
+%%   2nde hybridation : perte à droite, gradient qui remonte jusqu'au réseau (pointillés)
+%% Vocabulaire fixe : 1ère « neural prior », 2nde « neural network » ; « enriched space » ; « Galerkin solver ».
+%% Usage : \usepackage{figpreamble}\usepackage{hybscheme}, puis \hscompactsize ou \hslargesize et \hybstyle{one|two}.
+\ProvidesPackage{hybscheme}[2026/11/05 schemas d'hybridation]
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% couleur de l'hybridation courante : trait (hs@c), texte (hs@d), fond clair (hs@l)
+\newcommand{\hybstyle}[1]{\colorlet{hs@c}{hyb#1}\colorlet{hs@d}{hyb#1dark}\colorlet{hs@l}{hyb#1light}}
+
+% tailles : compact = carte de l'intro, large = slide de principe
+\newcommand{\hscompactsize}{\def\hs@bw{1.6}\def\hs@bh{0.95}\def\hs@ph{0.5}\def\hs@py{-1.1}\def\hs@font{\scriptsize}\def\hs@lw{1.2}\def\hs@ah{2.2mm}\def\hs@rc{2pt}}
+\newcommand{\hslargesize}{\def\hs@bw{2.5}\def\hs@bh{0.95}\def\hs@ph{0.6}\def\hs@py{-1.25}\def\hs@font{\footnotesize}\def\hs@lw{1.6}\def\hs@ah{5pt}\def\hs@rc{3pt}}
+
+\tikzset{
+	hsarrow/.style={hs@c, line width=\hs@lw pt, -{Stealth[length=\hs@ah]}},
+	hsdash/.style={hs@c, line width=1pt, dashed, -{Stealth[length=\hs@ah]}},
+	hsneutral/.style={neutral, line width=\hs@lw pt, -{Stealth[length=\hs@ah]}},
+}
+
+% boîte du schéma : #1 nom, #2 abscisse, #3 texte
+\newcommand{\hsbox}[3]{\node[draw=hs@c, fill=hs@l, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=\hs@bw cm, minimum height=\hs@bh cm, align=center, font=\hs@font, text=hs@d] (#1) at (#2,0) {#3};}
+
+% repère de perte : #1 nom, #2 abscisse, #3 texte
+\newcommand{\hsloss}[3]{\node[draw=hs@c, fill=white, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=\hs@bw cm, minimum height=\hs@ph cm, align=center, font=\hs@font, text=black] (#1) at (#2,\hs@py) {#3};}
+
+% sortie neutre : flèche depuis #1 puis texte #2
+\newcommand{\hsout}[2]{\draw[hsneutral] (#1.east) -- ++(0.8,0) node[right, font=\hs@font, text=black, inner sep=3pt] {#2};}
+
+% perte dans la rangée des boîtes (taille large) : #1 nom, #2 abscisse, #3 texte
+\newcommand{\hslossrow}[3]{\node[draw=hs@c, fill=white, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=1.8cm, minimum height=\hs@ph cm, align=center, font=\hs@font, text=black] (#1) at (#2,0) {#3};}
+
+% flèche neutre de #1 à #2 portant l'étiquette #3 au-dessus
+\newcommand{\hsarrowlabel}[3]{\draw[hsneutral] (#1) -- (#2) node[midway, above=1pt, font=\hs@font, text=black] {#3};}
