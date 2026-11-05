@@ -1,6 +1,37 @@
 # Notes pour l'oral
 
+
 Points à dire qui ne sont **pas** sur la slide (la slide = mots-clés). Pas un texte rédigé : des rappels, slide par slide, dans l'ordre de la présentation. Ajouté au fil des échanges ; `(→ source)` renvoie au manuscrit.
+
+
+---
+
+## Introduction — Context and motivation
+
+*Message : on veut résoudre des EDP vite et bien, beaucoup de fois ; les classiques ont 3 limites, les réseaux en ont d'autres ; celle qui nous intéresse = l'expressivité des espaces. (→ `chapters/introduction.tex`, §« Context and motivation »)*
+
+- Ordre de la 1ère ligne : d'abord le contexte (many-query), puis le but ⇒ « parametric PDE, many parameters μ » : c'est ce que formalise la slide suivante (« Parametric elliptic PDEs »).
+- **Dernier overlay** : « Existing enrichments are problem-dependent ⇒ two hybridizations » = GFEM / XFEM / partition de l'unité enrichissent l'espace par des fonctions spéciales, choisies à la main pour chaque problème, donc mal adaptées au paramétrique. Idée : remplacer ces fonctions par un prior obtenu autrement (réseau). φ-FEM = déjà un enrichissement multiplicatif par un prior géométrique (`u = φ w`).
+- **Pourquoi l'expressivité plutôt que le coût** : un meilleur espace d'approximation permet un maillage plus grossier à précision égale, donc moins de coût (résultat de la 1ère hybridation).
+- **« universal » (réseaux)** : approximateurs universels, mais surtout approximation *non linéaire* : la solution est cherchée dans une sous-variété paramétrée par les poids, pas dans un sous-espace vectoriel. D'où l'intérêt quand la variété des solutions n'est pas de petite dimension (transport), là où les modèles réduits linéaires perdent leur efficacité.
+- Autres limites des réseaux non mises sur la slide : solutions peu régulières, **conditions aux limites** difficiles à imposer exactement (le classique les impose exactement : complémentarité).
+- Complémentarité : classique = structure, garanties, CL exactes ; réseau = expressivité. L'hybridation vise à combiner les deux.
+- Contextes « beaucoup de résolutions » : simulation temps réel / jumeaux numériques, **simulation chirurgicale** (MIMESIS), optimisation de forme, problèmes inverses, quantification d'incertitudes.
+- Méthodes classiques (« haute fidélité ») : différences finies (grille cartésienne, rigide pour les géométries complexes), **FEM** (formulation variationnelle, maillage non structuré, analyse a priori, dominante en ingénierie), volumes finis (conservation locale), spectrales (base globale, très efficace si solution régulière, géométrie simple, peu robuste sinon).
+- **Limite 1, maillage** : mailler une géométrie complexe est coûteux. Réponses : méthodes non ajustées (IBM, fictitious domain : XFEM, CutFEM, **φ-FEM** avec level-set), sans maillage (meshless), IGA.
+- **Limite 2, coût** : EDP paramétrique résolue de nombreuses fois. Réponses : modèles réduits (POD, bases réduites, PGD), efficaces si la variété des solutions est de petite dimension (pas pour le transport) ; aussi raffinement adaptatif, Trefftz, HDG, HHO.
+- **Limite 3, expressivité** : espaces de dimension finie fixés a priori (polynômes par morceaux, modes globaux), mal adaptés aux couches limites / singularités sans maillage très fin. Réponses : enrichissement local (GFEM, XFEM, partition de l'unité), dépendant du problème donc mal adapté au paramétrique. **φ-FEM = enrichissement multiplicatif par un prior géométrique** (`u = φ w`) : c'est la structure qu'on réutilise avec un prior neuronal.
+- Réseaux de neurones : approximateurs universels (on projette sur une *sous-variété* paramétrée par les poids, pas un sous-espace vectoriel) ; paramètres en entrée du réseau, un seul entraînement offline (esprit offline/online des modèles réduits mais non linéaire). Deux familles : perte construite depuis l'EDP (PINNs, Deep Ritz, VPINNs) ; apprentissage supervisé d'opérateurs (DeepONet, FNO, PINO).
+- Limites des réseaux : pas de garanties théoriques ni d'estimateur d'erreur fiable, entraînement difficile et sensible aux hyperparamètres, solutions peu régulières, CL difficiles à imposer exactement. Pas compétitifs pour une seule résolution (Grossmann 2024), intéressants dès qu'on en fait beaucoup.
+- **Hybridations de la littérature (pas sur la slide, pour les questions)** : enrichir une base classique par un prior neuronal (GFEM : Wan 2025 ; DG : Franck 2024) ; structurer le réseau par des éléments finis (interpolation sur maillage, fonctions de forme dans l'architecture) ; couplage multi-échelle ; séparation espace/temps ; prédiction du réseau pour initialiser Newton ; programmation différentiable (JAX-FEM ; DG différentiable avec terme source neuronal, Kanduri-Constantin 2023 ; correction de la forme faible, Jung-Constantin 2026).
+
+## Introduction — Two hybridizations
+
+*Message : même question (comment le réseau entre-t-il dans l'espace d'approximation ?), deux réponses. Bleu = 1ère, vert = 2nde, couleurs reprises dans toute la suite.* (→ `chapters/introduction.tex`, §« Outline and contributions »)
+
+- **1ère** : prior neuronal (PINN) **pré-entraîné puis figé** ; incorporé de façon additive ou multiplicative dans l'espace FEM continu ; on **prouve** que les ordres de convergence classiques sont conservés, avec un gain qui dépend de la qualité du prior (en particulier de ses dérivées d'ordre élevé). Pour une précision donnée, maillage plus grossier que le FEM standard. Cas test 1D, 2D, 3D paramétriques. Publié (M2AN) ; collaboration MIMESIS, MAKUTU, MACARON, IMAG.
+- **2nde** : le solveur (DG, FEM, φ-FEM) est rendu **différentiable** (bibliothèque ScimBa, JAX), le réseau est appris *à travers* le solveur (différentiation implicite). Base de Galerkin multipliée par une fonction dépendant du réseau. **Pas d'estimation d'erreur** : résultats expérimentaux (1D, 3D, paramétrique 1D), à nombre de dofs fixé ; étude de faisabilité, pas un solveur compétitif.
+- Transition : la 2nde ne remplace pas la 1ère, elle lève la limite « prior figé, appris à part » au prix des garanties (→ `chapters/conclusion.tex`).
 
 ---
 

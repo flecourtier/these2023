@@ -1,15 +1,86 @@
 \Section*{Introduction}
 
+% pastille d'une limite (largeur fixe pour aligner les gloses) ; #1 : couleur, #2 : mot-clé
+\newcommand{\limpill}[2]{\tikz[baseline=(n.base)]\node[draw=#1,text=#1,fill=white,rounded corners=3pt,inner sep=2pt,minimum width=2.1cm,font=\scriptsize](n){#2};}
+% carte d'une famille de méthodes : cadre contribbox du thème en neutre (le cadre des contributions est bleu / vert)
+\newcommand{\methodcard}[2]{\begin{minipage}[t]{0.495\linewidth}\vspace{0pt}\begin{contribbox}{neutral}{#1}#2\end{contribbox}\end{minipage}}
+
 \begin{frame}{Context and motivation}
-	\todo
+	\textbf{Many-query contexts:} real-time simulation, digital twins, optimization, uncertainty quantification
+
+	\vspace{3pt}
+	$\Rightarrow$ \textbf{Goal:} solve a parametric PDE \coloredonly<1>{accurately} and \coloredonly<1>{quickly}, for many parameters $\bm{\mu}$
+
+	\vspace{6pt}
+	\only<2->{%
+		\methodcard{Classical methods \footnotesize FEM, FV, FD, spectral}{%
+			\textbf{Strengths:} solid theory, error analysis
+
+			\vspace{3pt}
+			\textbf{Limitations:}\\[1pt]
+			\limpill{neutral}{mesh} complex geometries\\[1pt]
+			\limpill{neutral}{cost} many resolutions\\[1pt]
+			\alt<4>{\limpill{darkred}{expressivity}}{\limpill{neutral}{expressivity}} \coloredonly<4>{fixed spaces}
+		}
+	} \hfill \only<3->{%
+		\methodcard{Neural networks \footnotesize PINNs, neural operators}{%
+			\textbf{Strengths:} mesh-free, parametric, universal
+
+			\vspace{3pt}
+			\textbf{Limitations:}\\[1pt]
+			\limpill{neutral}{guarantees} none\\[1pt]
+			\limpill{neutral}{training} difficult, sensitive\\[1pt]
+			\limpill{neutral}{single solve} not competitive
+		}
+	}
+
+	\vspace{6pt}
+	\only<4->{%
+		\makebox[\linewidth][c]{\alt<4->{\fcolorbox{darkred}{white}{\textbf{\textcolor{darkred}{Our focus: the expressivity of the approximation spaces}}}}{\fcolorbox{white}{white}{\phantom{\textbf{Our focus: the expressivity of the approximation spaces}}}}}
+	}
+
+	\vspace{3pt}
+	\only<5->{%
+		\makebox[\linewidth][c]{Existing enrichments are \coloredonly<5>{problem-dependent} $\Rightarrow$ two hybridizations: classical structure + neural expressivity}
+	}
 \end{frame}
 
-\begin{frame}{Outline}
-	\todo
-	% \begin{itemize}
-	% 	\item[\contribdot{cblue}] Contribution 1 : TODO
-	% 	\item[\contribdot{cgreen}] Contribution 2 : TODO
-	% \end{itemize}
+% hauteur commune des deux cartes d'hybridation (sinon elles suivent leur contenu)
+\newcommand{\hybcardh}{4.8cm}
+
+\begin{frame}{Two hybridizations}
+	How does the \coloredonly<1>{neural network} enter the approximation space $V_h$ of a classical method?
+
+	\vspace{12pt}
+	\only<2->{%
+		\begin{minipage}[t]{0.495\linewidth}\vspace{0pt}
+			\tcbset{height=\hybcardh}\begin{contribbox}{cblue}{1st hybridization}
+				\textbf{Enriched FEM using PINNs}
+
+				\vspace{4pt}
+				\centering\includegraphics[page=1]{images/common/outline/outline.pdf}
+
+				\vspace{4pt}
+				\raggedright \textbf{Network:} pretrained, frozen\\[2pt]
+				\textbf{Guarantees:} a priori error estimates\\[2pt]
+				\textbf{Results:} 1D, 2D, 3D, parametric
+			\end{contribbox}
+		\end{minipage}
+	} \hfill \only<3->{%
+		\begin{minipage}[t]{0.495\linewidth}\vspace{0pt}
+			\tcbset{height=\hybcardh}\begin{contribbox}{cgreen}{2nd hybridization}
+				\textbf{Learnable Galerkin methods}
+
+				\vspace{4pt}
+				\centering\includegraphics[page=2]{images/common/outline/outline.pdf}
+
+				\vspace{4pt}
+				\raggedright \textbf{Network:} learned through the solver\\[2pt]
+				\textbf{Guarantees:} none (experimental)\\[2pt]
+				\textbf{Results:} 1D, 3D, parametric
+			\end{contribbox}
+		\end{minipage}
+	}
 \end{frame}
 
 \begin{frame}{Parametric elliptic PDEs}
