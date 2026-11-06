@@ -87,10 +87,11 @@
 	\[
 		\left\{
 		\begin{aligned}
-			-\frac{1}{\text{Pe}}\,\partial_{xx}u+(\mu_1+\mu_2x)\,\partial_xu & =f &  & \text{in } \Omega, \\
-			u                                                                & =0 &  & \text{on } \Gamma,
+			-\frac{1}{\text{Pe}}\,\partial_{xx}u+\bm{C}\,\partial_xu & =f &  & \text{in } \Omega, \\
+			u                                                        & =0 &  & \text{on } \Gamma,
 		\end{aligned}
 		\right.
+		\qquad \bm{C}(x,\bm{\mu})=\mu_1+\mu_2x
 	\]
 	with $\bm{\mu}=(\mu_1,\mu_2)=(0.8,0.8)$ fixed.
 
@@ -194,7 +195,7 @@
 		\only<2->{\includegraphics[height=5.6cm]{images/contrib2/multiplier/budget_summary_bounded_errors.png}}%
 	}
 
-	\vspace{4pt}
+	\vspace{7pt}
 	\raggedright
 	\textbf{Gain:} \coloredonly<1>{$376/400$} beat the FEM, none explodes; the affine multiplier keeps the highest gains.
 
@@ -216,7 +217,7 @@
 			u                                                  & =0 &  & \text{on } \Gamma,
 		\end{aligned}
 		\right.
-		\qquad \bm{C}=(\mu_1+\mu_2\,\bm{x}\cdot\bm{e}_\text{diag})\,\bm{e}_\text{diag},
+		\qquad \bm{C}(\bm{x},\bm{\mu})=(\mu_1+\mu_2\,\bm{x}\cdot\bm{e}_\text{diag})\,\bm{e}_\text{diag},
 	\]
 	\vspace{-8pt}
 

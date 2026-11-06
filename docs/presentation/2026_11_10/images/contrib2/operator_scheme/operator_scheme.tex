@@ -1,0 +1,88 @@
+%% Figure standalone : principe du schéma de Galerkin apprenable dans le cas paramétrique (2nde hybridation), slide « Neural operator: principle ».
+%% Un seul réseau et un seul espace enrichi, puis une résolution de Galerkin par valeur de mu du batch (boîtes empilées, mu^(i_k) en rouge dans chaque boîte) ; chaque résolution donne u_{h,theta}(.;mu^(i_k)).
+%% Le batch (cadre pointillé « batch ») est un tirage aléatoire de B mu parmi ceux d'entraînement : les indices 1, ..., B sont ceux du batch, sans valeur sur la slide d'explication.
+%% Sortie de chaque solveur : beta_h(theta;mu) au-dessus de la flèche, puis u_{h,theta}(.;mu^(j)) (comme dans le cas PINN).
+%% Page 1 : réseau -> espace enrichi -> un solveur par mu. Page 2 : perte supervisée J_data sur les sorties de tous les mu. Page 3 : le gradient remonte au réseau (pointillés). Page 4 : comme la page 3, avec un cadre rouge « how ? » autour du réseau et de l'espace enrichi (transition vers la slide suivante).
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/contrib2/operator_scheme/operator_scheme.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty, hybscheme.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+\usepackage{hybscheme}
+
+\hslargesize
+\makeatletter % \hs@font, \hs@rc... de hybscheme.sty
+\def\hs@bw{2.1} % boîtes un peu plus étroites que la taille large : la figure doit tenir en largeur
+
+\newcommand{\framefig}{\hybstyle{two}\useasboundingbox (-1.2,-2.15) rectangle (13.45,1.7);}
+
+% réseau et espace enrichi sur la ligne du milieu (y = 0)
+\newcommand{\boxes}{%
+	\hsbox{a}{0}{neural network}
+	\hsbox{b}{2.8}{enriched space}
+	\draw[hsarrow] (a) -- (b);
+}
+
+% un solveur par mu : #1 nom, #2 ordonnée, #3 indice de mu (en rouge)
+% couleur des mu dans les boîtes : rouge à la page 1 seulement (point clé de l'overlay), puis la couleur du texte de la boîte
+\newcommand{\mucolor}{hs@d}
+\newcommand{\solver}[3]{%
+	\node[draw=hs@c, fill=hs@l, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=\hs@bw cm, minimum height=\hs@bh cm, align=center, font=\hs@font, text=hs@d, inner sep=2pt] (#1) at (5.6,#2) {Galerkin solver\\[-1pt]\textcolor{\mucolor}{$\bm{\mu}^{(#3)}$}};
+}
+\newcommand{\solvers}{%
+	\solver{s1}{0.85}{1}
+	\solver{s3}{-0.85}{B}
+	\node[font=\hs@font, inner sep=0pt] at (5.6,0) {$\vdots$};
+	% le batch : cadre pointillé autour des solveurs, légende sur le bord haut
+	\draw[neutral, dashed, line width=0.8pt, rounded corners=\hs@rc] (4.45,-1.45) rectangle (10.4,1.55);
+	\node[font=\hs@font, text=black, fill=white, inner sep=2pt] at (5.5,1.55) {batch};
+	% de l'espace enrichi vers chaque solveur
+	\draw[hsarrow] (b.east) -- ++(0.4,0) |- (s1.west);
+	\draw[hsarrow] (b.east) -- ++(0.4,0) |- (s3.west);
+}
+
+% sortie de chaque solveur : la solution pour ce mu
+\newcommand{\outsone}[2]{%
+	\draw[hsneutral] (#1.east) -- ++(1.9,0) node[midway, above=1pt, font=\hs@font, text=black] {$\bm{\beta}_h(\theta;\bm{\mu}^{(#2)})$} coordinate (e#1);
+	\node[anchor=west, font=\hs@font, text=black, inner sep=3pt] (u#1) at (e#1) {$u_{h,\theta}(\cdot\,;\bm{\mu}^{(#2)})$};
+}
+\newcommand{\outs}{%
+	\outsone{s1}{1}
+	\outsone{s3}{B}
+	\node[font=\hs@font, inner sep=0pt] at (9.4,0) {$\vdots$};
+}
+
+% perte supervisée à droite : réunit les sorties de tous les mu
+\newcommand{\lossbox}{%
+	\node[draw=hs@c, fill=white, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=1.8cm, minimum height=\hs@ph cm, align=center, font=\hs@font, text=black] (l) at (12.5,0) {loss $\mathcal{J}_\text{data}$};
+	\foreach \s in {s1,s3} {\draw[neutral, line width=\hs@lw pt] (u\s.east) -| (11.25,0);}
+	\draw[hsneutral] (11.25,0) -- (l.west);
+}
+% retour du gradient : de la perte vers le réseau, sous les boîtes ; légende au-dessus du trait, côté gauche
+\newcommand{\backward}{%
+	\draw[hsdash] (l.south) -- (l.south |- 0,-1.75) -- (a.south |- 0,-1.75) -- (a.south);
+	\node[anchor=south west, inner sep=1pt, xshift=8pt, font=\hs@font, text=hs@d] at (a.south |- 0,-1.75) {gradient}; % au-dessus du trait, à droite du coin où la flèche remonte
+}
+% page 4 : cadre rouge autour du réseau et de l'espace enrichi, avec un « how ? » (transition : comment construit-on l'espace enrichi ?)
+\newcommand{\question}{%
+	\draw[red, line width=\hs@lw pt, rounded corners=\hs@rc] (-1.15,-0.65) rectangle (3.95,0.65);
+	\node[anchor=south, inner sep=1pt, font=\large\bfseries, text=red] at (2.3,0.8) {how\,?};
+}
+\makeatother
+
+\begin{document}
+
+\renewcommand{\mucolor}{red}
+\begin{tikzpicture}\framefig \boxes \solvers \outs \end{tikzpicture}
+\renewcommand{\mucolor}{hs@d}
+
+\begin{tikzpicture}\framefig \boxes \solvers \outs \lossbox \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \boxes \solvers \outs \lossbox \backward \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \boxes \solvers \outs \lossbox \backward \question \end{tikzpicture}
+
+\end{document}

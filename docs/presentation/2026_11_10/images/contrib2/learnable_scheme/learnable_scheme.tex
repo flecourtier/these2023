@@ -31,7 +31,10 @@
 	\draw[hsneutral] (u.south) -- (l.north);
 }
 % retour du gradient : de la perte vers le réseau, sous les boîtes (page 6)
-\newcommand{\backward}{\draw[hsdash] (l.west) -- node[midway, above=1pt, font=\hs@font, text=hs@d] {gradient} (a.south |- l.west) -- (a.south);}
+\newcommand{\backward}{%
+	\draw[hsdash] (l.west) -- (a.south |- l.west) -- (a.south);
+	\node[anchor=south west, inner sep=1pt, xshift=8pt, font=\hs@font, text=hs@d] at (a.south |- l.west) {gradient}; % au-dessus du trait, à droite du coin où la flèche remonte (comme operator_scheme)
+}
 \makeatother
 
 \begin{document}

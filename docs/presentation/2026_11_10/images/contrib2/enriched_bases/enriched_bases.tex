@@ -1,0 +1,64 @@
+%% Figure standalone : les trois bases enrichies du cas paramétrique (2nde hybridation), slide « Three enriched bases ».
+%% Une ligne par base, avec la même ossature que operator_scheme : entrée(s) -> réseau -> espace enrichi -> fonctions de base.
+%% Le réseau ne sort pas la base, ni même le multiplicateur : il sort v_theta (étiquette de la flèche) ; le multiplicateur m_theta en est construit et multiplie les phi_{c,i} dans l'espace enrichi ; la base dépend donc des arguments du réseau.
+%% Ligne 1 : partagée, v_theta(x) ; ligne 2 : dépendant de mu, v_theta(x,mu) ; ligne 3 : dépendant du champ, un encodeur résume C(.;mu) en z puis v_theta(x,z).
+%% Page n : les n premières lignes ; le terme qui change est en rouge sur la dernière ligne ajoutée seulement (noir ensuite).
+%% Mêmes boîtes que les autres schémas de la 2nde hybridation (images/hybscheme.sty).
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/contrib2/enriched_bases/enriched_bases.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty, hybscheme.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+\usepackage{hybscheme}
+
+\hslargesize
+\makeatletter % \hs@font, \hs@rc... de hybscheme.sty
+
+% cadre commun : trois lignes à 1.2 cm d'écart, place sous la ligne 3 pour l'entrée x du réseau
+\newcommand{\framefig}{\hybstyle{two}\useasboundingbox (-0.2,-3.45) rectangle (14.4,0.5);}
+% boîte (même style que \hsbox, largeur réglable) : #1 nom, #2 x, #3 y, #4 largeur, #5 texte
+\newcommand{\bbox}[5]{\node[draw=hs@c, fill=hs@l, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=#4 cm, minimum height=0.8cm, align=center, font=\hs@font, text=hs@d] (#1) at (#2,#3) {#5};}
+% réseau -> sortie v_theta (étiquette) -> espace enrichi -> base (équation, avec le multiplicateur m_theta construit à partir de v_theta) : #1 nom, #2 y, #3 sortie du réseau, #4 équation
+\newcommand{\netandeq}[4]{%
+	\bbox{#1}{4.9}{#2}{1.9}{neural network}
+	\bbox{e#1}{8.1}{#2}{1.9}{enriched space}
+	\draw[hsarrow] (#1.east) -- (e#1.west) node[midway, above=1pt, font=\hs@font, text=black] {#3};
+	\draw[hsneutral] (e#1.east) -- ++(0.3,0);
+	\node[anchor=west, inner sep=2pt, font=\hs@font, text=black] at (9.35,#2) {#4};
+}
+% ligne 1 : partagée
+\newcommand{\rowone}{%
+	\netandeq{n1}{0}{$v_\theta(x)$}{$\phi^\theta_{c,i}(x)=m_\theta(x)\,\phi_{c,i}(x)$}
+	\node[font=\hs@font, text=black, anchor=east] (x1) at (3.5,0) {$x$};
+	\draw[hsneutral] (x1.east) -- (n1.west);
+}
+% ligne 2 : dépendant de mu (#1 : couleur de mu)
+\newcommand{\rowtwo}[1]{%
+	\netandeq{n2}{-1.2}{$v_\theta(x,\textcolor{#1}{\bm{\mu}})$}{$\phi^\theta_{c,i}(x;\textcolor{#1}{\bm{\mu}})=m_\theta(x,\textcolor{#1}{\bm{\mu}})\,\phi_{c,i}(x)$}
+	\node[font=\hs@font, text=black, anchor=east] (x2) at (3.5,-1.2) {$x,\ \textcolor{#1}{\bm{\mu}}$};
+	\draw[hsneutral] (x2.east) -- (n2.west);
+}
+% ligne 3 : dépendant du champ (#1 : couleur de l'encodeur et de z)
+\newcommand{\rowthree}[1]{%
+	\netandeq{n3}{-2.4}{$v_\theta(x,\textcolor{#1}{\bm{z}})$}{$\phi^\theta_{c,i}(x;\textcolor{#1}{\bm{z}})=m_\theta(x,\textcolor{#1}{\bm{z}})\,\phi_{c,i}(x)$}
+	\node[font=\hs@font, text=black, anchor=west] (cf) at (0,-2.4) {$C(\cdot\,;\bm{\mu})$};
+	\bbox{enc}{2.3}{-2.4}{1.8}{\textcolor{#1}{encoder} $\mathcal{E}_\theta$}
+	\draw[hsneutral] (cf.east) -- (enc.west);
+	\draw[hsneutral] (enc.east) -- (n3.west) node[midway, above=1pt, font=\hs@font, text=#1] {$\bm{z}$};
+	\node[font=\hs@font, text=black, anchor=north] (x3) at (4.9,-3.0) {$x$};
+	\draw[hsneutral] (x3.north) -- (n3.south);
+}
+\makeatother
+
+\begin{document}
+
+\begin{tikzpicture}\framefig \rowone \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \rowone \rowtwo{red} \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \rowone \rowtwo{black} \rowthree{red} \end{tikzpicture}
+
+\end{document}
