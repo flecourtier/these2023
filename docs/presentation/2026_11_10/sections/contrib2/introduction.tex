@@ -29,28 +29,52 @@
 
 \end{frame}
 
-\begin{frame}{ScimBa: differentiable programming}
-	\todo
-	% \raggedright
-	% \blk{1}{%
-	% 	\textbf{Need:} a solver \coloredonly<1>{differentiable} end to end $\Rightarrow$ \textbf{ScimBa} library, developed in JAX\myfootcite{Bradbury2018,Baydin2018}.
-	% }
+\begin{frame}{Automatic differentiation and ScimBa}
+	\raggedright
+	\textbf{Need:} gradient of the solver w.r.t.\ the $N_\theta$ weights, \coloredonly<1>{without} deriving it by hand.
 
-	% \vspace{8pt}
-	% \blk{2}{%
-	% 	\textbf{What we use from JAX:}
+	\vspace{8pt}
+	\blk{2}{%
+		\textbf{Three ways to compute the gradient:}
 
-	% 	\vspace{4pt}
-	% 	\hspace{12pt}\begin{tabular}{@{}p{1.3cm}l@{}}
-	% 		\texttt{vjp}  & gradient \coloredonly<2>{through the solver} (adjoint) \\[2pt]
-	% 		\texttt{jvp}  & matrix-free Newton \\[2pt]
-	% 		\texttt{vmap} & batch of $\bm{\mu}$ \\[2pt]
-	% 		\texttt{jit}  & compilation
-	% 	\end{tabular}
-	% }
+		\vspace{4pt}
+		\centering
+		\hspace{12pt}\small\setlength{\tabcolsep}{8pt}\begin{tabular}{@{}lccc@{}}
+			\toprule
+			                                                            & \textbf{exact}                & \textbf{use}     & \textbf{cost per gradient} \\
+			\midrule
+			symbolic                                                    & \textcolor{black}{\checkmark} & closed form only & huge expressions           \\
+			finite differences                                          & \textcolor{black}{$\times$}   & any program      & $N_\theta$ solves          \\
+			\coloredonly<2->{automatic diff.}\myfootcite[1]{Baydin2018} & \textcolor{black}{\checkmark} & any program      & a few solves               \\
+			\bottomrule
+		\end{tabular}
+		\flushleft
+	}
 
-	% \vspace{8pt}
-	% \blk*{3}{%
-	% 	\textbf{Automatic differentiation:} graph of elementary operations, chain rule. Backward mode: cost of a few evaluations, \coloredonly<3>{whatever the number of weights}.
-	% }
+	\vspace{8pt}
+	\blk*{3}{%
+		\begin{minipage}{0.7\textwidth}
+			\textbf{ScimBa:} the whole pipeline is a JAX program\myfootcite[2]{Bradbury2018}:
+
+			\vspace{4pt}
+			\centering
+			\hspace{12pt}network $\to$ basis $\to$ assembly $\to$ solve $\to$ loss $\mathcal{J}$
+			\flushleft
+
+			\hspace{12pt}One backward pass gives $\partial\mathcal{J}/\partial\theta$ through \coloredonly<3>{all the steps}.
+		\end{minipage}
+	}
+	% QR code de la bibliothèque, en bas à droite, avec le dernier bloc
+	\only<3->{%
+		\begin{tikzpicture}[remember picture,overlay]
+			\node[anchor=south east, inner sep=0pt] at ([xshift=-0.5cm,yshift=0.7cm]current page.south east) {%
+				\begin{minipage}{3.2cm}
+					\centering
+					\includegraphics[width=3cm]{images/qrcode_scimba.png}
+
+					\vspace{-6pt}
+					\small See ScimBa
+				\end{minipage}};
+		\end{tikzpicture}%
+	}
 \end{frame}

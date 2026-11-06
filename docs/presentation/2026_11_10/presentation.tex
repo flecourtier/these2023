@@ -69,7 +69,8 @@
 \renewrobustcmd*{\bibopenparen}{[}
 \renewrobustcmd*{\bibcloseparen}{]}
 \renewcommand*{\nameyeardelim}{\addcomma\space}
-\newcommand*{\myfootcite}[1]{\footnote[frame,1]{\parencite{#1}}}
+% \myfootcite{clef} : note n°1 de la frame ; \myfootcite[2]{clef} : note n°2 (deux notes indépendantes dans une même frame)
+\NewDocumentCommand{\myfootcite}{O{1} m}{\footnote[frame,#1]{\parencite{#2}}}
 
 \hypersetup{
 	colorlinks=true,
