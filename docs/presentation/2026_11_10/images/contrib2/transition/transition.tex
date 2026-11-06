@@ -1,0 +1,51 @@
+%% Figure standalone : les deux hybridations en rangée, pour la slide de transition « From frozen prior to learned basis ».
+%% Page 1 : 1ère hybridation (bleu) : perte PINN sous le réseau, hors ligne, réseau figé ensuite. Page 2 : 2nde (vert) : perte sous la solution, gradient qui remonte au réseau (pointillés).
+%% Même cadre et mêmes positions horizontales que images/contrib2/learnable_scheme ; macros communes dans images/hybscheme.sty.
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/contrib2/transition/transition.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty, hybscheme.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+\usepackage{hybscheme}
+
+\hslargesize
+\makeatletter % \hs@font, \hs@rc... de hybscheme.sty
+
+\newcommand{\framefig}{\useasboundingbox (-1.45,-1.55) rectangle (11.85,0.55);}
+% ossature commune : trois boîtes, sortie neutre vers la solution
+% perte sous le point #1, texte #2 (même hauteur sur les deux pages)
+\newcommand{\lossunder}[2]{%
+	\path (#1.center) ++(0,-1.2) coordinate (lc);
+	\node[draw=hs@c, fill=white, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=1.8cm, minimum height=\hs@ph cm, align=center, font=\hs@font, text=black] (l) at (lc) {#2};
+}
+\newcommand{\skeleton}[1]{%
+	\hsbox{a}{0}{#1}
+	\hsbox{b}{3.3}{enriched space}
+	\hsbox{c}{6.6}{Galerkin solver}
+	\draw[hsarrow] (a) -- (b);
+	\draw[hsarrow] (b) -- (c);
+	\draw[hsneutral] (c.east) -- ++(2,0) coordinate (e);
+	\node[anchor=west, font=\hs@font, text=black, inner sep=3pt] (u) at (e) {solution};
+}
+
+\begin{document}
+
+\begin{tikzpicture}
+	\hybstyle{one}\framefig
+	\skeleton{neural prior}
+	\lossunder{a}{PINN loss}
+	\draw[hsarrow] (l) -- (a) node[midway, right=2pt, font=\hs@font, text=hs@d] {offline};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\hybstyle{two}\framefig
+	\skeleton{neural network}
+	\lossunder{u}{loss}
+	\draw[hsneutral] (u.south) -- (l.north);
+	\draw[hsdash] (l.west) -- node[midway, above=1pt, font=\hs@font, text=hs@d] {gradient} (a.south |- l.west) -- (a.south);
+\end{tikzpicture}
+
+\end{document}

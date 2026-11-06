@@ -10,14 +10,16 @@ Rédigées le 2026-11-05 en ton absence. Pour chaque slide : la version **implé
 - **D** : supprimer la slide et dire la transition à l'oral (« Limit of the 1st hybridization » en dernière ligne de la conclusion de la 1ère).
 - Étude dimensionnelle : toujours non placée (voir plan, décision 2) ; option : un chiffre dans la ligne « Limit » ou un seul point d'intro.
 
-## 2. Autodiff — « Automatic differentiation » (`introduction.tex`)
+## 2. Autodiff — « ScimBa: differentiable programming » (`introduction.tex`) — refaite le 2026-11-06, option A retenue ; B (2 slides avec schéma de l'architecture ScimBa) et C (chaîne en 3 boîtes) écartées pour l'instant
+
+(Ci-dessous : l'ancienne version et ses alternatives.)
 
 **Implémentée (A)** : 3 blocs : principe (graphe + règle de la chaîne ; JAX, ScimBa) ; modes direct (JVP) / inverse (VJP), coût indépendant du nombre d'entrées en rouge ; à travers un solveur : déroulé contre implicite.
 - **B** : un schéma standalone d'un graphe de calcul avec les deux sens de parcours (flèches JVP vers l'avant, VJP vers l'arrière), un bloc de texte en dessous ; plus visuel, mais un TikZ à dessiner.
 - **C** : supprimer cette slide d'intro, dire le mode inverse à l'oral au moment de l'adjoint (« Learning θ »). Gagne ~1,5 min ; l'adjoint reste moins ancré.
 - **D** : version « JAX » : `jax.grad`, `jax.vjp`, `jax.jvp`, `vmap`, `jit` en blocs de code ; plus concret pour ScimBa, mais moins de maths.
 
-## 3. Deux cas — « Two settings: PINN and neural operator » (`introduction.tex`)
+## 3. Deux cas — « Two settings » (`introduction.tex`) — SUPPRIMÉE le 2026-11-06 (option B : annonce à l'oral + `\SectionNote` des pages de section)
 
 **Implémentée (A)** : deux cartes neutres (comme l'intro) en pastilles *parameter / loss / reuse*, puis bandeau « Same learnable Galerkin scheme, different input and loss ».
 - **B** : un schéma standalone : le même schéma vert, avec en haut une flèche μ fixe (PINN) / une famille de μ (NO) qui entre dans le solveur, et la perte (résidu / données) à droite ; pas de cartes.

@@ -1,13 +1,56 @@
 \section{Introduction}
 
-\begin{frame}{Transition}
-	\todo[Transition depuis la 1ère hybridation\\Étude dimensionnelle ? (à décider quand le reste sera en place)]
+\begin{frame}{From frozen prior to learned basis}
+	\vspace{-5pt}
+	\textbf{1st hybridization:} neural prior trained offline, then \coloredonly<1>{frozen}: a priori error estimates.
+
+	\textbf{Limit:} the gain is bounded by the \coloredonly<1>{quality of the prior}, trained apart from the scheme.
+
+	\vspace{-5pt}
+	\begin{center}
+		\includegraphics[page=1]{images/contrib2/transition/transition.pdf}
+	\end{center}
+
+	\vspace{-5pt}
+	\blk*{2}{%
+		\textbf{2nd hybridization:} learn the basis \coloredonly<2>{through the solver}, adapted to the solution of the scheme.
+
+		\textbf{Advantage:} basis adapted to the scheme, \coloredonly<2>{not bounded by a frozen prior}.
+
+		\textbf{Limit:} \coloredonly<2>{no a priori guarantees}, training cost.
+	}
+
+	\only<2>{%
+		\vspace{-5pt}
+		\begin{center}
+			\includegraphics[page=2]{images/contrib2/transition/transition.pdf}
+		\end{center}
+	}%
+
 \end{frame}
 
-\begin{frame}{Automatic differentiation}
-	\todo[Autodiff en bref : mode inverse (produit vecteur-Jacobien), Scimba / JAX\\Le gradient à travers le solveur de la section suivante s'appuie dessus]
-\end{frame}
+\begin{frame}{ScimBa: differentiable programming}
+	\todo
+	% \raggedright
+	% \blk{1}{%
+	% 	\textbf{Need:} a solver \coloredonly<1>{differentiable} end to end $\Rightarrow$ \textbf{ScimBa} library, developed in JAX\myfootcite{Bradbury2018,Baydin2018}.
+	% }
 
-\begin{frame}{Two settings: PINN and neural operator}
-	\todo[PINN : $\bm{\mu}$ fixé, perte PINN, un réseau par cas test\\Opérateur neuronal : famille de $\bm{\mu}$, perte supervisée, un réseau pour tous les $\bm{\mu}$\\Même schéma de Galerkin apprenable dans les deux cas]
+	% \vspace{8pt}
+	% \blk{2}{%
+	% 	\textbf{What we use from JAX:}
+
+	% 	\vspace{4pt}
+	% 	\hspace{12pt}\begin{tabular}{@{}p{1.3cm}l@{}}
+	% 		\texttt{vjp}  & gradient \coloredonly<2>{through the solver} (adjoint) \\[2pt]
+	% 		\texttt{jvp}  & matrix-free Newton \\[2pt]
+	% 		\texttt{vmap} & batch of $\bm{\mu}$ \\[2pt]
+	% 		\texttt{jit}  & compilation
+	% 	\end{tabular}
+	% }
+
+	% \vspace{8pt}
+	% \blk*{3}{%
+	% 	\textbf{Automatic differentiation:} graph of elementary operations, chain rule. Backward mode: cost of a few evaluations, \coloredonly<3>{whatever the number of weights}.
+	% }
 \end{frame}

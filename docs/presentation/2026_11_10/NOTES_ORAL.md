@@ -208,16 +208,20 @@ Points à dire qui ne sont **pas** sur la slide (la slide = mots-clés). Pas un 
 - **Compromis (phrase de la conclusion de la thèse)** : garanties a priori contre expressivité / adaptation. Pas de tableau comparatif sur la slide (redondant avec l'intro « Two hybridizations »).
 - Étude dimensionnelle (d = 1..4, FEM/DG ~5·10⁻² avec 38 000 à 65 000 dofs contre un réseau de 641 poids sous 10⁻⁴ à d = 4) : pas sur cette slide (décision en suspens du plan).
 
-## 2nde hybridation — Automatic differentiation (écrite 2026-11-05, à relire)
+## 2nde hybridation — ScimBa: differentiable programming (ex « Automatic differentiation », refaite 2026-11-06)
 
-*Message : l'autodiff donne le gradient d'un programme ; le mode inverse coûte quelques évaluations quel que soit le nombre de poids ; à travers un solveur, deux options (déroulé, implicite). (→ `chapters/sciml_library/autodiff.tex`)*
+*Message : pour apprendre à travers le solveur il fallait un solveur différentiable de bout en bout, d'où la bibliothèque ScimBa, écrite en JAX, qui repose sur l'autodiff ; grands principes de l'autodiff. (→ `chapters/sciml_library.tex` (intro), `sciml_library/autodiff.tex`)*
+
+- **Refonte 2026-11-06 (2e version, option A « outil → usage »)** : *Need* (solveur différentiable, ScimBa en JAX) ; ce qu'on utilise de JAX : `vjp` = gradient à travers le solveur (adjoint), `jvp` = Newton sans matrice, `vmap` = lot de μ (opérateur neuronal), `jit` = compilation (explique que le temps appris en 3D soit dominé par la compilation) ; une ligne d'autodiff (graphe, règle de la chaîne, mode inverse à coût indépendant du nombre de poids). **À dire à l'oral, plus sur la slide** : définitions JVP `J_f v` (direct) et VJP `uᵀJ_f` (inverse), pytrees. Une seule note de bas de frame (`\myfootcite{Bradbury2018,Baydin2018}`) : `\myfootcite` numérote toujours « 1 », deux appels dans une frame donnent deux fois le même numéro, donc un seul appel avec plusieurs clés. Fil précédent : besoin → ScimBa → JAX → autodiff (3 blocs). Le bloc « à travers un solveur » (déroulé / implicite) est **retiré de la slide** (repris par l'adjoint de « Learning θ ») ; son contenu reste ci-dessous pour l'oral. Pytrees : tous les modules de ScimBa (maillages, bases, réseaux…) héritent de `ScimbaPytree`, donc dérivables et composables avec les transformations de JAX ; `trainable(...)` distingue ce que l'optimiseur modifie.
 
 - **Principe** : un programme est un graphe acyclique d'opérations élémentaires (DAG) ; règle de la chaîne le long du graphe. Trois façons de dériver : symbolique (exact mais expressions énormes, pas pour des programmes quelconques), différences finies (une évaluation par dimension, erreur de troncature), autodiff (exact et valable pour des programmes quelconques).
 - **Mode direct (JVP)** : `J_f v` en une passe, efficace si peu d'entrées par rapport aux sorties. **Mode inverse (VJP)** : `u^T J_f`, coût proportionnel à celui du programme direct (théorème de Baur–Strassen), au prix du stockage des valeurs intermédiaires ; la rétropropagation en est un cas particulier. Notre cas : une perte scalaire, beaucoup de poids → mode inverse.
 - **À travers un solveur** : gradient déroulé (on enregistre les itérations, la mémoire et le coût croissent avec leur nombre : prohibitif pour Newton sur un gros système) ou différentiation implicite (théorème des fonctions implicites, on ne dérive que l'équation satisfaite par la solution) ; c'est ce qui sert pour l'adjoint de la slide « Learning θ » (→ `learnable_dg.tex`).
 - **JAX / ScimBa** (dit à l'oral, hors slide sauf citation) : JAX compose des transformations fonctionnelles : `jax.grad`, `jax.vjp`, `jax.jvp` ; `jax.vmap` (vectorisation, utile pour un lot de μ), `jax.jit` (compilation XLA), `jax.lax.scan` (boucles sans déroulement). Une expression comme `jit(vmap(grad(f)))` est valide. Objets de ScimBa (maillages, bases, réseaux) enregistrés comme pytrees, donc dérivables et composables. Newton sans matrice (JVP) dans le solveur : `solve_framework.tex`.
 
-## 2nde hybridation — Two settings: PINN and neural operator (écrite 2026-11-05, à relire)
+## 2nde hybridation — (slide supprimée le 2026-11-06) Two settings: fixed μ or family of μ
+
+*Slide supprimée (option B : redondante avec la section PINN, « Neural operator: principle » et les pages de section, qui portent déjà « μ fixed » / « μ no longer fixed »). À dire à l'oral à la fin de la slide ScimBa : « deux cas : μ fixé avec perte PINN, puis famille de μ avec perte supervisée ». Le contenu ci-dessous reste pour l'oral ; liens avec l'intro : le cas μ fixé répond à l'expressivité, le cas famille de μ au coût des résolutions répétées.*
 
 *Message : un même schéma de Galerkin apprenable, deux façons de l'entraîner : μ fixé avec perte PINN, ou famille de μ avec perte supervisée. (→ `PINN_1D.tex`, `NO_1D.tex`)*
 
@@ -225,6 +229,7 @@ Points à dire qui ne sont **pas** sur la slide (la slide = mots-clés). Pas un 
 - **Neural operator (paramétrique)** : famille de μ, perte supervisée sur des solutions de référence (DG SIPG) à 32 μ d'entraînement ; un seul réseau pour tous les μ, testés sur des μ jamais vus, sans réentraînement. 1D uniquement, DG patchwise.
 - **À dire** : les deux cas ne sont pas comparables directement (perte, optimiseur ENG contre SSBFGS, nombre de graines) : voir le dernier paragraphe de `NO_1D.tex`. Une perte PINN paramétrique, qui isolerait l'effet de μ, n'a pas été étudiée.
 - Le principe du schéma (réseau → base enrichie → solveur) est dans la section PINN, repris avec μ dans la section Neural operator.
+- **Vocabulaire (2026-11-06)** : l'axe est μ fixé contre famille de μ, pas PINN contre opérateur : la 1ère hybridation utilise déjà un PINN *paramétrique*. « Neural operator » est un peu fort pour la base partagée (un « opérateur constant » dans le manuscrit, `NO_1D.tex`) ; seules les bases dépendant de μ ou du champ relèvent vraiment de l'apprentissage d'opérateur. Perte PINN = résidu **et** bord. Le bandeau « One learnable Galerkin scheme, two ways to train it » annonce le schéma présenté à la slide suivante (section PINN).
 
 ## 2nde hybridation — Conclusion, limitations and perspectives (écrite 2026-11-05, à relire)
 
