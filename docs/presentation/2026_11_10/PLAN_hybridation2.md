@@ -19,7 +19,7 @@ Notes de travail issues de la discussion du 2026-11-02. À reprendre plus tard.
 | Partie | Durée |
 |---|---|
 | Intro + méthodes classiques + conclusion | 10 min |
-| 1ère hybridation (EFEM avec PINN) | 15 min |
+| 1ère hybridation (EFEM avec PINN), multiplicatif inclus | 15 min |
 | **2nde hybridation (Galerkin apprenable)** | **20 min** |
 
 ## Découpage de la 2nde hybridation (décidé le 2026-11-05, remplace A/B/C ci-dessous)
@@ -131,3 +131,38 @@ La slide « Neural-enriched Galerkin scheme » est **générique**, rédigée po
 - 2026-11-06 : « Neural operator: principle » **restructurée en 4 overlays** (échantillonnage 𝒟_train ⊂ 𝓜 puis batch par epoch → un solve par μ du batch → perte → entraînement) ; bloc « Validity » déplacé à l'oral. Équation sans indice (`A_h(θ;μ) β_h(θ;μ) = b_h(θ;μ)`).
 - 2026-11-06 : slide « Three enriched bases » renommée **« Constructing the enriched space (three ways) »** (transition du « how ? » de la slide principe) ; figure refaite : réseau → `v_θ(…)` → enriched space → équation `φ^θ_{c,i}(x;·) = m_θ(x,·) φ_{c,i}(x)` pour les trois bases.
 
+
+---
+
+## 1ère hybridation : plan retenu (2026-11-06)
+
+Budget : **15 min** (intro + méthodes classiques 10, 1ère 15, 2nde 20 = 45). Choix de l'auteure : théorie 4 slides + résultats 4 slides, **multiplicatif dans le corps** (la 2nde hybridation est multiplicative : `φ^θ_I = m_θ φ_I`, et sa perspective « geler `m_θ` » retombe sur l'approche multiplicative de la 1ère).
+
+`sections/contrib1/presentation.tex` (`\Section{Method}`, ~6,5 min) :
+- [x] « Pipeline of the hybrid method » : schéma bleu (`hybscheme`, taille large, perte PINN à gauche, prior figé), à la place de `offline.pdf` / `online.pdf` de 2026_07_03
+- [x] « Additive approach » : reprise de l'ancienne slide
+- [x] « Multiplicative approach » : relèvement `M`, `u_{θ,M} = u_θ + M`, `V_h^×`, `φ^×_I = u_{θ,M} φ_I` (source : `enriched_fem_multiplicative.tex`, ancienne annexe de 2025_06_17_CS2)
+- [x] « Convergence analysis » : FEM → gain additif → gain multiplicatif → `M → ∞` redonne l'additif (source : `comparison.tex`, ancienne annexe « Additive vs Multiplicative »)
+
+`sections/contrib1/numerical_results.tex` (`\Section{Numerical results}`, ~7,5 min), un cas par sous-section :
+- [x] « 1D Poisson: additive vs multiplicative » (`lap1D.tex`, courbes `M=3`, `M=100`, `k=1` ; seul cas où le manuscrit compare les deux ; message honnête : le multiplicatif n'égale l'additif que pour `M` grand ou `u^{(k+1)}` petite)
+- [x] « 2D Poisson on a square » (gain en `h`, reprise de 2026_07_03)
+- [x] « 3D Poisson: online phase » puis « 3D Poisson: parametric framework » (temps, cadre paramétrique)
+- Cas anisotrope et anneau : annexe de la 1ère (à relier par `\refappendix`).
+
+**Pas de slide de conclusion propre à chaque hybridation** (décidé le 2026-11-06). `contrib1/conclusion.tex` et `contrib2/conclusion.tex` supprimés ; la slide « From frozen prior to learned basis » (ouverture de la 2nde) fait office de bilan de la 1ère. **Une seule conclusion globale** (`sections/common/conclusion.tex`), à écrire : elle doit reprendre ce qui était dans l'ancienne conclusion de la 2nde (texte conservé ci-dessous, il était commenté dans le `.tex`) :
+- 2nde, résultats : 1D (PINN) à `N_dofs` fixé, erreur `10^2` à `10^5` fois plus basse ; 3D (PINN) : des centaines de fois moins de dofs à temps comparable ; 1D (opérateur) : un réseau pour des μ jamais vus, gains médians de 9 à 7000 (**à relire dans le manuscrit avant de les mettre**).
+- 2nde, limites (étude exploratoire) : peu de cas tests, paramétrique en 1D seulement ; entraînement sensible à l'initialisation, pas d'estimation d'erreur ; coût d'entraînement : comparaison à temps égal en 3D seulement.
+- Perspective qui relie les deux : **geler le multiplicateur appris `m_θ`** → approche multiplicative de la 1ère, estimation a priori de type Céa applicable.
+
+### Avancement et décisions (2026-11-06, rédaction autonome)
+
+Fait : les 8 slides (4 méthode + 4 résultats), les annexes de la 1ère (A1 CL de Dirichlet générales, A2 constantes de gain multiplicatives, anisotrope 2D ×3, anneau 2D ×3), la conclusion globale (2 slides : bilan, limites et perspectives). Rien n'est commité.
+- **Données** : chiffres et CSV tirés du manuscrit (`figures/efup/...`) sous `images/numeric/` ; ils remplacent ceux des anciennes slides (gain 2D P1 ≈ 270, maillage ≈ 16× plus grossier ; 3D : speed-up ≈ 1471, rentable dès `n_p = 19` / 5). Tableaux de gains de l'anisotrope et de l'anneau : première maille seulement (`*_firstN.csv`, lignes du manuscrit).
+- **Préambule (modifié, à relire)** : `presentation.tex` charge `preamble/{convergences_h,gains,costs,times,h1_extra}` (copies de 2026_07_03, `\tikzset{font=\small}` supprimé), la macro `\flechecourbehorizontale` et `\refappendix{nom}` (cible `\hypertarget{app:nom}{}` dans la frame d'annexe : noms `bc`, `gain`, `aniso`, `annulus`). Changements locaux dans les copies : trait horizontal `e` tracé en coordonnées de l'axe (`\ethreshold`, 1e-3 par défaut), étiquettes `x` tournées pour les courbes 2D, légende du graphique `e=5·10⁻⁴` placée au-dessus du graphique, annotations 708/98 écartées.
+- **Tailles des courbes** : `\plotwidth/\plotheight` sont réglées au début de chaque frame (dans une `minipage`, `\textwidth` devient la largeur de la minipage).
+- **Notation** : `p_h^+`, `V_h^+`, `V_h^×` comme le manuscrit ; les slides écrivent `k+1` (cas `s = k`), l'annexe A2 garde `s` du manuscrit.
+- **À relire / vérifier** : slide « 1D Poisson » (légende `Add` sans `P_1`, tick labels serrés), plots 3D (marges), figures de solutions des annexes (anciennes figures de 2026_07_03, non régénérées depuis le manuscrit ; le paramètre de la figure anisotrope est `μ^(3)` dans le manuscrit, `μ^(2)` dans l'ancienne slide), phrase de conclusion « far fewer dofs » (3D, à temps comparable).
+- Reste à faire : transition `From frozen prior to learned basis` à ajuster (non demandé), QR codes / « Ongoing works » de la conclusion, vérification visuelle finale sur l'ensemble du deck.
+
+**Stash (2026-11-06, demandé par l'auteure)** : le contenu complet de la 1ère hybridation (slides, annexes, `preamble/`, `images/contrib1/`, `images/numeric/`, modifs de `presentation.tex` et `biblio.bib`) est dans le stash « Slides 2026_11_10 - 1ere hybridation (contenu complet…) » (`git stash list`, restauration : `git stash pop` ou `git checkout stash@{N} -- <fichier>` ; les fichiers non suivis sont dans `stash@{N}^3`). L'arbre de travail ne garde que la structure : `sections/contrib1/{presentation,numerical_results,appendix}.tex` avec les mêmes titres de slides et un `\todo` chacun. Conclusion globale, `NOTES_ORAL.md`, `PLAN_hybridation2.md` et le retrait des conclusions par hybridation sont restés dans l'arbre. Les cases ci-dessus (cochées) décrivent le contenu du stash.

@@ -99,6 +99,66 @@ Points à dire qui ne sont **pas** sur la slide (la slide = mots-clés). Pas un 
 
 ---
 
+## 1ère hybridation — Pipeline of the hybrid method (2026-11-06, à relire)
+
+*Message : un PINN paramétrique entraîné une fois hors ligne sert de prior ; en ligne (μ fixé) on l'injecte dans l'espace éléments finis ; but = la précision d'un maillage fin sur un maillage plus grossier. (→ `chapters/enriched_fem/`, intro du chapitre ; figure `figures/efup/pipeline`)*
+
+- Schéma bleu (`images/contrib1/pipeline/`, 2 pages) : mêmes boîtes que l'intro (`hybscheme`) ; page 2 : « frozen » sous le prior = pas de retour du gradient, le prior ne voit pas le schéma de Galerkin.
+- Coût du prior : entraînement unique (ex. 708 s en 3D), amorti sur le nombre de μ résolus (slide « parametric framework »).
+- En ligne : évaluer le prior **et ses dérivées** (autodiff) aux points de quadrature : c'est ce qui est comptabilisé dans le temps en ligne sur la slide 3D.
+
+## 1ère hybridation — Additive approach
+
+- Notation : `p_h^+ ∈ V_h^0` (comme le manuscrit) ; l'ancienne slide notait `u_h = u_θ + p`. Test space inchangé : seule la solution est cherchée dans `u_θ + V_h^0`.
+- Problème : `a(p_h^+, v_h) = l(v_h) − a(u_θ, v_h)` : Galerkin classique, seul le second membre change ; mêmes matrices que le FEM standard (donc aucun surcoût d'assemblage de la matrice, seulement un terme `a(u_θ, v_h)` à calculer).
+- Figure : `u` (trait plein), `u_θ` (pointillé), correction `p_h^+` en rouge (zoom). Le prior est une approximation lisse mais pas exacte ; la correction éléments finis fait le reste.
+- **Conditions aux limites générales** → annexe A1 : `p_h^+ = g − u_θ` sur Γ, homogène si le PINN impose exactement les CL ; cas des géométries courbes (k>2, maillage non ajusté).
+- Le manuscrit note les ordres `1 ≤ s ≤ k` ; les slides écrivent `k+1` (cas `s = k`) pour rester proches des anciennes présentations. **À dire si question** : le gain est défini pour tout `s ≤ k`.
+
+## 1ère hybridation — Multiplicative approach
+
+- **Pourquoi** : la 2nde hybridation est multiplicative (`φ^θ_I = m_θ φ_I`) ; ici le prior multiplie la base de Lagrange `φ_I^× = u_{θ,M} φ_I`. Même structure ⇒ la perspective « geler m_θ » retombe sur cette approche (voir conclusion).
+- **Relèvement** `u_M = u + M > 0`, `u_{θ,M} = u_θ + M` : le prior ne doit pas s'annuler (on divise par `u_{θ,M}` dans l'analyse). Retour au problème d'origine : `u_h^× = u_{h,M}^× − M`. `M` = paramètre à choisir, trop petit ⇒ mauvais, grand ⇒ on retombe sur l'additif.
+- Espace : `V_h^× = {u_{θ,M} p_h^×, p_h^× ∈ 1 + V_h^0}` ; test space `u_{θ,M} V_h^0` (c'est la forme `a(u_{θ,M} p, u_{θ,M} v) = l(u_{θ,M} v)`, pas de terme de second membre modifié mais matrice modifiée, donc **réassemblage** : plus coûteux que l'additif).
+- CL (annexe A1) : `p_h^× = (g+M)/u_{θ,M}` sur Γ (PINN standard), `p_h^× = 1` si le PINN impose exactement les CL ; cas homogène : `M = 0` possible, `p_h^×` libre (meilleurs résultats en 1D elliptique).
+
+## 1ère hybridation — Convergence analysis
+
+- Théorème FEM standard (Ern–Guermond 2004), théorème additif puis multiplicatif (→ `enriched_fem_additive.tex`, `enriched_fem_multiplicative.tex`). Constantes : `C_{L²}` (la même que le FEM standard) ; dans le manuscrit les constantes `C_e C_1 C_s γ²/α` apparaissent explicitement, ici regroupées dans `C_{L²}`.
+- **Gain additif** `|u − u_θ|_{H^{k+1}} / |u|_{H^{k+1}}` : petit si les dérivées d'ordre `k+1` du prior sont précises (pas seulement la valeur) ⇒ idée d'entraîner avec une perte de Sobolev (cas annulus). Gain `< 1` ⇒ plus précis que le FEM standard à même maillage ; les ordres de convergence sont conservés.
+- **Gain multiplicatif** `C_gain,L²^{×,M}` : expression explicite en annexe A2 (`C_{θ,M}`, `‖u_{θ,M}‖_{W^{1,∞}}`, `|u_M/u_{θ,M}|_{H^{k+1}}`) ; limite `M → ∞` = gain additif (annexe, `comparison.tex`, thm. de comparaison, preuve par `M·C_{θ,M} → 1`). Pour `M` petit le multiplicatif peut être bien moins bon que l'additif (voir le cas 1D).
+- Hypothèses non écrites : `u_θ ∈ H^{k+1} ∩ H^1_0`, problème dual à solution forte (pour L²), `P_k`.
+
+## 1ère hybridation — 1D Poisson: additive vs multiplicative
+
+*Seul cas où le manuscrit compare les deux approches (→ `numerical_results/lap1D.tex`, `ell1D.tex`).*
+
+- Cas `u = μ1 sin(2πx) + μ2 sin(4πx) + μ3 sin(6πx)`, P1 enrichi vs FEM P1 et P2. `μ^(1) = (0.3, 0.2, 0.1)`, `μ^(2) = (0.8, 0.5, 0.8)`. Courbes : FEM P1/P2 (plein), additif (tireté), multiplicatif `M = 3` et `M = 100` (pointillés). Les ordres de convergence sont conservés par toutes les méthodes enrichies.
+- Message honnête (conclusion du chapitre 3) : l'additif P1 ≈ FEM P2 ; le multiplicatif se rapproche de l'additif quand `M` croît, et n'est meilleur que dans des cas très particuliers (bon choix de `M`) ; pour `M` petit il est moins bon quand `u''` est grande (`μ^(2)`).
+- À dire : on garde l'additif pour la suite (plus simple, pas de réassemblage, pas de paramètre `M`) ; le multiplicatif est surtout présent pour faire le lien avec la 2nde hybridation.
+
+## 1ère hybridation — 2D Poisson on a square
+
+- Cas (`lap2D.tex`, basse fréquence) : `Ω = (−π/2, π/2)²`, `u = exp(−((x1−μ1)²+(x2−μ2)²)/2) sin(2x1) sin(2x2)`, `μ ∈ [−0.5, 0.5]²`, PINN avec CL exactes (level-set), `N_θ = 12 461`. `μ^(1) = (0.05, 0.22)`. CL de Dirichlet homogènes.
+- Courbes : FEM P1–P3 (plein) contre additif (tireté), mêmes pentes. Tableau `N_dofs` pour atteindre une même erreur `e` (FEM contre additif, `k = 1, 2, 3`).
+- **Gains moyens** (50 paramètres) : P1 ≈ 270, P2 134, P3 61 (pour la maille de la slide). Pour P1 : maillage ≈ 16 fois plus grossier. Conclusion de la thèse : maillages 5 à 28 fois plus grossiers (P1), selon les cas test.
+- **Les chiffres ont changé par rapport aux anciennes slides** (2026_07_03) : on suit le manuscrit (ex. maillage et gain).
+- Autres cas 2D en annexe : anisotrope (prior moins précis ⇒ gains plus petits : 35.7 / 18.3 / 8.3 pour P1/P2/P3 à `N = 20`), anneau avec CL mixtes (Dirichlet + Robin, CL dépendant de μ ; Sobolev training ; gains 55.5 / 58.4 / 20.6 à `h = 1.33·10⁻¹`). Dans le manuscrit les paramètres de la figure « solutions et erreurs » de l'anisotrope sont `μ^(3) = (0.46, 0.52, 0.05, 0.12)` (l'ancienne slide l'appelait `μ^(2)`).
+
+## 1ère hybridation — 3D Poisson: online phase / parametric framework
+
+- Cas : version 3D du précédent, `μ^(1) = (0.05, 0.22, 0.1)`, P1.
+- Erreur en `h`, puis erreur en temps **en ligne** (maillage + assemblage + résolution + dérivées du prior ; l'entraînement n'est pas compté). Pour `e = 10⁻³` : FEM `N = 152` en 76.5 s ; additif `N = 12` en 0.052 s ⇒ speed-up ≈ 1471 (flèche `÷ 1471` dans les anciennes slides, remplacée par le chiffre en rouge).
+- **Cadre paramétrique** : entraînement du PINN 708 s (hors ligne). Coût total (hors ligne + en ligne) en fonction du nombre de paramètres `n_p` : rentable dès `n_p = 19` pour `e = 10⁻³`, `n_p = 5` pour `e = 5·10⁻⁴` (« 40 » et « 98 » = temps FEM pour une résolution à `n_p = 0` dans les graphiques, « 708 » = coût hors ligne ; ces annotations sont tirées des CSV, `output13`/`output54`).
+- Limite : un seul μ pour l'erreur en ligne, chiffres dépendant de la machine.
+
+## Conclusion globale (2026-11-06, à relire)
+
+- Pas de slide de conclusion par hybridation (décidé le 2026-11-06) : le bilan de la 1ère est dans la slide de transition « From frozen prior to learned basis » ; la conclusion globale reprend les deux.
+- 1ère : ordres préservés, gain = qualité du prior (dérivées) ; maillages 5 à 28 fois plus grossiers (P1 additif) ; 3D : rentable dès 19 jeux de paramètres (e = 10⁻³, entraînement compris) ; multiplicatif → additif quand `M → ∞`, meilleur seulement dans des cas particuliers.
+- 2nde : voir la note « Conclusion, limitations and perspectives » ci-dessous (conservée telle quelle) ; la slide « Limits and perspectives » en reprend les limites en une ligne chacune.
+- Lien entre les deux : geler `m_θ` ⇒ approche multiplicative ⇒ estimation a priori de type Céa.
+
 ## 2nde hybridation — Neural-enriched Galerkin scheme
 
 *Message : on garde le schéma de Galerkin tel quel, mais la base est paramétrée par un réseau (poids θ) ; la solution dépend de θ à travers le solveur. Cadre DG (celui du tableau « Galerkin scheme »). (→ `chapters/sciml_library/learnable_dg.tex`, `basis_functions.tex`)*
