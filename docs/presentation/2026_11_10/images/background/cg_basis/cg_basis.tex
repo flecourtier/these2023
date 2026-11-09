@@ -1,6 +1,5 @@
-%% Figure standalone : mêmes bases locales que dg_basis (k=1), mais dofs partagés (table de connectivité), puis u_h continue.
-%% Page 1 : cellules + bases locales seules (tout neutre). Page 2 : + dofs globaux (interfaces en rouge) + une fonction globale phi_I (somme de deux locales) en rouge.
-%% Page 3 : page 2 + u_h continue (pas de saut, en rouge). Page 4 : idem, rouge -> noir. Même cadre sur les quatre pages, même géométrie que dg_basis.
+%% Figure standalone : base continue (k=1, 3 cellules, 4 dofs). Les fonctions de base sont directement les fonctions globales phi_i (chapeaux), sans fonctions locales ni table de connectivité.
+%% Page 1 : maillage + chapeaux phi_1..phi_4 (neutre). Page 2 : + dofs beta_i (couleur de leur fonction de base). Page 3 : + u_h = somme des beta_i phi_i (continue). Même cadre sur les trois pages.
 %% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
 %% ou images/build_fig.sh images/background/cg_basis/cg_basis.tex
 % !TEX program = lualatex
@@ -10,82 +9,52 @@
 
 \usepackage{figpreamble}
 
-\newcommand{\frameandbasis}[1]{% #1 : couleur des bases (estompée quand u_h apparaît)
-	\useasboundingbox (-0.1,-0.5) rectangle (5.5,1.2);
+% une couleur par fonction de base (ni bleu ni vert, réservés aux hybridations ; ni rouge ni orange, réservés aux points clés du texte)
+\definecolor{bas1}{RGB}{128,60,170}
+\definecolor{bas2}{RGB}{160,90,40}
+\definecolor{bas3}{RGB}{210,50,150}
+\definecolor{bas4}{RGB}{120,120,0}
+
+\newcommand{\frameandbasis}{
+	\useasboundingbox (-0.2,-0.35) rectangle (3.9,1.6);
 
 	% maillage
 	\draw[neutral] (-0.1,0) -- (3.1,0);
 	\foreach \x in {0,1,2,3} { \draw[neutral, thick] (\x,0) -- (\x,-0.06); }
-	\foreach \i in {0,1,2} { \node[neutral, font=\footnotesize] at (\i+0.5,-0.1) {$K_\i$}; }
 
-	% fonctions de base locales : phi_{c,1} en tirets, phi_{c,2} en pointillés (le trait plein est réservé à u_h)
-	\foreach \a/\b in {0/1, 1/2, 2/3} {
-			\draw[#1, thick, dashed] (\a,1) -- (\b,0);
-			\draw[#1, thick, densely dotted] (\a,0) -- (\b,1);
-		}
+	% chapeaux phi_i : un par noeud, chacun sa couleur, étiqueté au sommet
+	\draw[bas1, thick] (0,1) -- (1,0);
+	\draw[bas2, thick] (0,0) -- (1,1) -- (2,0);
+	\draw[bas3, thick] (1,0) -- (2,1) -- (3,0);
+	\draw[bas4, thick] (2,0) -- (3,1);
+	\foreach \x/\i in {0/1, 1/2, 2/3, 3/4} { \node[font=\footnotesize, bas\i, anchor=south] at (\x,0.98) {$\phi_\i$}; }
 
-	% légende (une colonne)
-	\draw[#1, thick, dashed] (3.4,0.85) -- (3.95,0.85);
-	\node[font=\footnotesize, anchor=west] at (4.05,0.85) {$\phi_{c,1}$};
-	\draw[#1, thick, densely dotted] (3.4,0.6) -- (3.95,0.6);
-	\node[font=\footnotesize, anchor=west] at (4.05,0.6) {$\phi_{c,2}$};
-
-	% titre
-	\node[font=\footnotesize, neutral, anchor=south] at (1.8,1.02) {$N_\text{cells}=3$, $N_\text{dofs}=4$ ($k=1$)};
+	% titre, au-dessus (comme avant)
+	\node[font=\footnotesize, neutral, anchor=south west] at (-0.1,1.3) {$N_\text{cells}=3$, $N_\text{dofs}=4$ ($k=1$)};
 }
 
-% dofs globaux : un par noeud, partagé entre les cellules voisines (#1 : couleur des dofs d'interface)
-\newcommand{\globaldofs}[1]{
-	\node[neutral, font=\footnotesize] at (0,-0.36) {$\beta_1$};
-	\node[#1, font=\footnotesize] at (1,-0.36) {$\beta_2$};
-	\node[#1, font=\footnotesize] at (2,-0.36) {$\beta_3$};
-	\node[neutral, font=\footnotesize] at (3,-0.36) {$\beta_4$};
+% dofs beta_i : un par noeud, de la couleur de sa fonction de base, juste sous le maillage
+\newcommand{\globaldofs}{
+	\foreach \x/\i in {0/1, 1/2, 2/3, 3/4} { \node[bas\i, font=\footnotesize] at (\x,-0.2) {$\beta_\i$}; }
 }
 
-% dofs partagés aux interfaces (#1 : leur couleur, violet puis noir) + chapeau phi_2 (orange)
-\newcommand{\sharedpart}[1]{
-	\globaldofs{#1}
-	% fonction de base globale phi_I : somme des deux fonctions locales qui valent 1 au noeud partagé (ici I=2)
-	\draw[orange, ultra thick, opacity=0.3] (0,0) -- (1,1) -- (2,0); % un seul chemin : pas de surépaisseur au sommet
-	\node[font=\footnotesize, orange, anchor=west] at (0.3,0.92) {$\phi_2$}; % étiquetté sur le chapeau, plus dans la légende
-}
-
-% u_h continue, aucun saut aux interfaces (#1 : couleur des cercles « no jump », rouge puis noir) ; légende : u_h puis no jump
-\newcommand{\continuouspart}[1]{
+% u_h continue = somme des beta_i phi_i
+\newcommand{\continuouspart}{
 	\draw[black, very thick] (0,0.3) -- (1,0.7) -- (2,0.4) -- (3,0.85);
-	\foreach \x/\y in {1/0.7, 2/0.4} { \draw[#1, thick] (\x,\y) circle (3pt); }
-	\draw[black, very thick] (3.4,0.35) -- (3.95,0.35);
-	\node[font=\footnotesize, anchor=west] at (4.05,0.35) {$u_h$};
-	\draw[#1, thick] (3.67,0.10) circle (3pt);
-	\node[font=\footnotesize, #1, anchor=west] at (4.05,0.10) {no jump};
-}
-
-% dofs partagés (#1) ; + u_h continue (#2)
-\newcommand{\frameandshared}[1]{
-	\frameandbasis{neutral!70}
-	\sharedpart{#1}
-}
-\newcommand{\frameandcontinuous}[2]{
-	\frameandshared{#1}
-	\continuouspart{#2}
+	\node[font=\footnotesize, anchor=west] at (3.15,0.85) {$u_h$};
 }
 
 \begin{document}
 
 \begin{tikzpicture}[x=0.9cm,y=1.7cm]
-	\frameandbasis{neutral!70}
-\end{tikzpicture}
-
-% \begin{tikzpicture}[x=0.9cm,y=1.7cm]
-% 	\frameandshared{violet}
-% \end{tikzpicture}
-
-\begin{tikzpicture}[x=0.9cm,y=1.7cm]
-	\frameandcontinuous{orange}{red}
+	\frameandbasis
+	\globaldofs
 \end{tikzpicture}
 
 \begin{tikzpicture}[x=0.9cm,y=1.7cm]
-	\frameandcontinuous{orange}{black}
+	\frameandbasis
+	\globaldofs
+	\continuouspart
 \end{tikzpicture}
 
 \end{document}

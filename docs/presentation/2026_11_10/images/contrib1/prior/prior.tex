@@ -1,0 +1,53 @@
+%% Figure standalone : solution u, prior u_theta et correction p_h^+ (slide « Additive approach »).
+%% Page 1 : les deux courbes seules (sans zoom) ; page 2 : avec le zoom sur la correction p_h^+ (même cadre, le zoom est seulement masqué sur la page 1).
+%% Reprise À L'IDENTIQUE (dimensions, traits, légende) de 2026_07_03/images/correction/correction.tex : couleurs de diapocolors (u neutre, u_theta bleu = 1ère hybridation), notation du manuscrit p_h^+ (ancien C_h^+).
+%% Données : derivatives_mu1_PINN.txt (colonnes x, u, u_theta, ...), à côté de ce fichier.
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/contrib1/prior/prior.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=newest}
+
+\newif\ifzoom
+% #1 = 0 : sans zoom (le deuxième axe est conservé mais masqué, pour garder le même cadre) ; #1 = 1 : avec zoom
+\newcommand{\priorfig}[1]{%
+	\ifnum#1=1 \zoomtrue\else\zoomfalse\fi
+	\begin{tikzpicture}
+		\begin{groupplot}[group style={group size=1 by 2, vertical sep=0.7em, group name=mygroupplot},
+				enlargelimits=false, height=3.0cm, width=3.25cm, scale only axis, clip mode=individual,
+				tick label style={font=\scriptsize}, legend style={draw=none}, legend columns=1, legend pos=north east]
+			\nextgroupplot[ymin=-0.55, ymax=0.55, xmin=0, xmax=1, ytick={-0.6,0.6}, xtick={-0.1,1.1}]
+			\addplot[color=orange, line width=1.5pt] table[x=x, y=u] {derivatives_mu1_PINN.txt}; \addlegendentry{$u$}
+			\addplot[color=blue, line width=1pt, densely dotted] table[x=x, y=u_theta] {derivatives_mu1_PINN.txt}; \addlegendentry{$u_\theta$}
+			\coordinate (c1) at (axis cs:0.55,-0.15);
+			\coordinate (c2) at (axis cs:0.75,-0.15);
+			\ifzoom\draw (c1) rectangle (axis cs:0.75,0.05);\fi
+
+			\ifzoom
+				\nextgroupplot[ymin=-0.15, ymax=0.05, xmin=0.55, xmax=0.75, ytick={-0.6,0.6}, xtick={-0.1,1.1}, name=ax2, height=2.5cm, width=2.5cm]
+				\addplot[color=orange, line width=1.5pt] table[x=x, y=u] {derivatives_mu1_PINN.txt};
+				\addplot[color=blue, line width=1pt, densely dotted] table[x=x, y=u_theta] {derivatives_mu1_PINN.txt};
+				\draw[thick, darkred, <->] (axis cs:0.65,-0.08) -- (axis cs:0.65,-0.042) node[midway, left] {$p_h^+$};
+			\else
+				\nextgroupplot[ymin=-0.15, ymax=0.05, xmin=0.55, xmax=0.75, ytick={-0.6,0.6}, xtick={-0.1,1.1}, name=ax2, height=2.5cm, width=2.5cm, hide axis]
+			\fi
+		\end{groupplot}
+		\ifzoom
+			\draw[dashed] (c1) -- (ax2.north west);
+			\draw[dashed] (c2) -- (ax2.north east);
+		\fi
+	\end{tikzpicture}}
+
+\begin{document}
+
+\priorfig{0}
+
+\priorfig{1}
+
+\end{document}

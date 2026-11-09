@@ -15,6 +15,27 @@
 \usepackage{multirow} % pastille d'étape centrée sur un bloc de lignes (slide « Link between Galerkin and PINNs »)
 \usepackage{animate} % animation de coupes 3D (slide « 3D test case »), lue par Acrobat Reader
 \usepackage{pgfplotstable} % tableaux lus depuis un CSV (slide « 3D: gain and cost »)
+\usepackage[normalem]{ulem} % \sout (temps d'entraînement barré, slides numériques de la 1ère hybridation)
+\newcommand{\warning}{{\fontencoding{U}\fontfamily{futs}\selectfont\char 49\relax}} % panneau d'avertissement (comme 2026_07_03)
+
+% courbes et tableaux de la 1ère hybridation : macros pgfplots reprises de 2026_07_03 (dossier preamble/), données du manuscrit sous images/numeric/
+\input{preamble/convergences_h}
+\input{preamble/gains}
+\input{preamble/costs}
+\input{preamble/times}
+\input{preamble/h1_extra}
+% flèche courbe annotée entre deux valeurs (gain ÷ 1471) : abscisse et ordonnée de départ, taille en x, hauteur de la courbe, texte, couleur
+\newcommand{\flechecourbehorizontale}[6]{%
+	\draw[thick,->,#6]
+	(#1,#2) .. controls (#1+0.4*#3,#2+#4) and (#1+0.6*#3,#2+#4) .. (#1+#3,#2)
+	node[midway, sloped, fill=white, inner sep=1pt] {#5};
+}
+% lien vers une diapo d'annexe : \refappendix{nom} affiche la pastille « Appendix A<n> » (n = numéro de la diapo d'annexe, lu dans le .aux) ;
+% la diapo d'annexe porte \appendixtarget{nom} (cible du lien + numéro écrit dans le .aux, il faut deux passes de compilation)
+\makeatletter
+\newcommand{\appendixtarget}[1]{\hypertarget{app:#1}{}\protected@write\@auxout{}{\string\newlabel{appnum:#1}{{A\the\c@framenumber}{\thepage}}}}
+\makeatother
+\newcommand{\refappendix}[1]{\hyperlink{app:#1}{\tikz[baseline=(c.base)]\node[fill=appendix,text=white,rounded corners=2pt,inner sep=2.5pt,font=\small](c){Appendix \ref*{appnum:#1}};}}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\gradh}{\nabla_{\!h}} % gradient par morceaux (DG), comme dans le manuscrit

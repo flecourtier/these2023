@@ -1,6 +1,6 @@
 %% Figure standalone : les trois bases enrichies du cas paramétrique (2nde hybridation), slide « Three enriched bases ».
 %% Une ligne par base, avec la même ossature que operator_scheme : entrée(s) -> réseau -> espace enrichi -> fonctions de base.
-%% Le réseau ne sort pas la base, ni même le multiplicateur : il sort v_theta (étiquette de la flèche) ; le multiplicateur m_theta en est construit et multiplie les phi_{c,i} dans l'espace enrichi ; la base dépend donc des arguments du réseau.
+%% Le réseau ne sort pas la base, ni même le multiplicateur : il sort v_theta (étiquette de la flèche) ; le multiplicateur m_theta en est construit et multiplie les phi_i dans l'espace enrichi ; la base dépend donc des arguments du réseau.
 %% Ligne 1 : partagée, v_theta(x) ; ligne 2 : dépendant de mu, v_theta(x,mu) ; ligne 3 : dépendant du champ, un encodeur résume C(.;mu) en z puis v_theta(x,z).
 %% Page n : les n premières lignes ; le terme qui change est en rouge sur la dernière ligne ajoutée seulement (noir ensuite).
 %% Mêmes boîtes que les autres schémas de la 2nde hybridation (images/hybscheme.sty).
@@ -31,19 +31,19 @@
 }
 % ligne 1 : partagée
 \newcommand{\rowone}{%
-	\netandeq{n1}{0}{$v_\theta(x)$}{$\phi^\theta_{c,i}(x)=m_\theta(x)\,\phi_{c,i}(x)$}
+	\netandeq{n1}{0}{$v_\theta(x)$}{$\phi^\theta_i(x)=m_\theta(x)\,\phi_i(x)$}
 	\node[font=\hs@font, text=black, anchor=east] (x1) at (3.5,0) {$x$};
 	\draw[hsneutral] (x1.east) -- (n1.west);
 }
 % ligne 2 : dépendant de mu (#1 : couleur de mu)
 \newcommand{\rowtwo}[1]{%
-	\netandeq{n2}{-1.2}{$v_\theta(x,\textcolor{#1}{\bm{\mu}})$}{$\phi^\theta_{c,i}(x;\textcolor{#1}{\bm{\mu}})=m_\theta(x,\textcolor{#1}{\bm{\mu}})\,\phi_{c,i}(x)$}
+	\netandeq{n2}{-1.2}{$v_\theta(x,\textcolor{#1}{\bm{\mu}})$}{$\phi^\theta_i(x;\textcolor{#1}{\bm{\mu}})=m_\theta(x,\textcolor{#1}{\bm{\mu}})\,\phi_i(x)$}
 	\node[font=\hs@font, text=black, anchor=east] (x2) at (3.5,-1.2) {$x,\ \textcolor{#1}{\bm{\mu}}$};
 	\draw[hsneutral] (x2.east) -- (n2.west);
 }
 % ligne 3 : dépendant du champ (#1 : couleur de l'encodeur et de z)
 \newcommand{\rowthree}[1]{%
-	\netandeq{n3}{-2.4}{$v_\theta(x,\textcolor{#1}{\bm{z}})$}{$\phi^\theta_{c,i}(x;\textcolor{#1}{\bm{z}})=m_\theta(x,\textcolor{#1}{\bm{z}})\,\phi_{c,i}(x)$}
+	\netandeq{n3}{-2.4}{$v_\theta(x,\textcolor{#1}{\bm{z}})$}{$\phi^\theta_i(x;\textcolor{#1}{\bm{z}})=m_\theta(x,\textcolor{#1}{\bm{z}})\,\phi_i(x)$}
 	\node[font=\hs@font, text=black, anchor=west] (cf) at (0,-2.4) {$C(\cdot\,;\bm{\mu})$};
 	\bbox{enc}{2.3}{-2.4}{1.8}{\textcolor{#1}{encoder} $\mathcal{E}_\theta$}
 	\draw[hsneutral] (cf.east) -- (enc.west);

@@ -1,144 +1,46 @@
-\Section*{Galerkin approaches}
-
-% \fcolorbox comme dans les anciennes présentations, coloré seulement à l'overlay 4 (cadre blanc avant, pour ne rien décaler)
-\newcommand{\dgbox}[2]{\alt<3->{\fcolorbox{#1}{white}{$\displaystyle #2$}}{\fcolorbox{white}{white}{$\displaystyle #2$}}}
-% étiquette de même couleur que son cadre, visible à l'overlay 4
-\newcommand{\dglabel}[2]{\text{\uncover<3->{\textcolor{#1}{\footnotesize #2}}}}
-
-\begin{frame}{Discontinuous Galerkin (DG) method\myfootcite{Arnold2002}}
-	\begin{minipage}[t]{0.62\linewidth}
-		% \blk{1}{%
-		For a \coloredonly<1>{fixed $\bm{\mu}\in\mathcal{M}$}, let $\mathcal{T}_h$ be a mesh of $\Omega$ of cells $(K_c)_{0\le c<N_\text{cells}}$.
-
-		\vspace{5pt}
-
-		Let $V_h^{\text{disc}}$ be a \coloredonly<1>{discontinuous space} of piecewise polynomials of \\
-		degree $k$ on the mesh $\mathcal{T}_h$. Its basis functions $(\phi_{c,i})_{c,i}$, with $\phi_{c,i}$ \\
-		supported on a single cell $K_c$, decompose the discrete solution:
-		\vspace{-9pt}
-		\[
-			u_h(\bm{x},\bm{\mu}) = \sum_{c,i}\beta_{c,i}(\bm{\mu})\,\phi_{c,i}(\bm{x}).
-		\]
-		% }%
-	\end{minipage} \hfill \begin{minipage}[t]{0.36\linewidth}
-		\vspace{-6pt}
-		\raggedleft
-		\only<1>{\includegraphics[page=1]{images/background/dg_basis/dg_basis.pdf}}%
-		\only<2>{\includegraphics[page=2]{images/background/dg_basis/dg_basis.pdf}}%
-		\only<3->{\includegraphics[page=3]{images/background/dg_basis/dg_basis.pdf}}
-	\end{minipage}
-
-	\vspace{3pt}
-	\blk[until=2]{2}{%
-		\textbf{Coupling the cells:} \coloredonly<2>{ambiguous traces on the interfaces $\Rightarrow$ numerical flux} (it defines the method)
-
-		\vspace{5pt}
-
-		Diffusion-dominated regimes: flux for the diffusion term only, here \coloredonly<2>{SIPG} (Symmetric Interior Penalty Galerkin)
-	}
-
-	\blk*{3}{%
-	\textbf{Variational problem (SIPG):}
-
-	Find $u_h\in V_h^{\text{disc}}$ such that, $\forall v_h\in V_h^{\text{disc}}$, $a_h^{\text{disc}}(u_h,v_h;\bm{\mu})=l(v_h;\bm{\mu})=\int_\Omega f\,v_h$, with
-
-	\vspace{-3pt}
-	\begin{equation*}
-		\begin{aligned}
-			a_h^{\text{disc}}(u_h,v_h;\bm{\mu}) =               & \qquad \dgbox{black!50}{\int_\Omega \Big(R\, u_h v_h + \bm{C}\cdot\gradh u_h\, v_h + \frac{1}{\text{Pe}} D\gradh u_h\cdot\gradh v_h\Big)} \; \raisebox{1.5ex}{$\dglabel{black!50}{cell terms}$} \\[-12pt]
-			\raisebox{-2ex}{$\dglabel{orange}{consistency}$} \; & \; \dgbox{orange}{- \frac{1}{\text{Pe}}\int_{\mathcal{F}_h}\Big(\jump{u_h}\cdot\avg{D\gradh v_h} + \avg{D\gradh u_h}\cdot\jump{v_h}\Big)} \;
-			\overset{\hspace{6em}\dglabel{red}{penalty}}{\dgbox{red}{+ \frac{1}{\text{Pe}}\int_{\mathcal{F}_h} \kappa\,\jump{u_h}\cdot\jump{v_h}}}
-		\end{aligned}
-	\end{equation*}
-
-	where $\mathcal{F}_h$ is the set of faces, $\gradh$ the broken gradient, $\jump{\cdot}$ the jump, $\avg{\cdot}$ the average, $\kappa$ the penalty parameter.
-	}
-\end{frame}
+\Section*{Galerkin approach}
 
 \begin{frame}{Continuous Galerkin (CG) method\myfootcite{Ern2004}}
 	\begin{minipage}[t]{0.62\linewidth}
-		Same mesh $\mathcal{T}_h$ and fixed $\bm{\mu}$ as DG.
+		For a \coloredonly<1>{fixed $\bm{\mu}\in\mathcal{M}$}, let $\mathcal{T}_h$ be a mesh of $\Omega$.
 
 		\vspace{5pt}
 
-		Let $V_h:=V_h^{\text{disc}}\cap C^0(\Omega)$ be a \coloredonly<1>{continuous space} of piecewise polynomials of degree $k$ on $\mathcal{T}_h$. Its basis functions $(\phi_I)_I$, with $\phi_I$ supported on the cells sharing the dof $I$, decompose the discrete solution:
+		Let $V_h$ be a \coloredonly<1>{continuous space} of piecewise polynomials of degree $k$ on $\mathcal{T}_h$. Its basis functions $(\phi_i)_i$, with $\phi_i$ supported on the cells sharing the dof $i$, decompose the discrete solution:
 		\vspace{-8pt}
 		\[
-			u_h(\bm{x},\bm{\mu}) = \sum_{I=1}^{N_\text{dofs}}\coloredonly<2->[orange]{\beta_I}(\bm{\mu})\,\coloredonly<2->[orange]{\phi_I}(\bm{x}).
+			u_h(\bm{x},\bm{\mu}) = \sum_{i=1}^{N_\text{dofs}}\beta_i(\bm{\mu})\,\phi_i(\bm{x}).
 		\]
 	\end{minipage} \hfill \begin{minipage}[t]{0.36\linewidth}
-		\vspace{-6pt}
-		\raggedleft
-		\only<1>{\includegraphics[page=1]{images/background/cg_basis/cg_basis.pdf}}%
-		\only<2>{\includegraphics[page=2]{images/background/cg_basis/cg_basis.pdf}}%
-		\only<3->{\includegraphics[page=3]{images/background/cg_basis/cg_basis.pdf}}
+		\vspace{-20pt}
+		\centering
+		\includegraphics[page=2]{images/background/cg_basis/cg_basis.pdf}
 	\end{minipage}
 
-	\vspace{4pt}
-	\blk[until=2]{2}{%
-		\textbf{Coupling the cells:} \coloredonly<2>{shared dofs via the connectivity table $\Rightarrow$ no jumps, no numerical flux}
-
-		\vspace{5pt}
-		\centering
-		$\text{conn}:(c,i)\mapsto I$, \quad \coloredonly<2>[orange]{$\beta_I(\bm{\mu})=\beta_{c,i}(\bm{\mu})$}, \quad \coloredonly<2>[orange]{$\phi_I=\sum_{\text{conn}(c,i)=I}\phi_{c,i}$}
-
-		% \flushleft
-		% \vspace{5pt}
-		% Dirichlet condition strongly on the dofs: here $V_h^0\subset V_h$ vanishing on $\Gamma$
-	}
-
-	\blk*{3}{%
+	\vspace{3pt}
+	\blk{2}{%
 		\textbf{Variational problem:} \quad Find $u_h\in V_h^0$ such that, $\forall v_h\in V_h^0$, $a(u_h,v_h;\bm{\mu})=l(v_h;\bm{\mu})=\int_\Omega f\,v_h$,
 
 		\vspace{-3pt}
 		\begin{equation*}
-			a(u_h,v_h;\bm{\mu}) = \qquad \dgbox{black!50}{\int_\Omega \Big(R\, u_h v_h + \bm{C}\cdot\nabla u_h\, v_h + \frac{1}{\text{Pe}} D\nabla u_h\cdot\nabla v_h\Big)} \; \raisebox{1.5ex}{$\dglabel{black!50}{cell terms}$}
+			a(u_h,v_h;\bm{\mu}) = \int_\Omega \Big(R\, u_h v_h + \bm{C}\cdot\nabla u_h\, v_h + \frac{1}{\text{Pe}} D\nabla u_h\cdot\nabla v_h\Big)
 		\end{equation*}
+		\vspace{-10pt}
 
-		with $V_h^0\subset V_h$ vanishing on $\Gamma$ and \coloredonly<3>{no interface terms, no penalty}.
+		with $V_h^0\subset V_h$ \coloredonly<2>{vanishing on $\Gamma$} (homogeneous Dirichlet condition).
+	}
+
+	\vspace{3pt}
+	\blk*{3}{%
+		\textbf{Linear system:}
+		\vspace{-3pt}
+		\[
+			\underset{\text{\footnotesize matrix}}{A_h(\bm{\mu})}\;\underset{\text{\footnotesize dofs}}{\bm{\beta}_h(\bm{\mu})}=\underset{\text{\footnotesize right-hand side}}{\bm{b}_h(\bm{\mu})},
+			\qquad A_{ij}=\coloredonly<3>{a(\phi_j,\phi_i;\bm{\mu})},\quad b_i=\coloredonly<3>{l(\phi_i;\bm{\mu})}
+		\]
 	}
 \end{frame}
 
-% tableau de la slide « Galerkin scheme » : DG et CG côte à côte (une ligne par objet du système linéaire)
-\newenvironment{lintab}{\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.08\linewidth}>{\centering\arraybackslash}p{0.41\linewidth}>{\centering\arraybackslash}p{0.44\linewidth}@{}}}{\end{tabular}}
-
-\begin{frame}{Galerkin scheme}
-	\textbf{Linear system (in both methods):}
-	\vspace{-3pt}
-	\[
-		\underset{\text{\footnotesize matrix}}{A_h(\bm{\mu})}\;\underset{\text{\footnotesize dofs}}{\bm{\beta}_h(\bm{\mu})}=\underset{\text{\footnotesize right-hand side}}{\bm{b}_h(\bm{\mu})}
-	\]
-
-	\vspace{-2pt}
-	\footnotesize
-	\renewcommand{\arraystretch}{1.6}
-	\begin{lintab}
-		\toprule
-		& \textbf{DG} & \textbf{CG} \\
-		\midrule
-		coupling & \leavevmode\coloredonly<1>{weak}, via numerical fluxes & \leavevmode\coloredonly<1>{strong}, in the space \\
-		\midrule
-		$\bm{\beta}_h(\bm{\mu})$ & $\big(\bm{\beta}_c(\bm{\mu})\big)_c$\; , \; $\bm{\beta}_c(\bm{\mu})=(\beta_{c,i}(\bm{\mu}))_i$ & $\big(\beta_I(\bm{\mu})\big)_I$\; , \; $I=\text{conn}(c,i)$ \\
-	\end{lintab}%
-
-	\only<2->{%
-		\begin{lintab}
-			\midrule
-			$A_h(\bm{\mu})$ & $A_{(c,i),(c',j)}(\bm{\mu})=\coloredonly<2>{a_h^{\text{disc}}}(\phi_{c',j},\phi_{c,i};\bm{\mu})$ & $A_{IJ}(\bm{\mu})=\coloredonly<2>{a}(\phi_J,\phi_I;\bm{\mu})$ \\
-			\midrule
-			$\bm{b}_h(\bm{\mu})$ & $b_{(c,i)}(\bm{\mu})=l(\phi_{c,i};\bm{\mu})$ & $b_I(\bm{\mu})=l(\phi_I;\bm{\mu})$ \\
-		\end{lintab}%
-	}
-
-	\only<3->{%
-		\begin{lintab}
-			\midrule
-			structure & larger system, \coloredonly<3>{one block per cell} & smaller system, \coloredonly<3>{dofs shared between cells} \\
-			& size: $N_\text{cells}\cdot N_b$ & size: $N_\text{dofs}$ \\
-			\bottomrule
-		\end{lintab}%
-	}
-\end{frame}
 
 % tableau de la slide « Link between Galerkin and PINNs » : colonne étroite à gauche pour la pastille d'étape (\multirow centrée sur le bloc de lignes)
 \newenvironment{cmptabn}{\begin{tabular}{@{}>{\centering\arraybackslash}p{0.03\linewidth}@{\hspace{5pt}}p{0.16\linewidth}>{\centering\arraybackslash}p{0.36\linewidth}>{\centering\arraybackslash}p{0.38\linewidth}@{}}}{\end{tabular}}
@@ -193,9 +95,9 @@
 	\vspace{4pt}
 	\begin{cmptabn}
 		\toprule
-		& & \textbf{Galerkin (DG/CG)}                     & \textbf{PINN}                                       \\
+		& & \textbf{Galerkin (CG)}                     & \textbf{PINN}                                       \\
 		\midrule
-		\multirow{3}{*}{\stepcirc{1}} & Space                      & vector space ($V_h^\text{disc}$/$V_h$)                    & manifold of the $u_\theta$                          \\
+		\multirow{3}{*}{\stepcirc{1}} & Space                      & vector space $V_h$                    & manifold of the $u_\theta$                          \\
 		& Unknowns                   & dofs $\bm{\beta}_h(\bm{\mu})$           & weights $\theta$                                    \\
 		& Integrals                  & quadrature on cells                   & Monte Carlo on collocation points                   \\
 	\end{cmptabn}%

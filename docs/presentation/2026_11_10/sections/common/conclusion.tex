@@ -2,48 +2,50 @@
 
 \begin{frame}{Conclusion}
 	\begin{contribbox}{cblue}{1st hybridization: enriched FEM with a frozen PINN prior}
-		\begin{itemize}
-			\item Convergence orders preserved, gain set by the \coloredonly<1>{quality of the prior} (its derivatives)
-			\item Additive, $\mathbb{P}_1$: meshes \coloredonly<1>{5 to 28 times coarser} for the same accuracy
-			\item 3D: cheaper as soon as \coloredonly<1>{19 parameter sets} are solved (training included, $e=10^{-3}$)
-			\item Multiplicative $\to$ additive as $M\to\infty$; better only in special cases
-		\end{itemize}
+		% 	\begin{itemize}
+		% 		\item Convergence orders preserved, gain set by the \coloredonly<1>{quality of the prior} (its derivatives)
+		% 		\item Additive, $\mathbb{P}_1$: meshes \coloredonly<1>{5 to 28 times coarser} for the same accuracy
+		% 		\item 3D: cheaper as soon as \coloredonly<1>{19 parameter sets} are solved (training included, $e=10^{-3}$)
+		% 		\item Multiplicative $\to$ additive as $M\to\infty$; better only in special cases
+		% 	\end{itemize}
 	\end{contribbox}
 
 	\only<2->{%
 		\vspace{0.2cm}
 
 		\begin{contribbox}{cgreen}{2nd hybridization: learnable Galerkin bases}
-			\begin{itemize}
-				\item Differentiable solver: train the basis \coloredonly<2>{through the solver}
-				\item 1D and 3D: far fewer dofs for the same accuracy (1D: error $10^2$ to $10^5$ times lower at fixed $N_\text{dofs}$)
-				\item Parametric (1D, operator): \coloredonly<2>{unseen parameters}, median gains from $\approx 9$ to $\approx 7000$
-			\end{itemize}
+			% 		\begin{itemize}
+			% 			\item Differentiable solver: train the basis \coloredonly<2>{through the solver}
+			% 			\item 1D and 3D: far fewer dofs for the same accuracy (1D: error $10^2$ to $10^5$ times lower at fixed $N_\text{dofs}$)
+			% 			\item Parametric (1D, operator): \coloredonly<2>{unseen parameters}, median gains from $\approx 9$ to $\approx 7000$
+			% 		\end{itemize}
 		\end{contribbox}
 	}
+	% \todo
 \end{frame}
 
 \begin{frame}{Limits and perspectives}
-	\textbf{1st hybridization:}
-	\begin{itemize}
-		\item Gain bounded by the prior accuracy; scalar linear elliptic problems only
-		\item Next: better priors, time-dependent and non-linear problems, complex geometries ($\varphi$-FEM)
-	\end{itemize}
+	% \textbf{1st hybridization:}
+	% \begin{itemize}
+	% 	\item Gain bounded by the prior accuracy; scalar linear elliptic problems only
+	% 	\item Next: better priors, time-dependent and non-linear problems, complex geometries ($\varphi$-FEM)
+	% \end{itemize}
 
-	\only<2->{%
-		\vspace{6pt}
-		\textbf{2nd hybridization:} \coloredonly<2>{exploratory study}
-		\begin{itemize}
-			\item Few test cases, parametric case in 1D only, no error estimate
-			\item Training sensitive to the initialization; training cost not accounted for in the parametric case
-			\item Next: comparison at equal cost (training included), adapted meshes, parametric 2D
-		\end{itemize}
-	}
+	% \only<2->{%
+	% 	\vspace{6pt}
+	% 	\textbf{2nd hybridization:} \coloredonly<2>{exploratory study}
+	% 	\begin{itemize}
+	% 		\item Few test cases, parametric case in 1D only, no error estimate
+	% 		\item Training sensitive to the initialization; training cost not accounted for in the parametric case
+	% 		\item Next: comparison at equal cost (training included), adapted meshes, parametric 2D
+	% 	\end{itemize}
+	% }
 
-	\only<3->{%
-		\vspace{6pt}
-		\blk*{3}{%
-			\textcolor{darkred}{\textbf{Link between the two:}} freeze the learned multiplier $m_\theta$ $\Rightarrow$ multiplicative approach of the 1st hybridization, \coloredonly<3>{a priori estimate} (Céa-type).
-		}
-	}
+	% \only<3->{%
+	% 	\vspace{6pt}
+	% 	\blk*{3}{%
+	% 		\textcolor{darkred}{\textbf{Link between the two:}} freeze the learned multiplier $m_\theta$ $\Rightarrow$ multiplicative approach of the 1st hybridization, \coloredonly<3>{a priori estimate} (Céa-type).
+	% 	}
+	% }
+	\todo
 \end{frame}
