@@ -56,6 +56,11 @@
 \pgfdeclareimage[height=0.05\paperheight]{logomimesis}{images/logos/logo-mimesis}
 \pgfdeclareimage[height=0.08\paperheight]{logoinria}{images/logos/logo-inria}
 
+% encadrement / collaborations de la page de titre (alignés à gauche sous l'auteur)
+\newcommand{\supervisors}[1]{\def\insertsupervisors{#1}}
+\newcommand{\collaborators}[1]{\def\insertcollaborators{#1}}
+\supervisors{}\collaborators{}
+
 \defbeamertemplate*{title page}{customized}[1][]
 {
 	\vspace{3pt}
@@ -72,9 +77,17 @@
 		\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par
 		
 		\vspace{15pt}
-		\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par
-		
-		\vspace{10pt}
+		\usebeamerfont{author}\usebeamercolor[fg]{author}\textbf{\insertauthor}\par
+	\end{center}
+
+	\vspace{6pt}
+	{\normalsize\centering\let\inst\textsuperscript
+	\textbf{Supervised by:} \insertsupervisors\par
+	\vspace{3pt}
+	\textbf{Joint work with:} \insertcollaborators\par}
+
+	\vspace{8pt}
+	\begin{center}
 		\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par
 	\end{center}
 	
@@ -83,12 +96,12 @@
 	% Joint work with:  \\
 	% \usebeamerfont{institute}H. Barucq, F. Faucher, N. Victorion and V. Michel-Dansac.\par
 	
-	\vspace{5pt}
+	\vspace{20pt}
 	% \usebeamerfont{subtitle}
 	\usebeamercolor[fg]{subtitle}\insertsubtitle\par
 	
 	\begin{flushright}
-		\vspace{-34pt}
+		\vspace{-68pt}
 		\includegraphics[height=0.24\paperheight]{images/logos/logo-imag.png}\par
 	\end{flushright}
 }

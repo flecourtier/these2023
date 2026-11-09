@@ -2,6 +2,11 @@
 
 % pastille d'une limite (largeur fixe pour aligner les gloses) ; #1 : couleur, #2 : mot-clé
 \newcommand{\limpill}[2]{\tikz[baseline=(n.base)]\node[draw=#1,text=#1,fill=white,rounded corners=3pt,inner sep=2pt,minimum width=2.1cm,font=\scriptsize](n){#2};}
+% signe de la bulle : + (vert, contraste positif) ou − (rouge, limite), puis une glose très courte
+\newcommand{\pro}[1]{\makebox[1.1em][l]{\textcolor{ForestGreen}{\textbf{+}}}#1}
+\newcommand{\con}[1]{\makebox[1.1em][l]{\textcolor{darkred}{\textbf{$-$}}}#1}
+% une ligne = la même bulle dans les deux cartes (critère), un signe et une glose
+\newcommand{\crit}[3]{\limpill{#1}{#2}\hspace{4pt}#3\\[2pt]}
 % carte d'une famille de méthodes : cadre contribbox du thème en neutre (le cadre des contributions est bleu / vert)
 \newcommand{\methodcard}[2]{\begin{minipage}[t]{0.495\linewidth}\vspace{0pt}\begin{contribbox}{neutral}{#1}#2\end{contribbox}\end{minipage}}
 
@@ -14,24 +19,20 @@
 	\vspace{6pt}
 	\only<2->{%
 		\methodcard{Classical methods \footnotesize FEM, FV, FD, spectral}{%
-			\textbf{Strengths:} solid theory, error analysis
-
-			\vspace{3pt}
-			\textbf{Limitations:}\\[1pt]
-			\limpill{neutral}{mesh} complex geometries\\[1pt]
-			\limpill{neutral}{cost} many resolutions\\[1pt]
-			\alt<4>{\limpill{darkred}{expressivity}}{\limpill{neutral}{expressivity}} \coloredonly<4>{fixed spaces}
-		}
+			\crit{neutral}{guarantees}{\pro{error analysis}}
+			\crit{neutral}{single solve}{\pro{efficient}}
+			\crit{neutral}{geometry}{\con{mesh generation}}
+			\crit{neutral}{many queries}{\con{one solve per $\bm{\mu}$}}
+			\alt<4>{\limpill{darkred}{expressivity}}{\limpill{neutral}{expressivity}}\hspace{4pt}\con{\coloredonly<4>{fixed spaces}}
+	}
 	} \hfill \only<3->{%
 		\methodcard{Neural networks \footnotesize PINNs, neural operators}{%
-			\textbf{Strengths:} mesh-free, parametric, universal
-
-			\vspace{3pt}
-			\textbf{Limitations:}\\[1pt]
-			\limpill{neutral}{guarantees} none\\[1pt]
-			\limpill{neutral}{training} difficult, sensitive\\[1pt]
-			\limpill{neutral}{single solve} not competitive
-		}
+			\crit{neutral}{guarantees}{\con{none}}
+			\crit{neutral}{single solve}{\con{costly training}}
+			\crit{neutral}{geometry}{\pro{mesh-free}}
+			\crit{neutral}{many queries}{\pro{parametric}}
+			\alt<4>{\limpill{darkred}{expressivity}}{\limpill{neutral}{expressivity}}\hspace{4pt}\pro{\coloredonly<4>{flexible}}
+	}
 	}
 
 	\vspace{6pt}

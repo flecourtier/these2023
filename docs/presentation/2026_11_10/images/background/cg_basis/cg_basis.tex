@@ -16,7 +16,7 @@
 \definecolor{bas4}{RGB}{120,120,0}
 
 \newcommand{\frameandbasis}{
-	\useasboundingbox (-0.2,-0.35) rectangle (3.9,1.6);
+	\useasboundingbox (-0.2,-0.15) rectangle (3.9,1.6);
 
 	% maillage
 	\draw[neutral] (-0.1,0) -- (3.1,0);
@@ -48,12 +48,12 @@
 
 \begin{tikzpicture}[x=0.9cm,y=1.7cm]
 	\frameandbasis
-	\globaldofs
+	% \globaldofs
 \end{tikzpicture}
 
 \begin{tikzpicture}[x=0.9cm,y=1.7cm]
 	\frameandbasis
-	\globaldofs
+	% \globaldofs
 	\continuouspart
 \end{tikzpicture}
 
