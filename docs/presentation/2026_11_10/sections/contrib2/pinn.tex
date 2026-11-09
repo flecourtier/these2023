@@ -71,7 +71,7 @@
 
 	\vspace{-3pt}
 	\blk*{3}{%
-	\textbf{Adjoint:} With a gradient-based optimizer, avoid $d\bm{\beta}_h/d\theta$ (only \coloredonly<3>{one} linear solve, whatever $N_\theta$):
+	\textbf{Adjoint:} With a gradient-based optimizer, replace $d\bm{\beta}_h/d\theta$ by an adjoint state (only \coloredonly<3>{one} linear solve, whatever $N_\theta$):
 	\vspace{-3pt}
 	\[
 		A_h(\theta)^T\bm{\lambda}_h=\left(\frac{\partial\mathcal{J}}{\partial\bm{\beta}_h}\right)^T \;\Rightarrow\; \frac{d\mathcal{J}}{d\theta}=\frac{\partial\mathcal{J}}{\partial\theta}\bigg|_{\bm{\beta}_h}-\bm{\lambda}_h^T\,\frac{\partial\bm{R}_h}{\partial\theta}(\bm{\beta}_h;\theta)

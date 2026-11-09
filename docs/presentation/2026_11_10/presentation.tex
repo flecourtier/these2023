@@ -153,6 +153,37 @@
 \Chapter*{duo}
 \input{sections/common/conclusion}
 
+% références + QR codes (comme 2026_07_03) : page sans numéro, hors comptage
+\BackgroundBiblio
+{\setbeamertemplate{footline}{}
+	\begin{frame}{References}
+		\scriptsize
+		\printbibliography
+
+		\normalsize
+		\begin{minipage}[b]{0.28\linewidth}
+			\centering
+			\includegraphics[width=0.4\linewidth]{images/qrcode_scimba.png}
+
+			\vspace{-8pt}
+			See ScimBa
+		\end{minipage} \hfill
+		\begin{minipage}[b]{0.38\linewidth}
+			\centering
+			\Large Thank you for your attention!
+		\end{minipage} \hfill
+		\begin{minipage}[b]{0.28\linewidth}
+			\centering
+			\includegraphics[width=0.4\linewidth]{images/qrcode_paper.png}
+
+			\vspace{-8pt}
+			See the paper
+		\end{minipage}
+	\end{frame}
+}
+\addtocounter{framenumber}{-1}
+\Background
+
 %% ---------- Annexes (une par hybridation) ----------
 \Appendix{blue}{1st hybridization}{Enriched finite element method using PINNs}
 \input{sections/contrib1/appendix}

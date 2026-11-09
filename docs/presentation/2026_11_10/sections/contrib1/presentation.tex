@@ -18,7 +18,7 @@
 
 	\vspace{6pt}
 	\blk{3}{%
-		\textbf{Goal:} accuracy of a fine mesh on a \coloredonly<3>{coarser mesh}.
+		\textbf{Goal:} reach the accuracy of a fine mesh with a \coloredonly<3>{coarser mesh}.
 	}
 
 	\vspace{6pt}
@@ -49,12 +49,6 @@
 				a(p_h^+,v_h)=l(v_h)-\coloredonly<3>{a(u_{\theta},v_h)}\tag{$\mathcal{P}_h^+$}
 			\]
 			with modified Dirichlet BC. \qquad \refappendix{bc}
-		}
-
-		\vspace{8pt}
-		\only<4>{%
-			\centering
-			\textcolor{darkred}{\textbf{Same results as the standard FEM on coarser meshes.}}
 		}
 	\end{minipage} \hfill \begin{minipage}[t]{0.32\linewidth}
 		\vspace{0pt}
@@ -104,12 +98,6 @@
 	% \blk*{4}{%
 	% 	\textbf{Basis = prior $\times$ Lagrange:} \coloredonly<4>{same structure} as the 2nd hybridization ($m_\theta\,\phi_i$).
 	% }
-
-	\vspace{8pt}
-	\only<5>{%
-		\centering
-		\textcolor{darkred}{\textbf{Same results as the standard FEM on coarser meshes.}}
-	}
 \end{frame}
 
 \begin{frame}{Convergence analysis\footnote[frame,1]{Stated in $L^2$ norm; similar result in $H^1$ semi-norm.}}
@@ -193,6 +181,6 @@
 	\only<2->{%
 		\vspace{10pt}
 		\centering
-		\large \textcolor{darkred}{\textbf{$M\to\infty$: multiplicative $\to$ additive}} %\;\refappendix{gain}
+		\large \textcolor{darkred}{\textbf{$M\to\infty$: multiplicative approach $\to$ additive approach}} %\;\refappendix{gain}
 	}
 \end{frame}
