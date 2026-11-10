@@ -11,12 +11,10 @@
 	\end{contribbox}
 
 	\only<2->{%
-		\vspace{0.2cm}
-
 		\begin{contribbox}{cgreen}{2nd hybridization: learnable Galerkin bases}
 			\begin{itemize}
 				\item Differentiable solver: train the basis \coloredonly<2>{through the solver}
-				\item 1D and 3D: far fewer dofs for the same accuracy (1D: error $10^2$ to $10^5$ times lower at fixed $N_\text{dofs}$)
+				\item 1D and 3D: far fewer dofs for the same accuracy (1D: error $10^2$ to $10^5$ times lower at fixed $N_\text{dofs}$, best seed)
 				\item Parametric (1D): \coloredonly<2>{unseen parameters}, median gains from $\approx 9$ to $\approx 7000$
 			\end{itemize}
 		\end{contribbox}
@@ -35,8 +33,8 @@
 		\vspace{6pt}
 		\textbf{2nd hybridization:} \coloredonly<2>{exploratory study}
 		\begin{itemize}
-			\item Few test cases, parametric case in 1D only, no error estimate
-			\item Training sensitive to the initialization; training cost not accounted for in the parametric case
+			\item Few test cases, parametric case in 1D only, uniform meshes only, no error estimate
+			\item Training sensitive to the initialization (fails for $k=1$ in 1D); training cost not accounted for in the parametric case
 			\item Next: comparison at equal cost (training included), adapted meshes, parametric 2D
 		\end{itemize}
 	}
@@ -44,7 +42,9 @@
 	\only<3->{%
 		\vspace{6pt}
 		\blk*{3}{%
-			\textcolor{darkred}{\textbf{Link between the two:}} freeze the learned multiplier $m_\theta$ $\Rightarrow$ multiplicative approach of the 1st hybridization, \coloredonly<3>{a priori estimate} (Céa-type).
+			\textcolor{darkred}{\textbf{Link between the two:}}
+
+			freeze the learned multiplier $m_\theta$ $\Rightarrow$ multiplicative approach of the 1st hybridization, \coloredonly<3>{a priori estimate}.
 		}
 	}
 \end{frame}

@@ -8,7 +8,7 @@
 	\begin{equation*}
 		\left\{
 		\begin{aligned}
-			-\partial_{xx} u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M}, \\
+			-\partial_{xx} u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M},         \\
 			u                & =0, \;  &  & \text{on } \; \partial\Omega \times \mathcal{M},
 		\end{aligned}
 		\right.
@@ -36,18 +36,17 @@
 	\textbf{Enriched FEM:} $\mathbb{P}_1$, additive and multiplicative ($M=3$ and $M=100$).
 \end{frame}
 
-\begin{frame}{Online phase - 1 parameters instance I}
+\begin{frame}{Online phase - 1 parameters instance}
 	\setlength{\plotwidth}{0.40\textwidth}\setlength{\plotheight}{0.30\textwidth}
 	\vspace{-12pt}
-	$$\bm{\mu}^{(1)}=(0.3, 0.2, 0.1) $$
+	$$\bm{\mu}=(0.8, 0.5, 0.8) $$
 
 	\begin{minipage}[t]{0.54\linewidth}
 		\textbf{Error estimates in $L^2$ norm:}
-		\vspace{-2pt}
 
 		{\centering
-			\only<1>{\cvgOneDAdd{images/numeric/Poisson1D/cvg}{1}{1e-5}}%
-			\only<2->{\cvgOneDAddMult{images/numeric/Poisson1D/cvg}{1}{1e-5}}\par}
+			\only<1>{\cvgOneDAdd{images/numeric/Poisson1D/cvg}{2}{5e-6}}%
+			\only<2->{\cvgOneDAddMult{images/numeric/Poisson1D/cvg}{2}{5e-6}}\par}
 	\end{minipage} \hfill
 	\begin{minipage}[t]{0.40\linewidth}
 		\vspace{8pt}
@@ -55,7 +54,7 @@
 			\textbf{Add} $\mathbb{P}_1$: order $2$, as FEM $\mathbb{P}_1$
 
 			\vspace{4pt}
-			\textbf{Add} $\mathbb{P}_1\approx$ \coloredonly<1>{FEM $\mathbb{P}_2$}
+			error $\div\,$\coloredonly<1>{160} vs.\ FEM $\mathbb{P}_1$
 		}
 
 		\vspace{12pt}
@@ -63,30 +62,10 @@
 			\textbf{Mult} $\mathbb{P}_1$: order $2$ too
 
 			\vspace{4pt}
-			$M=100\approx$ \coloredonly<2>{Add}
-		}
-	\end{minipage}
-\end{frame}
-
-\begin{frame}{Online phase - 1 parameters instance II}
-	\setlength{\plotwidth}{0.40\textwidth}\setlength{\plotheight}{0.30\textwidth}
-	\vspace{-12pt}
-	$$\bm{\mu}^{(2)}=(0.8, 0.5, 0.8) $$
-
-	\begin{minipage}[t]{0.54\linewidth}
-		\textbf{Error estimates in $L^2$ norm:}
-		\vspace{-2pt}
-
-		{\centering
-			\cvgOneDAddMult{images/numeric/Poisson1D/cvg}{2}{5e-6}\par}
-	\end{minipage} \hfill
-	\begin{minipage}[t]{0.40\linewidth}
-		\vspace{8pt}
-		\blk*{2}{%
-			\textbf{Mult} $M=3$: \coloredonly<2>{worse} than Add
+			$M=3$: \coloredonly<2>{worse} than Add
 
 			\vspace{4pt}
-			large $u''$: $M$ must be large
+			$M=100\approx$ Add
 		}
 	\end{minipage}
 \end{frame}
@@ -94,33 +73,19 @@
 \begin{frame}{Multiplicative versus additive}
 	\setlength{\plotwidth}{0.38\textwidth}\setlength{\plotheight}{0.32\textwidth}
 	\vspace{-12pt}
-	$$\bm{\mu}^{(1)}=(0.3, 0.2, 0.1), \quad \mathbb{P}_1 $$
+	$$\bm{\mu}=(0.3, 0.2, 0.1), \quad \mathbb{P}_1 $$
 
 	\vspace{-4pt}
-	\textbf{Gain constants $1/C_\text{gain}$ as a function of $M$:}\;\refappendix{gain}
+	\textbf{Gain constants $1/C_\text{gain}$ as a function of $M$:}%\;\refappendix{gain}
 
 	\vspace{4pt}
-	\begin{minipage}[t]{0.48\linewidth}
-		\vspace{0pt}
-		\centering
-		$L^2$ norm
+	\centering
+	$L^2$ norm
 
-		\vspace{2pt}
-		\cvgGainConstants{images/numeric/Poisson1D/gain_constants/output_deg0.csv}{1e4}
-	\end{minipage} \hfill
-	\begin{minipage}[t]{0.48\linewidth}
-		\vspace{0pt}
-		\uncover<2->{%
-			\centering
-			$H^1$ semi-norm
-
-			\vspace{2pt}
-			\cvgGainConstants{images/numeric/Poisson1D/gain_constants/output_deg1.csv}{1e5}
-		}
-	\end{minipage}
+	\cvgGainConstants{images/numeric/Poisson1D/gain_constants/output_deg0.csv}{1e4}
 
 	\vspace{10pt}
-	\uncover<3->{\centering \large \textcolor{darkred}{\textbf{$M\to\infty$: multiplicative $\to$ additive}}\par}
+	\uncover<2->{\centering \large \textcolor{darkred}{\textbf{$M\to\infty$: multiplicative $\to$ additive}}\par}
 \end{frame}
 
 \subsection{2D Poisson}
@@ -131,7 +96,7 @@
 	\begin{equation*}
 		\left\{
 		\begin{aligned}
-			-\Delta u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M}, \\
+			-\Delta u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M},         \\
 			u         & =0, \;  &  & \text{on } \; \partial\Omega \times \mathcal{M},
 		\end{aligned}
 		\right.
@@ -162,7 +127,6 @@
 
 	\begin{minipage}[t]{0.50\linewidth}
 		\textbf{Error estimates in $L^2$ norm:}
-		\vspace{-2pt}
 
 		{\centering
 			\only<1>{\cvgFEMCorrAlldeg{images/numeric/Poisson2D/cvg/FEM_case1_v1_param1.csv}{images/numeric/Poisson2D/cvg/Corr_case1_v1_param1.csv}{1e-10}{false}}%
@@ -179,8 +143,8 @@
 		}
 	\end{minipage}
 
-	\vspace{6pt}
-	\footnotesize Other 2D cases: anisotropic \refappendix{aniso}, annulus with mixed BC \refappendix{annulus}
+	% \vspace{6pt}
+	% \footnotesize Other 2D cases: anisotropic \refappendix{aniso}, annulus with mixed BC \refappendix{annulus}
 \end{frame}
 
 \subsection{3D Poisson}
@@ -191,7 +155,7 @@
 	\begin{equation*}
 		\left\{
 		\begin{aligned}
-			-\Delta u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M}, \\
+			-\Delta u & = f, \; &  & \text{in } \; \Omega \times \mathcal{M},         \\
 			u         & =0, \;  &  & \text{on } \; \partial\Omega \times \mathcal{M},
 		\end{aligned}
 		\right.
@@ -226,7 +190,6 @@
 
 	\begin{minipage}[t]{0.50\linewidth}
 		\textbf{Error estimates in $L^2$ norm:}
-		\vspace{-2pt}
 
 		{\centering
 			\only<1-2>{\cvgFEMCorrOnedegErr{images/numeric/Poisson3D/cvg/FEM_case1_v2_param1_degree1.csv}{images/numeric/Poisson3D/cvg/Corr_case1_v2_param1_degree1.csv}{2e-5}{false}}%

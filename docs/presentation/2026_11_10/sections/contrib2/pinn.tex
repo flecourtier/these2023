@@ -27,13 +27,13 @@
 
 	\vspace{-3pt}
 	\blk{3}{%
-	\textbf{Galerkin scheme ($\bm{\mu}$ fixed):} Solve the linear system:
-	\vspace{-3pt}
-	\[
-		\bm{R}_h\big(\bm{\beta}_h(\coloredonly<3>{\theta});\coloredonly<3>{\theta}\big)=A_h(\coloredonly<3>{\theta})\,\bm{\beta}_h(\coloredonly<3>{\theta})-\bm{b}_h(\coloredonly<3>{\theta})=\bm{0},
-	\]
-	with \hspace{30pt} $
-		A_{(c,i),(c',j)}(\theta)=a_h^{\text{disc}}(\phi^\theta_{c',j},\phi^\theta_{c,i}), \qquad b_{(c,i)}(\theta)=l(\phi^\theta_{c,i}).$
+		\textbf{Galerkin scheme ($\bm{\mu}$ fixed):} Solve the linear system:
+		\vspace{-3pt}
+		\[
+			\bm{R}_h\big(\bm{\beta}_h(\coloredonly<3>{\theta});\coloredonly<3>{\theta}\big)=A_h(\coloredonly<3>{\theta})\,\bm{\beta}_h(\coloredonly<3>{\theta})-\bm{b}_h(\coloredonly<3>{\theta})=\bm{0},
+		\]
+		with \hspace{30pt} $
+			A_{i,j}(\theta)=a(\phi^\theta_{j},\phi^\theta_{i}), \qquad b_{i}(\theta)=l(\phi^\theta_{i}).$
 	}
 
 	\vspace{4pt}
@@ -41,7 +41,7 @@
 		\textbf{Solution:} Reconstruct the solution in the enriched space as:
 		\vspace{-3pt}
 		\[
-			u_{h,\theta}(\bm{x})=\sum_{c,i}\beta_{c,i}(\theta)\,\coloredonly<4>{\phi^\theta_{c,i}}(\bm{x}).
+			u_{h,\theta}(\bm{x})=\sum_{i}\beta_{i}(\theta)\,\coloredonly<4>{\phi^\theta_{i}}(\bm{x}).
 		\]
 	}
 \end{frame}
@@ -97,11 +97,11 @@
 
 	\vspace{2pt}
 	\blk{2}{%
-		\textbf{PINN loss:} Minimize \coloredonly<2>{residual and boundary terms} ($\omega_r=1$, $\omega_b=10$):
-		\vspace{-3pt}
-		\[
-			\mathcal{J}(\theta)=\omega_r\underbrace{\int_\Omega\Big|-\frac{1}{\text{Pe}}\,\partial_{xx}\coloredonly<3>{u_{h,\theta}}+(\mu_1+\mu_2x)\,\partial_x\coloredonly<3>{u_{h,\theta}}-f\Big|^2\mathrm{d}\bm{x}}_{\mathcal{J}_r\ \text{(Monte Carlo, redrawn each epoch)}}+\;\omega_b\underbrace{\int_\Gamma\big|\coloredonly<3>{u_{h,\theta}}\big|^2\mathrm{d}\bm{x}}_{\mathcal{J}_b}
-		\]
+	\textbf{PINN loss:} Minimize \coloredonly<2>{residual and boundary terms} ($\omega_r=1$, $\omega_b=10$):
+	\vspace{-3pt}
+	\[
+	\mathcal{J}(\bm{beta}_h(\theta);\theta)=\omega_r\underbrace{\int_\Omega\Big|-\frac{1}{\text{Pe}}\,\partial_{xx}\coloredonly<3>{u_{h,\theta}}+(\mu_1+\mu_2x)\,\partial_x\coloredonly<3>{u_{h,\theta}}-f\Big|^2\mathrm{d}\bm{x}}_{\mathcal{J}_r\ \text{(Monte Carlo, redrawn each epoch)}}+\;\omega_b\underbrace{\int_\Gamma\big|\coloredonly<3>{u_{h,\theta}}\big|^2\mathrm{d}\bm{x}}_{\mathcal{J}_b}
+	\]
 	}
 
 	\vspace{-3pt}
@@ -161,6 +161,8 @@
 			Some trainings \coloredonly<3>{explode} (loss $=$ NaN).
 
 			\vspace{2pt}
+			Constant $m_\theta$: same space, \coloredonly<3>{same error as FEM}.
+
 			Steps and sign changes never beat FEM.
 		}
 

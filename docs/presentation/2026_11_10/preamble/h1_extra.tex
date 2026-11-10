@@ -55,14 +55,14 @@
                 width=\plotwidth, height=\plotheight,
                 grid=major,
                 xminorticks=false, yminorticks=false,
-                legend style={font=\footnotesize, at={(0.97,0.05)}, anchor=south east, draw=none, fill=white, fill opacity=0.8, text opacity=1},
+                legend style={font=\footnotesize, at={(1.04,0.5)}, anchor=west, draw=none},
                 legend image post style={mark options={solid, scale=1}},
             ]
             \addplot [dashed, color=addcolor, line width=1.2pt] coordinates {(0.5,34.01) (#2,34.01)};
-            \addlegendentry{\,Add\;}
+            \addlegendentry{\,$1/C_\text{gain}^{+}$\;}
             \addplot [densely dotted, color=multcolor3, line width=1.4pt, each nth point=25, filter discard warning=false, unbounded coords=discard]
             table [x=M, y expr=1/\thisrow{Cgainmult}, col sep=space] {#1};
-            \addlegendentry{\,Mult\;}
+            \addlegendentry{\,$1/C_{\text{gain},L^2}^{\times,M}$\;}
         \end{semilogxaxis}
     \end{tikzpicture}
 }

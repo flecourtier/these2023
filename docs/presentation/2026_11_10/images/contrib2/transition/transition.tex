@@ -22,21 +22,21 @@
 	\path (#1.center) ++(0,-1.2) coordinate (lc);
 	\node[draw=hs@c, fill=white, rounded corners=\hs@rc, line width=\hs@lw pt, minimum width=1.8cm, minimum height=\hs@ph cm, align=center, font=\hs@font, text=black] (l) at (lc) {#2};
 }
-\newcommand{\skeleton}[1]{% #1 : texte de la boîte du réseau
+\newcommand{\skeleton}[2]{% #1 : texte de la boîte du réseau, #2 : sortie
 	\hsbox{a}{0}{#1}
 	\hsbox{b}{3.3}{enriched space}
 	\hsbox{c}{6.6}{Galerkin solver}
 	\draw[hsarrow] (a) -- (b);
 	\draw[hsarrow] (b) -- (c);
 	\draw[hsneutral] (c.east) -- ++(2,0) coordinate (e);
-	\node[anchor=west, font=\hs@font, text=black, inner sep=3pt] (u) at (e) {$u_{h,\theta}$};
+	\node[anchor=west, font=\hs@font, text=black, inner sep=3pt] (u) at (e) {$#2$};
 }
 
 \begin{document}
 
 \begin{tikzpicture}
 	\hybstyle{one}\framefig
-	\skeleton{neural prior\\[1pt]$u_\theta\approx u$}
+	\skeleton{neural prior\\[1pt]$u_\theta\approx u$}{u_{h,\theta}^{+/\times}}
 	\node[anchor=north east, font=\hs@font, text=black, inner sep=3pt] at (11.85,0.8) {$\bm{\mu}$ fixed};
 	\lossunder{a}{PINN loss}
 	\draw[hsarrow] (l) -- (a) node[midway, right=2pt, font=\hs@font, text=hs@d] {train};
@@ -44,7 +44,7 @@
 
 \begin{tikzpicture}
 	\hybstyle{two}\framefig
-	\skeleton{neural network\\[1pt]multiplier $m_\theta$}
+	\skeleton{neural network\\[1pt]multiplier $m_\theta$}{u_{h,\theta}}
 	\lossunder{u}{loss}
 	\draw[hsneutral] (u.south) -- (l.north);
 	\draw[hsdash] (l.west) -- node[midway, above=1pt, font=\hs@font, text=hs@d] {gradient} (a.south |- l.west) -- (a.south);

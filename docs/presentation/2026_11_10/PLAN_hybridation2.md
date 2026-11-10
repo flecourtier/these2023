@@ -146,7 +146,7 @@ Budget : **15 min** (intro + méthodes classiques 10, 1ère 15, 2nde 20 = 45). C
 
 `sections/contrib1/numerical_results.tex` (`\Section{Numerical results}`, ~7,5 min), un cas par sous-section :
 - [x] **Refait le 2026-11-07** (les slides condensées, une par cas, étaient illisibles) : on reprend la structure de 2026_07_03 (« Problem considered » → « Online phase » …), copiée à l'identique pour 2D et 3D.
-  - 1D (nouveau, même modèle) : « Problem considered », « Online phase - 1 parameters instance I » (`μ^(1)`, FEM/Add puis Mult en overlay) et « II » (`μ^(2)`), « Multiplicative versus additive » (gains `1/C_gain` en fonction de `M`, `L²` puis `H¹`, le gain multiplicatif converge vers l'additif ≈ 34.01 ; source `lap1D.tex`, CSV `comp_add_mult/output_deg{0,1}.csv`)
+  - 1D (nouveau, même modèle) : « Problem considered », « Online phase - 1 parameters instance » (une seule slide, ancien `μ^(2)` ; fusion des instances I et II le 2026-11-10 ; FEM/Add puis Mult en overlay), « Multiplicative versus additive » (gains `1/C_gain` en fonction de `M`, `L²` puis `H¹`, le gain multiplicatif converge vers l'additif ≈ 34.01 ; source `lap1D.tex`, CSV `comp_add_mult/output_deg{0,1}.csv`)
   - 2D : « Problem considered », « Online phase - 1 parameters instance » (courbes puis tableau `N_dofs`)
   - 3D : « Problem considered », « Online phase - 1 parameters instance I » (erreur en `h`, en temps, trait `e`) et « II » (tableau, ÷ 1471, « Training time ! »), « Parametric framework »
   - Écarts avec 2026_07_03 : 16:9 et palette ; optimiseur « Adam then LBFGS » (manuscrit) ; courbes lues dans les CSV du manuscrit (`errL2`) ; renvoi vers les annexes aniso/annulus en bas de la slide 2D. Temps : 11 slides au lieu de 4, **à réduire plus tard** (l'auteure a dit qu'on verrait).

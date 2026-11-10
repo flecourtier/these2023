@@ -29,30 +29,30 @@
 	\textbf{Curved boundaries} (disk, $k>2$): the prior is not exact on $\partial\Omega_h$; in the tests, $g=u$ on $\partial\Omega_h$.
 \end{frame}
 
-\begin{frame}{Multiplicative gain constants}
-	\appendixtarget{gain}
-	\textbf{Additive:}
-	\vspace{-3pt}
-	\[
-		C_{\text{gain}}^{+}=\frac{| u-u_{\theta} |_{H^{s+1}}}{| u |_{H^{s+1}}}
-	\]
-	\vspace{-4pt}
+% \begin{frame}{Multiplicative gain constants}
+% 	\appendixtarget{gain}
+% 	\textbf{Additive:}
+% 	\vspace{-3pt}
+% 	\[
+% 		C_{\text{gain}}^{+}=\frac{| u-u_{\theta} |_{H^{s+1}}}{| u |_{H^{s+1}}}
+% 	\]
+% 	\vspace{-4pt}
 
-	\textbf{Multiplicative} ($1\leqslant s\leqslant k$, $s=k$ in the main slides):
-	\vspace{-3pt}
-	\begin{align*}
-		C_{\text{gain},H^1}^{\times,M} & = \left| \frac{u_M}{u_{\theta,M}} \right|_{H^{s+1}} \frac{\| u_{\theta,M}\|_{W^{1,\infty}}}{| u |_{H^{s+1}}}, \\
-		C_{\text{gain},L^2}^{\times,M} & = C_{\theta,M}\left| \frac{u_M}{u_{\theta,M}} \right|_{H^{s+1}} \frac{\| u_{\theta,M}\|_{W^{1,\infty}}^2}{| u |_{H^{s+1}}},
-	\end{align*}
-	\vspace{-14pt}
+% 	\textbf{Multiplicative} ($1\leqslant s\leqslant k$, $s=k$ in the main slides):
+% 	\vspace{-3pt}
+% 	\begin{align*}
+% 		C_{\text{gain},H^1}^{\times,M} & = \left| \frac{u_M}{u_{\theta,M}} \right|_{H^{s+1}} \frac{\| u_{\theta,M}\|_{W^{1,\infty}}}{| u |_{H^{s+1}}}, \\
+% 		C_{\text{gain},L^2}^{\times,M} & = C_{\theta,M}\left| \frac{u_M}{u_{\theta,M}} \right|_{H^{s+1}} \frac{\| u_{\theta,M}\|_{W^{1,\infty}}^2}{| u |_{H^{s+1}}},
+% 	\end{align*}
+% 	\vspace{-14pt}
 
-	\[
-		C_{\theta,M}=\|u_{\theta,M}^{-1}\|_{L^{\infty}}+2|u_{\theta,M}^{-1}|_{W^{1,\infty}}+|u_{\theta,M}^{-1}|_{W^{2,\infty}}.
-	\]
-	\vspace{-14pt}
+% 	\[
+% 		C_{\theta,M}=\|u_{\theta,M}^{-1}\|_{L^{\infty}}+2|u_{\theta,M}^{-1}|_{W^{1,\infty}}+|u_{\theta,M}^{-1}|_{W^{2,\infty}}.
+% 	\]
+% 	\vspace{-14pt}
 
-	\textbf{Limit:} $C_{\text{gain},H^1}^{\times,M}$ and $C_{\text{gain},L^2}^{\times,M}$ $\underset{M\to\infty}{\longrightarrow}$ \coloredonly<1>{$C_{\text{gain}}^{+}$} (since $M\,C_{\theta,M}\to 1$).
-\end{frame}
+% 	\textbf{Limit:} $C_{\text{gain},H^1}^{\times,M}$ and $C_{\text{gain},L^2}^{\times,M}$ $\underset{M\to\infty}{\longrightarrow}$ \coloredonly<1>{$C_{\text{gain}}^{+}$} (since $M\,C_{\theta,M}\to 1$).
+% \end{frame}
 
 \section{Extra results}
 
@@ -67,7 +67,7 @@
 	\[
 		f=\exp\left(-\frac{(x_1-\mu_1)^2+(x_2-\mu_2)^2}{0.025\sigma^2}\right), \qquad
 		D=\begin{pmatrix}
-			\epsilon x_1^2+x_2^2 & (\epsilon-1)x_1x_2 \\
+			\epsilon x_1^2+x_2^2 & (\epsilon-1)x_1x_2   \\
 			(\epsilon-1)x_1x_2   & x_1^2+\epsilon x_2^2
 		\end{pmatrix}
 	\]
@@ -94,15 +94,15 @@
 	\end{minipage} \hfill \begin{minipage}[t]{0.46\linewidth}
 		\vspace{0pt}
 		\only<2->{%
-			\small
-			\textbf{Gains over FEM:} $\|u-u_h\|_{L^2}/\|u-u_{h,\theta}^+\|_{L^2}$
+		\small
+		\textbf{Gains over FEM:} $\|u-u_h\|_{L^2}/\|u-u_{h,\theta}^+\|_{L^2}$
 
-			\vspace{2pt}
-			$N_\mu=50$ parameters, $N=20$.
+		\vspace{2pt}
+		$N_\mu=50$ parameters, $N=20$.
 
-			\vspace{4pt}
-			\centering
-			\GainsTableAlldeg{images/numeric/Anisotropic2D/gains/gains_table_case3_firstN.csv}
+		\vspace{4pt}
+		\centering
+		\GainsTableAlldeg{images/numeric/Anisotropic2D/gains/gains_table_case3_firstN.csv}
 		}
 	\end{minipage}
 
@@ -163,15 +163,15 @@
 	\end{minipage} \hfill \begin{minipage}[t]{0.46\linewidth}
 		\vspace{0pt}
 		\only<2->{%
-			\small
-			\textbf{Gains over FEM:} $\|u-u_h\|_{L^2}/\|u-u_{h,\theta}^+\|_{L^2}$
+		\small
+		\textbf{Gains over FEM:} $\|u-u_h\|_{L^2}/\|u-u_{h,\theta}^+\|_{L^2}$
 
-			\vspace{2pt}
-			$N_\mu=50$ parameters, $h=1.33\cdot 10^{-1}$.
+		\vspace{2pt}
+		$N_\mu=50$ parameters, $h=1.33\cdot 10^{-1}$.
 
-			\vspace{4pt}
-			\centering
-			\GainsTableAlldeg{images/numeric/Annulus2D/gains/Tab_stats_case5_v2_firstN.csv}
+		\vspace{4pt}
+		\centering
+		\GainsTableAlldeg{images/numeric/Annulus2D/gains/Tab_stats_case5_v2_firstN.csv}
 		}
 	\end{minipage}
 \end{frame}
