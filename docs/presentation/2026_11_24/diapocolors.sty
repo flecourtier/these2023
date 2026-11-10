@@ -1,0 +1,82 @@
+% diapocolors.sty
+% Toutes les définitions de couleurs des slides (thème, schémas TikZ standalone).
+% Chargé par beamerthemediapo.sty ; une figure standalone fait \usepackage{diapocolors}.
+\ProvidesPackage{diapocolors}
+\RequirePackage{xcolor}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PALETTES
+%% Une palette par type de chapitre, choisie avec \SetPalette{<nom>}
+%% (appelée par \Chapter, voir presentation.tex). Les couleurs portent le même
+%% nom dans toutes les palettes : bulles, title, other, triangleinf,
+%% trianglesup, appendix.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- palette "blue" : contribution 1 ---
+\def\palette@blue{%
+	\definecolor{bulles}{RGB}{19, 27, 42}%
+	\definecolor{title}{RGB}{56, 78, 108}%
+	\definecolor{other}{RGB}{79, 139, 151}%
+	\definecolor{triangleinf}{RGB}{179, 212, 230}%
+	\definecolor{trianglesup}{RGB}{179, 212, 230}%
+	\definecolor{appendix}{RGB}{138, 172, 189}%
+}
+
+% --- palette "green" : contribution 2 (accordée au bleu : même luminosité et saturation) ---
+\def\palette@green{%
+	\definecolor{bulles}{RGB}{19, 42, 30}%
+	\definecolor{title}{RGB}{70, 108, 56}%
+	\definecolor{other}{RGB}{98, 151, 79}%
+	\definecolor{triangleinf}{RGB}{195, 230, 179}%
+	\definecolor{trianglesup}{RGB}{195, 230, 179}%
+	\definecolor{appendix}{RGB}{154, 189, 138}%
+}
+
+% --- palette "duo" : parties communes (titre, introduction, background, conclusion) ---
+% textes en noir et gris, triangle du haut gris clair neutre (la page de titre garde ses triangles bleu et vert,
+% voir \BackgroundTitle)
+\def\palette@duo{%
+	\definecolor{bulles}{RGB}{30, 30, 30}%
+	\definecolor{title}{RGB}{40, 40, 40}%
+	\definecolor{other}{RGB}{110, 110, 110}%
+	\definecolor{trianglesup}{RGB}{246, 241, 232}% ivoire ; autres essais : 250,241,222 crème, 245,242,236 blanc cassé, 238,234,228 greige clair, 247,231,206 champagne, 240,230,215 beige, 243,232,208 sable pâle, 236,226,212 lin, 230,206,160 ocre sable, 232,196,122 ocre jaune, 226,184,140 ocre sienne, 228,190,160 ocre rosé, 222,190,130 ocre terre, 240,200,150 ambre, 238,212,150 ocre plus clair, 220,178,98 ocre soutenu, 200,205,212 ardoise (gardée de côté), 250,215,185 pêche, 250,200,140 mandarine, 248,205,160 abricot, 248,200,180 corail, 205,205,205 gris neutre, 222,216,206 gris chaud
+	\definecolor{triangleinf}{RGB}{246, 241, 232}%
+	\definecolor{appendix}{RGB}{160, 160, 160}%
+}
+
+% triangles de la page de titre (bleu en haut, vert en bas), indépendants de la palette
+\definecolor{titletrisup}{RGB}{179, 212, 230}
+\definecolor{titletriinf}{RGB}{195, 230, 179}
+
+% couleurs fixes des contributions (pastilles, cadres), indépendantes de la palette courante
+\definecolor{cblue}{RGB}{79, 139, 151}
+\definecolor{cgreen}{RGB}{98, 151, 79}
+
+% couleurs sémantiques des figures et schémas (indépendantes de la palette courante)
+% hybone / hybtwo : 1ère / 2nde hybridation. Trois nuances : trait (hyb*), texte (hyb*dark), fond clair (hyb*light)
+% neutral : ce qui n'appartient à aucune hybridation (méthode classique, domaine, maillage, entrées/sorties neutres)
+\colorlet{hybone}{cblue}
+\colorlet{hybonedark}{hybone!65!black}
+\colorlet{hybonelight}{hybone!12!white}
+\colorlet{hybtwo}{cgreen}
+\colorlet{hybtwodark}{hybtwo!65!black}
+\colorlet{hybtwolight}{hybtwo!12!white}
+\definecolor{neutral}{RGB}{70, 70, 70}
+\colorlet{neutrallight}{neutral!8!white}
+
+\newcommand{\SetPalette}[1]{%
+	\csname palette@#1\endcsname
+	\ifdefined\hypersetup\hypersetup{citecolor=other,linkcolor=title}\fi
+}
+
+% palette par défaut
+\SetPalette{duo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% COULEURS DE TEXTE ET MARQUEURS
+%% orange (prédéfinie par xcolor) : bon / « accurate » / notre méthode ; red (prédéfinie) : terme pointé
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% message à retenir, avertissement
+\definecolor{darkred}{rgb}{0.9, 0, 0}
+% marqueur \todo
+\definecolor{todored}{RGB}{200, 30, 30}

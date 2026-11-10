@@ -1,0 +1,47 @@
+%% Figure standalone : schéma de chaque hybridation (slide « Two hybridizations »), placé dans un cadre contribbox.
+%% Page 1 : 1ère hybridation (bleu). Page 2 : 2nde (vert). Même cadre sur les deux pages.
+%% Même ossature (réseau -> espace enrichi -> solveur), macros communes dans images/hybscheme.sty :
+%%   1ère : perte PINN à gauche, hors ligne (réseau figé ensuite, pas de retour)
+%%   2nde : perte à droite, gradient qui remonte au réseau (pointillés)
+%% Pas d'étiquette longue : les lignes de la carte disent la même chose.
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/common/outline/outline.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty, hybscheme.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+\usepackage{hybscheme}
+
+\hscompactsize
+\newcommand{\frameandschema}{\useasboundingbox (-0.05,-1.45) rectangle (5.95,0.55);}
+
+\begin{document}
+
+\begin{tikzpicture}
+	\hybstyle{one}
+	\frameandschema
+	\hsbox{b1}{0.85}{neural\\prior}
+	\hsbox{b2}{2.95}{enriched\\space}
+	\hsbox{b3}{5.05}{Galerkin\\solver}
+	\draw[hsarrow] (b1) -- (b2);
+	\draw[hsarrow] (b2) -- (b3);
+	\hsloss{l}{0.85}{PINN loss}
+	\draw[hsarrow] (l) -- (b1) node[midway, right=2pt, font=\scriptsize, text=hs@d] {offline};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\hybstyle{two}
+	\frameandschema
+	\hsbox{g1}{0.85}{neural\\network}
+	\hsbox{g2}{2.95}{enriched\\space}
+	\hsbox{g3}{5.05}{Galerkin\\solver}
+	\draw[hsarrow] (g1) -- (g2);
+	\draw[hsarrow] (g2) -- (g3);
+	\hsloss{l}{5.05}{loss}
+	\draw[hsarrow] (g3) -- (l);
+	\draw[hsdash] (l.west) -- (g1.south |- l.west) node[midway, above, font=\scriptsize, text=hs@d] {gradient} -- (g1.south);
+\end{tikzpicture}
+
+\end{document}

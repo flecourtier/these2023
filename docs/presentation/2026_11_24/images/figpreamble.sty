@@ -1,0 +1,16 @@
+% Préambule commun des figures standalone (images/<section>/<fig>/<fig>.tex).
+% Même polices et mêmes couleurs que les slides.
+\ProvidesPackage{figpreamble}
+\RequirePackage{fontspec}
+\setmainfont[Scale=MatchLowercase]{Open Sans} % corps des slides : Open Sans
+\RequirePackage{amsmath,amssymb,bm}
+\RequirePackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\RequirePackage{diapocolors} % hybone/hybtwo/neutral... (à la racine de la présentation)
+
+% notations des slides
+\newcommand{\jump}[1]{[\![#1]\!]}
+\newcommand{\avg}[1]{\{#1\}}
+\newcommand{\gradh}{\nabla_{\!h}}
+% pastille numérotée d'une étape (encodage 1, approximation 2, décodage 3) ; reprend la couleur courante ; définie aussi dans presentation.tex
+\newcommand{\stepcirc}[1]{\leavevmode\smash{\tikz[baseline=(c.base)]\node[circle,draw,line width=0.4pt,inner sep=0pt,minimum size=3.3mm,font=\scriptsize\bfseries](c){#1};}}

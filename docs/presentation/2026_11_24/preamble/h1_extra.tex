@@ -1,0 +1,80 @@
+%% Macros de courbes ajoutées pour la 1ère hybridation (données du manuscrit : colonnes h, errL2).
+%% S'appuient sur l'environnement cvgh de convergences_h.tex.
+
+% 1D : FEM P1 (plein), FEM P2 (plein), Add P1 (tireté), Mult M=3 et M=100 (pointillés) ; #1 dossier des CSV, #2 numéro du paramètre, #3 position des pentes
+\newcommand{\cvgOneDAddMult}[3]{
+    \begin{cvgh}[xticklabel style={rotate=20, anchor=east, yshift=-1pt}]{#1/FEM_case1_v1_param#2_degree1.csv}{3}{2,3}{#3}{$L^2$}{false}
+        \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+        \addlegendentry{\,FEM $\mathbb{P}_2$\;}
+        \addlegendentry{\,Add\;}
+        \addlegendentry{\,Mult $M=3$\;}
+        \addlegendentry{\,Mult $M=100$\;}
+
+        \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt]
+        table [x=h, y=errL2, col sep=comma] {#1/FEM_case1_v1_param#2_degree1.csv};
+        \addplot [style={solid}, mark=*, mark size=2, color=femcolor, line width=0.8pt]
+        table [x=h, y=errL2, col sep=comma] {#1/FEM_case1_v1_param#2_degree2.csv};
+        \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt]
+        table [x=h, y=errL2, col sep=comma] {#1/Corr_case1_v1_param#2_degree1.csv};
+        \addplot [style={densely dotted}, mark=square*, mark size=2, color=multcolor3, line width=1pt]
+        table [x=h, y=errL2, col sep=comma] {#1/Mult_case1_v1_param#2_degree1_M3.0.csv};
+        \addplot [style={densely dotted}, mark=square*, mark size=2, mark options={fill=white}, color=multcolor100, line width=1pt]
+        table [x=h, y=errL2, col sep=comma] {#1/Mult_case1_v1_param#2_degree1_M100.0.csv};
+    \end{cvgh}
+}
+
+% 1D, sans multiplicatif : FEM P1 et P2 (plein), Add P1 (tireté) ; mêmes arguments que \cvgOneDAddMult
+\newcommand{\cvgOneDAdd}[3]{
+    \begin{cvgh}[xticklabel style={rotate=20, anchor=east, yshift=-1pt}]{#1/FEM_case1_v1_param#2_degree1.csv}{3}{2,3}{#3}{$L^2$}{false}
+        \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+        \addlegendentry{\,FEM $\mathbb{P}_2$\;}
+        \addlegendentry{\,Add\;}
+
+        \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt]
+        table [x=h, y=errL2, col sep=comma] {#1/FEM_case1_v1_param#2_degree1.csv};
+        \addplot [style={solid}, mark=*, mark size=2, color=femcolor, line width=0.8pt]
+        table [x=h, y=errL2, col sep=comma] {#1/FEM_case1_v1_param#2_degree2.csv};
+        \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt]
+        table [x=h, y=errL2, col sep=comma] {#1/Corr_case1_v1_param#2_degree1.csv};
+    \end{cvgh}
+}
+
+% 1D (k=1, mu^(1)) : gain 1/C_gain de l'approche multiplicative en fonction de M (pointillé) contre le gain additif constant (tireté) ;
+% #1 CSV (colonnes M, Cgainmult), #2 M maximal.
+% Gain additif 1/0.02940315944770827 = 34.01 (script plot_gain_comparison.py du manuscrit, figures/efup/testcase1D/lap1D/comp_add_mult)
+\newcommand{\cvgGainConstants}[2]{
+    \begin{tikzpicture}
+        \begin{semilogxaxis}[
+                smaller labels,
+                axis lines=left,
+                enlarge x limits=false,
+                xmin=0.5, xmax=#2, ymin=0, ymax=38,
+                xlabel={$M$},
+                xlabel style={at={(ticklabel* cs:1.01)},anchor=south west},
+                ytick={0,10,20,30},
+                width=\plotwidth, height=\plotheight,
+                grid=major,
+                xminorticks=false, yminorticks=false,
+                legend style={font=\footnotesize, at={(1.04,0.5)}, anchor=west, draw=none},
+                legend image post style={mark options={solid, scale=1}},
+            ]
+            \addplot [dashed, color=addcolor, line width=1.2pt] coordinates {(0.5,34.01) (#2,34.01)};
+            \addlegendentry{\,$1/C_\text{gain}^{+}$\;}
+            \addplot [densely dotted, color=multcolor3, line width=1.4pt, each nth point=25, filter discard warning=false, unbounded coords=discard]
+            table [x=M, y expr=1/\thisrow{Cgainmult}, col sep=space] {#1};
+            \addlegendentry{\,$1/C_{\text{gain},L^2}^{\times,M}$\;}
+        \end{semilogxaxis}
+    \end{tikzpicture}
+}
+
+% 3D (k=1) : FEM et Add, lus depuis les CSV du manuscrit (colonne errL2) ; #1 FEM, #2 Add, #3 position des pentes, #4 trait horizontal e (true/false)
+\newcommand{\cvgFEMCorrOnedegErr}[4]{
+    \begin{cvgh}[xticklabel style={rotate=20, anchor=east, yshift=-1pt}]{#1}{3}{2}{#3}{$L^2$}{#4}
+        \addlegendentry{\,FEM $\mathbb{P}_1$\;}
+        \addlegendentry{\,Add $\mathbb{P}_1$\;}
+        \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt]
+        table [x=h, y=errL2, col sep=comma] {#1};
+        \addplot [style={dashed}, mark=square*, mark size=2, color=addcolor, line width=0.8pt]
+        table [x=h, y=errL2, col sep=comma] {#2};
+    \end{cvgh}
+}

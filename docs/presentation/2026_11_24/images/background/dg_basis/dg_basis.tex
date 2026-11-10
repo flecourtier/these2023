@@ -1,0 +1,69 @@
+%% Figure standalone : bases locales DG (k=1) puis solution u_h discontinue.
+%% Page 1 : bases seules. Page 2 : + u_h et ses sauts. Même cadre sur les deux pages.
+%% Légende en une colonne à droite du schéma.
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/background/dg_basis/dg_basis.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+
+\newcommand{\frameandbasis}[1]{% #1 : couleur des bases (estompée quand u_h apparaît)
+	\useasboundingbox (-0.1,-0.2) rectangle (5.5,1.2);
+
+	% maillage
+	\draw[neutral] (-0.1,0) -- (3.1,0);
+	\foreach \x in {0,1,2,3} { \draw[neutral, thick] (\x,0) -- (\x,-0.06); }
+	\foreach \i in {0,1,2} { \node[neutral, font=\footnotesize] at (\i+0.5,-0.1) {$K_\i$}; }
+
+	% fonctions de base locales : phi_{c,1} en tirets, phi_{c,2} en pointillés (le trait plein est réservé à u_h)
+	\foreach \a/\b in {0/1, 1/2, 2/3} {
+			\draw[#1, thick, dashed] (\a,1) -- (\b,0);
+			\draw[#1, thick, densely dotted] (\a,0) -- (\b,1);
+		}
+
+	% u_h : un saut à chaque face
+	\draw[black, very thick] (0,0.3) -- (1,0.8);
+	\draw[black, very thick] (1,0.5) -- (2,0.2);
+	\draw[black, very thick] (2,0.9) -- (3,0.6);
+
+	% légende (une colonne)
+	\draw[#1, thick, dashed] (3.4,0.85) -- (3.95,0.85);
+	\node[font=\footnotesize, anchor=west] at (4.05,0.85) {$\phi_{c,1}$};
+	\draw[#1, thick, densely dotted] (3.4,0.6) -- (3.95,0.6);
+	\node[font=\footnotesize, anchor=west] at (4.05,0.6) {$\phi_{c,2}$};
+	\draw[black, very thick] (3.4,0.35) -- (3.95,0.35);
+	\node[font=\footnotesize, anchor=west] at (4.05,0.35) {$u_h$};
+
+	% titre
+	\node[font=\footnotesize, neutral, anchor=south] at (1.5,1.02) {$N_\text{cells}=3$, $N_b=2$ ($k=1$)};
+}
+
+\newcommand{\frameandbasisup}[1]{
+	\frameandbasis{neutral!70}
+	% u_h : un saut à chaque face
+	\foreach \x/\ya/\yb in {1/0.8/0.5, 2/0.2/0.9} {
+			\draw[#1, thick, <->, >=Stealth] (\x,\ya) -- (\x,\yb);
+		}
+	% suite de la légende
+	\draw[#1, thick, <->, >=Stealth] (3.67,-0.04) -- (3.67,0.26);
+	\node[font=\footnotesize, #1, anchor=west] at (4.05,0.11) {jump of $u_h$};
+}
+
+\begin{document}
+
+\begin{tikzpicture}[x=0.9cm,y=1.7cm]
+	\frameandbasis{neutral!70}
+\end{tikzpicture}
+
+\begin{tikzpicture}[x=0.9cm,y=1.7cm]
+	\frameandbasisup{red}
+\end{tikzpicture}
+
+\begin{tikzpicture}[x=0.9cm,y=1.7cm]
+	\frameandbasisup{black}
+\end{tikzpicture}
+
+\end{document}

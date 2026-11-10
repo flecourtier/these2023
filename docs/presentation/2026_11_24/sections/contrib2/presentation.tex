@@ -1,0 +1,74 @@
+\section{Presentation}
+
+\begin{frame}{Transition}
+	\todo[Transition depuis la 1ère hybridation\\Étude dimensionnelle ? (à décider quand le reste sera en place)]
+\end{frame}
+
+\begin{frame}{Neural-enriched Galerkin scheme}
+	\centering
+	\only<1>{\includegraphics[page=1]{images/contrib2/learnable_scheme/learnable_scheme.pdf}}%
+	\only<2>{\includegraphics[page=2]{images/contrib2/learnable_scheme/learnable_scheme.pdf}}%
+	\only<3>{\includegraphics[page=3]{images/contrib2/learnable_scheme/learnable_scheme.pdf}}%
+	\only<4->{\includegraphics[page=4]{images/contrib2/learnable_scheme/learnable_scheme.pdf}}
+
+	\vspace{10pt}
+	\raggedright
+	\textbf{Neural network:} Construct a single neural network $v_\theta(\bm{x})$ on $\Omega$, shared by all cells.
+
+	\vspace{4pt}
+	\blk{2}{%
+		\textbf{Enriched basis:} Constuct a multiplier $m_\theta(\bm{x})$ from $v_\theta(\bm{x})$ and define the \coloredonly<2>{enriched basis functions}\footnote{can be adapted to CG using the connectivity table} as:
+		\vspace{-3pt}
+		\[
+			\phi^\theta_{c,i}(\bm{x})=m_\theta(\bm{x})\,\phi_{c,i}(\bm{x}).
+		\]
+	}
+
+	\vspace{-3pt}
+	\blk{3}{%
+	\textbf{Galerkin scheme ($\bm{\mu}$ fixed):} Solve the linear system:
+	\vspace{-3pt}
+	\[
+		\bm{R}_h\big(\bm{\beta}_h(\coloredonly<3>{\theta};\bm{\mu});\coloredonly<3>{\theta};\bm{\mu}\big)=A_h(\coloredonly<3>{\theta};\bm{\mu})\,\bm{\beta}_h(\coloredonly<3>{\theta};\bm{\mu})-\bm{b}_h(\coloredonly<3>{\theta};\bm{\mu})=\bm{0},
+	\]
+	with \hspace{30pt} $
+		A_{(c,i),(c',j)}(\theta;\bm{\mu})=a_h^{\text{disc}}(\phi^\theta_{c',j},\phi^\theta_{c,i};\bm{\mu}), \qquad b_{(c,i)}(\theta;\bm{\mu})=l(\phi^\theta_{c,i};\bm{\mu}).$
+	}
+
+	\vspace{4pt}
+	\blk*{4}{%
+		\textbf{Solution:} Reconstruct the solution in the enriched space as:
+		\vspace{-3pt}
+		\[
+			u_{h,\theta}(\bm{x};\bm{\mu})=\sum_{c,i}\beta_{c,i}(\theta;\bm{\mu})\,\coloredonly<4>{\phi^\theta_{c,i}}(\bm{x}).
+		\]
+	}
+\end{frame}
+
+\begin{frame}{Learning $\theta$: differentiating through the solver}
+	\centering
+	\only<1>{\includegraphics[page=1]{images/contrib2/gradient_scheme/gradient_scheme.pdf}}%
+	\only<2->{\includegraphics[page=2]{images/contrib2/gradient_scheme/gradient_scheme.pdf}}
+
+	\vspace{4pt}
+	\raggedright
+	\blk{1}{%
+	\textbf{Bi-level problem:} \quad $\theta^\star=\argmin_\theta\,\mathcal{J}(\bm{\beta}_h(\theta);\theta) \quad \text{s.t.} \quad \bm{R}_h(\bm{\beta}_h(\theta);\theta)=\bm{0}$
+
+	\vspace{2pt}
+	\hspace{2.6em} {\footnotesize with $\mathcal{J}$ evaluated on $u_{h,\theta}=\sum_{c,i}\beta_{c,i}\,\phi^\theta_{c,i}$}
+	}
+
+	\vspace{6pt}
+	\blk{2}{%
+		\textbf{Gradient:} \quad $\displaystyle\frac{d\mathcal{J}}{d\theta}=\underbrace{\frac{\partial\mathcal{J}}{\partial\theta}}_{\text{direct}}+\underbrace{\coloredonly<2>{\frac{\partial\mathcal{J}}{\partial\bm{\beta}_h}\,\frac{d\bm{\beta}_h}{d\theta}}}_{\text{through the dofs}}$
+	}
+
+	\vspace{4pt}
+	\blk*{3}{%
+		\textbf{Adjoint:} \quad $A_h(\theta)^T\bm{\lambda}_h=\big(\partial\mathcal{J}/\partial\bm{\beta}_h\big)^T \;\Rightarrow\; \dfrac{d\mathcal{J}}{d\theta}=\dfrac{\partial\mathcal{J}}{\partial\theta}-\bm{\lambda}_h^T\,\dfrac{\partial\bm{R}_h}{\partial\theta}$
+
+		\vspace{2pt}
+		\coloredonly<3>{One} linear solve instead of $N_\theta$
+	}
+\end{frame}

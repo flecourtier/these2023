@@ -1,0 +1,53 @@
+%% Figure standalone : schéma de la 1ère hybridation (slide « Pipeline of the hybrid method »), taille large.
+%% Page 1 : hors ligne, la perte PINN entraîne le réseau (prior). Page 2 : en ligne (mu fixé), le prior figé enrichit l'espace, puis solveur de Galerkin.
+%% Page 3 : la sortie u_{h,theta} se sépare en deux versions, additive u_{h,theta}^+ et multiplicative u_{h,theta}^x.
+%% Même ossature que images/contrib2/learnable_scheme (macros de images/hybscheme.sty), perte à gauche (1ère) au lieu de droite (2nde).
+%% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
+%% ou images/build_fig.sh images/contrib1/pipeline/pipeline.tex
+% !TEX program = lualatex
+\documentclass[10pt,border=2pt,multi=tikzpicture]{standalone}
+
+\makeatletter\def\input@path{{../../}{../../../}}\makeatother % figpreamble.sty, hybscheme.sty (images/) et diapocolors.sty (racine)
+
+\usepackage{figpreamble}
+\usepackage{hybscheme}
+
+\hslargesize
+\makeatletter % \hs@font, \hs@lw... de hybscheme.sty
+
+% cadre commun : perte (x=-0.2), prior (2.7), espace enrichi (6.1), solveur (9.1), sortie à droite
+\newcommand{\framefig}{\hybstyle{one}\useasboundingbox (-1.5,-1.8) rectangle (12.3,1.8);}
+\newcommand{\lossbox}{\hslossrow{l}{-0.2}{PINN loss}}
+\newcommand{\priorbox}{\hsbox{a}{2.7}{neural prior\\[1pt]$u_\theta\approx u$}\draw[hsarrow] (l.east) -- (a.west) node[midway, above=1pt, font=\hs@font, text=hs@d] {train};}
+\newcommand{\spacebox}{\hsbox{b}{6.1}{enriched space}\draw[hsarrow] (a) -- (b);}
+\newcommand{\solverbox}{\hsbox{c}{9.1}{Galerkin solver}\draw[hsarrow] (b) -- (c);}
+\newcommand{\outbox}{\draw[hsneutral] (c.east) -- ++(0.4,0) node[right, font=\hs@font, text=black, inner sep=3pt] (u) {$u_{h,\theta}$};}
+\newcommand{\frozen}{\node[below=2pt of a, font=\hs@font, text=hs@d] {frozen};}
+% cadres en pointillés : hors ligne (perte + prior), en ligne (espace enrichi, solveur, sortie) ; étiquette en haut à gauche
+\newcommand{\phaseframe}[5]{\draw[hs@c, dashed, line width=1pt, rounded corners=4pt] (#1,-0.95) rectangle (#2,1.05);
+	\node[anchor=north west, inner sep=4pt, font=\hs@font, text=hs@d] at (#1,1.05) {\textbf{#3} (#4)};}
+% pages 3 et 4 : cadres plus hauts, l'espace en ligne se sépare en deux rangées (additive en haut, multiplicative en bas)
+\newcommand{\tallframe}[4]{\draw[hs@c, dashed, line width=1pt, rounded corners=4pt] (#1,-1.7) rectangle (#2,1.7);
+	\node[anchor=north west, inner sep=4pt, font=\hs@font, text=hs@d] at (#1,1.7) {\textbf{#3} (#4)};}
+\newcommand{\offlinetall}{\tallframe{-1.45}{4.1}{OFFLINE}{once, all $\bm{\mu}$}}
+\newcommand{\onlinetall}{\tallframe{4.3}{12.2}{ONLINE}{$\bm{\mu}$ fixed}}
+% une rangée de la séparation : #1 couleur des mots et des sorties, #2 ordonnée, #3 identifiant, #4 mot (additive / multiplicative) avant « enriched space », #5 signe de u_{h,theta}, #6 inutilisé
+\newcommand{\splitrow}[6]{%
+	\begin{scope}[yshift=#2 cm]\hsbox{b#3}{6.1}{\textcolor{#1}{#4}\\enriched space}\hsbox{c#3}{9.1}{Galerkin solver}\end{scope}
+	\draw[hsarrow] (a.east) to[out=0,in=180] (b#3.west);
+	\draw[hsarrow] (b#3) -- (c#3);
+	\draw[hsneutral] (c#3.east) -- ++(0.4,0) node[right, font=\hs@font, text=#1, inner sep=3pt] (o#3) {$u_{h,\theta}^{#5}$};}
+\newcommand{\splitrows}[1]{\splitrow{#1}{0.75}{P}{additive}{+}{}\splitrow{#1}{-0.75}{M}{multiplicative}{\times}{}}
+\newcommand{\offlineframe}{\phaseframe{-1.45}{4.1}{OFFLINE}{once, all $\bm{\mu}$}{}}
+\newcommand{\onlineframe}{\phaseframe{4.3}{12.2}{ONLINE}{$\bm{\mu}$ fixed}{}}
+\makeatother
+
+\begin{document}
+
+\begin{tikzpicture}\framefig \offlineframe \lossbox \priorbox \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \offlineframe \onlineframe \lossbox \priorbox \frozen \spacebox \solverbox \outbox \end{tikzpicture}
+
+\begin{tikzpicture}\framefig \offlinetall \onlinetall \lossbox \priorbox \frozen \splitrows{red} \end{tikzpicture}
+
+\end{document}

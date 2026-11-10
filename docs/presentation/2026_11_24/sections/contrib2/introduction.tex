@@ -1,0 +1,80 @@
+\section{Introduction}
+
+\begin{frame}{From frozen prior to learned basis}
+	\vspace{-5pt}
+	\textbf{1st hybridization:} neural prior trained offline, then \coloredonly<1>{frozen}: a priori error estimates.
+
+	\textbf{Limit:} the gain is bounded by the \coloredonly<1>{quality of the prior}, trained apart from the scheme.
+
+	\vspace{-5pt}
+	\begin{center}
+		\includegraphics[page=1]{images/contrib2/transition/transition.pdf}
+	\end{center}
+
+	\vspace{-5pt}
+	\blk*{2}{%
+		\textbf{2nd hybridization:} learn the basis \coloredonly<2>{through the solver}, adapted to the solution of the scheme.
+
+		\textbf{Advantage:} basis adapted to the scheme, \coloredonly<2>{not bounded by a frozen prior}.
+
+		\textbf{Limit:} \coloredonly<2>{no a priori guarantees}, training cost.
+	}
+
+	\only<2>{%
+		\vspace{-5pt}
+		\begin{center}
+			\includegraphics[page=2]{images/contrib2/transition/transition.pdf}
+		\end{center}
+	}%
+
+\end{frame}
+
+\begin{frame}{Automatic differentiation and ScimBa}
+	\raggedright
+	\textbf{Need:} gradient of the solver w.r.t.\ the $N_\theta$ weights, \coloredonly<1>{without} deriving it by hand.
+
+	\vspace{8pt}
+	\blk{2}{%
+		\textbf{Three ways to compute the gradient:}
+
+		\vspace{4pt}
+		\centering
+		\hspace{12pt}\small\setlength{\tabcolsep}{8pt}\begin{tabular}{@{}lccc@{}}
+			\toprule
+			                                                            & \textbf{exact}                & \textbf{use}     & \textbf{cost per gradient} \\
+			\midrule
+			symbolic                                                    & \textcolor{black}{\checkmark} & closed form only & huge expressions           \\
+			finite differences                                          & \textcolor{black}{$\times$}   & any program      & $N_\theta$ solves          \\
+			\coloredonly<2->{automatic diff.}\myfootcite[1]{Baydin2018} & \textcolor{black}{\checkmark} & any program      & a few solves               \\
+			\bottomrule
+		\end{tabular}
+		\flushleft
+	}
+
+	\vspace{8pt}
+	\blk*{3}{%
+		\begin{minipage}{0.7\textwidth}
+			\textbf{ScimBa:} the whole pipeline is a JAX program\myfootcite[2]{Bradbury2018}:
+
+			\vspace{4pt}
+			\centering
+			\hspace{12pt}network $\to$ basis $\to$ assembly $\to$ solve $\to$ loss $\mathcal{J}$
+			\flushleft
+
+			\hspace{12pt}One backward pass gives $\partial\mathcal{J}/\partial\theta$ through \coloredonly<3>{all the steps}.
+		\end{minipage}
+	}
+	% QR code de la bibliothèque, en bas à droite, avec le dernier bloc
+	\only<3->{%
+		\begin{tikzpicture}[remember picture,overlay]
+			\node[anchor=south east, inner sep=0pt] at ([xshift=-0.5cm,yshift=0.7cm]current page.south east) {%
+				\begin{minipage}{3.2cm}
+					\centering
+					\includegraphics[width=3cm]{images/qrcode_scimba.png}
+
+					\vspace{-6pt}
+					\small See ScimBa
+				\end{minipage}};
+		\end{tikzpicture}%
+	}
+\end{frame}
