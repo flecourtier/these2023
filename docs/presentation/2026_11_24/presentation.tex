@@ -14,6 +14,20 @@
 \usepackage{booktabs} % tableaux (slide de comparaison DG / CG)
 \usepackage{multirow} % pastille d'étape centrée sur un bloc de lignes (slide « Link between Galerkin and PINNs »)
 \usepackage{animate} % animation de coupes 3D (slide « 3D test case »), lue par Acrobat Reader
+% \usepackage{multimedia} % \movie : version vidéo de l'animation (pympress), voir \animdiag
+% % animation de la slide « 3D: learned multiplier » : deux versions de la même animation (60 images, 12 im/s, aller-retour)
+% %   par défaut : \animategraphics (Acrobat Reader, Firefox/pdf.js) ; compilation pour pympress : lualatex "\def\usevideo{1}\input{presentation}"
+% %   -> \movie avec images/contrib2/pinn3d/anim_diagonal.mp4 (le PDF doit être compilé dans CE dossier : chemin relatif). Régénérer la vidéo :
+% %   ffmpeg -framerate 12 -i images/contrib2/pinn3d/anim_diagonal/f_%02d.png -filter_complex "[0:v]split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1:a=0,scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p" -c:v libx264 -crf 18 images/contrib2/pinn3d/anim_diagonal.mp4
+% \newcommand{\animdiag}{%
+% 	\ifdefined\usevideo
+% 		\movie[width=9.225cm,height=4.1cm,autostart,loop]
+% 			{\includegraphics[height=4.1cm]{images/contrib2/pinn3d/anim_diagonal/f_50}}
+% 			{images/contrib2/pinn3d/anim_diagonal.mp4}%
+% 	\else
+% 		\animategraphics[autoplay,loop,palindrome,controls,poster=50,height=4.1cm]{12}{images/contrib2/pinn3d/anim_diagonal/f_}{00}{59}%
+% 	\fi}
+
 \usepackage{pgfplotstable} % tableaux lus depuis un CSV (slide « 3D: gain and cost »)
 \usepackage[normalem]{ulem} % \sout (temps d'entraînement barré, slides numériques de la 1ère hybridation)
 \newcommand{\warning}{{\fontencoding{U}\fontfamily{futs}\selectfont\char 49\relax}} % panneau d'avertissement (comme 2026_07_03)
@@ -103,7 +117,7 @@
 }
 
 \title[Hybrid FE and NN methods for parametric PDEs]{Hybrid finite element and neural network methods for parametric PDEs}
-\subtitle{\small MACS seminar (``Modélisation, Analyse et Calcul Scientifique'')}
+\subtitle{\small Séminaire ``Equations aux dérivées partielles''}
 
 \author[LECOURTIER Frédérique]{Frédérique Lecourtier\inst{1}}
 
@@ -118,7 +132,11 @@
 	\inst{4} Project-Team MAKUTU, Inria, Pau
 }
 
-\date{November 10, 2026}
+\date{November 24, 2026}
+
+% % to show notes on a second screen (right) : uncomment the following lines and compile with LuaLaTeX or XeLaTeX
+% \usepackage{pgfpages}
+% \setbeameroption{show notes on second screen=right}
 
 \begin{document}
 \pgfkeys{/pgf/number format/.cd,1000 sep={\,}} % spacing between thousands in numbers
