@@ -44,12 +44,14 @@
 	(#1,#2) .. controls (#1+0.4*#3,#2+#4) and (#1+0.6*#3,#2+#4) .. (#1+#3,#2)
 	node[midway, sloped, fill=white, inner sep=1pt] {#5};
 }
-% lien vers une diapo d'annexe : \refappendix{nom} affiche la pastille « Appendix A<n> » (n = numéro de la diapo d'annexe, lu dans le .aux) ;
+% lien vers une diapo d'annexe : \refappendix{nom} affiche un petit cercle « A<n> » (n = numéro de la diapo d'annexe, lu dans le .aux) ;
 % la diapo d'annexe porte \appendixtarget{nom} (cible du lien + numéro écrit dans le .aux, il faut deux passes de compilation)
 \makeatletter
 \newcommand{\appendixtarget}[1]{\hypertarget{app:#1}{}\protected@write\@auxout{}{\string\newlabel{appnum:#1}{{A\the\c@framenumber}{\thepage}}}}
 \makeatother
-\newcommand{\refappendix}[1]{\hyperlink{app:#1}{\tikz[baseline=(c.base)]\node[fill=appendix,text=white,rounded corners=2pt,inner sep=2.5pt,font=\small](c){Appendix \ref*{appnum:#1}};}}
+% pastille discrète en haut à droite de la diapo, dans la zone colorée sous la barre de navigation (cliquable) ; position réglable : \appendixpillstyle
+\tikzset{appendixpillstyle/.style={circle,anchor=north east,xshift=-0.3cm,yshift=-0.6cm,draw=title,line width=0.4pt,text=title,inner sep=1pt,minimum size=0.42cm,font=\scriptsize\sffamily}}
+\newcommand{\refappendix}[1]{\begin{tikzpicture}[remember picture,overlay]\node[appendixpillstyle] at (current page.north east){\hyperlink{app:#1}{\ref*{appnum:#1}}};\end{tikzpicture}}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\gradh}{\nabla_{\!h}} % gradient par morceaux (DG), comme dans le manuscrit
@@ -120,6 +122,7 @@
 \subtitle{\small Séminaire ``Equations aux dérivées partielles''}
 
 \author[LECOURTIER Frédérique]{Frédérique Lecourtier\inst{1}}
+
 
 % encadrement et collaborations : alignés à gauche sous le titre (voir le gabarit de page de titre du thème)
 \supervisors{Michel Duprez\inst{1}, Emmanuel Franck\inst{2} and Vanessa Lleras\inst{3}}

@@ -1,4 +1,5 @@
 %% Figure standalone : réseau entièrement connecté u_theta(x, mu) (entrées x, mu ; 2 couches cachées ; sortie u_theta). Neutre (figure commune).
+%% Page 1 : réseau ; page 2 : dernière couche cachée (étiquette psi_j^theta) et poids de sortie (étiquette beta_j) en rouge. Même cadre sur les deux pages.
 %% Compilation : à l'enregistrement dans VS Code (LaTeX Workshop, commentaire magique ci-dessous),
 %% ou images/build_fig.sh images/background/network/network.tex
 % !TEX program = lualatex
@@ -9,13 +10,14 @@
 \usepackage{figpreamble}
 \usetikzlibrary{decorations.pathreplacing}
 
-\begin{document}
+\tikzset{
+	neuron/.style={circle, draw=neutral, thick, minimum size=0.36cm, inner sep=0pt},
+	inout/.style={circle, draw=neutral, thick, minimum size=0.52cm, inner sep=0pt, font=\footnotesize},
+	edge/.style={neutral!60, line width=0.25pt}
+}
 
-\begin{tikzpicture}[
-		neuron/.style={circle, draw=neutral, thick, minimum size=0.36cm, inner sep=0pt},
-		inout/.style={circle, draw=neutral, thick, minimum size=0.52cm, inner sep=0pt, font=\footnotesize},
-		edge/.style={neutral!60, line width=0.25pt}
-	]
+% réseau neutre (commun aux deux pages) ; fixe aussi le cadre
+\newcommand{\drawnet}{%
 	% entrées : x_1, x_2, mu_1, mu_2 ; espacement 0.62 cm
 	\foreach \i/\name in {1/x_1,2/x_2,3/\mu_1,4/\mu_2} {
 			\node[inout] (in\i) at (0,{(2.5-\i)*0.62}) {$\name$};
@@ -36,6 +38,26 @@
 	\node[font=\footnotesize] at (-0.95,0.62) {$\bm{x}$};
 	\draw[decorate, decoration={brace, amplitude=3pt}, neutral, thick] (-0.42,-1.2) -- (-0.42,-0.05);
 	\node[font=\footnotesize] at (-0.95,-0.62) {$\bm{\mu}$};
+	% cadre commun aux deux pages : réseau neutre + marge en haut pour les étiquettes de la page 2
+	\useasboundingbox (current bounding box.south west) rectangle ([yshift=0.65cm]current bounding box.north east);
+}
+
+\begin{document}
+
+% page 1 : réseau
+\begin{tikzpicture}
+	\drawnet
+\end{tikzpicture}
+
+% page 2 : dernière couche cachée (psi_j) et poids de sortie (beta_j) en rouge
+\begin{tikzpicture}
+	\drawnet
+	\foreach \i in {2,...,5} { \draw[red, line width=0.5pt] (h2\i) -- (out); }
+	\draw[red, line width=0.5pt] (h21) -- node[pos=0.45, above right, font=\footnotesize, inner sep=1pt] {$\beta_j$} (out);
+	\foreach \j in {1,...,5} { \node[neuron, draw=red, fill=white] at (h2\j) {}; }
+	% étiquette de la dernière couche cachée : fonctions de base apprises
+	\draw[decorate, decoration={brace, amplitude=3pt}, red, thick] (2.45,1.58) -- (2.95,1.58);
+	\node[red, font=\footnotesize] at (2.7,1.93) {$\psi_j^\theta$};
 \end{tikzpicture}
 
 \end{document}

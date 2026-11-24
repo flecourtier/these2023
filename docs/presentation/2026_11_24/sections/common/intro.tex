@@ -5,8 +5,11 @@
 % signe de la bulle : + (vert, contraste positif) ou − (rouge, limite), puis une glose très courte
 \newcommand{\pro}[1]{\makebox[1.1em][l]{\textcolor{ForestGreen}{\textbf{+}}}#1}
 \newcommand{\con}[1]{\makebox[1.1em][l]{\textcolor{darkred}{\textbf{$-$}}}#1}
-% une ligne = la même bulle dans les deux cartes (critère), un signe et une glose
-\newcommand{\crit}[3]{\limpill{#1}{#2}\hspace{4pt}#3\\[2pt]}
+% une ligne = la même bulle dans les deux cartes (critère), un signe et une glose ; #1 : overlays où la ligne est encadrée (orange), #2 : critère, #3 : \pro ou \con, #4 : glose
+% toutes les lignes sont dans un cadre (sans trait ni fond si non mis en avant, de même encombrement) pour que l'alignement ne bouge pas
+\newcommand{\crit}[4]{{\setlength{\fboxsep}{1pt}\setlength{\fboxrule}{0.8pt}%
+			\alt<#1>{\fcolorbox{orange}{white}{\limpill{orange}{#2}\hspace{4pt}#3{\textcolor{orange}{#4}}}}%
+			{\setlength{\fboxrule}{0pt}\setlength{\fboxsep}{1.8pt}\fbox{\limpill{neutral}{#2}\hspace{4pt}#3{#4}}}}\\[1pt]}
 % carte d'une famille de méthodes : cadre contribbox du thème en neutre (le cadre des contributions est bleu / vert)
 \newcommand{\methodcard}[2]{\begin{minipage}[t]{0.495\linewidth}\vspace{0pt}\begin{contribbox}{neutral}{#1}#2\end{contribbox}\end{minipage}}
 
@@ -19,25 +22,25 @@
 	\vspace{6pt}
 	\only<2->{%
 		\methodcard{Classical methods \footnotesize (FEM, FV, FD, spectral)}{%
-			\crit{neutral}{guarantees}{\pro{error analysis}}
-			\crit{neutral}{single solve}{\pro{efficient}}
-			\crit{neutral}{geometry}{\con{mesh generation}}
-			\crit{neutral}{many queries}{\con{one solve per $\bm{\mu}$}}
-			\alt<4>{\limpill{darkred}{expressivity}}{\limpill{neutral}{expressivity}}\hspace{4pt}\con{\coloredonly<4>{fixed spaces}}
-	}
+			\crit{4-}{guarantees}{\pro}{error analysis}
+			\crit{0}{single solve}{\pro}{efficient}
+			\crit{0}{geometry}{\con}{mesh generation}
+			\crit{0}{many queries}{\con}{one solve per $\bm{\mu}$}
+			\crit{0}{expressivity}{\con}{fixed spaces}
+		}
 	} \hfill \only<3->{%
 		\methodcard{Neural networks \footnotesize (PINN, neural operator)}{%
-			\crit{neutral}{guarantees}{\con{none}}
-			\crit{neutral}{single solve}{\con{costly training}}
-			\crit{neutral}{geometry}{\pro{mesh-free}}
-			\crit{neutral}{many queries}{\pro{parametric}}
-			\alt<4>{\limpill{darkred}{expressivity}}{\limpill{neutral}{expressivity}}\hspace{4pt}\pro{\coloredonly<4>{flexible}}
-	}
+			\crit{0}{guarantees}{\con}{none}
+			\crit{0}{single solve}{\con}{costly training}
+			\crit{0}{geometry}{\pro}{mesh-free}
+			\crit{0}{many queries}{\pro}{parametric}
+			\crit{4-}{expressivity}{\pro}{flexible}
+		}
 	}
 
-	\vspace{6pt}
+	\vspace{4pt}
 	\only<4->{%
-		\makebox[\linewidth][c]{\alt<4->{\fcolorbox{darkred}{white}{\textbf{\textcolor{darkred}{Our focus: the expressivity of the approximation spaces}}}}{\fcolorbox{white}{white}{\phantom{\textbf{Our focus: the expressivity of the approximation spaces}}}}}
+		\makebox[\linewidth][c]{\fcolorbox{orange}{white}{\textbf{\textcolor{orange}{Goal: classical guarantees + neural expressivity}}}}
 	}
 
 	% \vspace{3pt}
@@ -47,8 +50,37 @@
 \end{frame}
 % \note{Petite note pour tester.}
 
+% référence dans le corps de la slide (slide de biblio) : #1 clé, #2 auteurs abrégés (« et al. ») ; l'année est un lien vers la référence
+\newcommand{\refin}[2]{{\footnotesize[#2, \citeyear{#1}]}}
+
+\begin{frame}{Enriching the approximation space}
+	\blk{1}{%
+		\textbf{Hand-crafted bases:} GFEM \refin{StrouboulisCoppsBabuska2001}{Strouboulis et al.}, XFEM \refin{Moes1999}{Moës et al.}, Trefftz \refin{MoiolaPerugia2018}{Moiola and Perugia}
+	}
+
+	\vspace{6pt}
+	\blk{2}{%
+		$\Rightarrow$ \coloredonly<2>{problem-dependent}
+	}
+
+	\vspace{6pt}
+	\blk{3}{%
+		\textbf{Geometric prior:} $\varphi$-FEM \refin{DuprezLozinski2020}{Duprez and Lozinski}, \; $u = \varphi\, w$
+	}
+
+	\vspace{6pt}
+	\blk*{4}{%
+		\textbf{Neural prior:} learned level-set \refin{WanLiZha2025}{Wang et al.}, learned solution \refin{Franck2024}{Franck et al.}
+	}
+
+	\vspace{10pt}
+	\only<5->{%
+		\makebox[\linewidth][c]{\fcolorbox{orange}{white}{\textbf{\textcolor{orange}{Ours: classical method $+$ neural prior, two hybridizations}}}}
+	}
+\end{frame}
+
 % hauteur commune des deux cartes d'hybridation (sinon elles suivent leur contenu)
-\newcommand{\hybcardh}{5.3cm}
+\newcommand{\hybcardh}{5.1cm}
 
 \begin{frame}{Two hybridizations}
 	How does the \coloredonly<1>{neural network} enter the approximation space of a classical method?
@@ -64,8 +96,7 @@
 
 				\vspace{4pt}
 				\raggedright \textbf{Network:} pretrained, frozen\\[2pt]
-				\textbf{Guarantees:} a priori error estimates\\[2pt]
-				\textbf{Results:} 1D, 2D, 3D, parametric
+				\textbf{Guarantees:} a priori error estimates
 			\end{contribbox}
 		\end{minipage}
 	} \hfill \only<3->{%
@@ -78,8 +109,7 @@
 
 				\vspace{4pt}
 				\raggedright \textbf{Network:} learned through the solver\\[2pt]
-				\textbf{Guarantees:} none (experimental)\\[2pt]
-				\textbf{Results:} 1D, 3D, parametric
+				\textbf{Guarantees:} none (experimental)
 			\end{contribbox}
 		\end{minipage}
 	}

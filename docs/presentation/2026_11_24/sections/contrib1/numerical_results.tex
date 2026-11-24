@@ -37,21 +37,22 @@
 \end{frame}
 
 \begin{frame}{Online phase - 1 parameters instance}
-	\setlength{\plotwidth}{0.40\textwidth}\setlength{\plotheight}{0.30\textwidth}
+	\setlength{\plotwidth}{0.44\textwidth}\setlength{\plotheight}{0.33\textwidth}
 	\vspace{-12pt}
 	$$\bm{\mu}=(0.8, 0.5, 0.8) $$
 
 	\begin{minipage}[t]{0.54\linewidth}
 		\textbf{Error estimates in $L^2$ norm:}
+		\vspace{4pt}
 
-		{\centering
+		\makebox[\linewidth][c]{%
 			\only<1>{\cvgOneDAdd{images/numeric/Poisson1D/cvg}{2}{5e-6}}%
-			\only<2->{\cvgOneDAddMult{images/numeric/Poisson1D/cvg}{2}{5e-6}}\par}
+			\only<2->{\cvgOneDAddMult{images/numeric/Poisson1D/cvg}{2}{5e-6}}}
 	\end{minipage} \hfill
 	\begin{minipage}[t]{0.40\linewidth}
 		\vspace{8pt}
 		\blk{1}{%
-			\textbf{Add} $\mathbb{P}_1$: order $2$, as FEM $\mathbb{P}_1$
+			\textbf{Add} $\mathbb{P}_1$: order $2$%, as FEM $\mathbb{P}_1$
 
 			\vspace{4pt}
 			error $\div\,$\coloredonly<1>{160} vs.\ FEM $\mathbb{P}_1$
@@ -59,7 +60,7 @@
 
 		\vspace{12pt}
 		\blk*{2}{%
-			\textbf{Mult} $\mathbb{P}_1$: order $2$ too
+			\textbf{Mult} $\mathbb{P}_1$: order $2$ %too
 
 			\vspace{4pt}
 			$M=3$: \coloredonly<2>{worse} than Add
@@ -68,24 +69,6 @@
 			$M=100\approx$ Add
 		}
 	\end{minipage}
-\end{frame}
-
-\begin{frame}{Multiplicative versus additive}
-	\setlength{\plotwidth}{0.38\textwidth}\setlength{\plotheight}{0.32\textwidth}
-	\vspace{-12pt}
-	$$\bm{\mu}=(0.3, 0.2, 0.1), \quad \mathbb{P}_1 $$
-
-	\vspace{-4pt}
-	\textbf{Gain constants $1/C_\text{gain}$ as a function of $M$:}%\;\refappendix{gain}
-
-	\vspace{4pt}
-	\centering
-	$L^2$ norm
-
-	\cvgGainConstants{images/numeric/Poisson1D/gain_constants/output_deg0.csv}{1e4}
-
-	\vspace{10pt}
-	\uncover<2->{\centering \large \textcolor{darkred}{\textbf{$M\to\infty$: multiplicative $\to$ additive}}\par}
 \end{frame}
 
 \subsection{2D Poisson}
@@ -121,21 +104,22 @@
 \end{frame}
 
 \begin{frame}{Online phase - 1 parameters instance}
-	\setlength{\plotwidth}{0.38\textwidth}\setlength{\plotheight}{0.27\textwidth}
+	\setlength{\plotwidth}{0.42\textwidth}\setlength{\plotheight}{0.31\textwidth}
 	\vspace{-12pt}
 	$$\bm{\mu}^{(1)}=(0.05, 0.22) $$
 
-	\begin{minipage}[t]{0.50\linewidth}
+	\begin{minipage}[t]{0.52\linewidth}
 		\textbf{Error estimates in $L^2$ norm:}
+		\vspace{4pt}
 
-		{\centering
+		\makebox[\linewidth][c]{%
 			\only<1>{\cvgFEMCorrAlldeg{images/numeric/Poisson2D/cvg/FEM_case1_v1_param1.csv}{images/numeric/Poisson2D/cvg/Corr_case1_v1_param1.csv}{1e-10}{false}}%
-			\only<2>{\cvgFEMCorrAlldeg{images/numeric/Poisson2D/cvg/FEM_case1_v1_param1.csv}{images/numeric/Poisson2D/cvg/Corr_case1_v1_param1.csv}{1e-10}{true}}\par}
+			\only<2>{\cvgFEMCorrAlldeg{images/numeric/Poisson2D/cvg/FEM_case1_v1_param1.csv}{images/numeric/Poisson2D/cvg/Corr_case1_v1_param1.csv}{1e-10}{true}}}
 	\end{minipage} \hfill \small
-	\begin{minipage}[t]{0.46\linewidth}
+	\begin{minipage}[t]{0.44\linewidth}
 		\only<2>{\textbf{$N_\text{dofs}$ required to reach the same error $e$:}
 
-			\vspace{3pt}
+			\vspace{8pt}
 			{\centering
 				\coststableallq{images/numeric/Poisson2D/costs/TabDoFs_case1_v1_param1.csv}\par}
 
@@ -188,21 +172,21 @@
 	\vspace{-12pt}
 	$$\bm{\mu}^{(1)}=(0.05, 0.22, 0.1) $$
 
+	% titres de hauteur fixe (\parbox) : les deux graphiques démarrent à la même hauteur et ont la même taille
 	\begin{minipage}[t]{0.50\linewidth}
-		\textbf{Error estimates in $L^2$ norm:}
+		\parbox[t][1.5em][t]{\linewidth}{\textbf{Error estimates in $L^2$ norm:}}
 
-		{\centering
+		\makebox[\linewidth][c]{%
 			\only<1-2>{\cvgFEMCorrOnedegErr{images/numeric/Poisson3D/cvg/FEM_case1_v2_param1_degree1.csv}{images/numeric/Poisson3D/cvg/Corr_case1_v2_param1_degree1.csv}{2e-5}{false}}%
-			\only<3>{\cvgFEMCorrOnedegErr{images/numeric/Poisson3D/cvg/FEM_case1_v2_param1_degree1.csv}{images/numeric/Poisson3D/cvg/Corr_case1_v2_param1_degree1.csv}{2e-5}{true}}\par}
+			\only<3>{\cvgFEMCorrOnedegErr{images/numeric/Poisson3D/cvg/FEM_case1_v2_param1_degree1.csv}{images/numeric/Poisson3D/cvg/Corr_case1_v2_param1_degree1.csv}{2e-5}{true}}}
 	\end{minipage} \hfill
 	\begin{minipage}[t]{0.46\linewidth}
 		\only<2-3>{
-			\textbf{$L^2$ error w.r.t. online time$^*$:}
-			\vspace{4pt}
+			\parbox[t][1.5em][t]{\linewidth}{\textbf{$L^2$ error w.r.t. online time$^*$:}}
 
-			{\centering
+			\makebox[\linewidth][c]{%
 				\only<2>{\cvgtimeerror{images/numeric/Poisson3D/time_error/FEM_case1_v2_param1_degree1_time_error.csv}{images/numeric/Poisson3D/time_error/Corr_case1_v2_param1_degree1_time_error.csv}{false}}%
-				\only<3>{\cvgtimeerror{images/numeric/Poisson3D/time_error/FEM_case1_v2_param1_degree1_time_error.csv}{images/numeric/Poisson3D/time_error/Corr_case1_v2_param1_degree1_time_error.csv}{true}}\par}
+				\only<3>{\cvgtimeerror{images/numeric/Poisson3D/time_error/FEM_case1_v2_param1_degree1_time_error.csv}{images/numeric/Poisson3D/time_error/Corr_case1_v2_param1_degree1_time_error.csv}{true}}}\par
 			\vspace{-4pt}
 
 			\footnotesize
@@ -223,9 +207,11 @@
 		\centering
 		\timerequired{images/numeric/Poisson3D/timerequired/TabTimes_case1_v2_param1_degree1.csv}
 	\end{table}
-	\hspace{240pt}\begin{tikzpicture}
-		\flechecourbehorizontale{2.5}{0.1}{2}{-0.2}{$\div 1471$}{darkred}
-	\end{tikzpicture}
+	% flèche entre les deux temps de la 1re ligne (colonnes FEM et Add de « Online time ») : \hspace = décalage horizontal, \raisebox = hauteur (sans changer la mise en page)
+	\vspace{10pt}
+	\hspace{285pt}\raisebox{0.25cm}[0pt][0pt]{\begin{tikzpicture}
+			\flechecourbehorizontale{2.5}{0.1}{2}{-0.2}{$\div 1471$}{darkred}
+		\end{tikzpicture}}
 
 	\begin{minipage}[t]{0.6\linewidth}
 		Cartesian mesh: $N_\text{dofs} = N^3$ nodes ($\mathbb{P}_1$ elements).
@@ -246,7 +232,8 @@
 	\setlength{\plotwidth}{0.38\textwidth}\setlength{\plotheight}{0.27\textwidth}
 	\textbf{How many parameters instance $n_p$ are needed to balance training?}
 
-	\vspace{-5pt}
+	\vspace{5pt}
+
 	\begin{minipage}[t]{0.48\linewidth}
 		\centering
 		\cvgtimeerrorparam{images/numeric/Poisson3D/parametric_framework/output13.csv}
@@ -261,6 +248,9 @@
 		\vspace{-4pt}
 		To achieve $e=5\cdot 10^{-4}$
 	\end{minipage}
+
+	\vspace{4pt}
+	{\centering\pgfplotslegendfromname{leg:paramlegend}\par}
 
 	\vspace{10pt}
 	\textbf{Online:} assembly + solve \textcolor{addcolor}{\; + prior derivatives evaluation} \\

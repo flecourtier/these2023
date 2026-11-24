@@ -6,9 +6,9 @@
     \begin{cvgh}[xticklabel style={rotate=20, anchor=east, yshift=-1pt}]{#1/FEM_case1_v1_param#2_degree1.csv}{3}{2,3}{#3}{$L^2$}{false}
         \addlegendentry{\,FEM $\mathbb{P}_1$\;}
         \addlegendentry{\,FEM $\mathbb{P}_2$\;}
-        \addlegendentry{\,Add\;}
-        \addlegendentry{\,Mult $M=3$\;}
-        \addlegendentry{\,Mult $M=100$\;}
+        \addlegendentry{\,Add $\mathbb{P}_1$\;}
+        \addlegendentry{\,Mult $\mathbb{P}_1$, $M=3$\;}
+        \addlegendentry{\,Mult $\mathbb{P}_1$, $M=100$\;}
 
         \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt]
         table [x=h, y=errL2, col sep=comma] {#1/FEM_case1_v1_param#2_degree1.csv};
@@ -18,7 +18,7 @@
         table [x=h, y=errL2, col sep=comma] {#1/Corr_case1_v1_param#2_degree1.csv};
         \addplot [style={densely dotted}, mark=square*, mark size=2, color=multcolor3, line width=1pt]
         table [x=h, y=errL2, col sep=comma] {#1/Mult_case1_v1_param#2_degree1_M3.0.csv};
-        \addplot [style={densely dotted}, mark=square*, mark size=2, mark options={fill=white}, color=multcolor100, line width=1pt]
+        \addplot [style={densely dotted}, mark=square, mark size=2, color=multcolor100, line width=1pt] % marqueur creux (non rempli) : laisse voir le marqueur plein de Add dessous
         table [x=h, y=errL2, col sep=comma] {#1/Mult_case1_v1_param#2_degree1_M100.0.csv};
     \end{cvgh}
 }
@@ -28,7 +28,7 @@
     \begin{cvgh}[xticklabel style={rotate=20, anchor=east, yshift=-1pt}]{#1/FEM_case1_v1_param#2_degree1.csv}{3}{2,3}{#3}{$L^2$}{false}
         \addlegendentry{\,FEM $\mathbb{P}_1$\;}
         \addlegendentry{\,FEM $\mathbb{P}_2$\;}
-        \addlegendentry{\,Add\;}
+        \addlegendentry{\,Add $\mathbb{P}_1$\;}
 
         \addplot [style={solid}, mark=square*, mark size=2, color=femcolor, line width=0.8pt]
         table [x=h, y=errL2, col sep=comma] {#1/FEM_case1_v1_param#2_degree1.csv};

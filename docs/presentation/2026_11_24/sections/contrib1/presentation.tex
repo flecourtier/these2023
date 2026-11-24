@@ -42,13 +42,13 @@
 		}
 
 		\vspace{6pt}
-		\blk{3}{%
+		\blk*{3}{%
 			\textbf{Variational problem:} \quad Find $p_h^+\in V_h^0$ such that, $\forall v_h\in V_h^0$,
 			\vspace{-3pt}
 			\[
 				a(p_h^+,v_h)=l(v_h)-\coloredonly<3>{a(u_{\theta},v_h)}\tag{$\mathcal{P}_h^+$}
 			\]
-			with modified Dirichlet BC. \qquad \refappendix{bc}
+			with modified Dirichlet BC.\refappendix{bc}
 		}
 	\end{minipage} \hfill \begin{minipage}[t]{0.32\linewidth}
 		\vspace{0pt}
@@ -60,44 +60,46 @@
 \end{frame}
 
 \begin{frame}{Multiplicative approach\myfootcite{Ours2026}}
-	\textbf{Lifted problem:} \quad $u_M=u+M>0$, with $M\in\mathbb{R}_+$ a constant, solves
-	\vspace{-3pt}
-	\[
-		\left\{\begin{aligned}
-			\mathcal{L}(u_M) & = f &  & \text{in } \Omega, \\
-			u_M              & = M &  & \text{on } \Gamma,
-		\end{aligned}\right.
-		\qquad \text{so that } u=u_M-M.
-	\]
+	\blk[until=2]{1}{%
+		\textbf{Enriched trial space:}
+		\vspace{-3pt}
+		\[
+			V_h^\times=\big\{u_{h,\theta}^\times=\coloredonly<1>{u_{\theta\phantom{,M}}\,p_h^\times}\phantom{{}-M},\quad \phantom{p_h^\times\in 1+V_h^0}\big\}
+		\]
+	}
+	\only<3->{%
+		\textbf{Enriched trial space:}
+		\vspace{-3pt}
+		\[
+			V_h^\times=\big\{u_{h,\theta}^\times=\coloredonly<3>{u_{\theta,M}\,p_h^\times-M},\quad p_h^\times\in 1+V_h^0\big\}
+		\]
+	}
 
-	\vspace{4pt}
+	\vspace{6pt}
 	\blk{2}{%
-		\textbf{Lifted prior:} \quad $u_{\theta,M}=u_\theta+M$ \coloredonly<2>{never vanishes}.
+		\textbf{Lifted problem:} Need a prior $u_\theta$ that \coloredonly<2>{never vanishes}.
+
+		\vspace{4pt}
+		Let $M\in\mathbb{R}_+$ be a constant such that $u_{\theta,M}=u_\theta+M>0$. Then $u_M=u+M$ solves
+		\vspace{-3pt}
+		\[
+			\left\{\begin{aligned}
+				\mathcal{L}(u_M) & = f &  & \text{in } \Omega, \\
+				u_M              & = M &  & \text{on } \Gamma,
+			\end{aligned}\right.
+			\qquad \text{so that } u=u_M-M.
+		\]
 	}
 
 	\vspace{6pt}
-	\blk{3}{%
-	\textbf{Enriched trial space:}
-	\[
-		V_h^\times=\big\{\coloredonly<3>{u_{h,\theta}^\times=u_{\theta,M}\,p_h^\times-M},\quad p_h^\times\in 1+V_h^0\big\}
-	\]
-	% Enriched basis: $\phi_i^\times=u_{\theta,M}\,\phi_i$.
-	}
-
-	\vspace{6pt}
-	\blk{4}{%
+	\blk*{4}{%
 		\textbf{Variational problem:} \quad Find $p_h^\times\in 1+V_h^0$ such that, $\forall v_h\in V_h^0$,
 		\vspace{-3pt}
 		\[
 			a\big(u_{\theta,M}\,p_h^\times,u_{\theta,M}\,v_h\big)=l\big(u_{\theta,M}\,v_h\big)\tag{$\mathcal{P}_h^\times$}
 		\]
-		with modified Dirichlet BC. \qquad \refappendix{bc}
+		with modified Dirichlet BC.\refappendix{bc}
 	}
-
-	% \vspace{8pt}
-	% \blk*{4}{%
-	% 	\textbf{Basis = prior $\times$ Lagrange:} \coloredonly<4>{same structure} as the 2nd hybridization ($m_\theta\,\phi_i$).
-	% }
 \end{frame}
 
 \begin{frame}{Convergence analysis\footnote[frame,1]{Stated in $L^2$ norm; similar result in $H^1$ semi-norm.}}
@@ -130,7 +132,7 @@
 
 	\only<3>{%
 	\centering
-	\large $\fcolorbox{orange}{white}{$\displaystyle C_{\text{gain}}^{+}=\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} < 1 \;\Rightarrow\;$ \textcolor{darkred}{\textbf{gain over the standard FEM}}
+	\large $\fcolorbox{orange}{white}{$\displaystyle C_{\text{gain}}^{+}=\frac{| u-u_{\theta} |_{H^{k+1}}}{| u |_{H^{k+1}}}$} < 1 \;\Rightarrow\;$ \textcolor{orange}{\textbf{gain over the standard FEM}}
 	}
 
 	\hypersetup{
@@ -160,6 +162,18 @@
 
 \begin{frame}{Multiplicative versus additive\footnote[frame,1]{Stated in $L^2$ norm; similar result in $H^1$ semi-norm.}}
 	\setcounter{tcb@cnt@mytheo}{3}
+	\setlength{\plotwidth}{0.40\textwidth}\setlength{\plotheight}{0.29\textwidth}
+
+	\vspace{-20pt}
+
+	\uncover<2->{%
+		\vspace{6pt}
+		\flushright
+		\large \textcolor{darkred}{\textbf{$M\to\infty$: multiplicative approach $\to$ additive approach}} %\;\refappendix{gain}
+	}
+
+	\vspace{-5pt}
+
 	\hypersetup{
 		citecolor=white,
 	}
@@ -178,9 +192,22 @@
 		citecolor=other,
 	}
 
-	\only<2->{%
-		\vspace{10pt}
-		\centering
-		\large \textcolor{darkred}{\textbf{$M\to\infty$: multiplicative approach $\to$ additive approach}} %\;\refappendix{gain}
+	\only<3->{%
+		\vspace{2pt}
+		%\small
+		\begin{minipage}[t]{0.40\linewidth}
+			\vspace{0pt}% haut de la minipage = haut du texte (sans cela, la ligne de base du graphique TikZ aligne le bas)
+			\textbf{Gain constants as a function of $M$ :}
+
+			1D Poisson, $\bm{\mu}=(0.3, 0.2, 0.1)$, $\mathbb{P}_1$ %, $L^2$ norm
+		\end{minipage}
+		\hfill
+		\begin{minipage}[t]{0.56\linewidth}
+			\vspace{0pt}
+			\flushright
+
+			\cvgGainConstants{images/numeric/Poisson1D/gain_constants/output_deg0.csv}{1e4}\par
+		\end{minipage}
+
 	}
 \end{frame}

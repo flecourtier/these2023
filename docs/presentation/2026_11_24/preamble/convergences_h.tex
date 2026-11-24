@@ -133,6 +133,8 @@
             mark options={solid, scale=1},
             % grid
             grid = major,
+            % seules les courbes sont rognées : le « e » du trait horizontal peut sortir à droite de l'axe
+            clip mode=individual,
             % legend
             legend columns=\legendcolumns,
             legend to name=leg:legendFEMCORR_\iterator,
@@ -144,7 +146,10 @@
     {
         % trait horizontal à l'erreur e (\ethreshold), tracé dans les coordonnées de l'axe : suit la taille du graphique
         \ifthenelse{\equal{\drawline}{true}}{
+            % pgfinterruptboundingbox : le « e » ne change pas la taille de la figure (elle ne bouge pas entre deux overlays)
+            \begin{pgfinterruptboundingbox}
             \draw[black, line width=0.4mm] ({rel axis cs:0,0} |- {axis cs:1,\ethreshold}) -- ({rel axis cs:1,0} |- {axis cs:1,\ethreshold}) node[anchor=west, xshift=2pt] {$e$};
+            \end{pgfinterruptboundingbox}
         }{}
         \end{loglogaxis}
         \node[yshift=-20pt] at (left_plot.outer south) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};

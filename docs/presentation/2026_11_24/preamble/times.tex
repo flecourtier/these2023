@@ -110,6 +110,7 @@
             mark options={solid, scale=1},
             % grid
             grid = major,
+            clip mode=individual,
             legend columns=1,
             legend to name=leg:legendFEMCORR_\iterator,
             legend image post style={mark options={solid, scale=1}},
@@ -128,14 +129,17 @@
             table [x=time, y=err, col sep=comma]
                 {\add};
 
+            % trait horizontal à l'erreur e (\ethreshold, la même que sur la figure de gauche), en coordonnées de l'axe
+            \ifthenelse{\equal{\drawline}{true}}{
+                \begin{pgfinterruptboundingbox}
+                \draw[black, line width=0.4mm] ({rel axis cs:0,0} |- {axis cs:1,\ethreshold}) -- ({rel axis cs:1,0} |- {axis cs:1,\ethreshold}) node[anchor=west, xshift=2pt] {$e$};
+                \end{pgfinterruptboundingbox}
+            }{}
         \end{loglogaxis}
         
         % \node[yshift=-10pt,xshift=20pt] at (left_plot.outer north) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
 
         % \node[yshift=-20pt] at (left_plot.outer south) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}};
-        \ifthenelse{\equal{\drawline}{true}}{
-            \draw[black, line width=0.4mm] (0.1,1.9) -- (4.7,1.9) node[anchor=west, xshift=2pt] {$e$};
-        }{}
 
     \end{tikzpicture}
 }
@@ -236,8 +240,8 @@
             width=\plotwidth, height=\plotheight,
             mark options={solid, scale=1},
             grid = major,
-            legend columns=1,
-            legend to name=leg:legendFEMCORR_\iterator,
+            legend columns=3,
+            legend to name=leg:paramlegend, % légende commune, affichée sous les deux graphiques
             legend image post style={mark options={solid, scale=1}},
             ymin=0, ymax=1860,
             xmin=0, xmax=50,
@@ -310,9 +314,8 @@
             width=\plotwidth, height=\plotheight,
             mark options={solid, scale=1},
             grid = major,
-            legend style={font=\footnotesize},
-            legend columns=1,
-            legend to name=leg:legendFEMCORR_\iterator,
+            legend columns=3,
+            legend to name=leg:paramlegend, % légende commune, affichée sous les deux graphiques
             legend image post style={mark options={solid, scale=1}},
             ymin=0, ymax=6500,
             xmin=0, xmax=50,
@@ -351,8 +354,6 @@
             coordinates {(5,-200) (5,6500)};
         \end{loglogaxis}
         
-        \node[anchor=south east, yshift=4pt] at (left_plot.north east) {\pgfplotslegendfromname{leg:legendFEMCORR_\iterator}}; % au-dessus du graphique, à droite (hors des courbes)
-
         \node[xshift=-42pt, yshift=6pt, gray] at (left_plot.outer south) {\normalsize\bfseries $5$};
         \node[draw=femcolor, thick, rectangle, anchor=east, xshift=-2pt, yshift=-36pt, femcolor, inner sep=1.2pt] at (left_plot.outer west) {\normalsize\bfseries $98$};
         \node[draw=addcolor, thick, rectangle, anchor=east, xshift=-2pt, yshift=-19pt, addcolor, inner sep=1.2pt] at (left_plot.outer west) {\normalsize\bfseries $708$};
