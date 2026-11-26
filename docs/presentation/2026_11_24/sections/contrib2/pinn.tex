@@ -70,10 +70,8 @@
 	}
 
 	\vspace{-3pt}
-	\blk*{3}{%
-	\textbf{Adjoint:} \\
-
-	With a gradient-based optimizer, replace $d\bm{\beta}_h/d\theta$ by an adjoint state (only \coloredonly<3>{one} linear solve, whatever $N_\theta$):
+	\blk*{3}{%With a gradient-based optimizer,
+	\textbf{Adjoint:} Replace $d\bm{\beta}_h/d\theta$ by an adjoint state (only \coloredonly<3>{one} linear solve, whatever $N_\theta$):
 	\vspace{-3pt}
 	\[
 		A_h(\theta)^T\bm{\lambda}_h=\left(\frac{\partial\mathcal{J}}{\partial\bm{\beta}_h}\right)^T \;\Rightarrow\; \frac{d\mathcal{J}}{d\theta}=\frac{\partial\mathcal{J}}{\partial\theta}\bigg|_{\bm{\beta}_h}-\bm{\lambda}_h^T\,\frac{\partial\bm{R}_h}{\partial\theta}(\bm{\beta}_h;\theta)
@@ -83,11 +81,11 @@
 
 \begin{frame}{Automatic differentiation and ScimBa}
 	\raggedright
-	\textbf{Need:} gradient of the solver w.r.t.\ the $N_\theta$ weights, \coloredonly<1>{without} deriving it by hand.
+	\textbf{Need:} the remaining derivatives of the adjoint formula, \coloredonly<1>{without} deriving them by hand.
 
 	\vspace{8pt}
 	\blk{2}{%
-		\textbf{Three ways to compute the gradient:}
+		\textbf{Three ways to compute the derivatives:}
 
 		\vspace{4pt}
 		\centering
@@ -97,7 +95,7 @@
 			\midrule
 			symbolic                                                    & \textcolor{black}{\checkmark} & closed form only & huge expressions           \\
 			finite differences                                          & \textcolor{black}{$\times$}   & any program      & $N_\theta$ solves          \\
-			\coloredonly<2->{automatic diff.}\myfootcite[1]{Baydin2018} & \textcolor{black}{\checkmark} & any program      & a few solves               \\
+			\coloredonly<2->{automatic diff.}\myfootcite[1]{Baydin2018} & \textcolor{black}{\checkmark} & any program      & independent of $N_\theta$  \\
 			\bottomrule
 		\end{tabular}
 		\flushleft
@@ -113,7 +111,7 @@
 			\hspace{12pt}network $\to$ basis $\to$ assembly $\to$ solve $\to$ loss $\mathcal{J}$
 			\flushleft
 
-			\hspace{12pt}One backward pass gives $\partial\mathcal{J}/\partial\theta$ through \coloredonly<3>{all the steps}.
+			\hspace{12pt}One backward pass gives $\partial\mathcal{J}/\partial\theta$ through \coloredonly<3>{all the steps} (the solve via its adjoint).
 		\end{minipage}
 	}
 	% QR code de la bibliothèque, en bas à droite, avec le dernier bloc
@@ -153,7 +151,7 @@
 	\textbf{PINN loss:} Minimize \coloredonly<2>{residual and boundary terms} ($\omega_r=1$, $\omega_b=10$):
 	\vspace{-3pt}
 	\[
-	\mathcal{J}(\bm{\beta}_h(\theta);\theta)=\omega_r\underbrace{\int_\Omega\Big|-\frac{1}{\text{Pe}}\,\partial_{xx}\coloredonly<3>{u_{h,\theta}}+(\mu_1+\mu_2x)\,\partial_x\coloredonly<3>{u_{h,\theta}}-f\Big|^2\mathrm{d}\bm{x}}_{\mathcal{J}_r\ \text{(Monte Carlo, redrawn each epoch)}}+\;\omega_b\underbrace{\int_\Gamma\big|\coloredonly<3>{u_{h,\theta}}\big|^2\mathrm{d}\bm{x}}_{\mathcal{J}_b}
+	\mathcal{J}(\bm{\beta}_h(\theta);\theta)=\omega_r\underbrace{\int_\Omega\Big|-\frac{1}{\text{Pe}}\,\partial_{xx}\coloredonly<3>{u_{h,\theta}}+(\mu_1+\mu_2x)\,\partial_x\coloredonly<3>{u_{h,\theta}}-f\Big|^2\mathrm{d}\bm{x}}_{\mathcal{J}_r}+\;\omega_b\underbrace{\int_\Gamma\big|\coloredonly<3>{u_{h,\theta}}\big|^2\mathrm{d}\bm{x}}_{\mathcal{J}_b}
 	\]
 	}
 
@@ -194,10 +192,10 @@
 
 \begin{frame}{Choice of the multiplier}
 	\vspace{-5pt}
-	\coloredonly<1>{Fix $N_\text{dofs}=25$ and $N_\theta\in\{134,\dots,151\}$, vary the levers}: $(N_\text{cells},k)$ and the MLP shape (width, depth).
+	Fix $N_\text{dofs}=25$ and $N_\theta\in\{134,\dots,151\}$, vary the levers: $(N_\text{cells},k)$ and the MLP shape (width, depth).
 
 	\vspace{2pt}
-	$20$ configurations $\times$ $20$ seeds $=400$ trainings per multiplier ($100$ epochs, $5000$ collocation points).
+	$20$ configurations $\times$ $20$ seeds $=\coloredonly<1>{400}$ \coloredonly<1>{trainings per multiplier} ($100$ epochs, $5000$ collocation points).
 
 	\begin{minipage}[t]{0.39\linewidth}
 		\vspace{4pt}
